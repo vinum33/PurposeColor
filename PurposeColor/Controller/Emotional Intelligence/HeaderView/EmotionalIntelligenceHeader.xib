@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1912" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="HelveticaNeueLTStd-Lt.otf">
+            <string>HelveticaNeueLTStd-Lt</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="4f4-Sm-Szf">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uru-Qc-W4B">
+                    <rect key="frame" x="5" y="0.0" width="590" height="595"/>
+                    <subviews>
+                        <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w33-RS-dmP">
+                            <rect key="frame" x="0.0" y="0.0" width="590" height="595"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="w33-RS-dmP" firstAttribute="top" secondItem="Uru-Qc-W4B" secondAttribute="top" id="MeO-2j-P0U"/>
+                        <constraint firstItem="w33-RS-dmP" firstAttribute="leading" secondItem="Uru-Qc-W4B" secondAttribute="leading" id="h03-6W-ivr"/>
+                        <constraint firstAttribute="bottom" secondItem="w33-RS-dmP" secondAttribute="bottom" id="hhw-kt-Zp6"/>
+                        <constraint firstAttribute="trailing" secondItem="w33-RS-dmP" secondAttribute="trailing" id="lYf-aG-0fh"/>
+                    </constraints>
+                </view>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="25D-Lf-w1x">
+                    <rect key="frame" x="10" y="278" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="oj6-Gj-COR"/>
+                        <constraint firstAttribute="height" constant="40" id="rgL-a8-VN4"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bci-ex-UM8">
+                    <rect key="frame" x="60" y="293" width="36" height="15"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeueLTStd-Lt" family="Helvetica Neue LT Std" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YbZ-kG-WVW">
+                    <rect key="frame" x="550" y="278" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="BkI-kx-ZhO"/>
+                        <constraint firstAttribute="width" constant="40" id="Djg-Vu-aaI"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JQq-Tg-mUy" userLabel="InfoButton">
+                    <rect key="frame" x="106" y="280" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="TLX-H4-ViO"/>
+                        <constraint firstAttribute="height" constant="40" id="YYx-iA-OJA"/>
+                    </constraints>
+                    <state key="normal" image="Info"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="YbZ-kG-WVW" secondAttribute="trailing" constant="10" id="0vW-og-lWE"/>
+                <constraint firstItem="Bci-ex-UM8" firstAttribute="leading" secondItem="25D-Lf-w1x" secondAttribute="trailing" constant="10" id="4js-OZ-EWL"/>
+                <constraint firstItem="Bci-ex-UM8" firstAttribute="centerY" secondItem="4f4-Sm-Szf" secondAttribute="centerY" id="51W-RY-0pL"/>
+                <constraint firstItem="Uru-Qc-W4B" firstAttribute="leading" secondItem="4f4-Sm-Szf" secondAttribute="leading" constant="5" id="711-iC-q27"/>
+                <constraint firstItem="YbZ-kG-WVW" firstAttribute="centerY" secondItem="4f4-Sm-Szf" secondAttribute="centerY" constant="-2" id="BGk-ZH-ynZ"/>
+                <constraint firstItem="JQq-Tg-mUy" firstAttribute="centerY" secondItem="4f4-Sm-Szf" secondAttribute="centerY" id="BUb-MX-Bs9"/>
+                <constraint firstItem="25D-Lf-w1x" firstAttribute="centerY" secondItem="4f4-Sm-Szf" secondAttribute="centerY" constant="-2" id="Bb0-NP-L8x"/>
+                <constraint firstAttribute="bottom" secondItem="Uru-Qc-W4B" secondAttribute="bottom" constant="5" id="RDH-A9-QeA"/>
+                <constraint firstAttribute="trailing" secondItem="Uru-Qc-W4B" secondAttribute="trailing" constant="5" id="SeA-Tp-DQD"/>
+                <constraint firstItem="25D-Lf-w1x" firstAttribute="leading" secondItem="4f4-Sm-Szf" secondAttribute="leading" constant="10" id="Ua1-ei-m62"/>
+                <constraint firstItem="JQq-Tg-mUy" firstAttribute="leading" secondItem="Bci-ex-UM8" secondAttribute="trailing" constant="10" id="gib-Gh-J8o"/>
+                <constraint firstItem="Uru-Qc-W4B" firstAttribute="top" secondItem="4f4-Sm-Szf" secondAttribute="top" id="vO5-vX-Ci1"/>
+            </constraints>
+            <point key="canvasLocation" x="177" y="352"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Info" width="30" height="30"/>
+    </resources>
+</document>

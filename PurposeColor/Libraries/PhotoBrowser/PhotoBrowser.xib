@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1912" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="HelveticaNeueLTStd-Bd.otf">
+            <string>HelveticaNeueLTStd-Bd</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PhotoBrowser">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dyw-AO-BUx">
+                    <rect key="frame" x="0.0" y="20" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="3Bg-we-bN2"/>
+                        <constraint firstAttribute="width" constant="40" id="iwK-bx-oap"/>
+                    </constraints>
+                    <state key="normal" image="BackArrow"/>
+                    <connections>
+                        <action selector="closePopUp:" destination="iN0-l3-epB" eventType="touchUpInside" id="q8J-mL-H2v"/>
+                    </connections>
+                </button>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Tde-Fh-Wqe">
+                    <rect key="frame" x="0.0" y="60" width="600" height="540"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tDt-GI-tqm">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="iN0-l3-epB" id="azd-II-T2X"/>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="09B-Dg-gzK"/>
+                    </connections>
+                </collectionView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gab-En-SLZ">
+                    <rect key="frame" x="60" y="35" width="10" height="17"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeueLTStd-Bd" family="Helvetica Neue LT Std" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZEA-aq-I1b" userLabel="Share">
+                    <rect key="frame" x="560" y="20" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="4ty-JG-74O"/>
+                        <constraint firstAttribute="width" constant="40" id="7Sk-lz-BD4"/>
+                    </constraints>
+                    <state key="normal" image="Gallery_Share"/>
+                    <connections>
+                        <action selector="sharewImage:" destination="iN0-l3-epB" eventType="touchUpInside" id="mRA-A4-qLO"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="USc-oX-riE" userLabel="Save">
+                    <rect key="frame" x="520" y="20" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="Myo-Zn-uVk"/>
+                        <constraint firstAttribute="height" constant="40" id="cJB-yu-rB0"/>
+                    </constraints>
+                    <state key="normal" image="Gallery_Save"/>
+                    <connections>
+                        <action selector="saveImage:" destination="iN0-l3-epB" eventType="touchUpInside" id="T3S-3g-oqd"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Tde-Fh-Wqe" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="60" id="20a-qY-LIj"/>
+                <constraint firstItem="Tde-Fh-Wqe" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3QC-hm-JMe"/>
+                <constraint firstItem="ZEA-aq-I1b" firstAttribute="leading" secondItem="USc-oX-riE" secondAttribute="trailing" id="7Wx-Fi-wgO"/>
+                <constraint firstItem="gab-En-SLZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="35" id="Dxh-J7-Ypu"/>
+                <constraint firstAttribute="trailing" secondItem="ZEA-aq-I1b" secondAttribute="trailing" id="OiM-a0-fNU"/>
+                <constraint firstAttribute="bottom" secondItem="Tde-Fh-Wqe" secondAttribute="bottom" id="RCh-Hd-rr3"/>
+                <constraint firstItem="dyw-AO-BUx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VRH-r0-WD4"/>
+                <constraint firstItem="ZEA-aq-I1b" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="YrP-7w-IbM"/>
+                <constraint firstItem="dyw-AO-BUx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="hRK-y6-F9g"/>
+                <constraint firstItem="gab-En-SLZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="60" id="hrm-qg-9Lx"/>
+                <constraint firstItem="USc-oX-riE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="quy-0N-cYE"/>
+                <constraint firstAttribute="trailing" secondItem="Tde-Fh-Wqe" secondAttribute="trailing" id="vXi-cu-MwK"/>
+            </constraints>
+            <connections>
+                <outlet property="btnDownload" destination="USc-oX-riE" id="X1x-5o-Jmq"/>
+                <outlet property="collectionView" destination="Tde-Fh-Wqe" id="Fvc-jJ-6by"/>
+                <outlet property="lblTitle" destination="gab-En-SLZ" id="GIv-Br-uCA"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="BackArrow" width="40" height="40"/>
+        <image name="Gallery_Save" width="40" height="40"/>
+        <image name="Gallery_Share" width="40" height="40"/>
+    </resources>
+</document>

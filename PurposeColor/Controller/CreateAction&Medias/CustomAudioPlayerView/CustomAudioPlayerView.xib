@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1713" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Elv-vR-Cva" customClass="CustomAudioPlayerView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndY-kX-wlC">
+                    <rect key="frame" x="550" y="30" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="qTB-Qc-sDA"/>
+                        <constraint firstAttribute="width" constant="40" id="rQX-h2-Tps"/>
+                    </constraints>
+                    <state key="normal" image="Close_Button"/>
+                    <connections>
+                        <action selector="closePopUp:" destination="Elv-vR-Cva" eventType="touchUpInside" id="ljv-x5-sQY"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xgb-ac-yda">
+                    <rect key="frame" x="150" y="150" width="300" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="IRf-Ff-Yho"/>
+                        <constraint firstAttribute="width" constant="300" id="Wd4-c3-kjl"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="APU-1v-2PB">
+                    <rect key="frame" x="280" y="230" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Hqi-5s-J0m"/>
+                        <constraint firstAttribute="width" constant="40" id="ZWq-pk-E0w"/>
+                    </constraints>
+                    <state key="normal" image="Video_Play_Button"/>
+                    <connections>
+                        <action selector="BtnPlay:" destination="Elv-vR-Cva" eventType="touchUpInside" id="HoT-ED-FCQ"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <constraints>
+                <constraint firstItem="APU-1v-2PB" firstAttribute="centerX" secondItem="Xgb-ac-yda" secondAttribute="centerX" id="2Bj-UB-jVT"/>
+                <constraint firstItem="APU-1v-2PB" firstAttribute="centerY" secondItem="Xgb-ac-yda" secondAttribute="centerY" id="2Uy-7k-GiH"/>
+                <constraint firstItem="Xgb-ac-yda" firstAttribute="centerY" secondItem="Elv-vR-Cva" secondAttribute="centerY" constant="-50" id="Drq-Uh-lCx"/>
+                <constraint firstItem="ndY-kX-wlC" firstAttribute="top" secondItem="Elv-vR-Cva" secondAttribute="top" constant="30" id="mWW-NG-6VA"/>
+                <constraint firstAttribute="trailing" secondItem="ndY-kX-wlC" secondAttribute="trailing" constant="10" id="rsd-Ly-gjA"/>
+                <constraint firstItem="Xgb-ac-yda" firstAttribute="centerX" secondItem="Elv-vR-Cva" secondAttribute="centerX" id="vQM-yA-zdg"/>
+            </constraints>
+            <connections>
+                <outlet property="btnPlay" destination="APU-1v-2PB" id="k5a-nk-S0t"/>
+                <outlet property="imgAnimatedView" destination="Xgb-ac-yda" id="pdA-Ys-XZM"/>
+            </connections>
+            <point key="canvasLocation" x="509" y="211"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Close_Button" width="40" height="40"/>
+        <image name="Video_Play_Button" width="100" height="100"/>
+    </resources>
+</document>
