@@ -1511,12 +1511,8 @@ typedef enum{
     [alert addAction:firstAction];
     [alert addAction:second];
     
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        [nav presentViewController:alert animated:YES completion:nil];
-    }
+    UINavigationController *nav = self.navigationController;
+    [nav presentViewController:alert animated:YES completion:nil];
     
 }
 
@@ -1541,12 +1537,8 @@ typedef enum{
     [alert addAction:firstAction];
     [alert addAction:second];
     
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        [nav presentViewController:alert animated:YES completion:nil];
-    }
+    UINavigationController *nav = self.navigationController;
+    [nav presentViewController:alert animated:YES completion:nil];
     
 }
 
@@ -1702,17 +1694,16 @@ typedef enum{
             UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"OK"
                                                                   style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                       
-                                                                      AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                                                                     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
                                                                       [delegate changeHomePageDynamicallyWithType:eMenu_GEMS];
                                                                   }];
             
             [alert addAction:firstAction];
             AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-            SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-            if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                [nav presentViewController:alert animated:YES completion:nil];
-            }
+            UINavigationController *nav;
+            nav = (UINavigationController*) delegate.window.rootViewController;
+            
+            [nav presentViewController:alert animated:YES completion:nil];
             if ([self.delegate respondsToSelector:@selector(hideProgressView)]) {
                 [self.delegate hideProgressView];
             }
@@ -1732,12 +1723,8 @@ typedef enum{
                                                                }];
          
          [alert addAction:firstAction];
-         AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-         SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-         if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-             UINavigationController *nav = (UINavigationController*)root.frontViewController;
-             [nav presentViewController:alert animated:YES completion:nil];
-         }
+         UINavigationController *nav = self.navigationController;
+         [nav presentViewController:alert animated:YES completion:nil];
          
          if ([self.delegate respondsToSelector:@selector(hideProgressView)]) {
              [self.delegate hideProgressView];

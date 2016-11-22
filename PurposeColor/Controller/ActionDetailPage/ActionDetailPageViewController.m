@@ -478,11 +478,7 @@ typedef enum{
       if ([lblShare.text isEqualToString:@"Shared"]) {
           
           AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-          SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-          UINavigationController *nav;
-          if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-              nav = (UINavigationController*)root.frontViewController;
-          
+          UINavigationController *nav = delegate.navGeneral;
           
           UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"EDIT GEM"
                                                                          message:@"This is a shared GEM.Do you still want to change it?"
@@ -715,7 +711,7 @@ typedef enum{
     
     UIAlertController * alert=  [UIAlertController
                                   alertControllerWithTitle:@"Share"
-                                  message:@"You are going to inspire someone by sharing this GEM to community."
+                                  message:@"You are going to inspire someone by sharing this GEM."
                                   preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* ok = [UIAlertAction
@@ -739,7 +735,7 @@ typedef enum{
                                      
                                      if ([[responseObject objectForKey:@"code"]integerValue] == kSuccessCode){
                                          
-                                         [[[UIAlertView alloc] initWithTitle:@"Share" message:@"Shared to community gems." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+                                         [[[UIAlertView alloc] initWithTitle:@"Share" message:@"Shared to Inspiring gems." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
                                          
                                          imgShared.image = [UIImage imageNamed:@"Shared.png"];
                                          lblShare.text = @"Shared";
@@ -820,7 +816,16 @@ typedef enum{
 
 -(IBAction)goBack:(id)sender{
     
-    [[self navigationController] popViewControllerAnimated:YES];
+    if (self.navigationController.viewControllers.count == 1) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app.navGeneral willMoveToParentViewController:nil];
+        [app.navGeneral.view removeFromSuperview];
+        [app.navGeneral removeFromParentViewController];
+        app.navGeneral = nil;
+        [app showLauchPage];
+    }else{
+        [[self navigationController] popViewControllerAnimated:YES];
+    }
 }
 
 

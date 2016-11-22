@@ -21,7 +21,7 @@
                     <rect key="frame" x="600" y="0.0" width="480" height="600"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4nI-ax-ACd">
-                            <rect key="frame" x="0.0" y="20" width="480" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="40"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EVENTS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P85-tZ-oc5">
                                     <rect key="frame" x="10" y="13" width="52" height="14"/>
@@ -93,7 +93,7 @@
                         <constraint firstAttribute="bottom" secondItem="WZm-2Z-2z7" secondAttribute="bottom" constant="10" id="QuL-Gg-g5Y"/>
                         <constraint firstAttribute="trailing" secondItem="WZm-2Z-2z7" secondAttribute="trailing" constant="20" id="S1r-Di-rL7"/>
                         <constraint firstItem="WZm-2Z-2z7" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" constant="10" id="q0K-eV-KcX"/>
-                        <constraint firstItem="4nI-ax-ACd" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" constant="20" id="rig-ot-ueh"/>
+                        <constraint firstItem="4nI-ax-ACd" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" id="rig-ot-ueh"/>
                     </constraints>
                 </view>
             </subviews>

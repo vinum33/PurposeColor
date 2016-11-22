@@ -419,14 +419,14 @@ typedef enum{
                                     NSInteger statusCode = [[responds objectForKey:@"code"] integerValue];
                                     if (statusCode == StatusSucess)[self gotoLoginPage];
                                     if ( NULL_TO_NIL( [responds objectForKey:@"text"]))
-                                         [self showAlertWithMessage:[responds objectForKey:@"text"] title:@"SignUp"];
+                                         [self showAlertWithMessage:[responds objectForKey:@"text"] title:@"Register"];
                                     [self hideLoadingScreen];
                            
                                 }
          
                                 failure:^(AFHTTPRequestOperation *operation, NSError *error){
                                     
-                                 [self showAlertWithMessage:[error localizedDescription] title:@"SignUp"];
+                                 [self showAlertWithMessage:[error localizedDescription] title:@"Register"];
                                  [self hideLoadingScreen];
                                     
                                 }];
@@ -434,7 +434,7 @@ typedef enum{
     } failure:^(NSString *error) {
         
         // Field validation error block
-        [self showAlertWithMessage:error title:@"SignUp"];
+        [self showAlertWithMessage:error title:@"Register"];
         
     }];
     

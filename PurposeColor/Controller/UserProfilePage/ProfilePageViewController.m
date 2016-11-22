@@ -68,7 +68,6 @@ typedef enum{
     
     [super viewDidLoad];
     [self setUp];
-    [self customSetup];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -81,18 +80,6 @@ typedef enum{
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.automaticallyAdjustsScrollViewInsets=NO;
    
-    
-}
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    revealViewController.delegate = self;
-    if ( revealViewController )
-    {
-        [_btnSlideMenu addTarget:self.revealViewController action:@selector(revealToggle:)forControlEvents:UIControlEventTouchUpInside];
-        [vwOverLay addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-        
-    }
     
 }
 
@@ -795,7 +782,16 @@ typedef enum{
 
 -(IBAction)goBack:(id)sender{
    
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.navigationController.viewControllers.count == 1) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app.navGeneral willMoveToParentViewController:nil];
+        [app.navGeneral.view removeFromSuperview];
+        [app.navGeneral removeFromParentViewController];
+        app.navGeneral = nil;
+        [app showLauchPage];
+    }else{
+        [[self navigationController] popViewControllerAnimated:YES];
+    }
 }
 
 -(IBAction)closeSlider:(id)sender{
@@ -836,55 +832,6 @@ typedef enum{
     
 }
 
-#pragma mark - Slider View Setup and Delegates Methods
-
-- (void)revealController:(SWRevealViewController *)revealController animateToPosition:(FrontViewPosition)position{
-    UINavigationController *nav = (UINavigationController*)revealController.rearViewController;
-    if ([[nav.viewControllers objectAtIndex:0] isKindOfClass:[MenuViewController class]]) {
-        MenuViewController *root = (MenuViewController*)[nav.viewControllers objectAtIndex:0];
-        [root resetTable];
-    }
-    if (position == FrontViewPositionRight) {
-        [self setVisibilityForOverLayIsHide:NO];
-    }else{
-        [self setVisibilityForOverLayIsHide:YES];
-    }
-    
-}
--(IBAction)hideSlider:(id)sender{
-    [self.revealViewController revealToggle:nil];
-}
-
--(void)setVisibilityForOverLayIsHide:(BOOL)isHide{
-    
-    if (isHide) {
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.0;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                            vwOverLay.hidden = true;
-                        }];
-        
-        
-    }else{
-        
-        vwOverLay.hidden = false;
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.7;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                        }];
-        
-    }
-}
 
 #pragma mark - Photo Browser & Deleagtes
 
@@ -933,35 +880,6 @@ typedef enum{
 }
 
 
-#pragma mark state preservation / restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Save what you need here
-    
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Restore what you need here
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)applicationFinishedRestoringState
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Call whatever function you need to visually restore
-    [self customSetup];
-}
 
 
 

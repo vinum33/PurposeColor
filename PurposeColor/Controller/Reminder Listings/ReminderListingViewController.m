@@ -20,7 +20,7 @@
 #import "MenuViewController.h"
 #import "EventCreateViewController.h"
 
-@interface ReminderListingViewController ()<SWRevealViewControllerDelegate>{
+@interface ReminderListingViewController (){
     
     IBOutlet UITableView *tableView;
     IBOutlet UIButton *btnSlideMenu;
@@ -39,7 +39,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
-    [self customSetup];
     [self loadAllMyNotificationsWithPageNo:currentPage isByPagination:NO];
     // Do any additional setup after loading the view.
 }
@@ -62,18 +61,6 @@
     
 }
 
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    revealViewController.delegate = self;
-    if ( revealViewController )
-    {
-        [btnSlideMenu addTarget:self.revealViewController action:@selector(revealToggle:)forControlEvents:UIControlEventTouchUpInside];
-        [vwOverLay addGestureRecognizer: self.revealViewController.panGestureRecognizer];
-        
-    }
-    
-}
 
 
 -(void)loadAllMyNotificationsWithPageNo:(NSInteger)pageNo isByPagination:(BOOL)isPagination{
@@ -197,7 +184,7 @@
             
         }
         
-        cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@",[Utility getDateStringFromSecondsWith:[[productInfo objectForKey:@"reminder_startdate"] doubleValue] withFormat:@"yyyy-MM-dd"],[Utility getDateStringFromSecondsWith:[[productInfo objectForKey:@"reminder_enddate"] doubleValue] withFormat:@"yyyy-MM-dd"]] ;
+        cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@",[self getDateStringFromSecondsWith:[[productInfo objectForKey:@"reminder_startdate"] doubleValue]],[self getDateStringFromSecondsWith:[[productInfo objectForKey:@"reminder_enddate"] doubleValue]]] ;
         
 
     }
@@ -209,55 +196,48 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        EventCreateViewController *eventCreate =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForEventManager];
-         if (indexPath.row < arrNotifications.count) {
-             NSDictionary *productInfo = arrNotifications[[indexPath row]];
-             if (NULL_TO_NIL([productInfo objectForKey:@"goalaction_id"])) {
-                 eventCreate.goalID = [[productInfo objectForKey:@"goalaction_id"] integerValue];
-             }
-             if (NULL_TO_NIL([productInfo objectForKey:@"reminder_title"])) {
-                 eventCreate.strGoalTitle = [productInfo objectForKey:@"reminder_title"];
-             }
-             if (NULL_TO_NIL([productInfo objectForKey:@"reminder_desc"])) {
-                 eventCreate.strGoalDescription = [productInfo objectForKey:@"reminder_desc"];
-             }
-             
-             if (NULL_TO_NIL([productInfo objectForKey:@"reminder_repeat"])) {
-                 eventCreate.strRepeatValue = [productInfo objectForKey:@"reminder_repeat"];
-             }
-             
-             if (NULL_TO_NIL([productInfo objectForKey:@"reminder_alert"])) {
-                 eventCreate.reminderTime = [[productInfo objectForKey:@"reminder_alert"] integerValue];
-             }
-             
-             if (NULL_TO_NIL([productInfo objectForKey:@"reminder_startdate"])) {
-                 eventCreate.startDate =[NSDate dateWithTimeIntervalSince1970:[[productInfo objectForKey:@"reminder_startdate"] doubleValue]];
-             }
-             
-             if (NULL_TO_NIL([productInfo objectForKey:@"reminder_startdate"])) {
-                 eventCreate.startTime =[NSDate dateWithTimeIntervalSince1970:[[productInfo objectForKey:@"reminder_startdate"] doubleValue]];
-             }
-             
-             if (NULL_TO_NIL([productInfo objectForKey:@"reminder_enddate"])) {
-                 eventCreate.endTime =[NSDate dateWithTimeIntervalSince1970:[[productInfo objectForKey:@"reminder_enddate"] doubleValue]];
-             }
-             
-             if (NULL_TO_NIL([productInfo objectForKey:@"reminder_enddate"])) {
-                 eventCreate.endDate =[NSDate dateWithTimeIntervalSince1970:[[productInfo objectForKey:@"reminder_enddate"] doubleValue]];
-             }
-             
-             
-             
-             [nav pushViewController:eventCreate animated:YES];
-         }
+    UINavigationController *nav = self.navigationController;
+    EventCreateViewController *eventCreate =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForEventManager];
+    if (indexPath.row < arrNotifications.count) {
+        NSDictionary *productInfo = arrNotifications[[indexPath row]];
+        if (NULL_TO_NIL([productInfo objectForKey:@"goalaction_id"])) {
+            eventCreate.goalID = [[productInfo objectForKey:@"goalaction_id"] integerValue];
+        }
+        if (NULL_TO_NIL([productInfo objectForKey:@"reminder_title"])) {
+            eventCreate.strGoalTitle = [productInfo objectForKey:@"reminder_title"];
+        }
+        if (NULL_TO_NIL([productInfo objectForKey:@"reminder_desc"])) {
+            eventCreate.strGoalDescription = [productInfo objectForKey:@"reminder_desc"];
+        }
+        
+        if (NULL_TO_NIL([productInfo objectForKey:@"reminder_repeat"])) {
+            eventCreate.strRepeatValue = [productInfo objectForKey:@"reminder_repeat"];
+        }
+        
+        if (NULL_TO_NIL([productInfo objectForKey:@"reminder_alert"])) {
+            eventCreate.reminderTime = [[productInfo objectForKey:@"reminder_alert"] integerValue];
+        }
+        
+        if (NULL_TO_NIL([productInfo objectForKey:@"reminder_startdate"])) {
+            eventCreate.startDate =[NSDate dateWithTimeIntervalSince1970:[[productInfo objectForKey:@"reminder_startdate"] doubleValue]];
+        }
+        
+        if (NULL_TO_NIL([productInfo objectForKey:@"reminder_startdate"])) {
+            eventCreate.startTime =[NSDate dateWithTimeIntervalSince1970:[[productInfo objectForKey:@"reminder_startdate"] doubleValue]];
+        }
+        
+        if (NULL_TO_NIL([productInfo objectForKey:@"reminder_enddate"])) {
+            eventCreate.endTime =[NSDate dateWithTimeIntervalSince1970:[[productInfo objectForKey:@"reminder_enddate"] doubleValue]];
+        }
+        
+        if (NULL_TO_NIL([productInfo objectForKey:@"reminder_enddate"])) {
+            eventCreate.endDate =[NSDate dateWithTimeIntervalSince1970:[[productInfo objectForKey:@"reminder_enddate"] doubleValue]];
+        }
         
         
+        
+        [nav pushViewController:eventCreate animated:YES];
     }
-    
     
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -329,11 +309,27 @@
 }
 
 
-
+-(NSString*)getDateStringFromSecondsWith:(double)timeInSeconds{
+    
+    NSDate * refDate = [NSDate dateWithTimeIntervalSince1970:timeInSeconds];
+    NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
+    [dateformater setDateFormat:@"d MMM,yyyy"];
+    return [dateformater stringFromDate:refDate];;
+    
+}
 
 -(IBAction)goBack:(id)sender{
     
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.navigationController.viewControllers.count == 1) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app.navGeneral willMoveToParentViewController:nil];
+        [app.navGeneral.view removeFromSuperview];
+        [app.navGeneral removeFromParentViewController];
+        app.navGeneral = nil;
+        [app showLauchPage];
+    }else{
+        [[self navigationController] popViewControllerAnimated:YES];
+    }
 }
 -(void)showLoadingScreen{
     
@@ -397,37 +393,6 @@
                         }];
         
     }
-}
-
-
-#pragma mark state preservation / restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Save what you need here
-    
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Restore what you need here
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)applicationFinishedRestoringState
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Call whatever function you need to visually restore
-    [self customSetup];
 }
 
 

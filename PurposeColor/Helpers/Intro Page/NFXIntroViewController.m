@@ -40,32 +40,32 @@
          *  positions
          */
         CGRect svrect_ = CGRectZero;
-        svrect_.size.height = self.view.bounds.size.height - 50;
+        svrect_.size.height = self.view.bounds.size.height - 70;
         svrect_.size.width = self.view.bounds.size.width;
         
         CGPoint svcenter_ = CGPointZero;
         svcenter_.x = self.view.center.x;
-        svcenter_.y = self.view.frame.size.height-50;
+        svcenter_.y = self.view.frame.size.height - 70;
         CGSize svconsize = CGSizeZero;
         svconsize.height = svrect_.size.height;
         svconsize.width = svrect_.size.width * images.count;
         
         CGPoint pgconcenter_ = CGPointZero;
         pgconcenter_.x = self.view.center.x;
-        pgconcenter_.y = self.view.frame.size.height - 20;
+        pgconcenter_.y = self.view.frame.size.height - 50;
         
         CGRect btnrect_ = CGRectZero;
         btnrect_.size.width = 100;
         btnrect_.size.height = 35;
         CGPoint btncenter_ = CGPointZero;
         btncenter_.x = self.view.bounds.size.width - 55;
-        btncenter_.y = self.view.bounds.size.height-25;
+        btncenter_.y = self.view.bounds.size.height - 25;
         UIImage* fill = createImageFromUIColor([UIColor colorWithWhite:0.9 alpha:1]);
-        
         
         /*
          Views
          */
+        
         _backgroundimageview = [[UIImageView alloc] initWithFrame:self.view.bounds];
         [self.view addSubview:_backgroundimageview];
         
@@ -134,7 +134,16 @@
         rect.origin.x = rect.size.width * (page_+1);
         [_scrollview scrollRectToVisible:rect animated:true];
     }else{
-        [self.navigationController popViewControllerAnimated:YES];
+        if (self.navigationController.viewControllers.count == 1) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app.navGeneral willMoveToParentViewController:nil];
+            [app.navGeneral.view removeFromSuperview];
+            [app.navGeneral removeFromParentViewController];
+            app.navGeneral = nil;
+            [app showLauchPage];
+        }else{
+            [[self navigationController] popViewControllerAnimated:YES];
+        }
     }
 }
 
@@ -152,7 +161,13 @@
     [super viewDidLoad];
 }
 
+-(void)dealloc{
+    
+    
+}
+
 - (void)didReceiveMemoryWarning {
+    
     [super didReceiveMemoryWarning];
 }
 

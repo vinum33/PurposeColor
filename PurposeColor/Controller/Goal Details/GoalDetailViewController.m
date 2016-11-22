@@ -179,6 +179,7 @@ typedef enum{
     if (!isDataAvailable) {
         cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Details Available."];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
         return cell;
     }
     
@@ -194,6 +195,7 @@ typedef enum{
         if (indexPath.row < arrDataSource.count)
             [self showMediaDetailsWithCell:cell andDetails:arrDataSource[indexPath.row]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
         return cell;
         
     }else{
@@ -203,12 +205,14 @@ typedef enum{
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType = UITableViewCellAccessoryNone;
             return cell;
         }
         static NSString *CellIdentifier = @"ActionCell";
         ActionCustomCell *cell = (ActionCustomCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (indexPath.row < arrActions.count) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.btnStatus.tag = indexPath.row;
             [cell.btnStatus addTarget:self action:@selector(updateStatus:) forControlEvents:UIControlEventTouchUpInside];
             NSDictionary *goalsDetails = arrActions[indexPath.row];
@@ -398,12 +402,10 @@ typedef enum{
         cell.lblDescription.attributedText = attributedText;
         strDescription = [actionDetails objectForKey:@"gem_details"];
     }
-    
-    
     cell.delegate = self;
     cell.btnEdit.hidden = false;
     if (_shouldHideEditBtn) cell.btnEdit.hidden = true;
-    
+    cell.accessoryType = UITableViewCellAccessoryNone;
     return cell;
     
 }
@@ -486,7 +488,6 @@ typedef enum{
 
 -(void)resetCellVariables:(GemDetailsCustomTableViewCell*)cell{
     
-  
     [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
     [cell.activityIndicator stopAnimating];
     [[cell btnVideoPlay]setHidden:YES];
@@ -544,7 +545,6 @@ typedef enum{
                 }
                 
             }
-            
         }
     }
     
@@ -563,13 +563,7 @@ typedef enum{
     
     if ([lblShare.text isEqualToString:@"Shared"]) {
         
-        AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-        UINavigationController *nav;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-            nav = (UINavigationController*)root.frontViewController;
-        
-        
+        UINavigationController *nav =self.navigationController;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"EDIT GEM"
                                                                        message:@"This is a shared GEM.Do you still want to change it"
                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -814,7 +808,6 @@ typedef enum{
     vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
     [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
     [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
-    
     vwPopUP.transform = CGAffineTransformMakeScale(0.01, 0.01);
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         // animate it to the identity transform (100% scale)
@@ -854,7 +847,6 @@ typedef enum{
     vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
     [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
     [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
-    
     vwPopUP.transform = CGAffineTransformMakeScale(0.01, 0.01);
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         // animate it to the identity transform (100% scale)
@@ -886,7 +878,7 @@ typedef enum{
     
     UIAlertController * alert=  [UIAlertController
                                  alertControllerWithTitle:@"Share"
-                                 message:@"You are going to inspire someone by sharing this GEM to community."
+                                 message:@"You are going to inspire someone by sharing this GEM."
                                  preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* ok = [UIAlertAction
@@ -910,7 +902,7 @@ typedef enum{
                                      
                                      if ([[responseObject objectForKey:@"code"]integerValue] == kSuccessCode){
                                          
-                                         [[[UIAlertView alloc] initWithTitle:@"Share" message:@"Shared to community gems." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+                                         [[[UIAlertView alloc] initWithTitle:@"Share" message:@"Shared to Inspiring gems." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
                                            imgShared.image = [UIImage imageNamed:@"Shared.png"];
                                            lblShare.text = @"Shared";
                                          lblShare.textColor = [UIColor getThemeColor];
@@ -935,9 +927,7 @@ typedef enum{
     [alert addAction:ok];
     [alert addAction:cancel];
     [self presentViewController:alert animated:YES completion:nil];
-    
-    
-   }
+}
 
 #pragma mark - Add to Favourite Showing
 
@@ -986,8 +976,6 @@ typedef enum{
     
 }
 
-
-
 -(IBAction)goBack:(id)sender{
     
     if (isUpdated) {
@@ -996,7 +984,19 @@ typedef enum{
         }
     }
     
-    [[self navigationController] popViewControllerAnimated:YES];
+    if (self.navigationController.viewControllers.count == 1) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app.navGeneral willMoveToParentViewController:nil];
+        [app.navGeneral.view removeFromSuperview];
+        [app.navGeneral removeFromParentViewController];
+        app.navGeneral = nil;
+        [app showLauchPage];
+    }else{
+        [[self navigationController] popViewControllerAnimated:YES];
+    }
+    
+   
+
 }
 
 

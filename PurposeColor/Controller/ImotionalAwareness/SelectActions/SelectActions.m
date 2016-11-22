@@ -224,18 +224,20 @@
 /*! Action Creation & Delegates !*/
 -(IBAction)createNewAction:(UIButton*)btn{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
-        detailPage.strTitle = @"ADD ACTION";
-        detailPage.actionType = eActionTypeActions;
-        detailPage.delegate = self;
-        detailPage.shouldShowReminder = YES;
-        detailPage.strGoalID = [NSString stringWithFormat:@"%ld",(long)_goalID];
-        [nav pushViewController:detailPage animated:YES];
-    }
-    
+    CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+    detailPage.strTitle = @"ADD ACTION";
+    detailPage.actionType = eActionTypeActions;
+    detailPage.delegate = self;
+    detailPage.shouldShowReminder = YES;
+    detailPage.strGoalID = [NSString stringWithFormat:@"%ld",(long)_goalID];
 }
 
 -(void)newActionCreatedWithActionTitle:(NSString*)actionTitle actionID:(NSInteger)actionID{
@@ -327,28 +329,23 @@
 
 -(void)showLoadingScreen{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:nav.view animated:YES];
-        hud.dimBackground = YES;
-        hud.detailsLabelText = @"loading...";
-        hud.removeFromSuperViewOnHide = YES;
-        
-    }
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:delegate.window.rootViewController.view animated:YES];
+    hud.dimBackground = YES;
+    hud.detailsLabelText = @"loading...";
+    hud.removeFromSuperViewOnHide = YES;
     
     
 }
 -(void)hideLoadingScreen{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        [MBProgressHUD hideHUDForView:nav.view animated:YES];
-    }
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [MBProgressHUD hideHUDForView:delegate.window.rootViewController.view animated:YES];
+    
     
     
 }
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

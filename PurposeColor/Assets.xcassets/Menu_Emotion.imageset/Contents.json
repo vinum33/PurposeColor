@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "emo-menu30.png",
+      "filename" : "1emotionalAwareness30.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "emo-menu60.png",
+      "filename" : "1emotionalAwareness60.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "emo-menu90.png",
+      "filename" : "1emotionalAwareness90.png",
       "scale" : "3x"
     }
   ],

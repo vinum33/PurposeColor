@@ -73,7 +73,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
-    [self customSetup];
     [self checkUserViewStatus];
     [self loadAllEmotionsByPagination:NO withPageNumber:currentPage_Emotions];
     // Do any additional setup after loading the view.
@@ -82,19 +81,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
-}
-
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    revealViewController.delegate = self;
-    if ( revealViewController )
-    {
-        [btnSlideMenu addTarget:self.revealViewController action:@selector(revealToggle:)forControlEvents:UIControlEventTouchUpInside];
-        [vwOverLay addGestureRecognizer: self.revealViewController.panGestureRecognizer];
-        
-    }
-    
 }
 
 
@@ -109,8 +95,8 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     arrDataSource = [NSMutableArray new];
     arrEmotions = [NSMutableArray new];
     arrGoals = [NSMutableArray new];
-    arrGoalColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.94 green:0.32 blue:0.19 alpha:1.0],[UIColor colorWithRed:0.09 green:0.63 blue:0.52 alpha:1.0],[UIColor colorWithRed:0.39 green:0.07 blue:0.29 alpha:1.0], nil];
-    arrEmotionColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.33 green:0.68 blue:0.31 alpha:1.0],[UIColor colorWithRed:0.98 green:0.75 blue:0.20 alpha:1.0],[UIColor colorWithRed:0.31 green:0.74 blue:0.83 alpha:1.0], nil];
+    arrGoalColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.37 green:0.51 blue:0.82 alpha:1.0],[UIColor colorWithRed:0.65 green:0.45 blue:0.83 alpha:1.0],[UIColor colorWithRed:0.58 green:0.33 blue:0.34 alpha:1.0], nil];
+    arrEmotionColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:1.00 green:0.47 blue:0.33 alpha:1.0],[UIColor colorWithRed:0.96 green:0.56 blue:0.00 alpha:1.0],[UIColor colorWithRed:0.15 green:0.66 blue:0.57 alpha:1.0], nil];
     
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.tintColor = [UIColor grayColor];
@@ -119,10 +105,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     tableView.hidden = false;
     isDataAvailable = false;
     eSelectionType = eByEmotion;
-    
-    
-    
-    
+   
 }
 
 
@@ -430,7 +413,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     UITableViewCell *cell;
     aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (!isDataAvailable) {
-        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No GEMS Available."];
+        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Details Available."];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
@@ -1393,87 +1376,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 
 
 
-
-#pragma mark - Slider View Setup and Delegates Methods
-
-- (void)revealController:(SWRevealViewController *)revealController animateToPosition:(FrontViewPosition)position{
-    UINavigationController *nav = (UINavigationController*)revealController.rearViewController;
-    if ([[nav.viewControllers objectAtIndex:0] isKindOfClass:[MenuViewController class]]) {
-        MenuViewController *root = (MenuViewController*)[nav.viewControllers objectAtIndex:0];
-        [root resetTable];
-    }
-    if (position == FrontViewPositionRight) {
-        [self setVisibilityForOverLayIsHide:NO];
-    }else{
-        [self setVisibilityForOverLayIsHide:YES];
-    }
-    
-}
--(IBAction)hideSlider:(id)sender{
-    [self.revealViewController revealToggle:nil];
-}
-
--(void)setVisibilityForOverLayIsHide:(BOOL)isHide{
-    
-    if (isHide) {
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.0;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                            vwOverLay.hidden = true;
-                        }];
-        
-        
-    }else{
-        
-        vwOverLay.hidden = false;
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.7;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                        }];
-        
-    }
-}
-
-
-#pragma mark state preservation / restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Save what you need here
-    
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Restore what you need here
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)applicationFinishedRestoringState
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Call whatever function you need to visually restore
-    [self customSetup];
-}
 
 
 - (void)didReceiveMemoryWarning {

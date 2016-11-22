@@ -63,7 +63,6 @@ typedef enum{
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
-    [self customSetup];
     [self loadAllGoalsAndDreamsByPagination:NO withPageNumber:currentPage_pending];
     // Do any additional setup after loading the view.
 }
@@ -78,18 +77,7 @@ typedef enum{
     return UIStatusBarStyleLightContent;
 }
 
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    revealViewController.delegate = self;
-    if ( revealViewController )
-    {
-        [btnSlideMenu addTarget:self.revealViewController action:@selector(revealToggle:)forControlEvents:UIControlEventTouchUpInside];
-        [vwOverLay addGestureRecognizer: self.revealViewController.panGestureRecognizer];
-        
-    }
-    
-}
+
 -(void)setUp{
 
     arrPending         = [NSMutableArray new];
@@ -479,7 +467,14 @@ typedef enum{
         NSDictionary *gemDetails = arrDataSource[index];
         GoalDetailViewController *goalDetailsVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForGoalDetails];
         goalDetailsVC.delegate = self;
-        [[self navigationController]pushViewController:goalDetailsVC animated:YES];
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:goalDetailsVC];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
         [goalDetailsVC getGoaDetailsByGoalID:[gemDetails objectForKey:@"goal_id"]];
         
     }
@@ -531,91 +526,20 @@ typedef enum{
     detailPage.strTitle = @"ADD GOAL";
     detailPage.delegate = self;
     detailPage.actionType = eActionTypeGoalsAndDreams;
-    [[self navigationController]pushViewController:detailPage animated:YES];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+
+   
     
    
 }
 
-#pragma mark - Slider View Setup and Delegates Methods
-
-- (void)revealController:(SWRevealViewController *)revealController animateToPosition:(FrontViewPosition)position{
-    UINavigationController *nav = (UINavigationController*)revealController.rearViewController;
-    if ([[nav.viewControllers objectAtIndex:0] isKindOfClass:[MenuViewController class]]) {
-        MenuViewController *root = (MenuViewController*)[nav.viewControllers objectAtIndex:0];
-        [root resetTable];
-    }
-    if (position == FrontViewPositionRight) {
-        [self setVisibilityForOverLayIsHide:NO];
-    }else{
-        [self setVisibilityForOverLayIsHide:YES];
-    }
-    
-}
--(IBAction)hideSlider:(id)sender{
-    [self.revealViewController revealToggle:nil];
-}
-
--(void)setVisibilityForOverLayIsHide:(BOOL)isHide{
-    
-    if (isHide) {
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.0;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                            vwOverLay.hidden = true;
-                        }];
-        
-        
-    }else{
-        
-        vwOverLay.hidden = false;
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.7;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                        }];
-        
-    }
-}
-
-
-#pragma mark state preservation / restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Save what you need here
-    
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Restore what you need here
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)applicationFinishedRestoringState
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Call whatever function you need to visually restore
-    [self customSetup];
-}
 
 -(IBAction)goBack:(id)sender{
     

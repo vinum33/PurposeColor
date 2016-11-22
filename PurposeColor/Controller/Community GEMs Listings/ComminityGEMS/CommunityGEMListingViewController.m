@@ -67,7 +67,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
-    [self customSetup];
     [self checkUserViewStatus];
     [self getAllProductsByPagination:NO withPageNumber:currentPage];
     // Do any additional setup after loading the view.
@@ -78,18 +77,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     return UIStatusBarStyleLightContent;
 }
 
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    revealViewController.delegate = self;
-    if ( revealViewController )
-    {
-        [btnSlideMenu addTarget:self.revealViewController action:@selector(revealToggle:)forControlEvents:UIControlEventTouchUpInside];
-        [vwOverLay addGestureRecognizer: self.revealViewController.panGestureRecognizer];
-        
-    }
-    
-}
 
 
 -(void)setUp{
@@ -884,10 +871,24 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         if ([gemDetails objectForKey:@"gem_type"]) {
             detailPage.strTitle =[[NSString stringWithFormat:@"SAVE AS %@",[gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
         }
-        [[self navigationController]pushViewController:detailPage animated:YES];
         [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:gemID GEMType:gemType];
         
-        
+        AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        if (!deleagte.navGeneral) {
+            
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+            app.navGeneral.navigationBarHidden = true;
+            [UIView transitionWithView:app.window
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{  app.window.rootViewController = app.navGeneral; }
+                            completion:nil];
+            deleagte.navGeneral = app.navGeneral;
+            
+        }else{
+            [deleagte.navGeneral pushViewController:detailPage animated:YES];
+        }
     }
 }
 
@@ -899,24 +900,59 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     if (index < arrGems.count) {
         NSDictionary *gemDetails = arrGems[index];
         if ([[gemDetails objectForKey:@"likecount"]integerValue ] > 0) {
+            AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
             LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
             [userListings loadUserListingsForType:@"like" gemID:[gemDetails objectForKey:@"gem_id"]];
-            [[self navigationController]pushViewController:userListings animated:YES];
+            if (!deleagte.navGeneral) {
+                
+                AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+                deleagte.navGeneral = app.navGeneral;
+                
+            }else{
+                [deleagte.navGeneral pushViewController:userListings animated:YES];
+            }
+
         }
+        
     }
     
 }
 
+
 -(void)showAllCommentedUsers:(NSInteger)index{
+    
     
     if (index < arrGems.count) {
         NSDictionary *gemDetails = arrGems[index];
         if ([[gemDetails objectForKey:@"comment_count"]integerValue ] > 0) {
+            
+            AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
             LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
             [userListings loadUserListingsForType:@"comment" gemID:[gemDetails objectForKey:@"gem_id"]];
-            [[self navigationController]pushViewController:userListings animated:YES];
+            if (!deleagte.navGeneral) {
+                
+                AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+                
+            }else{
+                [deleagte.navGeneral pushViewController:userListings animated:YES];
+            }
         }
     }
+ 
 }
 
 
@@ -935,7 +971,15 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         gemDetailVC.delegate = self;
         gemDetailVC.clickedIndex = index;
         gemDetailVC.canSave = YES;
-        [[self navigationController]pushViewController:gemDetailVC animated:YES];
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemDetailVC];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+        
 
     }
 
@@ -1102,7 +1146,22 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         NSDictionary *details = arrGems[tag];
         if (NULL_TO_NIL([details objectForKey:@"user_id"])) {
         ProfilePageViewController *profilePage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForProfilePage];
-            [[self navigationController]pushViewController:profilePage animated:YES];
+           
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            if (!app.navGeneral) {
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:profilePage];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+            }else{
+                [app.navGeneral pushViewController:profilePage animated:YES];
+            }
+           
+            
+            
             profilePage.canEdit = false;
             if ([[details objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) {
                 profilePage.canEdit = true;
@@ -1115,8 +1174,15 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 -(IBAction)showChatUser:(id)sender{
     
-     ChatUserListingViewController *chatUser =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatUserListings];
-    [[self navigationController]pushViewController:chatUser animated:YES];
+    ChatUserListingViewController *chatUser =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatUserListings];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:chatUser];
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+    app.navGeneral.navigationBarHidden = true;
     
 }
 
@@ -1167,7 +1233,14 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 -(IBAction)showMyGemsApplied:(id)sender{
     
     MyGEMListingViewController *gemListingVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForMyGEMS];
-    [[self navigationController]pushViewController:gemListingVC animated:YES];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemListingVC];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
 
 }
 
@@ -1182,86 +1255,12 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Slider View Setup and Delegates Methods
-
-- (void)revealController:(SWRevealViewController *)revealController animateToPosition:(FrontViewPosition)position{
-    UINavigationController *nav = (UINavigationController*)revealController.rearViewController;
-    if ([[nav.viewControllers objectAtIndex:0] isKindOfClass:[MenuViewController class]]) {
-        MenuViewController *root = (MenuViewController*)[nav.viewControllers objectAtIndex:0];
-        [root resetTable];
-    }
-    if (position == FrontViewPositionRight) {
-        [self setVisibilityForOverLayIsHide:NO];
-    }else{
-        [self setVisibilityForOverLayIsHide:YES];
-    }
-    
-}
--(IBAction)hideSlider:(id)sender{
-    [self.revealViewController revealToggle:nil];
-}
-
--(void)setVisibilityForOverLayIsHide:(BOOL)isHide{
-    
-    if (isHide) {
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.0;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                            vwOverLay.hidden = true;
-                        }];
-        
-        
-    }else{
-        
-        vwOverLay.hidden = false;
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.7;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                        }];
-        
-    }
-}
 
 
-#pragma mark state preservation / restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Save what you need here
-    
-    [super encodeRestorableStateWithCoder:coder];
-}
 
 
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Restore what you need here
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
 
 
-- (void)applicationFinishedRestoringState
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Call whatever function you need to visually restore
-    [self customSetup];
-}
 
 /*
 #pragma mark - Navigation

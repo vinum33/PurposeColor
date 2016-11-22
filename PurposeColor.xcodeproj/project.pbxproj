@@ -100,6 +100,7 @@
 		E5E333FA1D65B7D200C7CFA6 /* SelectActions.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E333F81D65B7D200C7CFA6 /* SelectActions.xib */; };
 		E5E8A3161DD31957006DF12E /* ReminderListingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3131DD31957006DF12E /* ReminderListingCell.m */; };
 		E5E8A3171DD31957006DF12E /* ReminderListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3151DD31957006DF12E /* ReminderListingViewController.m */; };
+		E5E9221A1DDB090C00BE8A1D /* LaunchPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E922191DDB090C00BE8A1D /* LaunchPageViewController.m */; };
 		E5EA21031DCC4C80005B4AEB /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5EA21021DCC4C80005B4AEB /* EventKitUI.framework */; };
 		E5EB735B1DB72B4000169B0E /* QuickGoalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EB735A1DB72B4000169B0E /* QuickGoalViewController.m */; };
 		E5EC6DEA1DB8D169007A642E /* ActionMediaForGoalComposeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EC6DE91DB8D169007A642E /* ActionMediaForGoalComposeCell.m */; };
@@ -127,7 +128,6 @@
 		E5ED4EAE1D90FDF90051B177 /* shareMedias.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ED4EA91D90FDF90051B177 /* shareMedias.xib */; };
 		E5ED4EAF1D90FDF90051B177 /* shareMediasCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5ED4EAB1D90FDF90051B177 /* shareMediasCell.m */; };
 		E5ED4EB01D90FDF90051B177 /* shareMediasCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ED4EAC1D90FDF90051B177 /* shareMediasCell.xib */; };
-		E5ED4EB31D9102EE0051B177 /* notify.wav in Resources */ = {isa = PBXBuildFile; fileRef = E5ED4EB21D9102EE0051B177 /* notify.wav */; };
 		E5ED5BF71D9A2F1A0084B965 /* SDAVAssetExportSession.m in Sources */ = {isa = PBXBuildFile; fileRef = E5ED5BF61D9A2F1A0084B965 /* SDAVAssetExportSession.m */; };
 		E5ED6C871D643C04009B9B37 /* SelectYourEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = E5ED6C851D643C04009B9B37 /* SelectYourEmotion.m */; };
 		E5ED6C881D643C04009B9B37 /* SelectYourEmotion.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ED6C861D643C04009B9B37 /* SelectYourEmotion.xib */; };
@@ -144,11 +144,11 @@
 		E5EFA63D1DCAF63A0054559D /* GEMSWithHeaderListingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EFA63C1DCAF63A0054559D /* GEMSWithHeaderListingsViewController.m */; };
 		E5EFB3811D06C679002BB501 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5EFB3801D06C679002BB501 /* Foundation.framework */; };
 		E5EFC2F21D74394500844ED3 /* ProfilePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EFC2F11D74394500844ED3 /* ProfilePageViewController.m */; };
-		E5F09FE31DD1D30100993539 /* holy_shit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E5F09FE21DD1D30100993539 /* holy_shit.mp3 */; };
 		E5F293591CE072F8002B375A /* SignSpotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F293581CE072F8002B375A /* SignSpotTests.m */; };
 		E5F293641CE072F9002B375A /* SignSpotUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F293631CE072F9002B375A /* SignSpotUITests.m */; };
 		E5F3B5721DB0D16100194CDA /* WebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F3B5711DB0D16100194CDA /* WebBrowserViewController.m */; };
 		E5F3B5761DB0E55100194CDA /* ChangePasswordPopUp.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F3B5751DB0E55100194CDA /* ChangePasswordPopUp.m */; };
+		E5F3F1DD1DDDAB5D006C5911 /* Action_Alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E5F3F1DC1DDDAB5D006C5911 /* Action_Alarm.mp3 */; };
 		E5F51DF71DA6311A000E8487 /* GemsCustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F51DF61DA6311A000E8487 /* GemsCustomTableViewCell.m */; };
 		E5F51DFB1DA63783000E8487 /* CustomCellWithTable.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F51DFA1DA63783000E8487 /* CustomCellWithTable.m */; };
 		E5F51DFF1DA65251000E8487 /* InnerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F51DFE1DA65251000E8487 /* InnerTableViewCell.m */; };
@@ -395,6 +395,8 @@
 		E5E8A3131DD31957006DF12E /* ReminderListingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderListingCell.m; sourceTree = "<group>"; };
 		E5E8A3141DD31957006DF12E /* ReminderListingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderListingViewController.h; sourceTree = "<group>"; };
 		E5E8A3151DD31957006DF12E /* ReminderListingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderListingViewController.m; sourceTree = "<group>"; };
+		E5E922181DDB090C00BE8A1D /* LaunchPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchPageViewController.h; sourceTree = "<group>"; };
+		E5E922191DDB090C00BE8A1D /* LaunchPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchPageViewController.m; sourceTree = "<group>"; };
 		E5EA21021DCC4C80005B4AEB /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		E5EB73591DB72B4000169B0E /* QuickGoalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickGoalViewController.h; sourceTree = "<group>"; };
 		E5EB735A1DB72B4000169B0E /* QuickGoalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickGoalViewController.m; sourceTree = "<group>"; };
@@ -434,7 +436,6 @@
 		E5ED4EAA1D90FDF90051B177 /* shareMediasCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shareMediasCell.h; sourceTree = "<group>"; };
 		E5ED4EAB1D90FDF90051B177 /* shareMediasCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = shareMediasCell.m; sourceTree = "<group>"; };
 		E5ED4EAC1D90FDF90051B177 /* shareMediasCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = shareMediasCell.xib; sourceTree = "<group>"; };
-		E5ED4EB21D9102EE0051B177 /* notify.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = notify.wav; sourceTree = "<group>"; };
 		E5ED5BF51D9A2F1A0084B965 /* SDAVAssetExportSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAVAssetExportSession.h; sourceTree = "<group>"; };
 		E5ED5BF61D9A2F1A0084B965 /* SDAVAssetExportSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAVAssetExportSession.m; sourceTree = "<group>"; };
 		E5ED6C841D643C04009B9B37 /* SelectYourEmotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectYourEmotion.h; sourceTree = "<group>"; };
@@ -463,7 +464,6 @@
 		E5EFB3801D06C679002BB501 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E5EFC2F01D74394500844ED3 /* ProfilePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfilePageViewController.h; sourceTree = "<group>"; };
 		E5EFC2F11D74394500844ED3 /* ProfilePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfilePageViewController.m; sourceTree = "<group>"; };
-		E5F09FE21DD1D30100993539 /* holy_shit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = holy_shit.mp3; sourceTree = "<group>"; };
 		E5F293381CE072F7002B375A /* PurposeColor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PurposeColor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5F293541CE072F8002B375A /* PurposeColor.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PurposeColor.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5F293581CE072F8002B375A /* SignSpotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignSpotTests.m; sourceTree = "<group>"; };
@@ -475,6 +475,7 @@
 		E5F3B5711DB0D16100194CDA /* WebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebBrowserViewController.m; sourceTree = "<group>"; };
 		E5F3B5741DB0E55100194CDA /* ChangePasswordPopUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordPopUp.h; sourceTree = "<group>"; };
 		E5F3B5751DB0E55100194CDA /* ChangePasswordPopUp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordPopUp.m; sourceTree = "<group>"; };
+		E5F3F1DC1DDDAB5D006C5911 /* Action_Alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Action_Alarm.mp3; sourceTree = "<group>"; };
 		E5F51DF51DA6311A000E8487 /* GemsCustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GemsCustomTableViewCell.h; sourceTree = "<group>"; };
 		E5F51DF61DA6311A000E8487 /* GemsCustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GemsCustomTableViewCell.m; sourceTree = "<group>"; };
 		E5F51DF91DA63783000E8487 /* CustomCellWithTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellWithTable.h; sourceTree = "<group>"; };
@@ -710,15 +711,16 @@
 		E506802C1D30F1490041B077 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E5E922171DDB08F200BE8A1D /* Launch Page */,
 				E5E8A3101DD31957006DF12E /* Reminder Listings */,
 				E5EFA63A1DCAF63A0054559D /* GEMS With Header */,
 				E5ED1FCC1DC1BC33003C38D3 /* Settings */,
 				E5F3B56F1DB0D16100194CDA /* WebBrowserViewController */,
 				E5F555D11D8BC1A600B739AC /* Like&CommentedUserListings */,
+				E5B0DDEB1D6C73330068AEB9 /* My Favourites */,
 				E5EFC2EF1D74394500844ED3 /* UserProfilePage */,
 				E5EC86641D7023A700537A90 /* Goal Details */,
 				E5F75E441D6EE950009EF545 /* My Memmories */,
-				E5B0DDEB1D6C73330068AEB9 /* My Favourites */,
 				E578EA0A1D5DA2CD00CFF086 /* ImotionalAwareness */,
 				E5F70EEE1D50AE4200BD1A4A /* ChatView */,
 				E5F666E61D4B4168006F0C70 /* NotificationListingView */,
@@ -1312,6 +1314,15 @@
 			path = CustomCell;
 			sourceTree = "<group>";
 		};
+		E5E922171DDB08F200BE8A1D /* Launch Page */ = {
+			isa = PBXGroup;
+			children = (
+				E5E922181DDB090C00BE8A1D /* LaunchPageViewController.h */,
+				E5E922191DDB090C00BE8A1D /* LaunchPageViewController.m */,
+			);
+			path = "Launch Page";
+			sourceTree = "<group>";
+		};
 		E5EA48A21DC0B84400E6B754 /* Intro Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -1434,8 +1445,7 @@
 		E5ED4EB11D9102EE0051B177 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				E5ED4EB21D9102EE0051B177 /* notify.wav */,
-				E5F09FE21DD1D30100993539 /* holy_shit.mp3 */,
+				E5F3F1DC1DDDAB5D006C5911 /* Action_Alarm.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -2146,9 +2156,9 @@
 				E5A947421D33B0E6008BBC7F /* MessageEntrySendButtonPressed.png in Resources */,
 				E5ED40121D82BCF000A3F455 /* animation4.png in Resources */,
 				E50680DA1D30F1490041B077 /* Tahoma_Bold.ttf in Resources */,
-				E5ED4EB31D9102EE0051B177 /* notify.wav in Resources */,
 				E50680E11D30F1490041B077 /* Login&RegisterStoryBoard.storyboard in Resources */,
 				E50680DD1D30F1490041B077 /* TimesNewRomanMTStd.otf in Resources */,
+				E5F3F1DD1DDDAB5D006C5911 /* Action_Alarm.mp3 in Resources */,
 				E50680CC1D30F1490041B077 /* AARDC.ttf in Resources */,
 				E5ED40101D82BCF000A3F455 /* animation2.png in Resources */,
 				E5EEBADD1D3208C200D60FAD /* AudioImage.png in Resources */,
@@ -2162,7 +2172,6 @@
 				E5ED4EB01D90FDF90051B177 /* shareMediasCell.xib in Resources */,
 				E5ED40161D82BCF000A3F455 /* animation8.png in Resources */,
 				E56AF3AF1DB5E48C00029DA1 /* GoalsCustomCell.xib in Resources */,
-				E5F09FE31DD1D30100993539 /* holy_shit.mp3 in Resources */,
 				E57669141D62F5F700A1451F /* SelectYourFeel.xib in Resources */,
 				E5ED400D1D82BCF000A3F455 /* animation1.png in Resources */,
 				E5F612F81D4887D4002B7CB5 /* discard@2x.png in Resources */,
@@ -2352,6 +2361,7 @@
 				E50680B71D30F1490041B077 /* CountryListView.m in Sources */,
 				E5EDF1011DB21421005D0660 /* AMPopTip.m in Sources */,
 				E5F612D71D4887A2002B7CB5 /* ColorUtil.m in Sources */,
+				E5E9221A1DDB090C00BE8A1D /* LaunchPageViewController.m in Sources */,
 				E5F555D41D8BC1A600B739AC /* LikedAndCommentedUserListings.m in Sources */,
 				E5F9FE571D49C29400F22169 /* GEMSListingHeaderView.m in Sources */,
 				E5FE41341D51ECA600BEFBF0 /* JCNotificationBannerPresenterIOSStyle.m in Sources */,

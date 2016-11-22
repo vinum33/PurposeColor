@@ -27,6 +27,8 @@
     [UIView animateWithDuration:.6
                      animations:^{
                          [self layoutIfNeeded]; // Called on parent view
+                     }completion:^(BOOL finished) {
+                         
                      }];
 }
 

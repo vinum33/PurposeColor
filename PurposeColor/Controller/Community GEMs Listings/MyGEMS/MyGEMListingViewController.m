@@ -389,12 +389,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 -(void)deleteAGemWithIndex:(NSInteger)index{
     
-    UINavigationController *nav;
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        nav = (UINavigationController*)root.frontViewController;
-    }
+    UINavigationController *nav = self.navigationController;
     
     UIAlertController * alert=   [UIAlertController
                                   alertControllerWithTitle:@"Delete"
@@ -654,7 +649,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     
     UIAlertController * alert=  [UIAlertController
                                  alertControllerWithTitle:@"Share"
-                                 message:@"You are going to inspire someone by sharing this GEM to community."
+                                 message:@"You are going to inspire someone by sharing this GEM."
                                  preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* ok = [UIAlertAction
@@ -680,7 +675,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
                                          
                                          if ([[responseObject objectForKey:@"code"]integerValue] == kSuccessCode){
                                              
-                                             [[[UIAlertView alloc] initWithTitle:@"Share" message:@"Shared to community gems." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+                                             [[[UIAlertView alloc] initWithTitle:@"Share" message:@"Shared to Inspiring gems." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
                                          }
                                          
                                      } failure:^(AFHTTPRequestOperation *task, NSError *error) {
@@ -768,7 +763,22 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         if ([gemDetails objectForKey:@"gem_type"]) {
             detailPage.strTitle =[[NSString stringWithFormat:@"SAVE AS %@",[gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
         }
-        [[self navigationController]pushViewController:detailPage animated:YES];
+        AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        if (!deleagte.navGeneral) {
+            
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+            app.navGeneral.navigationBarHidden = true;
+            [UIView transitionWithView:app.window
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{  app.window.rootViewController = app.navGeneral; }
+                            completion:nil];
+            deleagte.navGeneral = app.navGeneral;
+            
+        }else{
+            [deleagte.navGeneral pushViewController:detailPage animated:YES];
+        }
         [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:gemID GEMType:gemType];
         
         
@@ -883,33 +893,67 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 #pragma mark - Custom Cell Delegate For Get Liked and Commented Users
 
+#pragma mark - Custom Cell Delegate For Get Liked and Commented Users
+
 -(void)showAllLikedUsers:(NSInteger)index{
     
     if (index < arrGems.count) {
         NSDictionary *gemDetails = arrGems[index];
         if ([[gemDetails objectForKey:@"likecount"]integerValue ] > 0) {
+            AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
             LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
             [userListings loadUserListingsForType:@"like" gemID:[gemDetails objectForKey:@"gem_id"]];
-            [[self navigationController]pushViewController:userListings animated:YES];
+            if (!deleagte.navGeneral) {
+                
+                AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+                deleagte.navGeneral = app.navGeneral;
+                
+            }else{
+                [deleagte.navGeneral pushViewController:userListings animated:YES];
+            }
+            
         }
+        
     }
     
 }
 
+
 -(void)showAllCommentedUsers:(NSInteger)index{
+    
     
     if (index < arrGems.count) {
         NSDictionary *gemDetails = arrGems[index];
         if ([[gemDetails objectForKey:@"comment_count"]integerValue ] > 0) {
+            
+            AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
             LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
             [userListings loadUserListingsForType:@"comment" gemID:[gemDetails objectForKey:@"gem_id"]];
-            [[self navigationController]pushViewController:userListings animated:YES];
+            if (!deleagte.navGeneral) {
+                
+                AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+                
+            }else{
+                [deleagte.navGeneral pushViewController:userListings animated:YES];
+            }
         }
     }
+    
 }
-
-
-
 
 #pragma mark - Comment Showing and its Delegate
 
@@ -1036,7 +1080,12 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 -(IBAction)goBack:(id)sender{
     
-    [[self navigationController]popViewControllerAnimated:YES];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [app.navGeneral willMoveToParentViewController:nil];
+    [app.navGeneral.view removeFromSuperview];
+    [app.navGeneral removeFromParentViewController];
+    app.navGeneral = nil;
+    [app showLauchPage];
 }
 
 - (void)didReceiveMemoryWarning {

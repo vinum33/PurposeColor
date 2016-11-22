@@ -41,8 +41,11 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic,strong) User *currentUser;
-@property (readonly, strong, nonatomic)  UINavigationController *navHome;
+@property (strong, nonatomic)  UINavigationController *navRootVC;
+@property (strong, nonatomic)  UINavigationController *navGeneral;
 
+-(void)goToHomeAfterLogin;
+- (void)showLauchPage;
 -(void)checkUserStatus;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

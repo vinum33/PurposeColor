@@ -48,3 +48,4 @@ NSString * const StoryBoardIdentifierForQuickGoalView = @"QuickGoalView";
 NSString * const StoryBoardIdentifierForSettings = @"Settings";
 NSString * const StoryBoardIdentifierForGEMWithHeaderListings = @"GEMWithHeaderListings";
 NSString * const StoryBoardIdentifierForReminderListings = @"ReminderListings";
+NSString * const StoryBoardIdentifierForLaunchPage = @"LaunchPage";

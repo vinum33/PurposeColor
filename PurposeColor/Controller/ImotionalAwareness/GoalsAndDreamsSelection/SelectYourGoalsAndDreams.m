@@ -218,33 +218,52 @@
 
 -(void)showPurposeColorTemplateGoalWithID:(NSInteger)goalActionID{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
-        detailPage.actionType = eActionTypeGoalsAndDreams;
-        detailPage.strTitle = @"CREATE GOAL";
-        detailPage.delegate = self;
-        detailPage.isPurposeColorGEM = TRUE;
-        [nav pushViewController:detailPage animated:YES];
-        [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:[NSString stringWithFormat:@"%ld",(long)goalActionID] GEMType:@"goal"];
+    CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
+    detailPage.actionType = eActionTypeGoalsAndDreams;
+    detailPage.strTitle = @"CREATE GOAL";
+    detailPage.delegate = self;
+    detailPage.isPurposeColorGEM = TRUE;
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if (!app.navGeneral) {
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+    }else{
+        
+        [app.navGeneral pushViewController:detailPage animated:YES];
     }
-   
+    
+    [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:[NSString stringWithFormat:@"%ld",(long)goalActionID] GEMType:@"goal"];
 }
 
 
 /*! Event Creation & Delegates !*/
 -(IBAction)showComposeView:(UIButton*)btn{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
-        detailPage.strTitle = @"ADD GOALS&DREAMS";
-        detailPage.actionType = eActionTypeGoalsAndDreams;
-        detailPage.delegate = self;
-        [nav pushViewController:detailPage animated:YES];
+    CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if (!app.navGeneral) {
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+    }else{
+        
+        [app.navGeneral pushViewController:detailPage animated:YES];
     }
+    
+   
+    detailPage.strTitle = @"ADD GOALS&DREAMS";
+    detailPage.actionType = eActionTypeGoalsAndDreams;
+    detailPage.delegate = self;
+    
 }
 -(IBAction)skip:(id)sender{
     
@@ -329,28 +348,23 @@
 
 -(void)showLoadingScreen{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:nav.view animated:YES];
-        hud.dimBackground = YES;
-        hud.detailsLabelText = @"loading...";
-        hud.removeFromSuperViewOnHide = YES;
-        
-    }
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:delegate.window.rootViewController.view animated:YES];
+    hud.dimBackground = YES;
+    hud.detailsLabelText = @"loading...";
+    hud.removeFromSuperViewOnHide = YES;
     
     
 }
 -(void)hideLoadingScreen{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        [MBProgressHUD hideHUDForView:nav.view animated:YES];
-    }
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [MBProgressHUD hideHUDForView:delegate.window.rootViewController.view animated:YES];
+    
     
     
 }
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

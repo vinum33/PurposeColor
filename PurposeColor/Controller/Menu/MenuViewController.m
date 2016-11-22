@@ -64,8 +64,8 @@
     [arrCategories addObject:@"Emotional Awareness"];
     [arrCategories addObject:@"Emotional Intelligence"];
     [arrCategories addObject:@"Goals & Dreams"];
-    [arrCategories addObject:@"Goal Enabling Materials"];
-    [arrCategories addObject:@"Community Gems"];
+    [arrCategories addObject:@"Visualization"];
+    [arrCategories addObject:@"Inspiring GEMs"];
     [arrCategories addObject:@"Reminders"];
     
     [arrCategories addObject:@"Saved GEMs"];
@@ -123,7 +123,7 @@
         }
         
         else if (indexPath.row == 5) {
-            cell.imageView.image = [UIImage imageNamed:@"Menu_CommunityGem.png"];
+            cell.imageView.image = [UIImage imageNamed:@"Reminder_Icon.png"];
         }
         
     }else{
@@ -324,6 +324,14 @@
                                                         multiplier:1.0
                                                           constant:5.0]];
     
+    [vwHeader addConstraint:[NSLayoutConstraint constraintWithItem:lblName
+                                                         attribute:NSLayoutAttributeRight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:vwHeader
+                                                         attribute:NSLayoutAttributeRight
+                                                        multiplier:1.0
+                                                          constant:-45.0]];
+    
     
     
     /*! User Other Details !*/
@@ -348,6 +356,15 @@
                                                          attribute:NSLayoutAttributeRight
                                                         multiplier:1.0
                                                           constant:5.0]];
+    
+    [vwHeader addConstraint:[NSLayoutConstraint constraintWithItem:lblOtherInfo
+                                                         attribute:NSLayoutAttributeRight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:vwHeader
+                                                         attribute:NSLayoutAttributeRight
+                                                        multiplier:1.0
+                                                          constant:-45.0]];
+    
     lblOtherInfo.text = [User sharedManager].email;
     
     UIButton *btnSettings = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -380,7 +397,7 @@
                                                             toItem:vwHeader
                                                          attribute:NSLayoutAttributeRight
                                                         multiplier:1.0
-                                                          constant:-60]];
+                                                          constant:0]];
     
     [vwHeader addConstraint:[NSLayoutConstraint constraintWithItem:btnSettings
                                                          attribute:NSLayoutAttributeCenterY
@@ -421,7 +438,7 @@
     }
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate changeHomePageDynamicallyWithType:index];
-    [self.revealViewController revealToggleAnimated:YES];
+    [self.revealViewController rightRevealToggle:nil];
     
 }
 
@@ -429,19 +446,19 @@
     
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate changeHomePageDynamicallyWithType:eMenu_Profile];
-    [self.revealViewController revealToggleAnimated:YES];
+    [self.revealViewController rightRevealToggle:nil];
 }
 
 -(void)showSettings{
     
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate changeHomePageDynamicallyWithType:eMenu_Settings];
-    [self.revealViewController revealToggleAnimated:YES];
+      [self.revealViewController rightRevealToggle:nil];
 }
 
 
 -(IBAction)closeSlider:(id)sender{
-    [self.revealViewController revealToggleAnimated:YES];
+     [self.revealViewController rightRevealToggle:nil];
 }
 
 

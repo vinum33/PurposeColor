@@ -82,9 +82,9 @@ typedef enum{
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setUp];
-    [self customSetup];
     [self checkUserViewStatus];
+    [self setUp];
+
     [self loadPieChartDetails];
  
    
@@ -96,18 +96,7 @@ typedef enum{
     return UIStatusBarStyleLightContent;
 }
 
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    revealViewController.delegate = self;
-    if ( revealViewController )
-    {
-        [btnSlideMenu addTarget:self.revealViewController action:@selector(revealToggle:)forControlEvents:UIControlEventTouchUpInside];
-        [vwOverLay addGestureRecognizer: self.revealViewController.panGestureRecognizer];
-        
-    }
-    
-}
+
 -(void)setUp{
     
     tableView.hidden = true;
@@ -136,6 +125,8 @@ typedef enum{
             firstTime = false;
         }
     }
+    
+     [self updateVisibilityStatus];
     
 }
 
@@ -178,10 +169,11 @@ typedef enum{
     [self showLoadingScreen];
     [APIMapper getPieChartViewWithUserID:[User sharedManager].userId startDate:[strtDateFromString timeIntervalSince1970] endDate:[endDateFromString timeIntervalSince1970] session:sessionValue isFirstTime:firstTime success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+       
         isDataAvailable = true;
         [self showPieChartWith:responseObject];
         [self hideLoadingScreen];
-        [self updateVisibilityStatus];
+        
                 
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
@@ -629,28 +621,28 @@ typedef enum{
         switch (section) {
             case eDetailed:
                 title.text = [NSString stringWithFormat:@"Optimal (%lu) %@%%",(unsigned long)arrDetailed.count,detailedValue];
-                [imgIcon setImage:[UIImage imageNamed:@"Smiley_Very_Happy.png"]];
+                [imgIcon setImage:[UIImage imageNamed:@"Optimal_Icon.png"]];
                 if (arrDetailed.count <= 0) {
                     btnClick.userInteractionEnabled = false;imgArrow.hidden = true;}
                 break;
                 
             case ePatient:
-                title.text = [NSString stringWithFormat:@"Stressfull (%lu) %@%%",(unsigned long)arrPatient.count,patientValue];
-                [imgIcon setImage:[UIImage imageNamed:@"StressFull_Icon.png"]];
+                title.text = [NSString stringWithFormat:@"Productive (%lu) %@%%",(unsigned long)arrPatient.count,patientValue];
+                [imgIcon setImage:[UIImage imageNamed:@"Productive_Icon.png"]];
                 if (arrPatient.count <= 0) {
                     btnClick.userInteractionEnabled = false;imgArrow.hidden = true;}
                 break;
                 
             case eAssertive:
-                title.text = [NSString stringWithFormat:@"Passive (%lu) %@%%",(unsigned long)arrAssertive.count,assertValue];
-                [imgIcon setImage:[UIImage imageNamed:@"Passive_Icon.png"]];
+                title.text = [NSString stringWithFormat:@"Pleasure (%lu) %@%%",(unsigned long)arrAssertive.count,assertValue];
+                [imgIcon setImage:[UIImage imageNamed:@"Pleasure_Icon.png"]];
                 if (arrAssertive.count <= 0)  {
                     btnClick.userInteractionEnabled = false;imgArrow.hidden = true;}
                 break;
                 
             case eWarm:
                 title.text = [NSString stringWithFormat:@"Destructive (%lu) %@%%",(unsigned long)arrWarm.count,warmValue];
-                [imgIcon setImage:[UIImage imageNamed:@"Smiley_Very_Sad.png"]];
+                [imgIcon setImage:[UIImage imageNamed:@"Destructive_Icon.png"]];
                 if (arrWarm.count <= 0)  {
                     btnClick.userInteractionEnabled = false;imgArrow.hidden = true;}
                 break;
@@ -763,19 +755,35 @@ typedef enum{
     CGPoint point = CGPointMake(lblTitle.center.x + (lblTitle.frame.size.width / 2), vwTest.center.y - 20);
     CGPoint p = [vwTest.superview convertPoint:point toView:self.view];
     popTip = [AMPopTip popTip];
-    [popTip showText:title direction:AMPopTipDirectionUp maxWidth:(self.view.frame.size.width - p.x) inView:self.view fromFrame:CGRectMake(p.x + 5, p.y, 50, 50)];
+    [popTip showText:title direction:AMPopTipDirectionUp maxWidth:(self.view.frame.size.width - p.x) inView:self.view fromFrame:CGRectMake(p.x + 5, p.y, 50, 50) duration:2];
     
 }
 
 #pragma mark - Generic Methods
 
 -(void)showHelpScreen{
+    
     UIImage*i1 = [UIImage imageNamed:@"Intelligence_Intro_1.png"];
     UIImage*i2 = [UIImage imageNamed:@"Intelligence_Intro_2.png"];
     UIImage*i3 = [UIImage imageNamed:@"Intelligence_Intro_3.png"];
     
     NFXIntroViewController*vc = [[NFXIntroViewController alloc] initWithViews:@[i1,i2,i3]];
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if (!app.navGeneral) {
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:vc];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+    }
+    else{
+        [app.navGeneral pushViewController:vc animated:YES];
+    }
+    
+
     
 }
 
@@ -800,86 +808,6 @@ typedef enum{
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
-#pragma mark - Slider View Setup and Delegates Methods
-
-- (void)revealController:(SWRevealViewController *)revealController animateToPosition:(FrontViewPosition)position{
-    UINavigationController *nav = (UINavigationController*)revealController.rearViewController;
-    if ([[nav.viewControllers objectAtIndex:0] isKindOfClass:[MenuViewController class]]) {
-        MenuViewController *root = (MenuViewController*)[nav.viewControllers objectAtIndex:0];
-        [root resetTable];
-    }
-    if (position == FrontViewPositionRight) {
-        [self setVisibilityForOverLayIsHide:NO];
-    }else{
-        [self setVisibilityForOverLayIsHide:YES];
-    }
-    
-}
--(IBAction)hideSlider:(id)sender{
-    [self.revealViewController revealToggle:nil];
-}
-
--(void)setVisibilityForOverLayIsHide:(BOOL)isHide{
-    
-    if (isHide) {
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.0;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                            vwOverLay.hidden = true;
-                        }];
-        
-        
-    }else{
-        
-        vwOverLay.hidden = false;
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.7;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                        }];
-        
-    }
-}
-
-
-#pragma mark state preservation / restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Save what you need here
-    
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Restore what you need here
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)applicationFinishedRestoringState
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Call whatever function you need to visually restore
-    [self customSetup];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

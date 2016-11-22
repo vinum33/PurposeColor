@@ -22,6 +22,7 @@ typedef enum{
 #define kPadding                        60
 #define kHeightForFooter                0.1
 #define kSuccessCode                    200
+#define kTabHeight                      0
 
 #import "SelectYourEvent.h"
 #import "Constants.h"
@@ -385,28 +386,23 @@ typedef enum{
 
 -(void)showLoadingScreen{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:nav.view animated:YES];
-        hud.dimBackground = YES;
-        hud.detailsLabelText = @"loading...";
-        hud.removeFromSuperViewOnHide = YES;
-        
-    }
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:delegate.window.rootViewController.view animated:YES];
+    hud.dimBackground = YES;
+    hud.detailsLabelText = @"loading...";
+    hud.removeFromSuperViewOnHide = YES;
     
     
 }
 -(void)hideLoadingScreen{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        [MBProgressHUD hideHUDForView:nav.view animated:YES];
-    }
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [MBProgressHUD hideHUDForView:delegate.window.rootViewController.view animated:YES];
+    
     
     
 }
+
 
 - (CGFloat)getLabelHeight:(NSString*)text index:(NSInteger)index
 {
@@ -559,7 +555,7 @@ typedef enum{
     
     // get a rect for the textView frame
     CGRect containerFrame = containerView.frame;
-    containerFrame.origin.y = self.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+    containerFrame.origin.y = self.bounds.size.height + kTabHeight - (keyboardBounds.size.height + containerFrame.size.height);
     // animations settings
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
@@ -605,10 +601,8 @@ typedef enum{
 -(void)showMoreOptions:(ButtonWithID*)button{
     [self resetComposeView];
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
     UINavigationController *nav;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-        nav = (UINavigationController*)root.frontViewController;
+    nav = (UINavigationController*) delegate.window.rootViewController;
     
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"EVENT"
@@ -620,10 +614,8 @@ typedef enum{
                                                          actionType = eActionDelete;
                                                          
                                                          AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-                                                         SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
                                                          UINavigationController *nav;
-                                                         if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-                                                             nav = (UINavigationController*)root.frontViewController;
+                                                         nav = (UINavigationController*) delegate.window.rootViewController;
                                                          
                                                          
                                                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete"
@@ -717,10 +709,8 @@ typedef enum{
     if (actionType == eActionEdit) {
         
         AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
         UINavigationController *nav;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-            nav = (UINavigationController*)root.frontViewController;
+        nav = (UINavigationController*) delegate.window.rootViewController;
         
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Edit"

@@ -58,5 +58,6 @@ extern NSString * const StoryBoardIdentifierForQuickGoalView;
 extern NSString * const StoryBoardIdentifierForSettings;
 extern NSString * const StoryBoardIdentifierForGEMWithHeaderListings;
 extern NSString * const StoryBoardIdentifierForReminderListings;
-
+extern NSString * const StoryBoardIdentifierForLaunchPage;
+extern NSString * const StoryBoardIdentifierForLaunchPage;
 

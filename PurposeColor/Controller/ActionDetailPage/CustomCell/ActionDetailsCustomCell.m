@@ -66,10 +66,7 @@
     }else{
         
         AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-        UINavigationController *nav;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-            nav = (UINavigationController*)root.frontViewController;
+        UINavigationController *nav = delegate.navGeneral;
         
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Action"
@@ -125,10 +122,7 @@
     }else{
         
         AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-        UINavigationController *nav;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-            nav = (UINavigationController*)root.frontViewController;
+        UINavigationController *nav = delegate.navGeneral;
         
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Action"

@@ -1215,25 +1215,20 @@ typedef enum{
 -(IBAction)createReminderWithGoalEndDate:(double)endDate{
     
     [self.view endEditing:YES];
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        EventCreateViewController *eventCreate =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForEventManager];
-        eventCreate.goalID = goalActionID;
-        eventCreate.strGoalTitle = strTitle;
-        eventCreate.achievementDate = endDate;
-        eventCreate.strGoalDescription = strDescription;
-        eventCreate.strRepeatValue = @"Never";
-        
-        [nav pushViewController:eventCreate animated:YES];
-        NSArray* tempVCA = [self.navigationController viewControllers];
-        for(UIViewController *tempVC in tempVCA)
-        {
-            if([tempVC isKindOfClass:[CreateActionInfoViewController class]])
-                [tempVC removeFromParentViewController];
-        }
-        
+    UINavigationController *nav = self.navigationController;
+    EventCreateViewController *eventCreate =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForEventManager];
+    eventCreate.goalID = goalActionID;
+    eventCreate.strGoalTitle = strTitle;
+    eventCreate.achievementDate = endDate;
+    eventCreate.strGoalDescription = strDescription;
+    eventCreate.strRepeatValue = @"Never";
+    
+    [nav pushViewController:eventCreate animated:YES];
+    NSArray* tempVCA = [self.navigationController viewControllers];
+    for(UIViewController *tempVC in tempVCA)
+    {
+        if([tempVC isKindOfClass:[CreateActionInfoViewController class]])
+            [tempVC removeFromParentViewController];
     }
 
 }
@@ -1787,12 +1782,9 @@ typedef enum{
     [alert addAction:firstAction];
     [alert addAction:second];
     
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        [nav presentViewController:alert animated:YES completion:nil];
-    }
+    UINavigationController *nav =self.navigationController;;
+    [nav presentViewController:alert animated:YES completion:nil];
+    
     
 }
 
@@ -1817,12 +1809,9 @@ typedef enum{
     [alert addAction:firstAction];
     [alert addAction:second];
     
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        [nav presentViewController:alert animated:YES completion:nil];
-    }
+   UINavigationController *nav = self.navigationController;;
+    [nav presentViewController:alert animated:YES completion:nil];
+    
     
 }
 
@@ -1908,12 +1897,8 @@ typedef enum{
             
             [alert addAction:firstAction];
             
-            AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-            SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-            if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                [nav presentViewController:alert animated:YES completion:nil];
-            }
+            UINavigationController *nav = self.navigationController;
+            [nav presentViewController:alert animated:YES completion:nil];
         }else{
             
             if ([[responseObject objectForKey:@"code"]integerValue] == kUnauthorizedCode){
@@ -1942,12 +1927,8 @@ typedef enum{
                                                                       }];
                 
                 [alert addAction:firstAction];
-                AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-                SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-                if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                    UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                    [nav presentViewController:alert animated:YES completion:nil];
-                }
+                UINavigationController *nav = self.navigationController;
+                [nav presentViewController:alert animated:YES completion:nil];
 
             }
             
@@ -1967,12 +1948,8 @@ typedef enum{
                                                               }];
         
         [alert addAction:firstAction];
-        AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *nav = (UINavigationController*)root.frontViewController;
-            [nav presentViewController:alert animated:YES completion:nil];
-        }
+        UINavigationController *nav = self.navigationController;
+        [nav presentViewController:alert animated:YES completion:nil];
         
     } progress:^(long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         vwProgressOverLay.hidden = false;
@@ -2013,12 +1990,8 @@ typedef enum{
                                                                       }];
                 
                 [alert addAction:firstAction];
-                AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-                SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-                if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                    UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                    [nav presentViewController:alert animated:YES completion:nil];
-                }
+                UINavigationController *nav = self.navigationController;
+                [nav presentViewController:alert animated:YES completion:nil];
             }else{
                 
                 if ([[responseObject objectForKey:@"code"]integerValue] == kUnauthorizedCode){
@@ -2048,12 +2021,8 @@ typedef enum{
                                                                           }];
                     
                     [alert addAction:firstAction];
-                    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-                    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-                    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                        [nav presentViewController:alert animated:YES completion:nil];
-                    }
+                    UINavigationController *nav = self.navigationController;
+                    [nav presentViewController:alert animated:YES completion:nil];
                 }
                
             }
@@ -2072,12 +2041,8 @@ typedef enum{
                                                                   }];
             
             [alert addAction:firstAction];
-            AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-            SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-            if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                [nav presentViewController:alert animated:YES completion:nil];
-            }
+            UINavigationController *nav = self.navigationController;
+            [nav presentViewController:alert animated:YES completion:nil];
             
             
         } progress:^(long long totalBytesWritten, long long totalBytesExpectedToWrite) {
@@ -2101,13 +2066,7 @@ typedef enum{
         if ([[responseObject objectForKey:@"code"] integerValue] == kSuccessCode ){
             
             AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-            SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-            UINavigationController *nav;
-            if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-                nav = (UINavigationController*)root.frontViewController;
-            
-            
-                        
+            UINavigationController *nav = self.navigationController;
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:lblTitle.text
                                                                            message:[NSString stringWithFormat:@"%@ Create a Reminder for this Action?",[responseObject objectForKey:@"text"]]
                                                                     preferredStyle:UIAlertControllerStyleAlert];
@@ -2172,14 +2131,8 @@ typedef enum{
                                                                       }];
                 
                 [alert addAction:firstAction];
-                AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-                SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-                if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                    UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                    [nav presentViewController:alert animated:YES completion:nil];
-                    
-                }
-            
+                UINavigationController *nav = self.navigationController;
+                [nav presentViewController:alert animated:YES completion:nil];
             }
         }
         
@@ -2197,12 +2150,8 @@ typedef enum{
                                                               }];
         
         [alert addAction:firstAction];
-        AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *nav = (UINavigationController*)root.frontViewController;
-            [nav presentViewController:alert animated:YES completion:nil];
-        }
+        UINavigationController *nav = self.navigationController;
+        [nav presentViewController:alert animated:YES completion:nil];
         
         
     } progress:^(long long totalBytesWritten, long long totalBytesExpectedToWrite) {
@@ -2234,12 +2183,8 @@ typedef enum{
                                                                   }];
             
             [alert addAction:firstAction];
-            AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-            SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-            if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                [nav presentViewController:alert animated:YES completion:nil];
-            }
+            UINavigationController *nav = self.navigationController;
+            [nav presentViewController:alert animated:YES completion:nil];
         }
         else{
             
@@ -2277,12 +2222,8 @@ typedef enum{
                                                               }];
         
         [alert addAction:firstAction];
-        AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *nav = (UINavigationController*)root.frontViewController;
-            [nav presentViewController:alert animated:YES completion:nil];
-        }
+        UINavigationController *nav = self.navigationController;
+        [nav presentViewController:alert animated:YES completion:nil];
         
         
     } progress:^(long long totalBytesWritten, long long totalBytesExpectedToWrite) {
@@ -2400,7 +2341,17 @@ typedef enum{
 -(IBAction)goBack:(id)sender{
     
     [self removeAllContentsInMediaFolder];
-    [[self navigationController] popViewControllerAnimated:YES];
+    if (self.navigationController.viewControllers.count == 1) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app.navGeneral willMoveToParentViewController:nil];
+        [app.navGeneral.view removeFromSuperview];
+        [app.navGeneral removeFromParentViewController];
+        app.navGeneral = nil;
+        [app showLauchPage];
+    }else{
+         [[self navigationController] popViewControllerAnimated:YES];
+    }
+   
 }
 
 - (void)didReceiveMemoryWarning {

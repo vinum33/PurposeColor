@@ -139,10 +139,8 @@
 -(IBAction)sharewImage:(id)sender{
     
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
     UINavigationController *nav;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-        nav = (UINavigationController*)root.frontViewController;
+        nav = (UINavigationController*) delegate.window.rootViewController;
     NSArray *objectsToShare = @[activeImage];
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
     NSArray *excludeActivities = @[UIActivityTypeAirDrop,
@@ -162,12 +160,11 @@
 
 -(IBAction)saveImage:(id)sender{
     
+   
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
     UINavigationController *nav;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-        nav = (UINavigationController*)root.frontViewController;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Save"
+    nav = (UINavigationController*) delegate.window.rootViewController;
+       UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Save"
                                                                    message:@"Do you want to save image to gallery ?"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"

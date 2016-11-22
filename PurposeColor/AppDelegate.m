@@ -32,6 +32,7 @@
 #import "GEMSWithHeaderListingsViewController.h"
 #import "EventCreateViewController.h"
 #import "ReminderListingViewController.h"
+#import "LaunchPageViewController.h"
 
 #define NOTIFICATION_TYPE_FOLLOW        @"follow"
 #define NOTIFICATION_TYPE_CHAT          @"chat"
@@ -40,6 +41,9 @@
 @interface AppDelegate ()<UIAlertViewDelegate>{
     
     Reachability *internetReachability;
+    UITabBarController *tabBarController;
+    LaunchPageViewController *launchPage;
+    SWRevealViewController *revealController;
 }
 
 @end
@@ -154,7 +158,7 @@
         
     } else if (application.applicationState == UIApplicationStateBackground) {
         
-        [self handleNotificationWhenBackGroundWith:userInfo];
+      //  [self handleNotificationWhenBackGroundWith:userInfo];
         completionHandler(UIBackgroundFetchResultNewData);
         
     } else {
@@ -166,65 +170,73 @@
 
 
 -(void)handleNotificationWhenBackGroundWith:(NSDictionary*)userInfo{
-    
+    NSLog(@"HAII");
     if (NULL_TO_NIL([userInfo objectForKey:@"aps"])) {
         if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"notification_type"])) {
             NSString *notification_type =[[userInfo objectForKey:@"aps"] objectForKey:@"notification_type"];
             if ([notification_type isEqualToString:NOTIFICATION_TYPE_CHAT]){
-                if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-                    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-                    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                        if ([[nav.viewControllers lastObject] isKindOfClass:[ChatComposeViewController class]]) {
-                            ChatComposeViewController *chatView = (ChatComposeViewController*)[nav.viewControllers lastObject];
-                            NSString *fromUserID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
-                            if ([chatView.chatUserInfo objectForKey:@"chatuser_id"]) {
-                                NSString *toUserID =[chatView.chatUserInfo objectForKey:@"chatuser_id"];
-                                if ([toUserID isEqualToString:fromUserID]) {
-                                    [chatView newChatHasReceivedWithDetails:userInfo];
-                                }else{
-                                    
-                                    NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: nav.viewControllers];
-                                    [navigationArray removeLastObject];  // You can pass your index here
-                                    nav.viewControllers = navigationArray;
-                                    ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatComposer];
-                                    NSString *fname = [[userInfo objectForKey:@"aps"] objectForKey:@"from_user"];
-                                    NSString *image = [[userInfo objectForKey:@"aps"] objectForKey:@"profileimg"];
-                                    NSString *userID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
-                                    double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"date"] doubleValue];
-                                    NSDictionary *chatInfo = [[NSDictionary alloc] initWithObjectsAndKeys:fname,@"firstname",image,@"profileimage",userID,@"chatuser_id",[NSNumber numberWithDouble:dateTime],@"chat_datetime", nil];
-                                    chatCompose.chatUserInfo = chatInfo;
-                                    [nav pushViewController:chatCompose animated:YES];
-                                        
-                                }
-                            }
-                            
+                
+                UINavigationController *nav = _navGeneral;
+                if ([[nav.viewControllers lastObject] isKindOfClass:[ChatComposeViewController class]]) {
+                    ChatComposeViewController *chatView = (ChatComposeViewController*)[nav.viewControllers lastObject];
+                    NSString *fromUserID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
+                    if ([chatView.chatUserInfo objectForKey:@"chatuser_id"]) {
+                        NSString *toUserID =[chatView.chatUserInfo objectForKey:@"chatuser_id"];
+                        if ([toUserID isEqualToString:fromUserID]) {
+                            [chatView newChatHasReceivedWithDetails:userInfo];
                         }else{
                             
-                            ChatUserListingViewController *chatList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatUserListings];
                             NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: nav.viewControllers];
-                            [navigationArray addObject:chatList];  // You can pass your index here
+                            [navigationArray removeLastObject];  // You can pass your index here
                             nav.viewControllers = navigationArray;
-                            nav.navigationBarHidden = true;
                             ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatComposer];
                             NSString *fname = [[userInfo objectForKey:@"aps"] objectForKey:@"from_user"];
                             NSString *image = [[userInfo objectForKey:@"aps"] objectForKey:@"profileimg"];
                             NSString *userID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
-                            double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"date"] doubleValue];
+                            double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"chat_datetime"] doubleValue];
                             NSDictionary *chatInfo = [[NSDictionary alloc] initWithObjectsAndKeys:fname,@"firstname",image,@"profileimage",userID,@"chatuser_id",[NSNumber numberWithDouble:dateTime],@"chat_datetime", nil];
                             chatCompose.chatUserInfo = chatInfo;
                             [nav pushViewController:chatCompose animated:YES];
                             
                         }
                     }
+                    
+                }else{
+                    
+                    if (!_navGeneral) {
+                        ChatUserListingViewController *chatUser =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatUserListings];
+                        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:chatUser];
+                        app.navGeneral.navigationBarHidden = true;
+                        [UIView transitionWithView:app.window
+                                          duration:0.3
+                                           options:UIViewAnimationOptionTransitionCrossDissolve
+                                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                                        completion:nil];
+                        nav = app.navGeneral;
+                        
+                    }
+                    
+                    ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatComposer];
+                    NSString *fname = [[userInfo objectForKey:@"aps"] objectForKey:@"from_user"];
+                    NSString *image = [[userInfo objectForKey:@"aps"] objectForKey:@"profileimg"];
+                    NSString *userID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
+                    double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"chat_datetime"] doubleValue];
+                    NSDictionary *chatInfo = [[NSDictionary alloc] initWithObjectsAndKeys:fname,@"firstname",image,@"profileimage",userID,@"chatuser_id",[NSNumber numberWithDouble:dateTime],@"chat_datetime", nil];
+                    chatCompose.chatUserInfo = chatInfo;
+                    [nav pushViewController:chatCompose animated:YES];
+                    
                 }
 
             }else if ([notification_type isEqualToString:NOTIFICATION_TYPE_MEMMORY]){
-                [self configureMemmoryUserInfo:userInfo];
-            }else{
+                [self configureMemmoryUserInfo:userInfo isFromBackGround:YES];
+            }else if ([notification_type isEqualToString:NOTIFICATION_TYPE_FOLLOW]){
                 
                 [self configureFollowRequestWithUserInfo:userInfo];
+            }else{
+                [self handleOtherNotificationTypes:userInfo];
             }
+
         }
     }
     
@@ -235,113 +247,126 @@
         if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"notification_type"])) {
             NSString *notification_type =[[userInfo objectForKey:@"aps"] objectForKey:@"notification_type"];
             if ([notification_type isEqualToString:NOTIFICATION_TYPE_CHAT]){
-                if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-                    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-                    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                        if ([[nav.viewControllers lastObject] isKindOfClass:[ChatComposeViewController class]]) {
+               __block UINavigationController *nav = _navGeneral;
+                if ([[nav.viewControllers lastObject] isKindOfClass:[ChatComposeViewController class]]) {
+                    
+                    /*! If the user standing in the  chat page !*/
+                    
+                    ChatComposeViewController *chatView = (ChatComposeViewController*)[nav.viewControllers lastObject];
+                    NSString *fromUserID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
+                    if ([chatView.chatUserInfo objectForKey:@"chatuser_id"]) {
+                        NSString *toUserID =[chatView.chatUserInfo objectForKey:@"chatuser_id"];
+                        if ([toUserID isEqualToString:fromUserID]) {
                             
-                            /*! If the user standing in the  chat page !*/
+                            /*! If chat notification comes with a same user !*/
                             
-                            ChatComposeViewController *chatView = (ChatComposeViewController*)[nav.viewControllers lastObject];
-                             NSString *fromUserID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
-                             if ([chatView.chatUserInfo objectForKey:@"chatuser_id"]) {
-                                 NSString *toUserID =[chatView.chatUserInfo objectForKey:@"chatuser_id"];
-                                  if ([toUserID isEqualToString:fromUserID]) {
-                                      
-                                       /*! If chat notification comes with a same user !*/
-                                      
-                                     [chatView newChatHasReceivedWithDetails:userInfo];
-                                  }else{
-                                      
-                                       /*! If chat notification comes with a defefrent user !*/
-                                      
-                                      
-                                      NSString *message;
-                                      NSString *appName = PROJECT_NAME;
-                                      if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"alert"]))
-                                          message = [NSString stringWithFormat:@"%@ : %@",[[userInfo objectForKey:@"aps"] objectForKey:@"from_user"],[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
-                                      [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
-                                      [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
-                                          
-                                          NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: nav.viewControllers];
-                                          [navigationArray removeLastObject];  // You can pass your index here
-                                          nav.viewControllers = navigationArray;
-                                          ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatComposer];
-                                          NSString *fname = [[userInfo objectForKey:@"aps"] objectForKey:@"from_user"];
-                                          NSString *image = [[userInfo objectForKey:@"aps"] objectForKey:@"profileimg"];
-                                          NSString *userID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
-                                          double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"date"] doubleValue];
-                                          NSDictionary *chatInfo = [[NSDictionary alloc] initWithObjectsAndKeys:fname,@"firstname",image,@"profileimage",userID,@"chatuser_id",[NSNumber numberWithDouble:dateTime],@"chat_datetime", nil];
-                                          chatCompose.chatUserInfo = chatInfo;
-                                          [nav pushViewController:chatCompose animated:YES];
-                                          
-                                      }];
-
-                                  }
-                             }
-                            
-                        }else if([[nav.viewControllers lastObject] isKindOfClass:[ChatUserListingViewController class]]){
-                            
-                              /*! If the user standing in the  Chat User List page !*/
-                            
-                            ChatUserListingViewController *chatList = (ChatUserListingViewController*)[nav.viewControllers lastObject];
-                            [chatList loadAllChatUsers];
-                            NSString *message;
-                            NSString *appName = PROJECT_NAME;
-                            if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"alert"]))
-                                message = [NSString stringWithFormat:@"%@ : %@",[[userInfo objectForKey:@"aps"] objectForKey:@"from_user"],[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
-                            [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
-                            [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
-                                ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatComposer];
-                                NSString *fname = [[userInfo objectForKey:@"aps"] objectForKey:@"from_user"];
-                                NSString *image = [[userInfo objectForKey:@"aps"] objectForKey:@"profileimg"];
-                                NSString *userID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
-                                double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"date"] doubleValue];
-                                NSDictionary *chatInfo = [[NSDictionary alloc] initWithObjectsAndKeys:fname,@"firstname",image,@"profileimage",userID,@"chatuser_id",[NSNumber numberWithDouble:dateTime],@"chat_datetime", nil];
-                                chatCompose.chatUserInfo = chatInfo;
-                                [nav pushViewController:chatCompose animated:YES];
-                                
-                            }];
+                            [chatView newChatHasReceivedWithDetails:userInfo];
                             
                         }else{
                             
-                             /*! All other pages !*/
+                            /*! If chat notification comes with a defefrent user !*/
+                            
                             
                             NSString *message;
                             NSString *appName = PROJECT_NAME;
                             if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"alert"]))
                                 message = [NSString stringWithFormat:@"%@ : %@",[[userInfo objectForKey:@"aps"] objectForKey:@"from_user"],[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
-                            
                             [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
                             [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
                                 
-                                ChatUserListingViewController *chatList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatUserListings];
                                 NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: nav.viewControllers];
-                                [navigationArray addObject:chatList];  // You can pass your index here
+                                [navigationArray removeLastObject];  // You can pass your index here
                                 nav.viewControllers = navigationArray;
-                                nav.navigationBarHidden = true;
-                                
                                 ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatComposer];
                                 NSString *fname = [[userInfo objectForKey:@"aps"] objectForKey:@"from_user"];
                                 NSString *image = [[userInfo objectForKey:@"aps"] objectForKey:@"profileimg"];
                                 NSString *userID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
-                                double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"date"] doubleValue];
+                                double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"chat_datetime"] doubleValue];
                                 NSDictionary *chatInfo = [[NSDictionary alloc] initWithObjectsAndKeys:fname,@"firstname",image,@"profileimage",userID,@"chatuser_id",[NSNumber numberWithDouble:dateTime],@"chat_datetime", nil];
                                 chatCompose.chatUserInfo = chatInfo;
                                 [nav pushViewController:chatCompose animated:YES];
-                               
+                                
                             }];
                             
                         }
                     }
+                    
+                }
+                else if([[nav.viewControllers lastObject] isKindOfClass:[ChatUserListingViewController class]]){
+                    
+                    /*! If the user standing in the  Chat User List page !*/
+                    
+                    ChatUserListingViewController *chatList = (ChatUserListingViewController*)[nav.viewControllers lastObject];
+                    [chatList loadAllChatUsers];
+                    NSString *message;
+                    NSString *appName = PROJECT_NAME;
+                    if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"alert"]))
+                        message = [NSString stringWithFormat:@"%@ : %@",[[userInfo objectForKey:@"aps"] objectForKey:@"from_user"],[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
+                    [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+                    [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                        [UIView transitionWithView:app.window
+                                          duration:0.3
+                                           options:UIViewAnimationOptionTransitionCrossDissolve
+                                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                                        completion:nil];
+                        ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatComposer];
+                        NSString *fname = [[userInfo objectForKey:@"aps"] objectForKey:@"from_user"];
+                        NSString *image = [[userInfo objectForKey:@"aps"] objectForKey:@"profileimg"];
+                        NSString *userID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
+                        double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"chat_datetime"] doubleValue];
+                        NSDictionary *chatInfo = [[NSDictionary alloc] initWithObjectsAndKeys:fname,@"firstname",image,@"profileimage",userID,@"chatuser_id",[NSNumber numberWithDouble:dateTime],@"chat_datetime", nil];
+                        chatCompose.chatUserInfo = chatInfo;
+                        [nav pushViewController:chatCompose animated:YES];
+                        
+                    }];
+                    
+                }
+                else{
+                    
+                    /*! All other pages !*/
+                    
+                    NSString *message;
+                    NSString *appName = PROJECT_NAME;
+                    if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"alert"]))
+                        message = [NSString stringWithFormat:@"%@ : %@",[[userInfo objectForKey:@"aps"] objectForKey:@"from_user"],[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
+                    
+                    [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+                    [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                        
+                        if (!_navGeneral) {
+                            ChatUserListingViewController *chatUser =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatUserListings];
+                            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                            app.navGeneral = [[UINavigationController alloc] initWithRootViewController:chatUser];
+                            app.navGeneral.navigationBarHidden = true;
+                            [UIView transitionWithView:app.window
+                                              duration:0.3
+                                               options:UIViewAnimationOptionTransitionCrossDissolve
+                                            animations:^{  app.window.rootViewController = app.navGeneral; }
+                                            completion:nil];
+                            nav = app.navGeneral;
+                            
+                        }
+                        ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatComposer];
+                        NSString *fname = [[userInfo objectForKey:@"aps"] objectForKey:@"from_user"];
+                        NSString *image = [[userInfo objectForKey:@"aps"] objectForKey:@"profileimg"];
+                        NSString *userID = [[userInfo objectForKey:@"aps"] objectForKey:@"from_id"];
+                        double dateTime = [[[userInfo objectForKey:@"aps"] objectForKey:@"chat_datetime"] doubleValue];
+                        NSDictionary *chatInfo = [[NSDictionary alloc] initWithObjectsAndKeys:fname,@"firstname",image,@"profileimage",userID,@"chatuser_id",[NSNumber numberWithDouble:dateTime],@"chat_datetime", nil];
+                        chatCompose.chatUserInfo = chatInfo;
+                        [nav pushViewController:chatCompose animated:YES];
+                        
+                    }];
+                    
                 }
             }else if ([notification_type isEqualToString:NOTIFICATION_TYPE_MEMMORY]){
-                 [self configureMemmoryUserInfo:userInfo];
+                 [self configureMemmoryUserInfo:userInfo isFromBackGround:NO];
             }
-            else{
+            else if ([notification_type isEqualToString:NOTIFICATION_TYPE_FOLLOW]){
                 
                 [self configureFollowRequestWithUserInfo:userInfo];
+            }else{
+                [self handleOtherNotificationTypes:userInfo];
             }
         }
         
@@ -419,52 +444,122 @@
 
 -(void)refreshFollowButtonInClasses{
     
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *nav = (UINavigationController*)root.frontViewController;
-            CommunityGEMListingViewController *communityVC;
-            for (UIViewController * vc in  [nav viewControllers]) {
-                
-                if ([vc isKindOfClass:[CommunityGEMListingViewController class]]) {
-                    communityVC = (CommunityGEMListingViewController*)vc;
-                }
-            }
+    if (self.navRootVC) {
+        
+        if ([[self.navRootVC.viewControllers lastObject] isKindOfClass:[CommunityGEMListingViewController class]]){
+            CommunityGEMListingViewController *communityVC = (CommunityGEMListingViewController*) [self.navRootVC.viewControllers lastObject];
             [communityVC refreshData];
         }
     }
+ 
+   
 }
 
--(void)configureMemmoryUserInfo:(NSDictionary*)memoryDetails{
+-(void)configureMemmoryUserInfo:(NSDictionary*)memoryDetails isFromBackGround:(BOOL)isFromBackGround{
     
     NSString *message;
     NSString *appName = PROJECT_NAME;
     if (NULL_TO_NIL([[memoryDetails objectForKey:@"aps"] objectForKey:@"alert"]))
         message = [[memoryDetails objectForKey:@"aps"] objectForKey:@"alert"];
     
-    [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
-    [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+    if (isFromBackGround) {
+        __block UINavigationController *nav = _navGeneral;
         
-        if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-            SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-            if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-                UINavigationController *nav = (UINavigationController*)root.frontViewController;
-                if ([[nav.viewControllers lastObject] isKindOfClass:[MyMemmoriesViewController class]]) {
-                    /*! If the user standing in the  Memmory page !*/
-                }else{
-                    
-                    /*! All other pages !*/
-                    MyMemmoriesViewController *myMemmories =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForMyMemmories];
-                    nav.navigationBarHidden = true;
-                    [nav pushViewController:myMemmories animated:YES];
-                }
+        if ([[nav.viewControllers lastObject] isKindOfClass:[MyMemmoriesViewController class]]) {
+            /*! If the user standing in the  Memmory page !*/
+        }else{
+            
+            /*! All other pages !*/
+            
+            MyMemmoriesViewController *myMemmories =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForMyMemmories];
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            if (!_navGeneral) {
+                
+                
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:myMemmories];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+                nav = app.navGeneral;
+                
+            }else{
+                [app.navGeneral pushViewController:myMemmories animated:YES];
             }
         }
+
+    }else{
         
-    }];
+        [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+        [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+            
+            __block UINavigationController *nav = _navGeneral;
+            
+            if ([[nav.viewControllers lastObject] isKindOfClass:[MyMemmoriesViewController class]]) {
+                /*! If the user standing in the  Memmory page !*/
+            }else{
+                
+                /*! All other pages !*/
+                
+                MyMemmoriesViewController *myMemmories =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForMyMemmories];
+                AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                if (!_navGeneral) {
+                    
+                    
+                    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:myMemmories];
+                    app.navGeneral.navigationBarHidden = true;
+                    [UIView transitionWithView:app.window
+                                      duration:0.3
+                                       options:UIViewAnimationOptionTransitionCrossDissolve
+                                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                                    completion:nil];
+                    nav = app.navGeneral;
+                    
+                }else{
+                    [app.navGeneral pushViewController:myMemmories animated:YES];
+                }
+            }
+            
+        }];
+    }
+    
+    
     
 }
 
+-(void)handleOtherNotificationTypes:(NSDictionary*)userInfo{
+    
+    NSString *title = @"PurposeColor";
+    NSString *message;
+    
+    if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"title"]))
+        title = [[userInfo objectForKey:@"aps"] objectForKey:@"title"];
+    
+    if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"alert"]))
+        message = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    
+    if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"alert"]))
+        message = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    
+    
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *firstAction;
+
+    firstAction = [UIAlertAction actionWithTitle:@"OK"
+                                            style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                                            }];
+    [alert addAction:firstAction];
+    
+    
+    if (self.window.rootViewController)
+        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+}
 
 #pragma mark - Login Actions
 
@@ -472,7 +567,7 @@
     
     if ([User sharedManager]) self.currentUser = (User*)[User sharedManager];
     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
-    if (userExists) [self showHomeScreen];
+    if (userExists) [self showLauchPage];
     else            [self showLoginScreen];
 
 }
@@ -533,21 +628,31 @@
 
 -(void)goToHomeAfterLogin{
     
-    [self showHomeScreen];
+    [self enablePushNotification];
+    launchPage = nil;
+    revealController = nil;
+    [self showLauchPage];
 }
 
-- (void)showHomeScreen {
+- (void)showLauchPage {
     
-    // Show home screen once login is successful.
-    
+     // Show home screen once login is successful.
+   
     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:imotionalAwareness];
-    MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
-    UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
-    navMenu.navigationBarHidden = true;
-    SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
-    navHome.navigationBarHidden = true;
+    if (!launchPage){
+        
+        launchPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForLaunchPage];
+       
+        // GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
+        UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:launchPage];
+        MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
+        UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
+        navMenu.navigationBarHidden = true;
+        revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
+        revealController.rightViewController = navMenu;
+        navHome.navigationBarHidden = true;
+    }
+    
     
     [UIView transitionWithView:app.window
                       duration:0.5
@@ -623,92 +728,54 @@
 }
 -(void)showEmotionalAwarenessPage{
     
-    ImotinalAwarenessViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwareness];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:imotionalAwareness];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-    
+    [launchPage showEmoitonalAwareness:nil];
 }
 
 
 -(void)showCommubityGEMS{
     
-    CommunityGEMListingViewController *gemListingVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCommunityGEMListings];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:gemListingVC];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-    
+    [launchPage showCommunityGems:nil];
 }
 
 -(void)showGEMSListingsPage{
     
-    GEMSListingsViewController *gemListingsPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMListings];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:gemListingsPage];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
+    [launchPage showGEMS:nil];
 }
 
 -(void)showGoalsAndDreams{
     
-    GoalsAndDreamsListingViewController *goalsAndDreams =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGoalsDreams];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:goalsAndDreams];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-
+   [launchPage showGoalsAndDreams:nil];
 }
 
 -(void)emotionalIntelligencePage{
     
-    EmotionalIntelligenceViewController *emotionalIntelligence =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForEmotionalIntelligence];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:emotionalIntelligence];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-
+  [launchPage showEmoitonalIntelligence:nil];
 }
 
 -(void)showAllMyFavouriteGEMs{
     
   MyFavouritesListingViewController *myFavourites =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForMyFavourites];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:myFavourites];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-}
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:myFavourites];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];}
 
 -(void)showAllInspiredGEMs{
     
     MyFavouritesListingViewController *myFavourites =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForMyFavourites];
      myFavourites.isInspiredGEM = true;
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:myFavourites];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:myFavourites];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
 
 }
 
@@ -716,40 +783,44 @@
 -(void)showNotificationListings{
     
      NotificationsListingViewController *notifications =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForNotificationsListing];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:notifications];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:notifications];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+    
 }
 
 
 -(void)showMyMemmories{
     
    MyMemmoriesViewController *myMemmories =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForMyMemmories];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:myMemmories];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:myMemmories];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
 }
 
 -(void)showUserProfilePage{
     
     ProfilePageViewController *profilePage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForProfilePage];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:profilePage];
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:profilePage];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
     profilePage.canEdit = true;
-    [profilePage loadUserProfileWithUserID:[User sharedManager].userId showBackButton:NO];
+    [profilePage loadUserProfileWithUserID:[User sharedManager].userId showBackButton:YES];
     
    
     
@@ -763,8 +834,8 @@
         SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
         root.frontViewController = navHome;
     }
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
+    _navGeneral = navHome;
+    _navGeneral.navigationBarHidden = true;
     browser.strTitle = @"HELP";
     browser.strURL =[NSString stringWithFormat:@"%@help.php",ExternalWebPageURL];
 }
@@ -777,8 +848,8 @@
         SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
         root.frontViewController = navHome;
     }
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
+    _navGeneral = navHome;
+    _navGeneral.navigationBarHidden = true;
     browser.strTitle = @"PRIVACY POLICY";
     browser.strURL =[NSString stringWithFormat:@"%@privacy-policy.php",ExternalWebPageURL];
     
@@ -786,13 +857,15 @@
 -(void)showTermsOfSerivice{
     
     WebBrowserViewController *browser = [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForWebBrowser];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:browser];
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:browser];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+    _navGeneral.navigationBarHidden = true;
     browser.strTitle = @"TERMS OF SERVICE";
     browser.strURL =[NSString stringWithFormat:@"%@terms.php",ExternalWebPageURL];
     
@@ -801,25 +874,27 @@
 -(void)showSettings{
     
     SettingsViewController *settings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForSettings];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:settings];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:settings];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
 }
 
 -(void)showReminders{
     
     ReminderListingViewController *reminder =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForReminderListings];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:reminder];
-    _navHome = navHome;
-    _navHome.navigationBarHidden = true;
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:reminder];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
 }
 
 -(void)logOutUser{
@@ -849,8 +924,8 @@
     
     [alert addAction:ok];
     [alert addAction:cancel];
-    
-    [self.navHome presentViewController:alert animated:YES completion:nil];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [app.window.rootViewController presentViewController:alert animated:YES completion:nil];
 }
 
 -(void)clearUserSessions{
@@ -882,7 +957,8 @@
                              }];
         
         [alert addAction:ok];
-        [self.navHome presentViewController:alert animated:YES completion:nil];
+         AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app.window.rootViewController presentViewController:alert animated:YES completion:nil];
         [self hideLoadingScreen];
     }];
     

@@ -34,7 +34,7 @@ typedef enum{
 #define kHeightForHeader                60
 #define kMenuItems                      6
 #define kSectionCount                   1
-#define kPadding                        60
+#define kPadding                        70
 
 
 #import "ImotinalAwarenessViewController.h"
@@ -52,7 +52,7 @@ typedef enum{
 #import "CircleProgressBar.h"
 #import "GEMSWithHeaderListingsViewController.h"
 
-@interface ImotinalAwarenessViewController () <SelectYourFeelingDelegate,SelectYourEmotionDelegate,SelectYourEventDelegate,SelectYourDriveDelegate,SelectYourGoalsAndDreamsDelegate,SelectYourActionsDelegate,SWRevealViewControllerDelegate,JournalDelegate>{
+@interface ImotinalAwarenessViewController () <SelectYourFeelingDelegate,SelectYourEmotionDelegate,SelectYourEventDelegate,SelectYourDriveDelegate,SelectYourGoalsAndDreamsDelegate,SelectYourActionsDelegate,JournalDelegate>{
     
     IBOutlet UITableView *tableView;
     IBOutlet NSLayoutConstraint *leftConstraintCircle;
@@ -72,6 +72,7 @@ typedef enum{
     BOOL isCycleCompleted;
     BOOL isJournalMediaAvailable;
     BOOL shouldShowHelpScreen;
+    BOOL isAnimationInProgress;
     
     SelectYourFeel *vwFeelSelection;
     NSInteger selectedFeelValue;
@@ -114,7 +115,6 @@ typedef enum{
     [super viewDidLoad];
     [self setUp];
     [self getCurrentDate];
-    [self customSetup];
     [self performSelector:@selector(setUpTable) withObject:self afterDelay:.3];
     // Do any additional setup after loading the view.
 }
@@ -126,8 +126,7 @@ typedef enum{
 
 -(void)setUp{
     
-    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    [app enablePushNotification];
+    
     vwPickerOverLay.hidden = true;
     btnSubmit.hidden = true;
     vwProgressOverLay.hidden = true;
@@ -144,20 +143,6 @@ typedef enum{
     NSInteger cellHeight = (self.view.frame.size.height - kPadding) / kMenuItems;
     height = (cellHeight < kCellminimumHeight) ? kCellminimumHeight : cellHeight;
     [tableView reloadData];
-}
-
-
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    revealViewController.delegate = self;
-    if ( revealViewController )
-    {
-        [btnSlideMenu addTarget:self.revealViewController action:@selector(revealToggle:)forControlEvents:UIControlEventTouchUpInside];
-        [vwOverLay addGestureRecognizer: self.revealViewController.panGestureRecognizer];
-        
-    }
-    
 }
 
 -(void)setUpTable{
@@ -236,7 +221,7 @@ typedef enum{
             break;
             
         case eTypeEvent:
-            cell.vwRightConstraint.constant = constant / 11;
+            cell.vwRightConstraint.constant = constant / 12;
             cell.imgIcon.image = [UIImage imageNamed:@"Event.png"];
             break;
             
@@ -267,11 +252,11 @@ typedef enum{
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     return height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     
     [self menuTapped:[NSNumber numberWithInteger:indexPath.row]];
 }
@@ -548,6 +533,7 @@ typedef enum{
 
 -(void)menuTapped:(id)sender{
     
+    if (isAnimationInProgress ) return;
     UITapGestureRecognizer *gesture;
     NSInteger tag = 0;
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
@@ -599,6 +585,7 @@ typedef enum{
 
 -(void)showRateSelection{
     
+    isAnimationInProgress = true;
     activeMenu = eTypeFeel;
     vwFeelSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourFeel" owner:self options:nil] objectAtIndex:0];
     vwFeelSelection.translatesAutoresizingMaskIntoConstraints = NO;
@@ -616,10 +603,12 @@ typedef enum{
     [vwFeelSelection removeFromSuperview];
     vwFeelSelection.delegate = nil;
     vwFeelSelection = nil;
+    isAnimationInProgress = false;
 }
 
 -(void)feelingsSelectedWithEmotionType:(NSInteger)emotionType{
     
+    isAnimationInProgress = false;
     selectedFeelValue = 0;
     if (emotionType < 0) {
         selectedFeelValue = -1;
@@ -637,6 +626,7 @@ typedef enum{
 
 -(void)showEmotionSelection{
     
+    isAnimationInProgress = true;
     activeMenu = eTypeEmotion;
     vwEmotionSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourEmotion" owner:self options:nil] objectAtIndex:0];
     vwEmotionSelection.translatesAutoresizingMaskIntoConstraints = NO;
@@ -655,6 +645,7 @@ typedef enum{
     [vwEmotionSelection removeFromSuperview];
     vwEmotionSelection.delegate = nil;
     vwEmotionSelection = nil;
+    isAnimationInProgress = false;
 }
 
 
@@ -663,13 +654,14 @@ typedef enum{
     selectedEmotionTitle = emotionTitle;
     activeMenu = eTypeEvent;
     [tableView reloadData];
-    
+    isAnimationInProgress = false;
 }
 
 #pragma mark - SELECT YOUR EVENT Actions
 
 -(void)showEventSelection{
     
+    isAnimationInProgress = true;
     activeMenu = eTypeEvent;
     vwEventSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourEvent" owner:self options:nil] objectAtIndex:0];
     vwEventSelection.translatesAutoresizingMaskIntoConstraints = NO;
@@ -688,6 +680,7 @@ typedef enum{
     [vwEventSelection removeFromSuperview];
     vwEventSelection.delegate = nil;
     vwEventSelection = nil;
+    isAnimationInProgress = false;
 }
 
 
@@ -696,7 +689,7 @@ typedef enum{
     selectedEventTitle = eventTitle;
     activeMenu = eTypeDrive;
     [tableView reloadData];
-    
+    isAnimationInProgress = false;
     
 }
 
@@ -704,6 +697,7 @@ typedef enum{
 
 -(void)showDriveSelection{
     
+    isAnimationInProgress = true;
     activeMenu = eTypeDrive;
     vwDriveSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourDrive" owner:self options:nil] objectAtIndex:0];
     vwDriveSelection.translatesAutoresizingMaskIntoConstraints = NO;
@@ -718,6 +712,7 @@ typedef enum{
 
 -(void)selectYourDrivePopUpCloseAppplied{
     
+    isAnimationInProgress = false;
     [vwDriveSelection removeFromSuperview];
     vwDriveSelection.delegate = nil;
     vwDriveSelection = nil;
@@ -725,6 +720,7 @@ typedef enum{
 
 -(void)driveSelectedWithEmotionType:(NSInteger)emotionType{
     
+    isAnimationInProgress = false;
     selectedDriveValue = 0;
     if (emotionType < 0) {
         selectedDriveValue = -1;
@@ -742,6 +738,7 @@ typedef enum{
 
 -(void)showGoalsAndDreamsSelection{
     
+    isAnimationInProgress = true;
     activeMenu = eTypeGoalsAndDreams;
     vwGoalsSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourGoalsAndDreams" owner:self options:nil] objectAtIndex:0];
     vwGoalsSelection.translatesAutoresizingMaskIntoConstraints = NO;
@@ -756,6 +753,7 @@ typedef enum{
 
 -(void)selectYourGoalsAndDreamsPopUpCloseAppplied{
     
+    isAnimationInProgress = false;
     [vwGoalsSelection removeFromSuperview];
     vwGoalsSelection.delegate = nil;
     vwGoalsSelection = nil;
@@ -763,6 +761,7 @@ typedef enum{
 
 -(void)goalsAndDreamsSelectedWithTitle:(NSString*)title goalId:(NSInteger)goalsId{
     
+    isAnimationInProgress = false;
     isCycleCompleted = false;
     selectedActionTitle = @"";
     selectedGoalsTitle = title;
@@ -773,6 +772,7 @@ typedef enum{
 
 -(void)skipButtonApplied{
     
+    isAnimationInProgress = false;
     isCycleCompleted = YES;
     selectedActionTitle = @"";
     selectedGoalsTitle = @"";
@@ -787,6 +787,7 @@ typedef enum{
 
 -(void)showActionSelection{
     
+    isAnimationInProgress = true;
     activeMenu = eTypeAction;
     vwActions = [[[NSBundle mainBundle] loadNibNamed:@"SelectActions" owner:self options:nil] objectAtIndex:0];
     vwActions.translatesAutoresizingMaskIntoConstraints = NO;
@@ -802,6 +803,7 @@ typedef enum{
 
 -(void)selectYourActionsPopUpCloseAppplied{
     
+    isAnimationInProgress = false;
     [vwActions removeFromSuperview];
     vwActions.delegate = nil;
     vwActions = nil;
@@ -809,6 +811,7 @@ typedef enum{
 
 -(void)actionsSelectedWithTitle:(NSString*)title actionIDs:(NSDictionary*)selectedAcitons{
     
+    isAnimationInProgress = false;
     selectedActionTitle = title;
     selectedActions = selectedAcitons;
     activeMenu = eTypeAction;
@@ -823,6 +826,8 @@ typedef enum{
 #pragma mark - Journal Showing and its Delegate
 
 -(IBAction)createJournalClicked{
+    
+    isAnimationInProgress = false;
     
     if (!journalView) {
         journalView =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournal];
@@ -921,7 +926,6 @@ typedef enum{
         if ([selectedActions allKeys].count > 0){
             NSString * result = [[selectedActions allKeys] componentsJoinedByString:@","];
             [params setObject:result forKey:@"goalaction_id"];
-
         }
         if (journalView) {
             [journalView createAJournelWitEmotionValues:params];
@@ -980,7 +984,6 @@ typedef enum{
             } progress:^(long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                 
             }];
-            
             
         }
         
@@ -1075,72 +1078,11 @@ typedef enum{
 }
 
 
-#pragma mark - Slider View Setup and Delegates Methods
-
-- (void)revealController:(SWRevealViewController *)revealController animateToPosition:(FrontViewPosition)position{
-    UINavigationController *nav = (UINavigationController*)revealController.rearViewController;
-    if ([[nav.viewControllers objectAtIndex:0] isKindOfClass:[MenuViewController class]]) {
-        MenuViewController *root = (MenuViewController*)[nav.viewControllers objectAtIndex:0];
-        [root resetTable];
-    }
-    if (position == FrontViewPositionRight) {
-        [self setVisibilityForOverLayIsHide:NO];
-    }else{
-        [self setVisibilityForOverLayIsHide:YES];
-    }
-    
-}
--(IBAction)hideSlider:(id)sender{
-    [self.revealViewController revealToggle:nil];
-}
-
--(void)setVisibilityForOverLayIsHide:(BOOL)isHide{
-    
-    if (isHide) {
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.0;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                            vwOverLay.hidden = true;
-                        }];
-        
-        
-    }else{
-        
-        vwOverLay.hidden = false;
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.7;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                        }];
-        
-    }
-}
 
 -(void)showGEMSWithHeadingPage{
     
-    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:imotionalAwareness];
-    MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
-    UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
-    navMenu.navigationBarHidden = true;
-    SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
-    navHome.navigationBarHidden = true;
-   
-    [UIView transitionWithView:app.window
-                      duration:0.5
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{ app.window.rootViewController = revealController; }
-                    completion:nil];
+    AppDelegate *appdelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [appdelegate goToHomeAfterLogin];
     
 }
   -(void)showLoadingScreen{
@@ -1149,8 +1091,8 @@ typedef enum{
     hud.dimBackground = YES;
     hud.detailsLabelText = @"loading...";
     hud.removeFromSuperViewOnHide = YES;
-      
-  }
+}
+
 -(void)hideLoadingScreen{
     
     [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -1164,35 +1106,6 @@ typedef enum{
              
              
 
-#pragma mark state preservation / restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Save what you need here
-    
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Restore what you need here
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)applicationFinishedRestoringState
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Call whatever function you need to visually restore
-    [self customSetup];
-}
 
 
 - (void)didReceiveMemoryWarning {

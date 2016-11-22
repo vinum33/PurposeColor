@@ -45,7 +45,6 @@ typedef enum{
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self customSetup];
     [self setUp];
     // Do any additional setup after loading the view.
 }
@@ -55,18 +54,7 @@ typedef enum{
     return UIStatusBarStyleLightContent;
 }
 
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    revealViewController.delegate = self;
-    if ( revealViewController )
-    {
-        [btnSlideMenu addTarget:self.revealViewController action:@selector(revealToggle:)forControlEvents:UIControlEventTouchUpInside];
-        [vwOverLay addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-        
-    }
-    
-}
+
 
 -(void)setUp{
     
@@ -262,7 +250,7 @@ typedef enum{
                                                              attribute:NSLayoutAttributeCenterY
                                                             multiplier:1.0
                                                               constant:0]];
-        lblStatus.text = @"Notification";//
+        lblStatus.text = @"Notification";
         return vwHeader;
     }
     
@@ -370,9 +358,6 @@ typedef enum{
 }
 
 
-
-
-
 -(IBAction)changeFollowStatus:(UISwitch*)sender{
     
     canFollow = sender.isOn;
@@ -388,17 +373,15 @@ typedef enum{
     [self showLoadingScreen];
     [APIMapper updateUserSettingsWithUserID:[User sharedManager].userId canFollow:canFollow dailyNotification:canSendDailyNotifications success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self hideLoadingScreen];
-        if ( NULL_TO_NIL([responseObject objectForKey:@"header"])) {
-            if ([[responseObject objectForKey:@"code"]integerValue] == kSuccessCode) {
-                [[[UIAlertView alloc] initWithTitle:@"Profile" message:@"Successfully updated your settings!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-                [User sharedManager].follow_status = canFollow;
-                [User sharedManager].daily_notify  = canSendDailyNotifications;
-                [Utility saveUserObject:[User sharedManager] key:@"USER"];
-                btnSubmit.hidden = true;
-                
-            }else
-                [[[UIAlertView alloc] initWithTitle:@"Profile" message:@"Failed to update Settings." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-        }
+        if ([[responseObject objectForKey:@"code"]integerValue] == kSuccessCode) {
+            [[[UIAlertView alloc] initWithTitle:@"Profile" message:@"Successfully updated your settings!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+            [User sharedManager].follow_status = canFollow;
+            [User sharedManager].daily_notify  = canSendDailyNotifications;
+            [Utility saveUserObject:[User sharedManager] key:@"USER"];
+            btnSubmit.hidden = true;
+            
+        }else
+            [[[UIAlertView alloc] initWithTitle:@"Profile" message:@"Failed to update Settings." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
@@ -426,92 +409,23 @@ typedef enum{
     UIImage*i1 = [UIImage imageNamed:@"Intelligence_Intro_1.png"];
     UIImage*i2 = [UIImage imageNamed:@"Intelligence_Intro_2.png"];
     UIImage*i3 = [UIImage imageNamed:@"Intelligence_Intro_3.png"];
+    
     NFXIntroViewController*vc = [[NFXIntroViewController alloc] initWithViews:@[i1,i2,i3]];
     [self.navigationController pushViewController:vc animated:YES];
   
     
 }
 
-
-#pragma mark - Slider View Setup and Delegates Methods
-
-- (void)revealController:(SWRevealViewController *)revealController animateToPosition:(FrontViewPosition)position{
-    UINavigationController *nav = (UINavigationController*)revealController.rearViewController;
-    if ([[nav.viewControllers objectAtIndex:0] isKindOfClass:[MenuViewController class]]) {
-        MenuViewController *root = (MenuViewController*)[nav.viewControllers objectAtIndex:0];
-        [root resetTable];
-    }
-    if (position == FrontViewPositionRight) {
-        [self setVisibilityForOverLayIsHide:NO];
-    }else{
-        [self setVisibilityForOverLayIsHide:YES];
-    }
+-(IBAction)goBack:(id)sender{
     
-}
--(IBAction)hideSlider:(id)sender{
-    [self.revealViewController revealToggle:nil];
-}
-
--(void)setVisibilityForOverLayIsHide:(BOOL)isHide{
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [app.navGeneral willMoveToParentViewController:nil];
+    [app.navGeneral.view removeFromSuperview];
+    [app.navGeneral removeFromParentViewController];
+    app.navGeneral = nil;
+    app.window.rootViewController = nil;
+    [app showLauchPage];
     
-    if (isHide) {
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.0;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                            vwOverLay.hidden = true;
-                        }];
-        
-        
-    }else{
-        
-        vwOverLay.hidden = false;
-        [UIView transitionWithView:vwOverLay
-                          duration:0.4
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            vwOverLay.alpha = 0.7;
-                        }
-                        completion:^(BOOL finished) {
-                            
-                        }];
-        
-    }
-}
-
-
-#pragma mark state preservation / restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Save what you need here
-    
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Restore what you need here
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
-
-
-- (void)applicationFinishedRestoringState
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    // Call whatever function you need to visually restore
-    [self customSetup];
 }
 
 - (void)didReceiveMemoryWarning {

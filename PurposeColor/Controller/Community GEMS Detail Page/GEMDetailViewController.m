@@ -179,7 +179,6 @@
     
     UIView *vwHeader = [UIView new];
     vwHeader.backgroundColor = [UIColor getBackgroundOffWhiteColor];
-    
 
     /*! Title !*/
     
@@ -655,7 +654,6 @@
 
 - (void)videoDidFinish:(id)notification
 {
-    
     [self dismissViewControllerAnimated:YES completion:nil];
    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -954,18 +952,17 @@
 
 -(IBAction)goBack:(id)sender{
     
-    @try{
-      //  [videoPlayerItem removeObserver:self forKeyPath:@"playbackBufferEmpty" context:nil];
-      //  [videoPlayerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp" context:nil];
-      //  [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    }@catch(id anException){
-        //do nothing, obviously it wasn't attached because an exception was thrown
+    if (self.navigationController.viewControllers.count == 1) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app.navGeneral willMoveToParentViewController:nil];
+        [app.navGeneral.view removeFromSuperview];
+        [app.navGeneral removeFromParentViewController];
+        app.navGeneral = nil;
+        [app showLauchPage];
+    }else{
+        [[self navigationController] popViewControllerAnimated:YES];
     }
 
-    
-    
-        [[self navigationController] popViewControllerAnimated:YES];
    
 }
 

@@ -142,7 +142,18 @@ typedef enum{
         NSDictionary *details = arrList[tag];
         if (NULL_TO_NIL([details objectForKey:@"user_id"])) {
             ProfilePageViewController *profilePage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForProfilePage];
-            [[self navigationController]pushViewController:profilePage animated:YES];
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            if (!app.navGeneral) {
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:profilePage];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+            }else{
+                [app.navGeneral pushViewController:profilePage animated:YES];
+            }
             profilePage.canEdit = false;
             if ([[details objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) {
                 profilePage.canEdit = true;
@@ -235,18 +246,9 @@ typedef enum{
            
 
         }
-       
-        
-        
-        
+     
     }
-    
-    
 
-    
-    
-    
-   
 }
 
 -(NSString*)getDaysBetweenTwoDatesWith:(double)timeInSeconds{
@@ -324,7 +326,16 @@ typedef enum{
 
 -(IBAction)goBack:(id)sender{
     
-    [[self navigationController] popViewControllerAnimated:YES];
+    if (self.navigationController.viewControllers.count == 1) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app.navGeneral willMoveToParentViewController:nil];
+        [app.navGeneral.view removeFromSuperview];
+        [app.navGeneral removeFromParentViewController];
+        app.navGeneral = nil;
+        [app showLauchPage];
+    }else{
+        [[self navigationController] popViewControllerAnimated:YES];
+    }
 }
 
 

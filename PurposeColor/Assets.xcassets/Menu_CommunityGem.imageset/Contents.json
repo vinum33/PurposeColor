@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "communitygems30.png",
+      "filename" : "5inspiredGem30.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "communitygems60.png",
+      "filename" : "5inspiredGem60.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "communitygems90.png",
+      "filename" : "5inspiredGem90.png",
       "scale" : "3x"
     }
   ],

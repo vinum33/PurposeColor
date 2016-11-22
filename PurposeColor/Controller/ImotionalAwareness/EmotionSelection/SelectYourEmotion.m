@@ -22,7 +22,7 @@ typedef enum{
 #define kPadding                        60
 #define kHeightForFooter                0.1
 #define kSuccessCode                    200
-
+#define kTabHeight                      0
 
 #import "SelectYourEmotion.h"
 #import "Constants.h"
@@ -397,12 +397,8 @@ typedef enum{
     
     [self resetComposeView];
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
     UINavigationController *nav;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-        nav = (UINavigationController*)root.frontViewController;
-    
-    
+    nav = (UINavigationController*) delegate.window.rootViewController;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"EMOTION"
                                                                    message:@""
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
@@ -412,10 +408,8 @@ typedef enum{
                                                               actionType = eActionDelete;
                                                               
                                                               AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-                                                              SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
                                                               UINavigationController *nav;
-                                                              if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-                                                                  nav = (UINavigationController*)root.frontViewController;
+                                                              nav = (UINavigationController*) delegate.window.rootViewController;
                                                               
                                                               
                                                               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete"
@@ -514,12 +508,6 @@ typedef enum{
     if (actionType == eActionEdit) {
         
         AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        SWRevealViewController *root = (SWRevealViewController*)delegate.window.rootViewController;
-        UINavigationController *nav;
-        if ([root.frontViewController isKindOfClass:[UINavigationController class]])
-            nav = (UINavigationController*)root.frontViewController;
-        
-        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Edit"
                                                                        message:@"This may affect all your GEMS.Do you want to continue?"
                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -538,7 +526,7 @@ typedef enum{
         
         [alert addAction:firstAction];
         [alert addAction:second];
-        [nav presentViewController:alert animated:YES completion:nil];
+        [delegate.window.rootViewController presentViewController:alert animated:YES completion:nil];
         
     }else{
         
@@ -660,7 +648,7 @@ typedef enum{
 
 - (IBAction)setUpGrowingTextView {
     
-    containerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 50, self.frame.size.width , 55)];
+    containerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height , self.frame.size.width , 55)];
     containerView.backgroundColor = [UIColor colorWithRed:245/255.f green:245/255.f blue:245/255.f alpha:1];
     
     txtField = [[UITextField alloc] initWithFrame:CGRectMake(5, 8, self.frame.size.width - 60, 40)];
@@ -702,7 +690,7 @@ typedef enum{
     
     // get a rect for the textView frame
     CGRect containerFrame = containerView.frame;
-    containerFrame.origin.y = self.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+    containerFrame.origin.y = self.bounds.size.height + kTabHeight - (keyboardBounds.size.height + containerFrame.size.height);
     // animations settings
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
@@ -746,25 +734,19 @@ typedef enum{
 
 -(void)showLoadingScreen{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:nav.view animated:YES];
-        hud.dimBackground = YES;
-        hud.detailsLabelText = @"loading...";
-        hud.removeFromSuperViewOnHide = YES;
-        
-    }
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:delegate.window.rootViewController.view animated:YES];
+    hud.dimBackground = YES;
+    hud.detailsLabelText = @"loading...";
+    hud.removeFromSuperViewOnHide = YES;
     
     
 }
 -(void)hideLoadingScreen{
     
-    SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-    if ([root.frontViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController*)root.frontViewController;
-        [MBProgressHUD hideHUDForView:nav.view animated:YES];
-    }
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [MBProgressHUD hideHUDForView:delegate.window.rootViewController.view animated:YES];
+    
     
     
 }

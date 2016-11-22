@@ -256,7 +256,13 @@
 
 -(IBAction)goBack:(id)sender{
     
-    [[self navigationController]popViewControllerAnimated:YES];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [app.navGeneral willMoveToParentViewController:nil];
+    [app.navGeneral.view removeFromSuperview];
+    [app.navGeneral removeFromParentViewController];
+    app.navGeneral = nil;
+    [app showLauchPage];
+    
 }
 
 - (void)didReceiveMemoryWarning {

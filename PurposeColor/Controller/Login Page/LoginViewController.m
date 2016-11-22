@@ -94,8 +94,6 @@ typedef enum{
 {
     static NSString *CellIdentifier = @"reuseIdentifier";
     CustomCellForLogin *cell = (CustomCellForLogin *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-   
     cell.txtField.keyboardType = UIKeyboardTypeDefault;
     cell.txtField.tag = indexPath.row;
     cell.backgroundColor = [UIColor whiteColor];
@@ -441,7 +439,6 @@ typedef enum{
     
     if (indexForTextFieldNavigation - 1 < 0) indexForTextFieldNavigation = 0;
     else indexForTextFieldNavigation -= 1;
-    
     [self gotoTextField];
     
 }
@@ -472,8 +469,8 @@ typedef enum{
 
 
 -(IBAction)tapToLogin:(id)sender{
-    [self byPassLogin];
-    return;
+  //  [self byPassLogin];
+ //   return;
     [self checkAllFieldsAreValid:^{
         [self showLoadingScreen];
         [APIMapper loginUserWithUserName:userName userPassword:password
@@ -537,6 +534,7 @@ typedef enum{
 
 -(void)checkAllFieldsAreValid:(void (^)())success failure:(void (^)(NSString *errorMsg))failure{
     
+    [self.view endEditing:YES];
     BOOL isValid = false;
     NSString *errorMsg;
     if ((userName.length) && (password.length) > 0) {
@@ -548,7 +546,7 @@ typedef enum{
         }
     }else{
         
-          errorMsg = @"Enter a Username and Password.";
+          errorMsg = @"Enter a Email and Password.";
     }
     if (isValid)success();
     else failure(errorMsg);
@@ -634,7 +632,6 @@ typedef enum{
          if ([userDetails objectForKey:@"daily_notify"]) {
              [User sharedManager].daily_notify  = [[userDetails objectForKey:@"daily_notify"] boolValue];
          }
-         
          
          /*!............ Saving user to NSUserDefaults.............!*/
          
