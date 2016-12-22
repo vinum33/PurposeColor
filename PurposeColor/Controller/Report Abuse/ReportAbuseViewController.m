@@ -46,6 +46,7 @@
 
 -(void)setUp{
     
+    
     tableView.layer.borderColor = [UIColor getSeperatorColor].CGColor;
     tableView.layer.borderWidth = 1.f;
     selectedIndex = -1;
