@@ -164,6 +164,13 @@ typedef enum{
             UIButton *btnRecent = (UIButton*) [[cell contentView] viewWithTag:101] ;
             btnRecent.hidden = true;
         }
+        UILabel *lblTitle;
+        if ([[cell contentView] viewWithTag:51]) {
+            lblTitle = [[cell contentView] viewWithTag:51];
+            lblTitle.text = @"";
+             cell.imageView.image = Nil;
+            //Reset other cells
+        }
         return cell;
     }
    
@@ -491,6 +498,9 @@ typedef enum{
     
     [searchBar resignFirstResponder];
     arrFiltered = [NSMutableArray arrayWithArray:arrDataSource];
+    if (arrFiltered.count) {
+        isDataAvailable = true;
+    }
     [tableView reloadData];
     searchBar.text = @"";
     
@@ -662,7 +672,7 @@ typedef enum{
 -(void)getSelectedEmotionTitleWithIndex:(NSInteger)index{
     
     if (index < arrDataSource.count) {
-        NSDictionary *details = arrDataSource[index];
+        NSDictionary *details = arrFiltered[index];
         strSelectedTitle = [details objectForKey:@"title"];
         selectedEventID = [[details objectForKey:@"id"] integerValue];
     }

@@ -29,6 +29,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 #import "CustomCellWithTable.h"
 #import "GEMCustomCollectionViewCell.h"
 #import "PhotoBrowser.h"
+#import "KILabel.h"
 
 @interface GEMSListingsViewController () <SWRevealViewControllerDelegate,GEMSMediaListDelegate,ActionDetailCellDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate>{
     
@@ -447,10 +448,10 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
             cell.contentView.backgroundColor = [UIColor clearColor];
             if (indexPath.section < arrDataSource.count) {
                 NSDictionary *details = arrDataSource[indexPath.section];
-                UILabel *lblInfo;
+                KILabel *lblInfo;
                 UILabel *dateInfo;
                 
-                if ([[[cell contentView] viewWithTag:1] isKindOfClass:[UILabel class]])lblInfo = [[cell contentView] viewWithTag:1];
+                if ([[[cell contentView] viewWithTag:1] isKindOfClass:[KILabel class]])lblInfo = [[cell contentView] viewWithTag:1];
                 if ([[[cell contentView] viewWithTag:2] isKindOfClass:[UILabel class]])dateInfo = [[cell contentView] viewWithTag:2];
                 
                 if (NULL_TO_NIL([details objectForKey:@"datetime"])) {
@@ -461,12 +462,18 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                 lblInfo.hidden = false;
                 dateInfo.hidden = false;
                 
+                lblInfo.systemURLStyle = YES;
+                lblInfo.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
+                    // Open URLs
+                    [self attemptOpenURL:[NSURL URLWithString:string]];
+                };
+                
                 if ([details objectForKey:@"details"]) {
                     UIFont *font = [UIFont fontWithName:CommonFont size:14];
                     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
                     paragraphStyle.lineHeightMultiple = 1.2f;
                     NSDictionary *attributes = @{NSFontAttributeName:font,
-                                                 NSParagraphStyleAttributeName:paragraphStyle,
+                                               
                                                  };
                     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[details objectForKey:@"details"] attributes:attributes];
                     lblInfo.attributedText = attributedText;
@@ -1375,7 +1382,33 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 }
 
 
-
+- (void)attemptOpenURL:(NSURL *)url
+{
+    
+    
+    BOOL safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (!safariCompatible) {
+        
+        NSString *urlString = url.absoluteString;
+        urlString = [NSString stringWithFormat:@"http://%@",url.absoluteString];
+        url = [NSURL URLWithString:urlString];
+        
+    }
+    safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (safariCompatible && [[UIApplication sharedApplication] canOpenURL:url])
+    {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                        message:@"The selected link cannot be opened."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Dismiss"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+}
 
 
 - (void)didReceiveMemoryWarning {

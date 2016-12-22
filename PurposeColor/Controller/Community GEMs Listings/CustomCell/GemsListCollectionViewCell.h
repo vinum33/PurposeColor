@@ -10,6 +10,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 #import "Constants.h"
+#import "KILabel.h"
 
 @protocol GemListingsDelegate <NSObject>
 
@@ -104,7 +105,7 @@
 @property (nonatomic,weak) IBOutlet  UIButton *btnFollow;
 @property (nonatomic,weak) IBOutlet  UIButton *btnEdit;
 
-@property (nonatomic, weak) IBOutlet UILabel *lblDescription;
+@property (nonatomic, weak) IBOutlet KILabel *lblDescription;
 @property (nonatomic, weak) IBOutlet UILabel *lblShareOrSave;
 @property (nonatomic, weak) IBOutlet UILabel *lblShareCaption;
 @property (nonatomic, weak) IBOutlet UILabel *lblName;

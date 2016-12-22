@@ -112,6 +112,7 @@
 
 + (void)logoutFromAccount:(NSString*)userID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
++ (void)updateBadgeCountWithuserIDOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)updateUserSettingsWithUserID:(NSString*)userID canFollow:(BOOL)canFollow dailyNotification:(BOOL)dailyNotification success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
@@ -120,5 +121,11 @@
 +(void)createOrEditAGoalWith:(NSArray*)dataSource eventTitle:(NSString*)title description:(NSString*)descritption latitude:(double)latitude longitude:(double)longitude locName:(NSString*)locName address:(NSString*)locAddress contactName:(NSString*)conatctName gemID:(NSString*)gemID goalID:(NSString*)goalID deletedIDs:(NSMutableArray*)deletedIDs gemType:(NSString*)gemType achievementDate:(double)achievementDate status:(NSString*)status isPurposeColor:(BOOL)isPurposeColor OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure progress:(void (^)( long long totalBytesWritten,long long totalBytesExpectedToWrite))progress;
 
 +(void)createAJournelWith:(NSArray*)dataSource description:(NSString*)descritption latitude:(double)latitude longitude:(double)longitude locName:(NSString*)locName address:(NSString*)locAddress contactName:(NSString*)conatctName emotionAwarenssValues:(NSDictionary*)awarenessValues OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure progress:(void (^)( long long totalBytesWritten,long long totalBytesExpectedToWrite))progress;
+
++ (void)getAllAbuseReasonsOnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)postReportAbuseWithUserID:(NSString*)userID gemUserID:(NSString*)gemUserID gemID:(NSString*)gemID option:(NSInteger)option otherInfo:(NSString*)otherInfo success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)getWebContentWithType:(NSString*)type success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 @end

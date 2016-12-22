@@ -7,12 +7,11 @@
 //
 
 
-
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 #import "AppDelegate.h"
 #import "MenuViewController.h"
 #import "Constants.h"
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
 #import "ChatComposeViewController.h"
 #import "JCNotificationCenter.h"
 #import "JCNotificationBannerPresenterIOSStyle.h"
@@ -59,9 +58,11 @@
     [Utility setUpGoogleMapConfiguration];
     [self checkUserStatus];
     [self reachability];
-  
+    [self resetBadgeCount];
     return YES;
 }
+
+
 
 
 #pragma mark - Reachability
@@ -117,7 +118,15 @@
 }
 
 
-
+-(void)resetBadgeCount{
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    [APIMapper updateBadgeCountWithuserIDOnsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+        
+    }];
+}
 
 #pragma mark - Push Notifications
 
@@ -152,6 +161,7 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
+    [self resetBadgeCount];
     if(application.applicationState == UIApplicationStateInactive) {
         [self handleNotificationWhenBackGroundWith:userInfo];
        completionHandler(UIBackgroundFetchResultNewData);
@@ -720,6 +730,18 @@
             [self showReminders];
             break;
             
+        case eMenu_Terms:
+            [self showTermsOfSerivice];
+            break;
+            
+        case eMenu_Privacy:
+            [self showPrivacyPolicy];
+            break;
+            
+        case eMenu_Share:
+            [self shareApp];
+            break;
+            
         default:
             break;
     }
@@ -843,17 +865,41 @@
 -(void)showPrivacyPolicy{
     
     WebBrowserViewController *browser = [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForWebBrowser];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:browser];
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-    _navGeneral = navHome;
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:browser];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
     _navGeneral.navigationBarHidden = true;
     browser.strTitle = @"PRIVACY POLICY";
-    browser.strURL =[NSString stringWithFormat:@"%@privacy-policy.php",ExternalWebPageURL];
+    
     
 }
+
+-(void)shareApp{
+    
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    UINavigationController *nav;
+    nav = (UINavigationController*) delegate.window.rootViewController;
+    NSArray *objectsToShare = @[[NSURL URLWithString:@"https://itunes.apple.com/us/app/purpose-color-life-success/id1186639523?ls=1&mt=8"]];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+    NSArray *excludeActivities = @[UIActivityTypeAirDrop,
+                                   UIActivityTypePrint,
+                                   UIActivityTypeAssignToContact,
+                                   UIActivityTypeSaveToCameraRoll,
+                                   UIActivityTypeAddToReadingList,
+                                   UIActivityTypePostToFlickr,
+                                   UIActivityTypePostToVimeo];
+    
+    activityVC.excludedActivityTypes = excludeActivities;
+    [nav presentViewController:activityVC animated:YES completion:nil];
+
+    
+}
+
 -(void)showTermsOfSerivice{
     
     WebBrowserViewController *browser = [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForWebBrowser];
@@ -867,7 +913,6 @@
                     completion:nil];
     _navGeneral.navigationBarHidden = true;
     browser.strTitle = @"TERMS OF SERVICE";
-    browser.strURL =[NSString stringWithFormat:@"%@terms.php",ExternalWebPageURL];
     
 }
 
@@ -896,6 +941,8 @@
                     animations:^{  app.window.rootViewController = app.navGeneral; }
                     completion:nil];
 }
+
+
 
 -(void)logOutUser{
     
@@ -992,6 +1039,8 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    
+    [self resetBadgeCount];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

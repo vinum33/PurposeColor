@@ -24,6 +24,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 #import "CustomCellWithTable.h"
 #import "GEMCustomCollectionViewCell.h"
 #import "PhotoBrowser.h"
+#import "KILabel.h"
 
 @interface GEMSWithHeaderListingsViewController () <SWRevealViewControllerDelegate,GEMSMediaListDelegate,ActionDetailCellDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate>{
     

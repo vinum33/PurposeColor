@@ -17,13 +17,15 @@
      
     eMenu_SavedGEMs = 6,
     eMenu_Notifications = 7,
-    eMenu_Logout = 8,
-    eMenu_Memories = 9,
-    eMenu_Help = 10,
-    eMenu_Share = 11,
-    eMenu_Favourites = 12,
-    eMenu_Profile = 13,
-    eMenu_Settings = 14,
+    eMenu_Privacy = 8,
+    eMenu_Terms = 9,
+    eMenu_Share = 10,
+    eMenu_Logout = 11,
+    eMenu_Memories = 12,
+    eMenu_Help = 13,
+    eMenu_Favourites = 14,
+    eMenu_Profile = 15,
+    eMenu_Settings = 16,
      
  };typedef NSInteger EMenuActions ;
 

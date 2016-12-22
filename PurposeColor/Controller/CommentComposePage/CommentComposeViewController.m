@@ -283,7 +283,8 @@
     textView.backgroundColor = [UIColor whiteColor];
     textView.placeholder = @"Comment..";
     textView.internalTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-    
+    //textView.keyboardType=UIKeyboardTypeASCIICapable;
+
     // textView.text = @"test\n\ntest";
     // textView.animateHeightChange = NO; //turns off animation
     

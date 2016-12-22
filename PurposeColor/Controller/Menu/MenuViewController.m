@@ -70,6 +70,9 @@
     
     [arrCategories addObject:@"Saved GEMs"];
     [arrCategories addObject:@"Notifications"];
+    [arrCategories addObject:@"Privacy Policy"];
+    [arrCategories addObject:@"Terms of Service"];
+    [arrCategories addObject:@"App Share"];
     [arrCategories addObject:@"Logout"];
     [_tableView reloadData];
 }
@@ -87,7 +90,7 @@
     if (section == 0)
         return 6;
     else
-        return 3;
+        return 6;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -138,9 +141,17 @@
             cell.imageView.image = [UIImage imageNamed:@"Menu_Notifications.png"];
         }
         else if (indexPath.row == 2) {
+            cell.imageView.image = [UIImage imageNamed:@"Menu_Privacy.png"];
+        }
+        else if (indexPath.row == 3) {
+            cell.imageView.image = [UIImage imageNamed:@"Menu_Terms.png"];
+        }
+        else if (indexPath.row == 4) {
+            cell.imageView.image = [UIImage imageNamed:@"Menu_Share.png"];
+        }
+        else if (indexPath.row == 5) {
             cell.imageView.image = [UIImage imageNamed:@"LogoutIcon.png"];
         }
-       
         
     }
     

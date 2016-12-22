@@ -455,8 +455,8 @@ typedef enum{
 
 -(void)getSelectedEmotionTitleWithIndex:(NSInteger)index{
     
-    if (index < arrDataSource.count) {
-        NSDictionary *details = arrDataSource[index];
+    if (index < arrFiltered.count) {
+        NSDictionary *details = arrFiltered[index];
         strSelectedTitle = [details objectForKey:@"title"];
         selectedEmotionID = [[details objectForKey:@"id"] integerValue];
     }

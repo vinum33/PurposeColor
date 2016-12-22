@@ -279,6 +279,10 @@ typedef enum{
     if (strDescription.length) {
         cell.txtDecsription.text = strDescription;
     }
+    
+    cell.txtTitle.keyboardType=UIKeyboardTypeASCIICapable;
+    cell.txtDecsription.keyboardType=UIKeyboardTypeASCIICapable;
+    
     cell.vwBg.layer.borderWidth = 1.f;
     cell.vwBg.layer.borderColor = [UIColor colorWithRed:0.31 green:0.47 blue:0.61 alpha:1.0].CGColor;
     cell.vwBg.backgroundColor = [UIColor clearColor];

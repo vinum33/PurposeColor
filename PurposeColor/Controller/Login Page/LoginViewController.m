@@ -466,11 +466,7 @@ typedef enum{
     
 }
 
-
-
 -(IBAction)tapToLogin:(id)sender{
-  //  [self byPassLogin];
- //   return;
     [self checkAllFieldsAreValid:^{
         [self showLoadingScreen];
         [APIMapper loginUserWithUserName:userName userPassword:password
@@ -504,33 +500,8 @@ typedef enum{
     }];
     
 }
--(void)byPassLogin{
-    
-    [self showLoadingScreen];
-    [APIMapper loginUserWithUserName:@"vinayan@purposecodes.com" userPassword:@"12345"
-                             success:^(AFHTTPRequestOperation *operation, id responseObject){
-                                 NSDictionary *responds = (NSDictionary*)responseObject;
-                                 if ( NULL_TO_NIL([responds objectForKey:@"code"])) {
-                                     NSInteger statusCode = [[responds objectForKey:@"code"] integerValue];
-                                     if (statusCode == StatusSucess) {
-                                         [self createUserWithInfo:responseObject];
-                                         [[self delegate]goToHomeAfterLogin];
-                                     }
-                                     else{
-                                         if ( NULL_TO_NIL( [responds objectForKey:@"text"]))
-                                             [self showAlertWithMessage:[responds  objectForKey:@"text"] title:@"Login"];
-                                     }
-                                 }
-                                 [self hideLoadingScreen];
-                             }
-                             failure:^(AFHTTPRequestOperation *operation, NSError *error){
-                                 
-                                 [self showAlertWithMessage:[error localizedDescription] title:@"Login"];
-                                 [self hideLoadingScreen];
-                                 
-                             }];
 
-}
+
 
 -(void)checkAllFieldsAreValid:(void (^)())success failure:(void (^)(NSString *errorMsg))failure{
     
@@ -546,7 +517,7 @@ typedef enum{
         }
     }else{
         
-          errorMsg = @"Enter a Email and Password.";
+          errorMsg = @"Enter Email and Password.";
     }
     if (isValid)success();
     else failure(errorMsg);

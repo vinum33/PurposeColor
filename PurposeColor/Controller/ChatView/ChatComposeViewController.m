@@ -276,7 +276,14 @@
         if ([[chatInfo objectForKey:@"in_out"] integerValue] == 1) {
             sender = @"YOU";
         }
+        
+        
         NSString *message = [chatInfo objectForKey:@"msg"];
+      //  NSString *emojiEscaped = string;
+      //  NSData *emojiData = [emojiEscaped dataUsingEncoding:NSUTF8StringEncoding];
+      //  NSString *emojiString = [[NSString alloc] initWithData:emojiData encoding:NSNonLossyASCIIStringEncoding];
+        //NSString *message =  string;
+        
         if ([chatInfo objectForKey:@"chat_datetime"]) {
             double serverTime = [[chatInfo objectForKey:@"chat_datetime"] doubleValue];
             localDateTime = [Utility getDaysBetweenTwoDatesWith:serverTime];
@@ -284,8 +291,14 @@
         }
         cell.lblTime.text = localDateTime;
         UIImage *bgImage = nil;
-        cell.lblMessage.text = message;
-       
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineHeightMultiple = 1.2f;
+        NSDictionary *attributes = @{NSFontAttributeName:[UIFont fontWithName:CommonFont size:14],
+                                     NSParagraphStyleAttributeName:paragraphStyle,
+                                     };
+        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:message attributes:attributes];
+        cell.lblMessage.attributedText = attributedText;
+        
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
         [cell.contentView addGestureRecognizer:longPress];
         cell.contentView.tag = indexPath.row;
@@ -332,7 +345,7 @@
 -(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     float widthPadding = 110;
-    float heightPadding = 50;
+    float heightPadding = 60;
     CGFloat height = kDefaultCellHeight;
     CGFloat width = _tableView.bounds.size.width - widthPadding;
     if (indexPath.row < arrMessages.count) {
@@ -343,9 +356,12 @@
         CGSize constraint = CGSizeMake(_tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
         CGFloat height;
         NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineHeightMultiple = 1.2f;
         CGSize boundingBox = [msg boundingRectWithSize:constraint
                                                options:NSStringDrawingUsesLineFragmentOrigin
-                                            attributes:@{NSFontAttributeName:[UIFont fontWithName:CommonFont size:14]}
+                                            attributes:@{NSFontAttributeName:[UIFont fontWithName:CommonFont size:14],NSParagraphStyleAttributeName:paragraphStyle}
                                                context:context].size;
         height = boundingBox.height + heightPadding;
         width = boundingBox.width + 90;
@@ -420,7 +436,7 @@
     textView.backgroundColor = [UIColor whiteColor];
     textView.placeholder = @"Message..";
     textView.internalTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-    textView.keyboardType = UIKeyboardTypeASCIICapable;
+    //textView.keyboardType = UIKeyboardTypeASCIICapable;
     
     // textView.animateHeightChange = NO; //turns off animation
     
@@ -470,6 +486,7 @@
                          [self.view layoutIfNeeded];
                           // Called on parent view
                      }];
+   
     
 }
 

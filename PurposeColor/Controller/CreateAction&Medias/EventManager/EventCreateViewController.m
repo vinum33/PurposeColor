@@ -343,6 +343,8 @@ typedef enum{
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
     cell.txtTitle.leftView = paddingView;
     cell.txtTitle.leftViewMode = UITextFieldViewModeAlways;
+    cell.txtTitle.keyboardType=UIKeyboardTypeASCIICapable;
+    cell.txtDescrption.keyboardType=UIKeyboardTypeASCIICapable;
 
    // [cell.txtDescrption setContentOffset:CGPointZero animated:NO];
 

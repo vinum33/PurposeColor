@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "KILabel.h"
 
 @protocol ActionDetailsCustomCellDelegate <NSObject>
 
@@ -36,7 +36,7 @@
 
 @interface ActionDetailsCustomCell : UITableViewCell
 
-@property (nonatomic,weak) IBOutlet UILabel *lblDescription;
+@property (nonatomic,weak) IBOutlet KILabel *lblDescription;
 @property (nonatomic,weak) IBOutlet UILabel *lblTitle;
 @property (nonatomic,weak) IBOutlet UILabel *lblDate;
 @property (nonatomic,weak) IBOutlet UIButton *btnEdit;

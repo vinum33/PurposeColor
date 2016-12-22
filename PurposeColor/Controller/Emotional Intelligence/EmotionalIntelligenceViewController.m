@@ -373,6 +373,9 @@ typedef enum{
     if (indexPath.section == eDetailed) {
         if (indexPath.row < arrDetailed.count) {
             NSDictionary *details = arrDetailed[[indexPath row]];
+            if ([[details objectForKey:@"supportingemotion_status"] boolValue]) {
+                return;
+            }
             UIAlertController * alert=  [UIAlertController
                                          alertControllerWithTitle:@"Supporting Emotions"
                                          message:@"Add to Supporting emotions ?"
@@ -393,6 +396,7 @@ typedef enum{
                                          if ( NULL_TO_NIL( [responseObject objectForKey:@"text"]))
                                              [[[UIAlertView alloc] initWithTitle:@"Supporting Emotions" message:[responseObject objectForKey:@"text"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                                          [self hideLoadingScreen];
+                                         [self updateEmotionStatusithIndex:indexPath.row shouldEnable:YES];
                                          [tableView reloadData];
                                          
                                      } failure:^(AFHTTPRequestOperation *task, NSError *error) {
@@ -428,6 +432,44 @@ typedef enum{
 }
 
 
+- (void)updateEmotionStatusithIndex:(NSInteger)index shouldEnable:(BOOL)shouldEnable{
+    
+    if (shouldEnable) {
+        
+        if ( index < arrDataSource.count ) {
+            NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrDataSource[index]] ;
+            [details setObject:[NSNumber numberWithBool:1] forKey:@"supportingemotion_status"];
+            [arrDataSource replaceObjectAtIndex:index withObject:details];
+            [arrDetailed replaceObjectAtIndex:index withObject:details];
+            
+        }
+    }
+    else{
+        
+        if ( index < arrDataSource.count ) {
+            NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrDataSource[index]] ;
+            NSInteger indexOfObj = 0;
+            for (NSDictionary *dict in arrDetailed) {
+                if ([dict objectForKey:@"emotion_id"] == [details objectForKey:@"emotion_id"]) {
+                    break;
+                    
+                }
+                indexOfObj ++;
+            }
+            if (indexOfObj < arrDetailed.count) {
+                NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrDetailed[indexOfObj]] ;
+                [details setObject:[NSNumber numberWithBool:0] forKey:@"supportingemotion_status"];
+                [arrDetailed replaceObjectAtIndex:indexOfObj withObject:details];
+            }
+            
+           // [arrs replaceObjectAtIndex:index withObject:details];
+            
+        }
+       
+    }
+    
+}
+
 -(IBAction)deleteEmotion:(ButtonWithID*)sender{
     
         if (sender.index < arrSupportingEmotions.count){
@@ -446,7 +488,7 @@ typedef enum{
                                          preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction* ok = [UIAlertAction
-                                 actionWithTitle:@"OK"
+                                 actionWithTitle:@"YES"
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -454,8 +496,12 @@ typedef enum{
                                      
                                      [APIMapper deleteEmotionFromSupportingEmotionsWithEmotionID:[details objectForKey:@"emotion_id"] userID:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                          
-                                         if ([[responseObject objectForKey:@"code"] integerValue] == kSuccessCode)
-                                             [arrSupportingEmotions removeObjectAtIndex:sender.index];
+                                         if ([[responseObject objectForKey:@"code"] integerValue] == kSuccessCode){
+                                             
+                                             [self updateEmotionStatusithIndex:sender.index shouldEnable:NO];
+                                              [arrSupportingEmotions removeObjectAtIndex:sender.index];
+                                         }
+                                         
                                          arrDataSource = [NSMutableArray arrayWithArray:arrSupportingEmotions];
                                          NSRange range = NSMakeRange(5, 1);
                                          NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:range];
@@ -464,6 +510,8 @@ typedef enum{
                                          if ( NULL_TO_NIL( [responseObject objectForKey:@"text"]))
                                              [[[UIAlertView alloc] initWithTitle:@"Supporting Emotions" message:[responseObject objectForKey:@"text"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                                          [self hideLoadingScreen];
+                                         
+                                         [tableView reloadData];
                                          
                                      } failure:^(AFHTTPRequestOperation *task, NSError *error) {
                                          if (error && error.localizedDescription) [ALToastView toastInView:self.view withText:NETWORK_ERROR_MESSAGE];
@@ -475,7 +523,7 @@ typedef enum{
                                  }];
             
             UIAlertAction* cancel = [UIAlertAction
-                                     actionWithTitle:@"CANCEL"
+                                     actionWithTitle:@"NO"
                                      style:UIAlertActionStyleDefault
                                      handler:^(UIAlertAction * action)
                                      {
@@ -534,7 +582,7 @@ typedef enum{
                 imgArrow = [[cell contentView] viewWithTag:2];
                 imgArrow.hidden = true;
                 [imgArrow setImage:[UIImage imageNamed:@"Right_Arrow.png"]];
-                if (selectedSection == eDetailed){
+                if (selectedSection == eDetailed && ![[details objectForKey:@"supportingemotion_status"] boolValue]){
                     imgArrow.hidden = false;
                 }
                 

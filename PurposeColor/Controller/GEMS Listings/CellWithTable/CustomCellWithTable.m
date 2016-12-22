@@ -16,6 +16,7 @@
 #import "CustomCellWithTable.h"
 #import "InnerTableViewCell.h"
 #import "Constants.h"
+#import "KILabel.h"
 
 @interface CustomCellWithTable()<ActionCellDelegate>{
     
@@ -102,9 +103,14 @@
         
         if (indexPath.section < dataSource.count) {
             NSDictionary *details = dataSource[indexPath.section];
-            UILabel *lblInfo;
-            if ([[[cell contentView] viewWithTag:1] isKindOfClass:[UILabel class]]) {
+            KILabel *lblInfo;
+            if ([[[cell contentView] viewWithTag:1] isKindOfClass:[KILabel class]]) {
                 lblInfo = [[cell contentView] viewWithTag:1];
+                lblInfo.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
+                    // Open URLs
+                    [self attemptOpenURL:[NSURL URLWithString:string]];
+                };
+
                 
             }
             if (NULL_TO_NIL([details objectForKey:@"action_details"])) {
@@ -113,7 +119,6 @@
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
                 paragraphStyle.lineHeightMultiple = 1.2f;
                 NSDictionary *attributes = @{NSFontAttributeName:font,
-                                             NSParagraphStyleAttributeName:paragraphStyle,
                                              };
                 NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[details objectForKey:@"action_details"] attributes:attributes];
                 lblInfo.attributedText = attributedText;
@@ -631,5 +636,32 @@
 
 }
 
+- (void)attemptOpenURL:(NSURL *)url
+{
+    
+    
+    BOOL safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (!safariCompatible) {
+        
+        NSString *urlString = url.absoluteString;
+        urlString = [NSString stringWithFormat:@"http://%@",url.absoluteString];
+        url = [NSURL URLWithString:urlString];
+        
+    }
+    safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (safariCompatible && [[UIApplication sharedApplication] canOpenURL:url])
+    {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                        message:@"The selected link cannot be opened."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Dismiss"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+}
 
 @end

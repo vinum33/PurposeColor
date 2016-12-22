@@ -33,6 +33,7 @@ typedef enum{
     IBOutlet UIButton *btnSubmit;
     IBOutlet UISwitch *switchCanFollow;
     IBOutlet UISwitch *switchDailyNotfction;
+    NSInteger tapCount;
     
     
     BOOL canFollow;
@@ -229,6 +230,10 @@ typedef enum{
                                                              attribute:NSLayoutAttributeCenterY
                                                             multiplier:1.0
                                                               constant:0]];
+        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showToast)];
+        gesture.numberOfTapsRequired = 1;
+        [vwHeader addGestureRecognizer:gesture];
+        
         lblStatus.text = @"General";//
         return vwHeader;
     }
@@ -414,6 +419,23 @@ typedef enum{
     [self.navigationController pushViewController:vc animated:YES];
   
     
+}
+
+-(void)showToast{
+    
+    tapCount ++;
+    if (tapCount == 1) {
+        [self performSelector:@selector(resetTapTimer) withObject:nil afterDelay:5.0f];
+    }
+    if (tapCount == 7){
+        tapCount = 0;
+        [ALToastView toastInView:self.view withText:@"That's the key to success"];
+    }
+    
+}
+-(void)resetTapTimer{
+    
+    tapCount = 0;
 }
 
 -(IBAction)goBack:(id)sender{

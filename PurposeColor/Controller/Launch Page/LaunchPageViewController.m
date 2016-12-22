@@ -96,6 +96,7 @@
     CGPoint p = [sender.superview.superview convertPoint:sender.frame.origin toView:self.view];
     if (popTip) {
         [popTip hide];
+        popTip = nil;
     }
     popTip = [AMPopTip popTip];
     [popTip showText:@"Visualization" direction:AMPopTipDirectionDown maxWidth:200 inView:self.view fromFrame:CGRectMake(p.x, p.y, 50, 50) duration:2];

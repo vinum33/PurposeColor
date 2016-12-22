@@ -125,6 +125,7 @@
 }
 
 -(void)ButtonPushed:(UIButton*)button{
+     _button.enabled = false;
     int page_ = (int)round(_scrollview.contentOffset.x / _scrollview.frame.size.width);
     /**
      *  scroll or finish
@@ -132,7 +133,8 @@
     if (page_!=(_images.count-1)) {
         CGRect rect = _scrollview.frame;
         rect.origin.x = rect.size.width * (page_+1);
-        [_scrollview scrollRectToVisible:rect animated:true];
+       
+        [_scrollview scrollRectToVisible:rect animated:YES];
     }else{
         if (self.navigationController.viewControllers.count == 1) {
             AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
@@ -155,6 +157,10 @@
         [_button setTitle:nextText forState:UIControlStateNormal];
     }
     _pgcontrol.currentPage = page_;
+    
+}
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    _button.enabled = true;
 }
 
 - (void)viewDidLoad {

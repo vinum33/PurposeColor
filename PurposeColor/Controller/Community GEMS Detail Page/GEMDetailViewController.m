@@ -23,6 +23,7 @@
 #import "PhotoBrowser.h"
 #import "CreateActionInfoViewController.h"
 #import "ACRObservingPlayerItem.h"
+#import "KILabel.h"
 
 @interface GEMDetailViewController ()<GemDetailPageCellDelegate,CommentActionDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate,ACRObservingPlayerItemDelegate>{
     
@@ -467,7 +468,7 @@
     
     /*! Gem Details !*/
     
-    UILabel *lblDetails = [UILabel new];
+    KILabel *lblDetails = [KILabel new];
     lblDetails.translatesAutoresizingMaskIntoConstraints = NO;
     [vwHeader addSubview:lblDetails];
     lblDetails.numberOfLines = 0;
@@ -484,14 +485,19 @@
     if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_details"])){
         
         font = [UIFont fontWithName:CommonFont size:14];
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineHeightMultiple = 1.2f;
         NSDictionary *attributes = @{NSFontAttributeName:font,
-                                     NSParagraphStyleAttributeName:paragraphStyle,
                                      };
         NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[_gemDetails objectForKey:@"gem_details"] attributes:attributes];
         lblDetails.attributedText = attributedText;
+        lblDetails.systemURLStyle = YES;
+        lblDetails.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
+            // Open URLs
+            [self attemptOpenURL:[NSURL URLWithString:string]];
+        };
+
+        
     }
+    
     
     return vwHeader;
 }
@@ -964,6 +970,34 @@
     }
 
    
+}
+
+- (void)attemptOpenURL:(NSURL *)url
+{
+    
+    
+    BOOL safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (!safariCompatible) {
+        
+        NSString *urlString = url.absoluteString;
+        urlString = [NSString stringWithFormat:@"http://%@",url.absoluteString];
+        url = [NSURL URLWithString:urlString];
+        
+    }
+    safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (safariCompatible && [[UIApplication sharedApplication] canOpenURL:url])
+    {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                        message:@"The selected link cannot be opened."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Dismiss"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (void)dealloc {

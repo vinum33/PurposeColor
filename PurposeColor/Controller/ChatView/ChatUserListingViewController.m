@@ -7,7 +7,7 @@
 //
 
 #define kSectionCount               1
-#define kDefaultCellHeight          70
+#define kDefaultCellHeight          80
 #define kSuccessCode                200
 #define kMinimumCellCount           1
 
@@ -23,7 +23,6 @@
 @interface ChatUserListingViewController (){
     
     IBOutlet UITableView *tableView;
-    
     NSMutableArray *arrChatUser;
     BOOL isDataAvailable;
     BOOL showIndicator;
@@ -156,7 +155,6 @@
                                                
                                            }];
             }
-
             
         }
         
@@ -189,7 +187,6 @@
                                                   [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:CommonFontBold size:14.0] range:NSMakeRange(0, 5)];
                                                   lblName.attributedText = str;
                 
-                                                  
             }else if (NULL_TO_NIL([productInfo objectForKey:@"msg"])){
                  lblName.text = @"";
                  lblName.text = [productInfo objectForKey:@"msg"];
@@ -235,8 +232,6 @@
     [[self navigationController]pushViewController:chatCompose animated:YES];
     
 }
-
-
 
 #pragma mark - Generic Methods
 

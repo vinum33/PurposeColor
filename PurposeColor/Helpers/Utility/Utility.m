@@ -103,9 +103,6 @@
 }
 
 
-
-
-
 +(UIImage*)getThumbNailFromVideoURL:(NSString*)videoURL{
     
     NSURL *url = [NSURL fileURLWithPath:videoURL];

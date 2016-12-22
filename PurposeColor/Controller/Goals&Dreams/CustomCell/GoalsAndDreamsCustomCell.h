@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Constants.h"
+#import "KILabel.h"
 
 @protocol GoalsAndDreamsCustomCellDelegate <NSObject>
 
@@ -49,7 +50,7 @@
 @property (nonatomic,weak) IBOutlet UIButton *btnShareStatus;
 @property (nonatomic,weak) IBOutlet UIImageView *imgTransparentVideo;
 
-@property (nonatomic,weak) IBOutlet UILabel *lblDescription;
+@property (nonatomic,weak) IBOutlet KILabel *lblDescription;
 @property (nonatomic,weak) IBOutlet UILabel *lblActionCount;
 @property (nonatomic,assign) NSInteger section;
 @property (nonatomic,assign) NSInteger row;

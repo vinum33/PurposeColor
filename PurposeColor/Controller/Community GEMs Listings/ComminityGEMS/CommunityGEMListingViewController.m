@@ -35,6 +35,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 #import "CreateActionInfoViewController.H"
 #import "MenuViewController.h"
 #import "FTPopOverMenu.h"
+#import "ReportAbuseViewController.h"
 
 @interface CommunityGEMListingViewController ()<GemListingsDelegate,CommentActionDelegate,MediaListingPageDelegate,shareMediasDelegate,SWRevealViewControllerDelegate>{
     
@@ -450,6 +451,9 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     if (count >= OneK) cell.lblCmntCount.text = [NSString stringWithFormat:@"%@",[self getCountInTermsOfThousand:count]];
     else cell.lblCmntCount.text = [NSString stringWithFormat:@"%d",[[details objectForKey:@"comment_count"] integerValue]];
     
+    cell.btnMore.hidden = false;
+    if ([[details objectForKey:@"type"] isEqualToString:@"purposecolor"]) cell.btnMore.hidden = true;
+    
     cell.bnExpandGallery.hidden = TRUE;
     cell.lblMediaCount.hidden = TRUE;
     if (NULL_TO_NIL([details objectForKey:@"gem_media"])){
@@ -556,18 +560,25 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         if (NULL_TO_NIL([gemDetails objectForKey:@"gem_type"]))
             gemType = [gemDetails objectForKey:@"gem_type"];
         
-        // [self updateGEMWithVisibilityStatus:index];
-        
-        //        if (gemID && gemType) {
-        //            [APIMapper hideAGEMWith:[User sharedManager].userId gemID:gemID gemType:gemType success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //
-        //
-        //            } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-        //
-        //            }];
-        //        }
-        
+        AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        ReportAbuseViewController *reportAbuseVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForReportAbuse];
+        reportAbuseVC.gemDetails = gemDetails;
+        if (!deleagte.navGeneral) {
+            
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            app.navGeneral = [[UINavigationController alloc] initWithRootViewController:reportAbuseVC];
+            app.navGeneral.navigationBarHidden = true;
+            [UIView transitionWithView:app.window
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{  app.window.rootViewController = app.navGeneral; }
+                            completion:nil];
+            
+        }else{
+            [deleagte.navGeneral pushViewController:reportAbuseVC animated:YES];
+        }
     }
+
 }
 
 #pragma mark - Custom Cell Delegate For Hide A Gem Method

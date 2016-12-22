@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Purpose Color</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,7 +24,7 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.purposecode.purposecolor</string>
+			<string>com.purposecodes.purposecolor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>PurposeColorApp</string>
@@ -30,11 +32,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1.1</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
-		<string>8d25594767becf2c04b2857a47eab1888521e527</string>
+		<string>6c64129d56a571300d4818da0b18be2b19f79c55</string>
 		<key>Kits</key>
 		<array>
 			<dict>

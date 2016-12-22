@@ -393,6 +393,10 @@ typedef enum{
         if (strDescription.length) {
             cell.txtDecsription.text = strDescription;
         }
+        
+        cell.txtTitle.keyboardType=UIKeyboardTypeASCIICapable;
+        cell.txtDecsription.keyboardType=UIKeyboardTypeASCIICapable;
+        
         cell.txtTitle.hidden = true;
         cell.txtTitle.tag = indexPath.row;
         cell.txtDecsription.tag = indexPath.row;
@@ -463,7 +467,8 @@ typedef enum{
         if (_actionType == eActionTypeGoalsAndDreams) {
             cell.txtDecsription.placeholder = @"Reason why";
         }
-        
+        cell.txtTitle.keyboardType=UIKeyboardTypeASCIICapable;
+        cell.txtDecsription.keyboardType=UIKeyboardTypeASCIICapable;
         UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
         cell.txtTitle.leftView = paddingView;
         cell.txtTitle.leftViewMode = UITextFieldViewModeAlways;
@@ -1713,10 +1718,9 @@ typedef enum{
                                  }
                                  
                              }
-
-                             
-                             
+      
                          }];
+    
     UIAlertAction* cancel = [UIAlertAction
                              actionWithTitle:@"Cancel"
                              style:UIAlertActionStyleDefault

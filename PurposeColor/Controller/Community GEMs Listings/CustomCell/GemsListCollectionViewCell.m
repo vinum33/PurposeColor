@@ -21,8 +21,43 @@
     _btnBanner.layer.borderWidth = 1.f;
     _btnBanner.layer.borderColor = [UIColor colorWithRed:0.83 green:0.83 blue:0.83 alpha:1.0].CGColor;
     _btnBanner.layer.cornerRadius = 3.f;
+    _lblDescription.systemURLStyle = YES;
+    _lblDescription.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
+        // Open URLs
+        [self attemptOpenURL:[NSURL URLWithString:string]];
+    };
 
 }
+
+- (void)attemptOpenURL:(NSURL *)url
+{
+    
+
+    BOOL safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (!safariCompatible) {
+        
+        NSString *urlString = url.absoluteString;
+        urlString = [NSString stringWithFormat:@"http://%@",url.absoluteString];
+        url = [NSURL URLWithString:urlString];
+        
+    }
+    safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (safariCompatible && [[UIApplication sharedApplication] canOpenURL:url])
+    {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                        message:@"The selected link cannot be opened."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Dismiss"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+
 
 -(IBAction)likeGemsApplied:(id)sender{
     
@@ -113,6 +148,7 @@
     }
     
 }
+
 
 
 

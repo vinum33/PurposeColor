@@ -16,7 +16,7 @@ NSString * const CommonFontBold = @"HelveticaNeueLTStd-Bd";
 NSString * const BaseURLString = @"http://purposecodes.com/pc/api.php?";
 NSString * const BaseURL = @"http://purposecodes.com/pc/";
 
-NSString * const GoogleMapAPIKey = @"AIzaSyAQXZBghp-Uu4tmGRQKnC-Rxi5pOLFVUZY";
+NSString * const GoogleMapAPIKey = @"AIzaSyDLo-Q_ozqGPPl3UZKbyTK_FNfe-GFj7jg";
 
 NSString * const StoryBoardIdentifierForLoginPage = @"LoginPage";
 NSString * const StoryBoardIdentifierForMenuPage = @"MenuPage";
@@ -49,3 +49,4 @@ NSString * const StoryBoardIdentifierForSettings = @"Settings";
 NSString * const StoryBoardIdentifierForGEMWithHeaderListings = @"GEMWithHeaderListings";
 NSString * const StoryBoardIdentifierForReminderListings = @"ReminderListings";
 NSString * const StoryBoardIdentifierForLaunchPage = @"LaunchPage";
+NSString * const StoryBoardIdentifierForReportAbuse = @"ReportAbuse";

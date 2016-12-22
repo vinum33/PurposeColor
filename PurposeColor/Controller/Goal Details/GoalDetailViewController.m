@@ -377,6 +377,8 @@ typedef enum{
         }
         strTitle = [actionDetails  objectForKey:@"gem_title"];
     }
+   
+   
     if (NULL_TO_NIL([actionDetails objectForKey:@"gem_datetime"]))
     cell.lblDate.text = [Utility getDaysBetweenTwoDatesWith:[[actionDetails objectForKey:@"gem_datetime"] doubleValue]];
     
@@ -395,8 +397,8 @@ typedef enum{
         UIFont *font = [UIFont fontWithName:CommonFont size:14];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.lineHeightMultiple = 1.2f;
-        NSDictionary *attributes = @{NSFontAttributeName:font,
-                                     NSParagraphStyleAttributeName:paragraphStyle,
+        NSDictionary *attributes = @{NSFontAttributeName:font
+                                     
                                      };
         NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[actionDetails objectForKey:@"gem_details"] attributes:attributes];
         cell.lblDescription.attributedText = attributedText;

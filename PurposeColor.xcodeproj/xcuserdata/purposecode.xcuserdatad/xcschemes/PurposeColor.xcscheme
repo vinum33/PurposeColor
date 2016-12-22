@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E5F293371CE072F7002B375A"
-               BuildableName = "PurposeColor.app"
+               BuildableName = "Purpose Color.app"
                BlueprintName = "PurposeColor"
                ReferencedContainer = "container:PurposeColor.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E5F293371CE072F7002B375A"
-            BuildableName = "PurposeColor.app"
+            BuildableName = "Purpose Color.app"
             BlueprintName = "PurposeColor"
             ReferencedContainer = "container:PurposeColor.xcodeproj">
          </BuildableReference>
@@ -56,11 +56,18 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E5F293371CE072F7002B375A"
-            BuildableName = "PurposeColor.app"
+            BuildableName = "Purpose Color.app"
             BlueprintName = "PurposeColor"
             ReferencedContainer = "container:PurposeColor.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = ""
+            value = ""
+            isEnabled = "NO">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -75,7 +82,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E5F293371CE072F7002B375A"
-            BuildableName = "PurposeColor.app"
+            BuildableName = "Purpose Color.app"
             BlueprintName = "PurposeColor"
             ReferencedContainer = "container:PurposeColor.xcodeproj">
          </BuildableReference>
