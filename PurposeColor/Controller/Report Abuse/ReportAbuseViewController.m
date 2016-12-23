@@ -212,7 +212,6 @@
     
     UIView *vwHeader = [UIView new];
     vwHeader.backgroundColor = [UIColor whiteColor];
-    
     UILabel *lblTitle1 = [UILabel new];
     lblTitle1.translatesAutoresizingMaskIntoConstraints = NO;
     [vwHeader addSubview:lblTitle1];

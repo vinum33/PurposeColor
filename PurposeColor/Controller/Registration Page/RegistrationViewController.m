@@ -410,6 +410,7 @@ typedef enum{
 
 -(IBAction)tapToRegister:(id)sender{
     
+    [self.view endEditing:YES];
     [self checkAllFieldsAreValid:^{
         [self showLoadingScreen];
         [APIMapper registerUserWithName:name userEmail:email phoneNumber:phoneNumber countryID:countryID userPassword:password
