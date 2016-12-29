@@ -82,7 +82,7 @@ typedef enum{
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self checkUserViewStatus];
+   
     [self setUp];
 
     [self loadPieChartDetails];
@@ -150,7 +150,7 @@ typedef enum{
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
-    if (firstTime)[self showHelpScreen];
+    if (firstTime) [self showHelpScreen];
     
     
 }
@@ -169,7 +169,6 @@ typedef enum{
     [self showLoadingScreen];
     [APIMapper getPieChartViewWithUserID:[User sharedManager].userId startDate:[strtDateFromString timeIntervalSince1970] endDate:[endDateFromString timeIntervalSince1970] session:sessionValue isFirstTime:firstTime success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-       
         isDataAvailable = true;
         [self showPieChartWith:responseObject];
         [self hideLoadingScreen];
@@ -259,11 +258,9 @@ typedef enum{
     
     tableView.hidden = false;
     [tableView reloadData];
+    [self performSelector:@selector(checkUserViewStatus) withObject:self afterDelay:.5];
     
 }
-
-
-
 
 -(IBAction)showSessionPopUp{
     

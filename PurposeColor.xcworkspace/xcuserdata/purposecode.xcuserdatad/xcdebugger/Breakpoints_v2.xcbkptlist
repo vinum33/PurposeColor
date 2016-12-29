@@ -538,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Emotional Intelligence/EmotionalIntelligenceViewController.m"
-            timestampString = "501681442.037344"
+            timestampString = "504684027.168377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "611"
-            endingLineNumber = "611"
+            startingLineNumber = "608"
+            endingLineNumber = "608"
             landmarkName = "-configureEmotionCellForIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -820,12 +820,12 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor/PurposeColor/Controller/GEMS%20Listings/CellWithTable/CustomCellWithTable.m"
-                  timestampString = "503565564.095577"
+                  timestampString = "504683273.410864"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "447"
                   endingLineNumber = "447"
-                  offsetFromSymbolStart = "6894">
+                  offsetFromSymbolStart = "6518">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -835,12 +835,12 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor/PurposeColor/Controller/GEMS%20Listings/CellWithTable/CustomCellWithTable.m"
-                  timestampString = "503565564.095689"
+                  timestampString = "504683273.41098"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "447"
                   endingLineNumber = "447"
-                  offsetFromSymbolStart = "7126">
+                  offsetFromSymbolStart = "6804">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -890,6 +890,22 @@
             startingLineNumber = "883"
             endingLineNumber = "883"
             landmarkName = "-shareApp"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Helpers/Intro Page/NFXIntroViewController.m"
+            timestampString = "504683272.310991"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "-scrollViewDidEndScrollingAnimation:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
