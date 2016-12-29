@@ -315,13 +315,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 {
     UITableViewCell *cell;
     aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    if (!isDataAvailable) {
-        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Details Available."];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor clearColor];
-        cell.contentView.backgroundColor = [UIColor clearColor];
-        return cell;
-    }
     if (indexPath.section == 0 && indexPath.row == 0) {
         
         static NSString *CellIdentifier = @"HeaderImage";
