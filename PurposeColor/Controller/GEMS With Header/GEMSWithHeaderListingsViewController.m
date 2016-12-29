@@ -316,7 +316,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     UITableViewCell *cell;
     aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (indexPath.section == 0 && indexPath.row == 0) {
-        
         static NSString *CellIdentifier = @"HeaderImage";
         UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         UIImageView *imgHdeader;
@@ -380,7 +379,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 
 -(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!isDataAvailable) return kHeightForCell;
     if (indexPath.section == 0 && indexPath.row == 0) {
         return heightForImageCell;
     }
