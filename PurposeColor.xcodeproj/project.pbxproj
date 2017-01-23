@@ -2579,7 +2579,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "4f92ad75-5231-49a5-b441-5cefcaf66fba";
+				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2602,7 +2602,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "4f92ad75-5231-49a5-b441-5cefcaf66fba";
+				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

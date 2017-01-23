@@ -10,8 +10,14 @@ typedef enum{
     
     eFieldOne = 0,
     eFieldTwo = 1,
+    eFieldThree = 2,
+    eFieldFour = 3,
     
 }EField;
+
+NSString * const Show_Admin_Goals = @"Show_Admin_Goals";
+NSString * const Show_Admin_Emotions = @"Show_Admin_Emotions";
+NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
 
 #define kTagForTitle            1
 #define kCellHeight             50
@@ -33,11 +39,17 @@ typedef enum{
     IBOutlet UIButton *btnSubmit;
     IBOutlet UISwitch *switchCanFollow;
     IBOutlet UISwitch *switchDailyNotfction;
+    
+     UISwitch *switchEmotion;
+     UISwitch *switchGoal;
+     UISwitch *switchJournal;
+    
     NSInteger tapCount;
     
     
     BOOL canFollow;
     BOOL canSendDailyNotifications;
+    NSMutableDictionary *dictAdminSettings;
 }
 
 @end
@@ -46,6 +58,7 @@ typedef enum{
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self getUserInitials];
     [self setUp];
     // Do any additional setup after loading the view.
 }
@@ -55,14 +68,41 @@ typedef enum{
     return UIStatusBarStyleLightContent;
 }
 
-
+-(void)getUserInitials{
+    
+    [self showLoadingScreen];
+    [APIMapper checkUserHasEntryInPurposeColorOnsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        [self hideLoadingScreen];
+        [self setAdminUserSettingsWithResponds:responseObject];
+        
+    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+        
+         [self hideLoadingScreen];
+    }];
+    
+    
+}
+-(void)setAdminUserSettingsWithResponds:(NSDictionary*)responds{
+    
+    dictAdminSettings = [NSMutableDictionary new];
+    if (NULL_TO_NIL([responds objectForKey:@"admin_emotion"])) {
+          [dictAdminSettings setObject:[responds objectForKey:@"admin_emotion"] forKey:Show_Admin_Emotions];
+    }
+    if (NULL_TO_NIL([responds objectForKey:@"admin_goal"])) {
+        [dictAdminSettings setObject:[responds objectForKey:@"admin_goal"] forKey:Show_Admin_Goals];
+    }
+    if (NULL_TO_NIL([responds objectForKey:@"admin_journal"])) {
+        [dictAdminSettings setObject:[responds objectForKey:@"admin_journal"] forKey:Show_Admin_Journal];
+    }
+     [tableView reloadData];
+}
 
 -(void)setUp{
     
     btnSubmit.hidden = true;
     canFollow = [User sharedManager].follow_status;
     canSendDailyNotifications = [User sharedManager].daily_notify;
-    [tableView reloadData];
 }
 
 
@@ -71,7 +111,7 @@ typedef enum{
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -85,6 +125,9 @@ typedef enum{
     else if (section == 2) {
         return 1;
     }
+    else if (section == 3) {
+        return 3;
+    }
     return 3;
     
 }
@@ -93,8 +136,10 @@ typedef enum{
 {
     UITableViewCell *cell;
     cell = (UITableViewCell *)[aTableView dequeueReusableCellWithIdentifier:@"SettingsInfo"];
+    cell.userInteractionEnabled = true;
     if (indexPath.section == 1 && indexPath.row == 1) {
          cell = (UITableViewCell *)[aTableView dequeueReusableCellWithIdentifier:@"OtherInfo"];
+         cell.userInteractionEnabled = true;
          [self configureCellWithCell:cell indexPath:indexPath];
     }else{
          [self configureCellWithCell:cell indexPath:indexPath];
@@ -258,6 +303,46 @@ typedef enum{
         lblStatus.text = @"Notification";
         return vwHeader;
     }
+    else if (section == 3){
+        
+        UIView *vwHeader = [UIView new];
+        vwHeader.backgroundColor = [UIColor getBackgroundOffWhiteColor];
+        UILabel *lblStatus= [UILabel new];
+        lblStatus.numberOfLines = 1;
+        lblStatus.translatesAutoresizingMaskIntoConstraints = NO;
+        [vwHeader addSubview:lblStatus];
+        [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[lblStatus]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lblStatus)]];
+        lblStatus.font = [UIFont fontWithName:CommonFontBold size:14];
+        lblStatus.textColor = [UIColor colorWithRed:0.17 green:0.17 blue:0.17 alpha:1.0];
+        [vwHeader addConstraint:[NSLayoutConstraint constraintWithItem:lblStatus
+                                                             attribute:NSLayoutAttributeCenterY
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:vwHeader
+                                                             attribute:NSLayoutAttributeCenterY
+                                                            multiplier:1.0
+                                                              constant:0]];
+        lblStatus.text = @"General";
+        
+        UILabel *lblInfo= [UILabel new];
+        lblInfo.hidden = true;
+        lblInfo.numberOfLines = 0;
+        lblInfo.translatesAutoresizingMaskIntoConstraints = NO;
+        [vwHeader addSubview:lblInfo];
+        [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[lblInfo]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lblInfo)]];
+        lblInfo.font = [UIFont fontWithName:CommonFont size:12];
+        lblInfo.textColor = [UIColor lightGrayColor];
+        [vwHeader addConstraint:[NSLayoutConstraint constraintWithItem:lblInfo
+                                                             attribute:NSLayoutAttributeTop
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:lblStatus
+                                                             attribute:NSLayoutAttributeBottom
+                                                            multiplier:1.0
+                                                              constant:10]];
+        lblInfo.text = @"User can disable these settings only if user has created goals/journals etc.";
+        
+        
+        return vwHeader;
+    }
     
     return nil;
     
@@ -267,6 +352,9 @@ typedef enum{
     
     if (section == 0) {
         return kHeightForHeader;
+    }
+    if (section == 3) {
+        return 50;
     }
 
     return 50;
@@ -303,6 +391,7 @@ typedef enum{
                     UISwitch *switchBtn = (UISwitch*)[[cell contentView]viewWithTag:2];
                     [switchBtn setOn:canSendDailyNotifications];
                     switchDailyNotfction = switchBtn;
+                    [switchDailyNotfction removeTarget:nil  action:NULL forControlEvents:UIControlEventAllEvents];
                     [switchDailyNotfction addTarget:self action:@selector(changeDailyNotification:) forControlEvents:UIControlEventValueChanged];
                    
                 }
@@ -332,6 +421,7 @@ typedef enum{
                     UISwitch *switchBtn = (UISwitch*)[[cell contentView]viewWithTag:2];
                     [switchBtn setOn:canFollow];
                      switchCanFollow = switchBtn;
+                    [switchCanFollow removeTarget:nil  action:NULL forControlEvents:UIControlEventAllEvents];
                     [switchCanFollow addTarget:self action:@selector(changeFollowStatus:) forControlEvents:UIControlEventValueChanged];
                     
                 }
@@ -349,6 +439,82 @@ typedef enum{
                 break;
         }
     }
+    else if (indexPath.section == 3) {
+        
+        switch (indexPath.row) {
+            case eFieldOne:
+                if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
+                    UILabel *lblTitle = [[cell contentView]viewWithTag:1];
+                    lblTitle.text = @"Show admin goals";
+                    
+                }
+                
+                if ([[[cell contentView]viewWithTag:2] isKindOfClass:[UISwitch class]]) {
+                    UISwitch *switchBtn = (UISwitch*)[[cell contentView]viewWithTag:2];
+                    if ([dictAdminSettings objectForKey:Show_Admin_Goals]) {
+                        if ([[dictAdminSettings objectForKey:Show_Admin_Goals] integerValue] < 0)
+                            cell.userInteractionEnabled = false;
+                        BOOL isEnabled = [[dictAdminSettings objectForKey:Show_Admin_Goals] boolValue];
+                        [switchBtn setOn:isEnabled];
+                    }
+                    [switchBtn removeTarget:nil  action:NULL forControlEvents:UIControlEventAllEvents];
+                    [switchBtn addTarget:self action:@selector(changeDefaultAdminGoals:) forControlEvents:UIControlEventValueChanged];
+                    
+                }
+                break;
+                
+            case eFieldTwo:
+                
+                if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
+                    UILabel *lblTitle = [[cell contentView]viewWithTag:1];
+                    lblTitle.text = @"Show admin supporting emotions";
+                    
+                }
+                
+                if ([[[cell contentView]viewWithTag:2] isKindOfClass:[UISwitch class]]) {
+                    UISwitch *switchBtn = (UISwitch*)[[cell contentView]viewWithTag:2];
+                    
+                    if ([dictAdminSettings objectForKey:Show_Admin_Emotions]) {
+                        
+                        if ([[dictAdminSettings objectForKey:Show_Admin_Emotions] integerValue] < 0)
+                            cell.userInteractionEnabled = false;
+                        BOOL isEnabled = [[dictAdminSettings objectForKey:Show_Admin_Emotions] boolValue];
+                        [switchBtn setOn:isEnabled];
+                    }
+                  
+                    [switchBtn removeTarget:nil  action:NULL forControlEvents:UIControlEventAllEvents];
+                    [switchBtn addTarget:self action:@selector(changeDefaultSupportingEmotions:) forControlEvents:UIControlEventValueChanged];
+                    
+                }
+                break;
+                
+            case eFieldThree:
+                if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
+                    UILabel *lblTitle = [[cell contentView]viewWithTag:1];
+                    lblTitle.text = @"Show admin journal / moments";
+                }
+                
+                if ([[[cell contentView]viewWithTag:2] isKindOfClass:[UISwitch class]]) {
+                    UISwitch *switchBtn = (UISwitch*)[[cell contentView]viewWithTag:2];
+                    
+                    if ([dictAdminSettings objectForKey:Show_Admin_Journal]) {
+                        
+                        if ([[dictAdminSettings objectForKey:Show_Admin_Journal] integerValue] < 0)
+                            cell.userInteractionEnabled = false;
+                        
+                        BOOL isEnabled = [[dictAdminSettings objectForKey:Show_Admin_Journal] boolValue];
+                        [switchBtn setOn:isEnabled];
+                    }
+                
+                    [switchBtn removeTarget:nil  action:NULL forControlEvents:UIControlEventAllEvents];
+                    [switchBtn addTarget:self action:@selector(changeDefaultJourals:) forControlEvents:UIControlEventValueChanged];
+                    
+                }
+                break;
+            default:
+                break;
+        }
+    }
     
     
 }
@@ -360,6 +526,37 @@ typedef enum{
     profilePage.canEdit = true;
     [profilePage loadUserProfileWithUserID:[User sharedManager].userId showBackButton:YES];
     
+}
+
+-(IBAction)changeDefaultAdminGoals:(UISwitch*)_switch{
+    
+    if ([dictAdminSettings objectForKey:Show_Admin_Goals]) {
+        BOOL isEnabled = [[dictAdminSettings objectForKey:Show_Admin_Goals] boolValue];
+        [dictAdminSettings setObject:[NSNumber numberWithBool:!isEnabled] forKey:Show_Admin_Goals];
+         [_switch setOn:!isEnabled];
+    }
+    btnSubmit.hidden = false;
+}
+
+-(IBAction)changeDefaultSupportingEmotions:(UISwitch*)_switch{
+    
+    if ([dictAdminSettings objectForKey:Show_Admin_Emotions]) {
+        BOOL isEnabled = [[dictAdminSettings objectForKey:Show_Admin_Emotions] boolValue];
+        [dictAdminSettings setObject:[NSNumber numberWithBool:!isEnabled] forKey:Show_Admin_Emotions];
+         [_switch setOn:!isEnabled];
+    }
+    btnSubmit.hidden = false;
+}
+
+
+-(IBAction)changeDefaultJourals:(UISwitch*)_switch{
+    
+    if ([dictAdminSettings objectForKey:Show_Admin_Journal]) {
+        BOOL isEnabled = [[dictAdminSettings objectForKey:Show_Admin_Journal] boolValue];
+        [dictAdminSettings setObject:[NSNumber numberWithBool:!isEnabled] forKey:Show_Admin_Journal];
+        [_switch setOn:!isEnabled];
+    }
+    btnSubmit.hidden = false;
 }
 
 
@@ -376,13 +573,29 @@ typedef enum{
 
 -(IBAction)submitDetails:(UIButton*)sender{
     [self showLoadingScreen];
-    [APIMapper updateUserSettingsWithUserID:[User sharedManager].userId canFollow:canFollow dailyNotification:canSendDailyNotifications success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [APIMapper updateUserSettingsWithUserID:[User sharedManager].userId canFollow:canFollow dailyNotification:canSendDailyNotifications adminListSuggestions:dictAdminSettings success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self hideLoadingScreen];
         if ([[responseObject objectForKey:@"code"]integerValue] == kSuccessCode) {
-            [[[UIAlertView alloc] initWithTitle:@"Profile" message:@"Successfully updated your settings!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+            if (NULL_TO_NIL([responseObject objectForKey:@"text"])){
+                [[[UIAlertView alloc] initWithTitle:@"Settings" message:[responseObject objectForKey:@"text"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+            }
             [User sharedManager].follow_status = canFollow;
             [User sharedManager].daily_notify  = canSendDailyNotifications;
             [Utility saveUserObject:[User sharedManager] key:@"USER"];
+            
+            if (NULL_TO_NIL([responseObject objectForKey:@"admin_emotion"])) {
+                [dictAdminSettings setObject:[responseObject objectForKey:@"admin_emotion"] forKey:Show_Admin_Emotions];
+            }
+            
+            if (NULL_TO_NIL([responseObject objectForKey:@"admin_goal"])) {
+                [dictAdminSettings setObject:[responseObject objectForKey:@"admin_goal"] forKey:Show_Admin_Goals];
+            }
+            
+            if (NULL_TO_NIL([responseObject objectForKey:@"admin_journal"])) {
+                [dictAdminSettings setObject:[responseObject objectForKey:@"admin_journal"] forKey:Show_Admin_Journal];
+            }
+            
+            [tableView reloadData];
             btnSubmit.hidden = true;
             
         }else

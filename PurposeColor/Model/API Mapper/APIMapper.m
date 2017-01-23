@@ -1344,7 +1344,7 @@
     
 }
 
-+ (void)updateUserSettingsWithUserID:(NSString*)userID canFollow:(BOOL)canFollow dailyNotification:(BOOL)dailyNotification success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
++ (void)updateUserSettingsWithUserID:(NSString*)userID canFollow:(BOOL)canFollow dailyNotification:(BOOL)dailyNotification adminListSuggestions:(NSMutableDictionary*)dictList success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=editsettings",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -1353,6 +1353,16 @@
     [params setObject:userID forKey:@"user_id"];
     [params setObject:[NSNumber numberWithBool:canFollow] forKey:@"can_follow"];
     [params setObject:[NSNumber numberWithBool:dailyNotification] forKey:@"daily_notify"];
+    
+    if ([dictList objectForKey:@"Show_Admin_Goals"]) {
+         [params setObject:[dictList objectForKey:@"Show_Admin_Goals"] forKey:@"admin_goal"];
+    }
+    if ([dictList objectForKey:@"Show_Admin_Emotions"]) {
+        [params setObject:[dictList objectForKey:@"Show_Admin_Emotions"] forKey:@"admin_emotion"];
+    }
+    if ([dictList objectForKey:@"Show_Admin_Journal"]) {
+        [params setObject:[dictList objectForKey:@"Show_Admin_Journal"] forKey:@"admin_journal"];
+    }
    
     [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -1563,5 +1573,23 @@
     
 }
 
++ (void)checkUserHasEntryInPurposeColorOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=listusersettings",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    NSDictionary *params = @{@"user_id": [User sharedManager].userId,
+                             };
+    
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+
+}
 
 @end

@@ -15,7 +15,6 @@ typedef enum{
 }eLogInfo;
 
 
-
 #define StatusSucess            200
 
 #define kCellHeight             75;
@@ -603,6 +602,8 @@ typedef enum{
          if ([userDetails objectForKey:@"daily_notify"]) {
              [User sharedManager].daily_notify  = [[userDetails objectForKey:@"daily_notify"] boolValue];
          }
+         
+         
          
          /*!............ Saving user to NSUserDefaults.............!*/
          

@@ -18,7 +18,8 @@
 
 @implementation Utility
 
-+ (void)saveUserObject:(User *)object key:(NSString *)key {
++ (void)saveUserObject:(id)object key:(NSString *)key {
+    
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:object];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:encodedObject forKey:key];

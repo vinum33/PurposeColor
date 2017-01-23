@@ -11,7 +11,7 @@
 @interface Utility : NSObject
 
 +(void)setUpGoogleMapConfiguration;
-+ (void)saveUserObject:(User *)object key:(NSString *)key;
++ (void)saveUserObject:(id)object key:(NSString *)key;
 +(void)showNoDataScreenOnView:(UIView*)view withTitle:(NSString*)title;
 +(void)removeNoDataScreen:(UIView*)_view;
 +(UITableViewCell *)getNoDataCustomCellWith:(UITableView*)table withTitle:(NSString*)title;
