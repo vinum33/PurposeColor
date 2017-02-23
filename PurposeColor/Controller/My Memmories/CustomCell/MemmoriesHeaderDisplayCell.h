@@ -41,6 +41,7 @@
 @property (nonatomic, assign) NSInteger section;
 @property (nonatomic, assign) NSInteger row;
 
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
 @property (nonatomic,weak)  id<MemoriesHeaderViewDelegate>delegate;
 -(void)setUpIndexPathWithRow:(NSInteger)row section:(NSInteger)section;
 @end

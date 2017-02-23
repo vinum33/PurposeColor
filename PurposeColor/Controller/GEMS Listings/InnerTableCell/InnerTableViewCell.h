@@ -34,6 +34,8 @@
 @property (nonatomic, assign) NSInteger section;
 @property (nonatomic, assign) NSInteger row;
 @property (nonatomic,weak)  id<ActionCellDelegate>delegate;
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
+@property (nonatomic,weak) IBOutlet  UILabel *lblPlaceHolder;
 
 -(void)setUpIndexPathWithRow:(NSInteger)row section:(NSInteger)section;
 

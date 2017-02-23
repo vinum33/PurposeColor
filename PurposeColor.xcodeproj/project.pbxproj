@@ -66,6 +66,15 @@
 		E56AF3AE1DB5E48C00029DA1 /* GoalsCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3AC1DB5E48C00029DA1 /* GoalsCustomCell.m */; };
 		E56AF3AF1DB5E48C00029DA1 /* GoalsCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56AF3AD1DB5E48C00029DA1 /* GoalsCustomCell.xib */; };
 		E56AF3B61DB626D300029DA1 /* JournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3B51DB626D300029DA1 /* JournalViewController.m */; };
+		E56BBA401E5468E400002DDE /* GemsListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */; };
+		E573C22D1E5D62F10070DF7E /* JournalImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2201E5D62F10070DF7E /* JournalImageCell.m */; };
+		E573C22E1E5D62F10070DF7E /* JournalNoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2241E5D62F10070DF7E /* JournalNoImageCell.m */; };
+		E573C22F1E5D62F10070DF7E /* JournalDateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2261E5D62F10070DF7E /* JournalDateInfo.m */; };
+		E573C2301E5D62F10070DF7E /* JournalDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2291E5D62F10070DF7E /* JournalDescription.m */; };
+		E573C2311E5D62F10070DF7E /* JournalDetailPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C22B1E5D62F10070DF7E /* JournalDetailPageViewController.m */; };
+		E573C2341E5D6EA50070DF7E /* JournalGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2331E5D6EA50070DF7E /* JournalGalleryViewController.m */; };
+		E573C2381E5D71350070DF7E /* JournalGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2371E5D71350070DF7E /* JournalGalleryCell.m */; };
+		E573C23A1E5D94540070DF7E /* Advertising Script Bold Trial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E573C2391E5D94540070DF7E /* Advertising Script Bold Trial.ttf */; };
 		E57669121D62EA4E00A1451F /* SelectYourFeel.m in Sources */ = {isa = PBXBuildFile; fileRef = E57669111D62EA4E00A1451F /* SelectYourFeel.m */; };
 		E57669141D62F5F700A1451F /* SelectYourFeel.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57669131D62F5F700A1451F /* SelectYourFeel.xib */; };
 		E578EA0D1D5DA2DF00CFF086 /* ImotinalAwarenessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E578EA0C1D5DA2DF00CFF086 /* ImotinalAwarenessViewController.m */; };
@@ -77,6 +86,8 @@
 		E57AD6C01D40E7610042A8C4 /* ActionDetailPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */; };
 		E5824B001DB4AD8700BBA4F4 /* FTPopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E5824AFF1DB4AD8700BBA4F4 /* FTPopOverMenu.m */; };
 		E59168D11DE6BD0200A3BDB9 /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E59168D01DE6BD0200A3BDB9 /* KILabel.m */; };
+		E59D746F1E5AF32B005844D5 /* JournalListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E59D746E1E5AF32B005844D5 /* JournalListViewController.m */; };
+		E59D74731E5AF6F0005844D5 /* JournalListCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E59D74721E5AF6F0005844D5 /* JournalListCustomCell.m */; };
 		E5A947321D33B057008BBC7F /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A9472F1D33B057008BBC7F /* HPGrowingTextView.m */; };
 		E5A947331D33B057008BBC7F /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A947311D33B057008BBC7F /* HPTextViewInternal.m */; };
 		E5A9473C1D33B0E6008BBC7F /* MessageEntryBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A947341D33B0E6008BBC7F /* MessageEntryBackground.png */; };
@@ -155,7 +166,6 @@
 		E5F51DF71DA6311A000E8487 /* GemsCustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F51DF61DA6311A000E8487 /* GemsCustomTableViewCell.m */; };
 		E5F51DFB1DA63783000E8487 /* CustomCellWithTable.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F51DFA1DA63783000E8487 /* CustomCellWithTable.m */; };
 		E5F51DFF1DA65251000E8487 /* InnerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F51DFE1DA65251000E8487 /* InnerTableViewCell.m */; };
-		E5F51E031DA692CB000E8487 /* GEMCustomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F51E021DA692CB000E8487 /* GEMCustomCollectionViewCell.m */; };
 		E5F555D41D8BC1A600B739AC /* LikedAndCommentedUserListings.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F555D31D8BC1A600B739AC /* LikedAndCommentedUserListings.m */; };
 		E5F555D71D8BD1F200B739AC /* ButtonWithID.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F555D61D8BD1F200B739AC /* ButtonWithID.m */; };
 		E5F555DB1D8C0DEE00B739AC /* PhotoBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F555D91D8C0DEE00B739AC /* PhotoBrowserCell.m */; };
@@ -221,7 +231,6 @@
 		E5F9FE531D49C29400F22169 /* GEMDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F9FE431D49C29400F22169 /* GEMDetailViewController.m */; };
 		E5F9FE541D49C29400F22169 /* CommunityGEMListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F9FE471D49C29400F22169 /* CommunityGEMListingViewController.m */; };
 		E5F9FE551D49C29400F22169 /* GemsListCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F9FE4A1D49C29400F22169 /* GemsListCollectionViewCell.m */; };
-		E5F9FE561D49C29400F22169 /* GemsListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5F9FE4B1D49C29400F22169 /* GemsListCollectionViewCell.xib */; };
 		E5F9FE571D49C29400F22169 /* GEMSListingHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F9FE4E1D49C29400F22169 /* GEMSListingHeaderView.m */; };
 		E5F9FE581D49C29400F22169 /* MyGEMListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F9FE511D49C29400F22169 /* MyGEMListingViewController.m */; };
 		E5F9FE5C1D49C2C400F22169 /* GEMSListingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5F9FE5B1D49C2C400F22169 /* GEMSListingsViewController.m */; };
@@ -346,6 +355,22 @@
 		E56AF3AD1DB5E48C00029DA1 /* GoalsCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoalsCustomCell.xib; sourceTree = "<group>"; };
 		E56AF3B41DB626D300029DA1 /* JournalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalViewController.h; sourceTree = "<group>"; };
 		E56AF3B51DB626D300029DA1 /* JournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalViewController.m; sourceTree = "<group>"; };
+		E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GemsListCollectionViewCell.xib; sourceTree = "<group>"; };
+		E573C21F1E5D62F10070DF7E /* JournalImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalImageCell.h; sourceTree = "<group>"; };
+		E573C2201E5D62F10070DF7E /* JournalImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalImageCell.m; sourceTree = "<group>"; };
+		E573C2231E5D62F10070DF7E /* JournalNoImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalNoImageCell.h; sourceTree = "<group>"; };
+		E573C2241E5D62F10070DF7E /* JournalNoImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalNoImageCell.m; sourceTree = "<group>"; };
+		E573C2251E5D62F10070DF7E /* JournalDateInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalDateInfo.h; sourceTree = "<group>"; };
+		E573C2261E5D62F10070DF7E /* JournalDateInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalDateInfo.m; sourceTree = "<group>"; };
+		E573C2281E5D62F10070DF7E /* JournalDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalDescription.h; sourceTree = "<group>"; };
+		E573C2291E5D62F10070DF7E /* JournalDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalDescription.m; sourceTree = "<group>"; };
+		E573C22A1E5D62F10070DF7E /* JournalDetailPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalDetailPageViewController.h; sourceTree = "<group>"; };
+		E573C22B1E5D62F10070DF7E /* JournalDetailPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalDetailPageViewController.m; sourceTree = "<group>"; };
+		E573C2321E5D6EA50070DF7E /* JournalGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalGalleryViewController.h; sourceTree = "<group>"; };
+		E573C2331E5D6EA50070DF7E /* JournalGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalGalleryViewController.m; sourceTree = "<group>"; };
+		E573C2361E5D71350070DF7E /* JournalGalleryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalGalleryCell.h; sourceTree = "<group>"; };
+		E573C2371E5D71350070DF7E /* JournalGalleryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalGalleryCell.m; sourceTree = "<group>"; };
+		E573C2391E5D94540070DF7E /* Advertising Script Bold Trial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Advertising Script Bold Trial.ttf"; sourceTree = "<group>"; };
 		E57669101D62EA4E00A1451F /* SelectYourFeel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectYourFeel.h; sourceTree = "<group>"; };
 		E57669111D62EA4E00A1451F /* SelectYourFeel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectYourFeel.m; sourceTree = "<group>"; };
 		E57669131D62F5F700A1451F /* SelectYourFeel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectYourFeel.xib; sourceTree = "<group>"; };
@@ -366,6 +391,10 @@
 		E5824AFF1DB4AD8700BBA4F4 /* FTPopOverMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPopOverMenu.m; sourceTree = "<group>"; };
 		E59168CF1DE6BD0200A3BDB9 /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		E59168D01DE6BD0200A3BDB9 /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
+		E59D746D1E5AF32B005844D5 /* JournalListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalListViewController.h; sourceTree = "<group>"; };
+		E59D746E1E5AF32B005844D5 /* JournalListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalListViewController.m; sourceTree = "<group>"; };
+		E59D74711E5AF6F0005844D5 /* JournalListCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalListCustomCell.h; sourceTree = "<group>"; };
+		E59D74721E5AF6F0005844D5 /* JournalListCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalListCustomCell.m; sourceTree = "<group>"; };
 		E5A9472E1D33B057008BBC7F /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		E5A9472F1D33B057008BBC7F /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		E5A947301D33B057008BBC7F /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -491,8 +520,6 @@
 		E5F51DFA1DA63783000E8487 /* CustomCellWithTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellWithTable.m; sourceTree = "<group>"; };
 		E5F51DFD1DA65251000E8487 /* InnerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InnerTableViewCell.h; sourceTree = "<group>"; };
 		E5F51DFE1DA65251000E8487 /* InnerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InnerTableViewCell.m; sourceTree = "<group>"; };
-		E5F51E011DA692CB000E8487 /* GEMCustomCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEMCustomCollectionViewCell.h; sourceTree = "<group>"; };
-		E5F51E021DA692CB000E8487 /* GEMCustomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GEMCustomCollectionViewCell.m; sourceTree = "<group>"; };
 		E5F555D21D8BC1A600B739AC /* LikedAndCommentedUserListings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikedAndCommentedUserListings.h; sourceTree = "<group>"; };
 		E5F555D31D8BC1A600B739AC /* LikedAndCommentedUserListings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikedAndCommentedUserListings.m; sourceTree = "<group>"; };
 		E5F555D51D8BD1F200B739AC /* ButtonWithID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonWithID.h; sourceTree = "<group>"; };
@@ -594,7 +621,6 @@
 		E5F9FE471D49C29400F22169 /* CommunityGEMListingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunityGEMListingViewController.m; path = ComminityGEMS/CommunityGEMListingViewController.m; sourceTree = "<group>"; };
 		E5F9FE491D49C29400F22169 /* GemsListCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GemsListCollectionViewCell.h; sourceTree = "<group>"; };
 		E5F9FE4A1D49C29400F22169 /* GemsListCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GemsListCollectionViewCell.m; sourceTree = "<group>"; };
-		E5F9FE4B1D49C29400F22169 /* GemsListCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GemsListCollectionViewCell.xib; sourceTree = "<group>"; };
 		E5F9FE4D1D49C29400F22169 /* GEMSListingHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEMSListingHeaderView.h; sourceTree = "<group>"; };
 		E5F9FE4E1D49C29400F22169 /* GEMSListingHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GEMSListingHeaderView.m; sourceTree = "<group>"; };
 		E5F9FE501D49C29400F22169 /* MyGEMListingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGEMListingViewController.h; sourceTree = "<group>"; };
@@ -720,6 +746,8 @@
 		E506802C1D30F1490041B077 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E573C21C1E5D62F10070DF7E /* JournalDetailViewController */,
+				E59D746C1E5AF26A005844D5 /* JournalListView */,
 				E52DFB1A1DE7FB8D0033310F /* Report Abuse */,
 				E5E922171DDB08F200BE8A1D /* Launch Page */,
 				E5E8A3101DD31957006DF12E /* Reminder Listings */,
@@ -752,11 +780,11 @@
 		E506803D1D30F1490041B077 /* Login Page */ = {
 			isa = PBXGroup;
 			children = (
+				E50680461D30F1490041B077 /* StateListingPopUp */,
 				E506803E1D30F1490041B077 /* CustomCell */,
 				E50680411D30F1490041B077 /* Forgot Password PopUp */,
 				E50680441D30F1490041B077 /* LoginViewController.h */,
 				E50680451D30F1490041B077 /* LoginViewController.m */,
-				E50680461D30F1490041B077 /* StateListingPopUp */,
 			);
 			path = "Login Page";
 			sourceTree = "<group>";
@@ -1069,6 +1097,7 @@
 		E506808D1D30F1490041B077 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				E573C2391E5D94540070DF7E /* Advertising Script Bold Trial.ttf */,
 				E506808E1D30F1490041B077 /* AARDC.ttf */,
 				E506808F1D30F1490041B077 /* ArialBlack.ttf */,
 				E50680901D30F1490041B077 /* Benguiat.ttf */,
@@ -1149,6 +1178,84 @@
 				E56AF3B51DB626D300029DA1 /* JournalViewController.m */,
 			);
 			path = Journal;
+			sourceTree = "<group>";
+		};
+		E573C21C1E5D62F10070DF7E /* JournalDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E573C21D1E5D62F10070DF7E /* Journal Details */,
+				E573C22C1E5D62F10070DF7E /* Journal Gallery */,
+			);
+			path = JournalDetailViewController;
+			sourceTree = "<group>";
+		};
+		E573C21D1E5D62F10070DF7E /* Journal Details */ = {
+			isa = PBXGroup;
+			children = (
+				E573C2221E5D62F10070DF7E /* HeaderNoImageCell */,
+				E573C21E1E5D62F10070DF7E /* HeaderImageCell */,
+				E573C2211E5D62F10070DF7E /* HournalDateAndothers */,
+				E573C2271E5D62F10070DF7E /* JournalDescrption */,
+				E573C22A1E5D62F10070DF7E /* JournalDetailPageViewController.h */,
+				E573C22B1E5D62F10070DF7E /* JournalDetailPageViewController.m */,
+			);
+			path = "Journal Details";
+			sourceTree = "<group>";
+		};
+		E573C21E1E5D62F10070DF7E /* HeaderImageCell */ = {
+			isa = PBXGroup;
+			children = (
+				E573C21F1E5D62F10070DF7E /* JournalImageCell.h */,
+				E573C2201E5D62F10070DF7E /* JournalImageCell.m */,
+			);
+			path = HeaderImageCell;
+			sourceTree = "<group>";
+		};
+		E573C2211E5D62F10070DF7E /* HournalDateAndothers */ = {
+			isa = PBXGroup;
+			children = (
+				E573C2251E5D62F10070DF7E /* JournalDateInfo.h */,
+				E573C2261E5D62F10070DF7E /* JournalDateInfo.m */,
+			);
+			path = HournalDateAndothers;
+			sourceTree = "<group>";
+		};
+		E573C2221E5D62F10070DF7E /* HeaderNoImageCell */ = {
+			isa = PBXGroup;
+			children = (
+				E573C2231E5D62F10070DF7E /* JournalNoImageCell.h */,
+				E573C2241E5D62F10070DF7E /* JournalNoImageCell.m */,
+			);
+			name = HeaderNoImageCell;
+			path = HournalDateAndothers/HeaderNoImageCell;
+			sourceTree = "<group>";
+		};
+		E573C2271E5D62F10070DF7E /* JournalDescrption */ = {
+			isa = PBXGroup;
+			children = (
+				E573C2281E5D62F10070DF7E /* JournalDescription.h */,
+				E573C2291E5D62F10070DF7E /* JournalDescription.m */,
+			);
+			path = JournalDescrption;
+			sourceTree = "<group>";
+		};
+		E573C22C1E5D62F10070DF7E /* Journal Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				E573C2351E5D70F60070DF7E /* CustomCell */,
+				E573C2321E5D6EA50070DF7E /* JournalGalleryViewController.h */,
+				E573C2331E5D6EA50070DF7E /* JournalGalleryViewController.m */,
+			);
+			path = "Journal Gallery";
+			sourceTree = "<group>";
+		};
+		E573C2351E5D70F60070DF7E /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				E573C2361E5D71350070DF7E /* JournalGalleryCell.h */,
+				E573C2371E5D71350070DF7E /* JournalGalleryCell.m */,
+			);
+			path = CustomCell;
 			sourceTree = "<group>";
 		};
 		E576690F1D62EA3400A1451F /* FeelingSelection */ = {
@@ -1242,6 +1349,25 @@
 				E59168D01DE6BD0200A3BDB9 /* KILabel.m */,
 			);
 			path = KILabel;
+			sourceTree = "<group>";
+		};
+		E59D746C1E5AF26A005844D5 /* JournalListView */ = {
+			isa = PBXGroup;
+			children = (
+				E59D74701E5AF6DA005844D5 /* CustomCell */,
+				E59D746D1E5AF32B005844D5 /* JournalListViewController.h */,
+				E59D746E1E5AF32B005844D5 /* JournalListViewController.m */,
+			);
+			path = JournalListView;
+			sourceTree = "<group>";
+		};
+		E59D74701E5AF6DA005844D5 /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				E59D74711E5AF6F0005844D5 /* JournalListCustomCell.h */,
+				E59D74721E5AF6F0005844D5 /* JournalListCustomCell.m */,
+			);
+			path = CustomCell;
 			sourceTree = "<group>";
 		};
 		E5A9472D1D33B057008BBC7F /* HPGrowingTextView */ = {
@@ -1654,15 +1780,6 @@
 			path = InnerTableCell;
 			sourceTree = "<group>";
 		};
-		E5F51E001DA692CB000E8487 /* GEMsCustomCell */ = {
-			isa = PBXGroup;
-			children = (
-				E5F51E011DA692CB000E8487 /* GEMCustomCollectionViewCell.h */,
-				E5F51E021DA692CB000E8487 /* GEMCustomCollectionViewCell.m */,
-			);
-			path = GEMsCustomCell;
-			sourceTree = "<group>";
-		};
 		E5F555D11D8BC1A600B739AC /* Like&CommentedUserListings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1950,7 +2067,7 @@
 			children = (
 				E5F9FE491D49C29400F22169 /* GemsListCollectionViewCell.h */,
 				E5F9FE4A1D49C29400F22169 /* GemsListCollectionViewCell.m */,
-				E5F9FE4B1D49C29400F22169 /* GemsListCollectionViewCell.xib */,
+				E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -1976,7 +2093,6 @@
 		E5F9FE591D49C2B400F22169 /* GEMS Listings */ = {
 			isa = PBXGroup;
 			children = (
-				E5F51E001DA692CB000E8487 /* GEMsCustomCell */,
 				E5F51DFC1DA65239000E8487 /* InnerTableCell */,
 				E5F51DF81DA63769000E8487 /* CellWithTable */,
 				E5F51DF41DA630ED000E8487 /* CustomCell */,
@@ -2155,6 +2271,7 @@
 				E50680CB1D30F1490041B077 /* CountryList.txt in Resources */,
 				E5A9473F1D33B0E6008BBC7F /* MessageEntryInputField@2x.png in Resources */,
 				E5F612D91D4887A2002B7CB5 /* CustomeImagePicker.xib in Resources */,
+				E56BBA401E5468E400002DDE /* GemsListCollectionViewCell.xib in Resources */,
 				E50680D21D30F1490041B077 /* gunplay.ttf in Resources */,
 				E5A9473C1D33B0E6008BBC7F /* MessageEntryBackground.png in Resources */,
 				E5E333EE1D659F4500C7CFA6 /* SelectYourDrive.xib in Resources */,
@@ -2168,6 +2285,7 @@
 				E578EA151D5DC8C300CFF086 /* smiley.jpg in Resources */,
 				E5F75E3F1D6EA8C6009EF545 /* Equalizer.gif in Resources */,
 				E5A9473E1D33B0E6008BBC7F /* MessageEntryInputField.png in Resources */,
+				E573C23A1E5D94540070DF7E /* Advertising Script Bold Trial.ttf in Resources */,
 				E5ED40171D82BCF000A3F455 /* animation9.png in Resources */,
 				E5ED400F1D82BCF000A3F455 /* animation11.png in Resources */,
 				E5F612FC1D4887D4002B7CB5 /* flash-off@2x.png in Resources */,
@@ -2184,7 +2302,6 @@
 				E50680DB1D30F1490041B077 /* times.ttf in Resources */,
 				E50680D81D30F1490041B077 /* Nougat-ExtraBlack.ttf in Resources */,
 				E50680D41D30F1490041B077 /* HelveticaNeueLTStd-Lt.otf in Resources */,
-				E5F9FE561D49C29400F22169 /* GemsListCollectionViewCell.xib in Resources */,
 				E5F613011D4887D4002B7CB5 /* front-camera.png in Resources */,
 				E5E333F41D65AEAA00C7CFA6 /* SelectYourGoalsAndDreams.xib in Resources */,
 				E50680D31D30F1490041B077 /* HelveticaNeueLTStd-Bd.otf in Resources */,
@@ -2325,7 +2442,6 @@
 				E57AD6C01D40E7610042A8C4 /* ActionDetailPageViewController.m in Sources */,
 				E5F9FE581D49C29400F22169 /* MyGEMListingViewController.m in Sources */,
 				E5F613131D48C438002B7CB5 /* EmotionalIntelligenceViewController.m in Sources */,
-				E5F51E031DA692CB000E8487 /* GEMCustomCollectionViewCell.m in Sources */,
 				E5F6131E1D48C5DA002B7CB5 /* VBPiePiece.m in Sources */,
 				E5F7C5C11D47753600585349 /* EventCreateViewController.m in Sources */,
 				E5F612DA1D4887A2002B7CB5 /* OLGhostAlertView.m in Sources */,
@@ -2342,10 +2458,12 @@
 				E5F9FE551D49C29400F22169 /* GemsListCollectionViewCell.m in Sources */,
 				E5E333F91D65B7D200C7CFA6 /* SelectActions.m in Sources */,
 				E50680B21D30F1490041B077 /* CustomCellForLogin.m in Sources */,
+				E573C2341E5D6EA50070DF7E /* JournalGalleryViewController.m in Sources */,
 				E56AF3AE1DB5E48C00029DA1 /* GoalsCustomCell.m in Sources */,
 				E5EDF1001DB21421005D0660 /* AMPopTip+Exit.m in Sources */,
 				E50680B41D30F1490041B077 /* LoginViewController.m in Sources */,
 				E5F3B5721DB0D16100194CDA /* WebBrowserViewController.m in Sources */,
+				E573C2311E5D62F10070DF7E /* JournalDetailPageViewController.m in Sources */,
 				E50680C51D30F1490041B077 /* MBProgressHUD.m in Sources */,
 				E5ED6C871D643C04009B9B37 /* SelectYourEmotion.m in Sources */,
 				E5FE41371D51ECA600BEFBF0 /* JCNotificationBannerViewController.m in Sources */,
@@ -2357,6 +2475,7 @@
 				E5F612D61D4887A2002B7CB5 /* CameraFocusSquare.m in Sources */,
 				E5F555DB1D8C0DEE00B739AC /* PhotoBrowserCell.m in Sources */,
 				E5F70EF11D50AE5900BD1A4A /* ChatUserListingViewController.m in Sources */,
+				E573C22E1E5D62F10070DF7E /* JournalNoImageCell.m in Sources */,
 				E5FE41391D51ECA600BEFBF0 /* JCNotificationBannerViewIOSStyle.m in Sources */,
 				E5F612DD1D4887A2002B7CB5 /* PhotoPickerCell.m in Sources */,
 				E5EDF0FE1DB21421005D0660 /* AMPopTip+Draw.m in Sources */,
@@ -2374,6 +2493,7 @@
 				E5F9FE541D49C29400F22169 /* CommunityGEMListingViewController.m in Sources */,
 				E50680BC1D30F1490041B077 /* UIStoryboard+Storyboard.m in Sources */,
 				E5FE413A1D51ECA600BEFBF0 /* JCNotificationBannerWindow.m in Sources */,
+				E573C22F1E5D62F10070DF7E /* JournalDateInfo.m in Sources */,
 				E5FE41311D51ECA600BEFBF0 /* JCNotificationBanner.m in Sources */,
 				E5F612E01D4887A2002B7CB5 /* RNActivityView.m in Sources */,
 				E5ED5BF71D9A2F1A0084B965 /* SDAVAssetExportSession.m in Sources */,
@@ -2381,6 +2501,7 @@
 				E50680C11D30F1490041B077 /* Utility.m in Sources */,
 				E5F7C5AF1D471B1A00585349 /* GalleryManager.m in Sources */,
 				E5FE41381D51ECA600BEFBF0 /* JCNotificationBannerViewIOS7Style.m in Sources */,
+				E573C22D1E5D62F10070DF7E /* JournalImageCell.m in Sources */,
 				E5FE41321D51ECA600BEFBF0 /* JCNotificationBannerPresenter.m in Sources */,
 				E5F6131D1D48C5DA002B7CB5 /* VBPieChart.m in Sources */,
 				E50680A91D30F1490041B077 /* AppDelegate.m in Sources */,
@@ -2391,10 +2512,12 @@
 				E5EDF0FD1DB21421005D0660 /* AMPopTip+Animation.m in Sources */,
 				E5F612E11D4887A2002B7CB5 /* UIView+RNActivityView.m in Sources */,
 				E50680C91D30F1490041B077 /* User.m in Sources */,
+				E573C2381E5D71350070DF7E /* JournalGalleryCell.m in Sources */,
 				E5FE41361D51ECA600BEFBF0 /* JCNotificationBannerView.m in Sources */,
 				E5A947331D33B057008BBC7F /* HPTextViewInternal.m in Sources */,
 				E5E8A3171DD31957006DF12E /* ReminderListingViewController.m in Sources */,
 				E5F9FE531D49C29400F22169 /* GEMDetailViewController.m in Sources */,
+				E59D74731E5AF6F0005844D5 /* JournalListCustomCell.m in Sources */,
 				E5F51DF71DA6311A000E8487 /* GemsCustomTableViewCell.m in Sources */,
 				E5F6131C1D48C5DA002B7CB5 /* UIColor+HexColor.m in Sources */,
 				E50680B71D30F1490041B077 /* CountryListView.m in Sources */,
@@ -2405,6 +2528,7 @@
 				E5F9FE571D49C29400F22169 /* GEMSListingHeaderView.m in Sources */,
 				E5FE41341D51ECA600BEFBF0 /* JCNotificationBannerPresenterIOSStyle.m in Sources */,
 				E52DFB211DE7FB8D0033310F /* ReportAbuseViewController.m in Sources */,
+				E573C2301E5D62F10070DF7E /* JournalDescription.m in Sources */,
 				E5F5FCED1D45C9BE002658B0 /* CreateActionInfoViewController.m in Sources */,
 				E50680BD1D30F1490041B077 /* NSString+String.m in Sources */,
 				E57AD6B71D40E7390042A8C4 /* GoalsAndDreamsListingViewController.m in Sources */,
@@ -2412,6 +2536,7 @@
 				E5F5FCF91D45EB99002658B0 /* ActionMediaListCell.m in Sources */,
 				E5EB735B1DB72B4000169B0E /* QuickGoalViewController.m in Sources */,
 				E50680C31D30F1490041B077 /* ALToastView.m in Sources */,
+				E59D746F1E5AF32B005844D5 /* JournalListViewController.m in Sources */,
 				E5F7C5C51D477C9700585349 /* CreateEventCustomCell.m in Sources */,
 				E5F3B5761DB0E55100194CDA /* ChangePasswordPopUp.m in Sources */,
 				E5ED3FFE1D827F6700A3F455 /* PhotoBrowser.m in Sources */,
@@ -2568,8 +2693,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2579,7 +2704,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
+				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2591,8 +2716,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2602,7 +2727,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
+				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

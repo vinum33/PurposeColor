@@ -10,6 +10,9 @@ NSString * const ChatDetailsStoryBoard = @"ChatDetails";
 NSString * const PROJECT_NAME = @"PurposeColor";
 NSString * const NETWORK_ERROR_MESSAGE = @"Something went wrong!!";
 NSString * const ExternalWebPageURL = @"http://purposecodes.com/signpost/";
+NSString * const PlaceHolderImageGoal = @"default_goal.jpg";
+NSString * const PlaceHolderImageAction = @"default_action.jpg";
+NSString * const PlaceHolderImageEmotion = @"default_emotion.jpg";
 
 NSString * const CommonFont = @"HelveticaNeueLTStd-Lt";
 NSString * const CommonFontBold = @"HelveticaNeueLTStd-Bd";
@@ -50,5 +53,9 @@ NSString * const StoryBoardIdentifierForGEMWithHeaderListings = @"GEMWithHeaderL
 NSString * const StoryBoardIdentifierForReminderListings = @"ReminderListings";
 NSString * const StoryBoardIdentifierForLaunchPage = @"LaunchPage";
 NSString * const StoryBoardIdentifierForReportAbuse = @"ReportAbuse";
+NSString * const StoryBoardIdentifierForJournalListVC = @"JournalListVC";
+NSString * const StoryBoardIdentifierForJournalDetailPage = @"JournalDetailPage";
+NSString * const StoryBoardIdentifierForJournalGallery = @"JournalGallery";
+
 
 

@@ -74,6 +74,7 @@
     [arrCategories addObject:@"Terms of Service"];
     [arrCategories addObject:@"App Share"];
     [arrCategories addObject:@"Logout"];
+    [arrCategories addObject:@"Journal"];
     [_tableView reloadData];
 }
 
@@ -90,7 +91,7 @@
     if (section == 0)
         return 6;
     else
-        return 6;
+        return 7;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -150,6 +151,9 @@
             cell.imageView.image = [UIImage imageNamed:@"Menu_Share.png"];
         }
         else if (indexPath.row == 5) {
+            cell.imageView.image = [UIImage imageNamed:@"LogoutIcon.png"];
+        }
+        else if (indexPath.row == 6) {
             cell.imageView.image = [UIImage imageNamed:@"LogoutIcon.png"];
         }
         

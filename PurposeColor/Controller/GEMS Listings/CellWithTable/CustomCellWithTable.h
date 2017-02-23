@@ -31,6 +31,8 @@
 @property (nonatomic,strong) UIColor *headerBGColor;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topConstarintForTable;
 @property (nonatomic,assign) BOOL isTabEmotion;
+@property (nonatomic,assign) float deviceWidth;
+
 
 -(void)setUpParentSection:(NSInteger)parentSection;
 -(void)setUpActionsWithDataSource:(NSArray*)dataSource;

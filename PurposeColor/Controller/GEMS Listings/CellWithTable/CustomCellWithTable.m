@@ -22,6 +22,7 @@
     
     NSArray *dataSource;
     NSInteger parentSection;
+    NSMutableDictionary *heightsCache;
 }
 
 @end
@@ -40,6 +41,7 @@
 -(void)setUpActionsWithDataSource:(NSArray*)_dataSource{
     
     dataSource = _dataSource;
+    heightsCache = [NSMutableDictionary new];
     [_tableView reloadData];
 }
 
@@ -181,6 +183,7 @@
         [cell.activityIndicator stopAnimating];
         [[cell btnVideoPlay]setHidden:YES];
         [[cell btnAudioPlay]setHidden:YES];
+        [[cell lblPlaceHolder]setHidden:true];
         cell.delegate = self;
         [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
         
@@ -190,6 +193,10 @@
                 NSArray *goalMedia = [details objectForKey:@"action_media"];
                 if (indexPath.row - 1 < goalMedia.count) {
                     NSDictionary *mediaInfo = goalMedia[indexPath.row - 1];
+                    NSString *placeHolderImageName = PlaceHolderImageAction;
+                    if (_isTabEmotion) {
+                        placeHolderImageName = PlaceHolderImageEmotion;
+                    }
                     if (mediaInfo) {
                         
                         NSString *mediaType ;
@@ -201,19 +208,18 @@
                             
                             if ([mediaType isEqualToString:@"image"]) {
                                 
+                                float imageHeight = 0;
+                                if ([heightsCache objectForKey:indexPath]) {
+                                    imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+                                    cell.constraintForHeight.constant = imageHeight;
+                                }
+                                NSString *JPEGfilename = [[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]] lastPathComponent];
+                                if ([JPEGfilename isEqualToString:placeHolderImageName]) [[cell lblPlaceHolder]setHidden:false];
                                 // Type Image
-                                [cell.imgGem setImage:[UIImage imageNamed:@"NoImage.png"]];
                                 [cell.activityIndicator startAnimating];
                                 [cell.imgGem sd_setImageWithURL:[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]]
-                                               placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                               placeholderImage:[UIImage imageNamed:@""]
                                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                                          [UIView transitionWithView:cell.imgGem
-                                                                            duration:.5f
-                                                                             options:UIViewAnimationOptionTransitionCrossDissolve
-                                                                          animations:^{
-                                                                              cell.imgGem.image = image;
-                                                                          } completion:nil];
-                                                          
                                                           
                                                           [cell.activityIndicator stopAnimating];
                                                       }];
@@ -228,9 +234,21 @@
                                     
                                 }
                                 
+                                float imageHeight = 0;
+                                if ([heightsCache objectForKey:indexPath]) {
+                                    imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+                                    cell.constraintForHeight.constant = imageHeight;
+                                }
+                                
                             }
                             
                             else if ([mediaType isEqualToString:@"video"]) {
+                                
+                                float imageHeight = 0;
+                                if ([heightsCache objectForKey:indexPath]) {
+                                    imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+                                    cell.constraintForHeight.constant = imageHeight;
+                                }
                                 
                                 // Type Video
                                 if (NULL_TO_NIL([mediaInfo objectForKey:@"gem_media"])) {
@@ -242,6 +260,8 @@
                                 
                                 if (NULL_TO_NIL([mediaInfo objectForKey:@"video_thumb"])) {
                                     NSString *videoThumb = [mediaInfo objectForKey:@"video_thumb"];
+                                    NSString *JPEGfilename = [[NSURL URLWithString:videoThumb] lastPathComponent];
+                                    if ([JPEGfilename isEqualToString:placeHolderImageName]) [[cell lblPlaceHolder]setHidden:false];
                                     if (videoThumb.length) {
                                         [cell.activityIndicator startAnimating];
                                         [cell.imgGem sd_setImageWithURL:[NSURL URLWithString:videoThumb]
@@ -277,7 +297,7 @@
     
 }
 
--(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height = 0;
     if (indexPath.row == 0) {
@@ -308,7 +328,34 @@
         }
         
     }
-    height = kHeightForCell;
+    else{
+        
+        if (indexPath.section < dataSource.count) {
+            
+            if ([heightsCache objectForKey:indexPath]) {
+                height = [[heightsCache objectForKey:indexPath] floatValue];
+            }else{
+                NSDictionary *medias = dataSource[indexPath.section];
+                if (NULL_TO_NIL([medias objectForKey:@"action_media"])) {
+                    NSArray *mediaItems  = [medias objectForKey:@"action_media"];
+                    if (indexPath.row - 1 < mediaItems.count) {
+                        NSDictionary *mediaInfo = mediaItems[indexPath.row - 1];
+                        float _width = [[mediaInfo objectForKey:@"image_width"] floatValue];
+                        float _height = [[mediaInfo objectForKey:@"image_height"] floatValue];
+                        float ratio = _width / _height;
+                        float deviceWidth = _deviceWidth;
+                        if (deviceWidth <= 0)  deviceWidth = 320;
+                        float imageHeight = (deviceWidth - 15) / ratio;
+                        height = imageHeight + 5;
+                        [heightsCache setObject:[NSNumber numberWithInt:imageHeight] forKey:indexPath];
+                        
+                    }
+                }
+                
+            }
+  
+        }
+    }
     return height;
     
 }
@@ -354,7 +401,7 @@
     [vwHeader addSubview:vwBorder];
     vwBorder.translatesAutoresizingMaskIntoConstraints = NO;
     [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwBorder]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBorder)]];
-    vwBorder.backgroundColor = [UIColor colorWithRed:0.98 green:0.38 blue:0.38 alpha:1.0];
+    vwBorder.backgroundColor = [UIColor colorWithRed:0.26 green:0.65 blue:0.96 alpha:1.0];
     
     [vwHeader addConstraint:[NSLayoutConstraint constraintWithItem:vwBorder
                                                      attribute:NSLayoutAttributeLeft

@@ -45,7 +45,7 @@
                             <constraint firstAttribute="width" constant="50" id="Atg-So-aQh"/>
                         </constraints>
                     </imageView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImage" translatesAutoresizingMaskIntoConstraints="NO" id="P6w-nR-18q">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P6w-nR-18q">
                         <rect key="frame" x="5" y="143" width="431" height="227"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -455,6 +455,7 @@
                 <outlet property="btnShare" destination="hfz-W7-wvu" id="hM1-Fc-LB1"/>
                 <outlet property="btnShowInCommunity" destination="VWF-pR-qi4" id="inA-nJ-7Fe"/>
                 <outlet property="constraintForDate" destination="hdU-64-GqK" id="n6o-st-OSv"/>
+                <outlet property="constraintForHeight" destination="2gb-2i-doX" id="HlT-Jr-FZZ"/>
                 <outlet property="constraintForTitle" destination="q96-As-md3" id="N61-S6-VZ2"/>
                 <outlet property="imgGemMedia" destination="P6w-nR-18q" id="1Fx-oE-XY2"/>
                 <outlet property="imgProfile" destination="bva-eH-NwI" id="UL8-7h-b6E"/>
@@ -479,7 +480,6 @@
         <image name="Expand_Button_Down" width="100" height="100"/>
         <image name="Like_Buton" width="40" height="40"/>
         <image name="More_Gray_Icon" width="40" height="40"/>
-        <image name="NoImage" width="250" height="250"/>
         <image name="Save_Gray" width="40" height="40"/>
         <image name="Video_Perview" width="100" height="100"/>
     </resources>

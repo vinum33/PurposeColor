@@ -46,6 +46,7 @@
     AVPlayerItem *videoPlayerItem;
     UIActivityIndicatorView *videoIndicator;
     ACRObservingPlayerItem *playerItem;
+    NSMutableDictionary *heightsCache;
 }
 
 @end
@@ -82,7 +83,7 @@
         lblShareTitle.text = @"Save";
         imgShareImage.image = [UIImage imageNamed:@"Save_Gray.png"];
     }
-    
+    heightsCache =  [NSMutableDictionary new];
     [tableView reloadData];
     
 }
@@ -119,8 +120,25 @@
 
 - (CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    float height = 250 ;
-    return height;
+    float imageHeight = 250;
+    float padding = 10;
+    
+    if (indexPath.row < arrGemMedias.count) {
+        NSDictionary *details = arrGemMedias[indexPath.row];
+        if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
+        }else{
+            float width = [[details objectForKey:@"image_width"] floatValue];
+            float height = [[details objectForKey:@"image_height"] floatValue];
+            float ratio = width / height;
+            imageHeight = (self.view.frame.size.width - padding) / ratio;
+            [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+        }
+        
+        
+    }
+    
+    return imageHeight + 5;
 }
 - (CGFloat)tableView:(UITableView *)_tableView heightForHeaderInSection:(NSInteger)section{
     
@@ -514,10 +532,10 @@
         if ([mediaType isEqualToString:@"image"]) {
             
             // Type Image
-            [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
+            //[cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
             [cell.activityIndicator startAnimating];
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]]
-                                placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                placeholderImage:[UIImage imageNamed:@""]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                            [UIView transitionWithView:cell.imgGemMedia
                                                              duration:.5f
@@ -559,7 +577,7 @@
                 if (videoThumb.length) {
                     [cell.activityIndicator startAnimating];
                     [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:videoThumb]
-                                        placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                        placeholderImage:[UIImage imageNamed:@""]
                                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                    [cell.activityIndicator stopAnimating];
                                                    [UIView transitionWithView:cell.imgGemMedia
@@ -573,6 +591,12 @@
                 
             }
             
+        }
+        
+        float imageHeight = 250;
+        if ([heightsCache objectForKey:[NSNumber numberWithInt:_index]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:_index]] integerValue];
+            cell.constraintForHeight.constant = imageHeight;
         }
         
     }

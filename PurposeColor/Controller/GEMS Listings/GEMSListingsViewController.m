@@ -27,7 +27,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 #import "MenuViewController.h"
 #import "GemsCustomTableViewCell.h"
 #import "CustomCellWithTable.h"
-#import "GEMCustomCollectionViewCell.h"
 #import "PhotoBrowser.h"
 #import "KILabel.h"
 
@@ -65,6 +64,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     
     CustomAudioPlayerView *vwAudioPlayer;
     PhotoBrowser *photoBrowser;
+    NSMutableDictionary *heightsCache;
 }
 
 @end
@@ -96,8 +96,8 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     arrDataSource = [NSMutableArray new];
     arrEmotions = [NSMutableArray new];
     arrGoals = [NSMutableArray new];
-    arrGoalColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.37 green:0.51 blue:0.82 alpha:1.0],[UIColor colorWithRed:0.65 green:0.45 blue:0.83 alpha:1.0],[UIColor colorWithRed:0.58 green:0.33 blue:0.34 alpha:1.0], nil];
-    arrEmotionColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:1.00 green:0.47 blue:0.33 alpha:1.0],[UIColor colorWithRed:0.96 green:0.56 blue:0.00 alpha:1.0],[UIColor colorWithRed:0.15 green:0.66 blue:0.57 alpha:1.0], nil];
+    arrGoalColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.08 green:0.40 blue:0.75 alpha:1.0],[UIColor colorWithRed:0.10 green:0.46 blue:0.82 alpha:1.0],[UIColor colorWithRed:0.12 green:0.53 blue:0.90 alpha:1.0], nil];
+    arrEmotionColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.26 green:0.65 blue:0.96 alpha:1.0],[UIColor colorWithRed:0.13 green:0.59 blue:0.95 alpha:1.0],[UIColor colorWithRed:0.12 green:0.53 blue:0.90 alpha:1.0], nil];
     
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.tintColor = [UIColor grayColor];
@@ -106,6 +106,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     tableView.hidden = false;
     isDataAvailable = false;
     eSelectionType = eByEmotion;
+    heightsCache = [NSMutableDictionary new];
    
 }
 
@@ -571,10 +572,11 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
-            [cell.imgGem setImage:[UIImage imageNamed:@"NoImage.png"]];
+           // [cell.imgGem setImage:[UIImage imageNamed:@"NoImage.png"]];
             [cell.activityIndicator stopAnimating];
             [[cell btnVideoPlay]setHidden:YES];
             [[cell btnAudioPlay]setHidden:YES];
+            [[cell lblPlaceHolder] setHidden:true];
             cell.delegate = self;
             [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
             
@@ -595,11 +597,19 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                                 
                                 if ([mediaType isEqualToString:@"image"]) {
                                     
+                                   
+                                    NSString *JPEGfilename = [[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]] lastPathComponent];
+                                    if ([JPEGfilename isEqualToString:PlaceHolderImageGoal]) [[cell lblPlaceHolder]setHidden:false];
                                     // Type Image
-                                    [cell.imgGem setImage:[UIImage imageNamed:@"NoImage.png"]];
+                                    float imageHeight = 0;
+                                    if ([heightsCache objectForKey:indexPath]) {
+                                        imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+                                        cell.constraintForHeight.constant = imageHeight;
+                                    }
+                                    
                                     [cell.activityIndicator startAnimating];
                                     [cell.imgGem sd_setImageWithURL:[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]]
-                                                   placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                                   placeholderImage:[UIImage imageNamed:@""]
                                                           completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                               [UIView transitionWithView:cell.imgGem
                                                                                 duration:.5f
@@ -616,6 +626,12 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                                 else if ([mediaType isEqualToString:@"audio"]) {
                                     
                                     // Type Audio
+                                    float imageHeight = 0;
+                                    if ([heightsCache objectForKey:indexPath]) {
+                                        imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+                                        cell.constraintForHeight.constant = imageHeight;
+                                    }
+                                    
                                     [cell.imgGem setImage:[UIImage imageNamed:@"NoImage.png"]];
                                     if (NULL_TO_NIL([mediaInfo objectForKey:@"gem_media"])) {
                                         [[cell btnAudioPlay]setHidden:false];
@@ -626,7 +642,14 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                                 
                                 else if ([mediaType isEqualToString:@"video"]) {
                                     
+                                   
                                     // Type Video
+                                    float imageHeight = 0;
+                                    if ([heightsCache objectForKey:indexPath]) {
+                                        imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+                                        cell.constraintForHeight.constant = imageHeight;
+                                    }
+                                    
                                     if (NULL_TO_NIL([mediaInfo objectForKey:@"gem_media"])) {
                                         NSString *videoURL = [mediaInfo objectForKey:@"gem_media"];
                                         if (videoURL.length){
@@ -636,10 +659,12 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                                     
                                     if (NULL_TO_NIL([mediaInfo objectForKey:@"video_thumb"])) {
                                         NSString *videoThumb = [mediaInfo objectForKey:@"video_thumb"];
+                                        NSString *JPEGfilename = [[NSURL URLWithString:videoThumb] lastPathComponent];
+                                        if ([JPEGfilename isEqualToString:PlaceHolderImageGoal]) [[cell lblPlaceHolder]setHidden:false];
                                         if (videoThumb.length) {
                                             [cell.activityIndicator startAnimating];
                                             [cell.imgGem sd_setImageWithURL:[NSURL URLWithString:videoThumb]
-                                                           placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                                           placeholderImage:[UIImage imageNamed:@""]
                                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                                       [cell.activityIndicator stopAnimating];
                                                                       [UIView transitionWithView:cell.imgGem
@@ -689,6 +714,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                             cell.isTabEmotion = true;
                             cell.contentView.backgroundColor = [UIColor clearColor];
                             cell.topConstarintForTable.constant = 0;
+                            cell.deviceWidth = 320;
                             [cell setUpActionsWithDataSource:actions];
                             [cell setUpParentSection:indexPath.section];
                             return cell;
@@ -747,19 +773,30 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                 }
             }
             // Check if reached Action Cell
-            
+             NSArray *goalMedia;
+            if (NULL_TO_NIL([details objectForKey:@"gem_media"])) {
+                goalMedia = [details objectForKey:@"gem_media"];
+            }
             if (isActionAvailable) {
-                NSArray *goalMedia;
-                if (NULL_TO_NIL([details objectForKey:@"gem_media"])) {
-                    goalMedia = [details objectForKey:@"gem_media"];
-                }
                 if (indexPath.row == goalMedia.count + 1) {
                     //Reached actions
                     NSInteger height = 0;
                     for (NSDictionary *dict in actions) {
                         if (NULL_TO_NIL([dict objectForKey:@"action_media"])) {
                             NSArray *actionMedias = [dict objectForKey:@"action_media"];
-                            height += (kHeightForCell * actionMedias.count );
+                            
+                            float finalImgHeight = 0;
+                            float padding = 15;
+                            for (NSDictionary *dict in actionMedias) {
+                                float _width = [[dict objectForKey:@"image_width"] floatValue];
+                                float _height = [[dict objectForKey:@"image_height"] floatValue];
+                                float ratio = _width / _height;
+                                float deviceWidth = _tableView.frame.size.width;
+                                float imageHeight = (deviceWidth - padding) / ratio;
+                                finalImgHeight += imageHeight;
+                            }
+                            height += finalImgHeight;
+                            
                         }
                         if (NULL_TO_NIL([dict objectForKey:@"action_details"])) {
                             height += [self getLabelHeightForActionDescription:[dict objectForKey:@"action_details"]withFont:[UIFont fontWithName:CommonFont size:14] withPadding:30]; // Description height
@@ -781,13 +818,58 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                     
                 }else{
                     
-                    //other cells
+                    //Goal Media cells
                     
+                    if (indexPath.row - 1 < goalMedia.count) {
+                        float requiredHeight = 0;
+                        if ([heightsCache objectForKey:indexPath]) {
+                            requiredHeight = [[heightsCache objectForKey:indexPath] floatValue];
+                            return requiredHeight;
+                        }else{
+                            
+                            NSDictionary *media = goalMedia[indexPath.row - 1];
+                            float finalImgHeight = 0;
+                            float padding = 15;
+                            float _width = [[media objectForKey:@"image_width"] floatValue];
+                            float _height = [[media objectForKey:@"image_height"] floatValue];
+                            float ratio = _width / _height;
+                            float deviceWidth = _tableView.frame.size.width;
+                            float imageHeight = (deviceWidth - padding) / ratio;
+                            finalImgHeight += imageHeight + 5;
+                            [heightsCache setObject:[NSNumber numberWithInt:finalImgHeight] forKey:indexPath];
+                            return finalImgHeight + 5;
+                        }
+
+
+                    }
                     return kHeightForCell;
                 }
                 
             }else{
                 //Action Not available
+                ///gioal media cells
+                if (indexPath.row - 1 < goalMedia.count) {
+                    
+                    float requiredHeight = 0;
+                    if ([heightsCache objectForKey:indexPath]) {
+                        requiredHeight = [[heightsCache objectForKey:indexPath] floatValue];
+                        return requiredHeight;
+                    }else{
+                       
+                        NSDictionary *media = goalMedia[indexPath.row - 1];
+                        float finalImgHeight = 0;
+                        float padding = 15;
+                        float _width = [[media objectForKey:@"image_width"] floatValue];
+                        float _height = [[media objectForKey:@"image_height"] floatValue];
+                        float ratio = _width / _height;
+                        float deviceWidth = _tableView.frame.size.width;
+                        float imageHeight = (deviceWidth - padding) / ratio;
+                        finalImgHeight += imageHeight + 5;
+                        [heightsCache setObject:[NSNumber numberWithInt:finalImgHeight] forKey:indexPath];
+                        return finalImgHeight + 5;
+                    }
+                    
+                }
                 return kHeightForCell;
             }
         }
@@ -814,7 +896,17 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                     for (NSDictionary *dict in actions) {
                         if (NULL_TO_NIL([dict objectForKey:@"action_media"])) {
                             NSArray *actionMedias = [dict objectForKey:@"action_media"];
-                            height += (kHeightForCell * actionMedias.count );
+                            float finalImgHeight = 0;
+                            float padding = 15;
+                            for (NSDictionary *dict in actionMedias) {
+                                float _width = [[dict objectForKey:@"image_width"] floatValue];
+                                float _height = [[dict objectForKey:@"image_height"] floatValue];
+                                float ratio = _width / _height;
+                                float deviceWidth = _tableView.frame.size.width;
+                                float imageHeight = (deviceWidth - padding) / ratio;
+                                finalImgHeight += imageHeight;
+                            }
+                            height += finalImgHeight;
                         }
                         if (NULL_TO_NIL([dict objectForKey:@"action_details"])) {
                             NSString *strDetails = [dict objectForKey:@"action_details"];

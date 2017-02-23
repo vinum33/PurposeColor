@@ -853,6 +853,11 @@ typedef enum{
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
+-(IBAction)showJournalPage:(UIButton*)sender{
+    
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [app showJournalListView];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

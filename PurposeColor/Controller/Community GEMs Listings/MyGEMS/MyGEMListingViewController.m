@@ -42,6 +42,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     
     CommentComposeViewController *composeComment;
     shareMedias *shareMediaView;
+    NSMutableDictionary *heightsCache;
 
 }
 
@@ -84,7 +85,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     collectionView.alwaysBounceVertical = YES;
     collectionView.hidden = true;
     isDataAvailable = false;
-    
+    heightsCache =  [NSMutableDictionary new];
     
 }
 -(void)getAllProductsByPagination:(BOOL)isPagination withPageNumber:(NSInteger)pageNumber{
@@ -189,7 +190,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     if (indexPath.row < arrGems.count) {
         
         NSDictionary *details = arrGems[indexPath.row];
-        [self configureTextVariables:details cell:cell];
+        [self configureTextVariables:details cell:cell indexPath:indexPath];
     }
     return cell;
 }
@@ -197,8 +198,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 - (CGSize)collectionView:(UICollectionView *)_collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     float padding = 10;
-    float height = 410;
+    float defaultHeight = 185;
     float width = _collectionView.bounds.size.width;
+    float finalHeight = 0;
+    float imageHeight = 0;
     if (indexPath.row < arrGems.count) {
         NSDictionary *details = arrGems[indexPath.row];
         if (NULL_TO_NIL([details objectForKey:@"gem_details"])){
@@ -206,16 +209,28 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             if (lblHeight > 30) {
                 lblHeight = 30;
             }
-            if ([[details objectForKey:@"display_image"] isEqualToString:@"No"]) {
-                height = 180;
+            
+            finalHeight = defaultHeight + lblHeight;
+            if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
+            }else{
+                float width = [[details objectForKey:@"image_width"] floatValue];
+                float height = [[details objectForKey:@"image_height"] floatValue];
+                float ratio = width / height;
+                imageHeight = (collectionView.frame.size.width - padding) / ratio;
+                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+                
             }
-            float finalHeight = height + lblHeight;
+            finalHeight += imageHeight;
             return CGSizeMake(width, finalHeight);
+            
         }
+        
+        
         
     }
     
-    return CGSizeMake(width, height);
+    return CGSizeMake(width, 400);
 }
 
 
@@ -291,7 +306,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 }
 
 
--(void)configureTextVariables:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell{
+-(void)configureTextVariables:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell indexPath:(NSIndexPath*)indexPath{
     
     if (NULL_TO_NIL([details objectForKey:@"gem_title"]))
         cell.lblName.text = [details objectForKey:@"gem_title"];
@@ -368,12 +383,12 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:url]
                                 placeholderImage:[UIImage imageNamed:@"NoImage.png"]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                           [UIView transitionWithView:cell.imgGemMedia
-                                                             duration:.5f
-                                                              options:UIViewAnimationOptionTransitionCrossDissolve
-                                                           animations:^{
-                                                               cell.imgGemMedia.image = image;
-                                                           } completion:nil];
+                                           float imageHeight = 0;
+                                           if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+                                               imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
+                                               cell.constraintForHeight.constant = imageHeight;
+                                           }
+
                                            [cell.activityIndicator stopAnimating];
                                        }];
         }

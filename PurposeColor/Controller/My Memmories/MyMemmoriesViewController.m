@@ -35,6 +35,7 @@
     NSMutableArray *arrMemmories;
     NSMutableDictionary *dictMeomories;
     NSMutableArray *arrAllKeys;
+    NSMutableDictionary *heightsCache;
 }
 
 @end
@@ -59,7 +60,7 @@
     vwMemoryOverLay.layer.cornerRadius = 20.f;
     vwMemoryOverLay.layer.borderWidth = 1.f;
     vwMemoryOverLay.layer.borderColor = [UIColor clearColor].CGColor;
-    
+    heightsCache = [NSMutableDictionary new];
     [self loadAllTodaysMemories];
 }
 
@@ -153,7 +154,8 @@
     if (!isDataAvailable) return kDefaultCellHeight;
     
     float padding = 20;
-    float height = 310;
+    float imageHeight = 0;
+    float deafultHeight = 50;
     NSDictionary *memoryInfo;
     NSArray *details;
     if (indexPath.section < arrAllKeys.count) {
@@ -163,18 +165,31 @@
             memoryInfo = details[indexPath.row];
         }
         
+        if ([heightsCache objectForKey:indexPath]) {
+            imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+            
+        }else{
+            float imgPadding = 20;
+            float width = [[memoryInfo objectForKey:@"image_width"] floatValue];
+            float height = [[memoryInfo objectForKey:@"image_height"] floatValue];
+            float ratio = width / height;
+            height = ((_tableView.frame.size.width - imgPadding) / ratio) + 0;
+            [heightsCache setObject:[NSNumber numberWithInt:height] forKey:indexPath];
+            
+        }
+        
         if (NULL_TO_NIL([memoryInfo objectForKey:@"gem_title"])){
             float lblHeight = [Utility getSizeOfLabelWithText:[memoryInfo objectForKey:@"gem_title"] width:tableView.frame.size.width - padding font:[UIFont fontWithName:CommonFontBold size:14]];
             if (lblHeight > 30) {
                 lblHeight = 30;
             }
           
-            float finalHeight = height + lblHeight;
+            float finalHeight = imageHeight + lblHeight + deafultHeight;
             return finalHeight;
         }
     }
     
-    return height;
+    return 300;
 }
 
 
@@ -210,9 +225,14 @@
        
     if (NULL_TO_NIL([memoryInfo objectForKey:@"gem_media"])) {
     [cell.activityIndicator startAnimating];
+        float imageHeight = 0;
+        if ([heightsCache objectForKey:indexPath]) {
+            imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+            cell.constraintForHeight.constant = imageHeight;
+        }
         NSString *mediaURL = [memoryInfo objectForKey:@"gem_media"];
         [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:mediaURL]
-                              placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                              placeholderImage:[UIImage imageNamed:@""]
                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                          [cell.activityIndicator stopAnimating];
                                      }];

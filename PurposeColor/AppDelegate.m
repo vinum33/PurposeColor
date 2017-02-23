@@ -32,6 +32,7 @@
 #import "EventCreateViewController.h"
 #import "ReminderListingViewController.h"
 #import "LaunchPageViewController.h"
+#import "JournalListViewController.h"
 
 #define NOTIFICATION_TYPE_FOLLOW        @"follow"
 #define NOTIFICATION_TYPE_CHAT          @"chat"
@@ -740,6 +741,9 @@
             
         case eMenu_Share:
             [self shareApp];
+            
+        case eMenu_Journal:
+            [self showJournalListView];
             break;
             
         default:
@@ -941,6 +945,19 @@
                     animations:^{  app.window.rootViewController = app.navGeneral; }
                     completion:nil];
 }
+-(void)showJournalListView{
+    
+    JournalListViewController *journalList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalListVC];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:journalList];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+}
+
 
 
 

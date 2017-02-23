@@ -53,6 +53,7 @@ typedef enum{
     AVPlayer *videoPlayer;
     AVPlayerItem *videoPlayerItem;
     UIActivityIndicatorView *videoIndicator;
+    NSMutableDictionary *heightsCache;
 }
 
 @end
@@ -73,6 +74,7 @@ typedef enum{
 -(void)setUp{
     
      tableView.hidden = true;
+    heightsCache = [NSMutableDictionary new];
 }
 
 -(void)loadGoalDetailsWithGoalID:(NSString*)goalID{
@@ -235,7 +237,27 @@ typedef enum{
         }
     }else{
        
-        return kCellHeight;
+        float imageHeight = 0;
+        float padding = 0;
+        float finalHeight = 0;
+        if ([heightsCache objectForKey:[NSNumber numberWithInteger:indexPath.row]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInteger:indexPath.row]] floatValue];
+            finalHeight = imageHeight;
+        }else{
+            if (indexPath.row < arrGemMedias.count) {
+                NSDictionary *deatils = arrGemMedias[indexPath.row];
+                float width = [[deatils objectForKey:@"image_width"] floatValue];
+                float height = [[deatils objectForKey:@"image_height"] floatValue];
+                float ratio = width / height;
+                imageHeight = (tableView.frame.size.width - padding) / ratio;
+                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+                finalHeight = imageHeight;
+            }
+            
+            
+        }
+        
+        return finalHeight += 5;
     }
    
     return kCellHeight;
@@ -382,11 +404,17 @@ typedef enum{
         
         if ([mediaType isEqualToString:@"image"]) {
             
+            float imageHeight = 0;
+            if ([heightsCache objectForKey:[NSNumber numberWithInteger:_index]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInteger:_index]] integerValue];
+                cell.constraintForHeight.constant = imageHeight;
+            }
+            
             // Type Image
-            [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
+            //[cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
             [cell.activityIndicator startAnimating];
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]]
-                                placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                placeholderImage:[UIImage imageNamed:@""]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                            [UIView transitionWithView:cell.imgGemMedia
                                                              duration:.5f
@@ -403,6 +431,12 @@ typedef enum{
             
             // Type Audio
             
+            float imageHeight = 0;
+            if ([heightsCache objectForKey:[NSNumber numberWithInteger:_index]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInteger:_index]] integerValue];
+                cell.constraintForHeight.constant = imageHeight;
+            }
+            
             [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
             if (NULL_TO_NIL([mediaInfo objectForKey:@"gem_media"])) {
                 [[cell btnAudioPlay]setHidden:false];
@@ -414,6 +448,12 @@ typedef enum{
         else if ([mediaType isEqualToString:@"video"]) {
             
             // Type Video
+            
+            float imageHeight = 0;
+            if ([heightsCache objectForKey:[NSNumber numberWithInteger:_index]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInteger:_index]] integerValue];
+                cell.constraintForHeight.constant = imageHeight;
+            }
             
             if (NULL_TO_NIL([mediaInfo objectForKey:@"gem_media"])) {
                 NSString *videoURL = [mediaInfo objectForKey:@"gem_media"];
@@ -427,7 +467,7 @@ typedef enum{
                 if (videoThumb.length) {
                     [cell.activityIndicator startAnimating];
                     [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:videoThumb]
-                                        placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                        placeholderImage:[UIImage imageNamed:@""]
                                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                    [cell.activityIndicator stopAnimating];
                                                    [UIView transitionWithView:cell.imgGemMedia
@@ -556,6 +596,15 @@ typedef enum{
 }
 
 #pragma mark - Cell Customization methods
+
+-(void)calculateHeight:(UIImage*)image withURL:(NSString*)url cell:(GemDetailsCustomTableViewCell*)cell{
+    
+    float aspect =  image.size.width / image.size.height;
+    float height = cell.imgGemMedia.frame.size.width  / aspect;
+    [heightsCache setObject:[NSNumber numberWithFloat:height] forKey:url];
+}
+
+
 
 -(void)setUpGoalDateAndOtherInfoWithCell:(UITableViewCell*)cell{
     

@@ -130,5 +130,8 @@
 
 + (void)checkUserHasEntryInPurposeColorOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
++ (void)getUserJournalWithUserID:(NSString*)userID page:(NSInteger)pageNo Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
+
 
 @end

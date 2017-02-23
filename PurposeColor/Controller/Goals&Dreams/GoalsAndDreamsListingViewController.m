@@ -53,6 +53,7 @@ typedef enum{
     NSMutableArray *arrDataSource;
     
     eStatus EStatus;
+    NSMutableDictionary *heightsCache;
 
 }
 
@@ -101,14 +102,14 @@ typedef enum{
     refreshControl.tintColor = [UIColor grayColor];
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:refreshControl];
-    
-    
+    heightsCache =  [NSMutableDictionary new];
     
 }
 
 -(IBAction)segmentChanged:(UIButton*)sender{
     
     [arrDataSource removeAllObjects];
+    [heightsCache removeAllObjects];
     
     if (sender.tag == 1) {
         EStatus = ePending;
@@ -294,8 +295,13 @@ typedef enum{
     return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+-(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    float finalHeight = 0;
+    float defaultHeight = 130;
+    float imageHeight = 0;
+    float padding = 20;
+    
     if (indexPath.row < arrDataSource.count){
         
         NSInteger height = 0;
@@ -308,7 +314,21 @@ typedef enum{
         if (NULL_TO_NIL([goalInfo objectForKey:@"location_name"])) {
             height += 15;
         }
-        return kCellHeight + height;
+        
+        finalHeight = defaultHeight + height;
+        if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
+        }else{
+            float width = [[goalInfo objectForKey:@"image_width"] floatValue];
+            float height = [[goalInfo objectForKey:@"image_height"] floatValue];
+            float ratio = width / height;
+            imageHeight = (_tableView.frame.size.width - padding) / ratio;
+            [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+            
+        }
+
+        finalHeight += imageHeight;
+        return finalHeight;
 
     }
     
@@ -360,15 +380,14 @@ typedef enum{
             NSString *url = [goalsDetails objectForKey:@"goal_media"];
             if (url.length) {
                 [cell.activityIndicator startAnimating];
+                float imageHeight = 0;
+                if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+                    imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
+                    cell.constraintForHeight.constant = imageHeight;
+                }
                 [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:url]
-                                    placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                    placeholderImage:[UIImage imageNamed:@""]
                                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                               [UIView transitionWithView:cell.imgGemMedia
-                                                                 duration:.5f
-                                                                  options:UIViewAnimationOptionTransitionCrossDissolve
-                                                               animations:^{
-                                                                   cell.imgGemMedia.image = image;
-                                                               } completion:nil];
                                                [cell.activityIndicator stopAnimating];
                                            }];
             }

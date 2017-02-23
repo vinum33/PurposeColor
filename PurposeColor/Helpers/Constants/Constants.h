@@ -23,7 +23,9 @@ extern NSString * const CommonFont;
 extern NSString * const CommonFontBold;
 extern NSString * const BaseURLString;
 extern NSString * const BaseURL;
-
+extern NSString * const PlaceHolderImageGoal;
+extern NSString * const PlaceHolderImageAction;
+extern NSString * const PlaceHolderImageEmotion;
 
 extern NSString * const GoogleMapAPIKey;
 
@@ -62,3 +64,7 @@ extern NSString * const StoryBoardIdentifierForReminderListings;
 extern NSString * const StoryBoardIdentifierForLaunchPage;
 extern NSString * const StoryBoardIdentifierForLaunchPage;
 extern NSString * const StoryBoardIdentifierForReportAbuse;
+extern NSString * const StoryBoardIdentifierForJournalListVC;
+extern NSString * const StoryBoardIdentifierForJournalDetailPage;
+extern NSString * const StoryBoardIdentifierForJournalGallery;
+

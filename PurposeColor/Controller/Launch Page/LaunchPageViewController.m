@@ -19,6 +19,7 @@
 #import "GEMSListingsViewController.h"
 #import "GEMSWithHeaderListingsViewController.h"
 #import "AMPopTip.h"
+#import "MyMemmoriesViewController.h"
 
 @interface LaunchPageViewController () <SWRevealViewControllerDelegate>{
     
@@ -181,8 +182,11 @@
 
 -(IBAction)showCommunityGems:(UIButton*)sender{
     
-     [self resetCurrentNavController];
+    [self resetCurrentNavController];
     navForTabController = [[UINavigationController alloc] init];
+    
+//     MyMemmoriesViewController *gemListingVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForMyMemmories];
+    
     CommunityGEMListingViewController *gemListingVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCommunityGEMListings];
     navForTabController.viewControllers = [NSArray arrayWithObjects:gemListingVC, nil];
     navForTabController.navigationBarHidden = true;

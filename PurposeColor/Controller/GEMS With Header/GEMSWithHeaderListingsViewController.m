@@ -22,7 +22,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 #import "MenuViewController.h"
 #import "GemsCustomTableViewCell.h"
 #import "CustomCellWithTable.h"
-#import "GEMCustomCollectionViewCell.h"
 #import "PhotoBrowser.h"
 #import "KILabel.h"
 
@@ -60,6 +59,8 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     PhotoBrowser *photoBrowser;
     UIImage *headerImage;
     float heightForImageCell;
+    
+     NSMutableDictionary *heightsCache;
 }
 
 @end
@@ -94,14 +95,14 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     arrEmotions = [NSMutableArray new];
     arrGoals = [NSMutableArray new];
     arrGoalColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.37 green:0.51 blue:0.82 alpha:1.0],[UIColor colorWithRed:0.65 green:0.45 blue:0.83 alpha:1.0],[UIColor colorWithRed:0.58 green:0.33 blue:0.34 alpha:1.0], nil];
-    arrEmotionColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:1.00 green:0.47 blue:0.33 alpha:1.0],[UIColor colorWithRed:0.96 green:0.56 blue:0.00 alpha:1.0],[UIColor colorWithRed:0.15 green:0.66 blue:0.57 alpha:1.0], nil];
+    arrEmotionColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.26 green:0.65 blue:0.96 alpha:1.0],[UIColor colorWithRed:0.13 green:0.59 blue:0.95 alpha:1.0],[UIColor colorWithRed:0.12 green:0.53 blue:0.90 alpha:1.0], nil];
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.tintColor = [UIColor grayColor];
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:refreshControl];
     tableView.hidden = false;
     isDataAvailable = false;
-    
+    heightsCache = [NSMutableDictionary new];
     
     
     
@@ -303,7 +304,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                     totalCount = 1;
                 }
             
-            // Only actions;
+            // Only actions so count is One always,since its showing like a table insdie a single cell;
         }
         return totalCount;
     }
@@ -400,7 +401,18 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
             for (NSDictionary *dict in actions) {
                 if (NULL_TO_NIL([dict objectForKey:@"action_media"])) {
                     NSArray *actionMedias = [dict objectForKey:@"action_media"];
-                    height += (kHeightForCell * actionMedias.count );
+                    
+                    float finalImgHeight = 0;
+                    float padding = 15;
+                    for (NSDictionary *dict in actionMedias) {
+                        float _width = [[dict objectForKey:@"image_width"] floatValue];
+                        float _height = [[dict objectForKey:@"image_height"] floatValue];
+                        float ratio = _width / _height;
+                        float deviceWidth = _tableView.frame.size.width;
+                        float imageHeight = (deviceWidth - padding) / ratio;
+                        finalImgHeight += imageHeight;
+                    }
+                    height += finalImgHeight;
                 }
                 if (NULL_TO_NIL([dict objectForKey:@"action_details"])) {
                     NSString *strDetails = [dict objectForKey:@"action_details"];
@@ -469,7 +481,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     vwBG.translatesAutoresizingMaskIntoConstraints = NO;
     [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwBG]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBG)]];
     [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwBG]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBG)]];
-    vwBG.backgroundColor =  arrGoalColors[section % 3];
     vwBG.backgroundColor =  arrEmotionColors[section % 3];
     
     UILabel *_lblTitle = [UILabel new];

@@ -47,6 +47,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     IBOutlet UIView *vwOverLay;
     
     NSMutableArray *arrGems;
+    NSMutableDictionary *heightsCache;
     NSInteger totalPages;
     NSInteger currentPage;
     NSMutableDictionary *dictFollowers;
@@ -88,6 +89,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     dictFollowers = [NSMutableDictionary new];
     
     arrGems = [NSMutableArray new];
+    heightsCache =  [NSMutableDictionary new];
     currentPage = 1;
     totalPages = 0;
     
@@ -243,7 +245,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         
         NSDictionary *details = arrGems[indexPath.row];
         [self configureFollowButtonWithDetails:details cell:cell];
-        [self configureTextVariables:details cell:cell];
+        [self configureTextVariables:details cell:cell indexPath:indexPath];
     }
     
     cell.imgProfile.tag = indexPath.row;
@@ -257,8 +259,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 - (CGSize)collectionView:(UICollectionView *)_collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     float padding = 10;
-    float height = 410;
+    float defaultHeight = 185;
     float width = _collectionView.bounds.size.width;
+    float finalHeight = 0;
+    float imageHeight = 0;
     if (indexPath.row < arrGems.count) {
         NSDictionary *details = arrGems[indexPath.row];
         if (NULL_TO_NIL([details objectForKey:@"gem_details"])){
@@ -266,16 +270,28 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             if (lblHeight > 30) {
                 lblHeight = 30;
             }
-            if ([[details objectForKey:@"display_image"] isEqualToString:@"No"]) {
-                height = 180;
+           
+            finalHeight = defaultHeight + lblHeight;
+            if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
+            }else{
+                float width = [[details objectForKey:@"image_width"] floatValue];
+                float height = [[details objectForKey:@"image_height"] floatValue];
+                float ratio = width / height;
+                imageHeight = (collectionView.frame.size.width - padding) / ratio;
+                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+                
             }
-            float finalHeight = height + lblHeight;
+            finalHeight += imageHeight;
             return CGSizeMake(width, finalHeight);
+           
         }
+        
+       
         
     }
     
-    return CGSizeMake(width, height);
+    return CGSizeMake(width, 400);
 }
 
 
@@ -368,10 +384,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     cell.btnFollow.layer.borderColor = [UIColor getThemeColor].CGColor;
     cell.btnFollow.layer.cornerRadius = 5.f;
     
-  //  cell.btnHide.layer.borderWidth = 1.f;
-  //  cell.btnHide.layer.borderColor = [UIColor clearColor].CGColor;
-  //  cell.btnHide.layer.cornerRadius = 5.f;
-    
     if (NULL_TO_NIL([details objectForKey:@"follow_status"]))
         followStatus =  [[details objectForKey:@"follow_status"] intValue];
     
@@ -411,7 +423,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     }
 }
 
--(void)configureTextVariables:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell{
+-(void)configureTextVariables:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell indexPath:(NSIndexPath*)indexPath{
     
     cell.lblName.text = [details objectForKey:@"firstname"];
     cell.lblTime.text = [Utility getDaysBetweenTwoDatesWith:[[details objectForKey:@"gem_datetime"] doubleValue]];
@@ -430,14 +442,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     
     if (NULL_TO_NIL([details objectForKey:@"gem_details"]))
         cell.lblDescription.text = [details objectForKey:@"gem_details"];
-
-//    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-//    paragraphStyle.lineHeightMultiple = 1.2f;
-//    NSDictionary *attributes = @{NSParagraphStyleAttributeName:paragraphStyle,
-//                                 };
-//    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[details objectForKey:@"gem_details"] attributes:attributes];
-//    cell.lblTitle.attributedText = attributedText;
-//    cell.lblTitle.lineBreakMode = NSLineBreakByTruncatingTail;
     
     [cell.btnLike setImage:[UIImage imageNamed:@"Like_Buton"] forState:UIControlStateNormal];
     if ([[details objectForKey:@"like_status"] boolValue])
@@ -479,17 +483,17 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
     if (NULL_TO_NIL([details objectForKey:@"display_image"])){
         NSString *url = [details objectForKey:@"display_image"];
+        float imageHeight = 0;
+        if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
+            cell.constraintForHeight.constant = imageHeight;
+        }
         if (url.length) {
             [cell.activityIndicator startAnimating];
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:url]
-                                placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                placeholderImage:[UIImage imageNamed:@""]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                           [UIView transitionWithView:cell.imgGemMedia
-                                                             duration:.5f
-                                                              options:UIViewAnimationOptionTransitionCrossDissolve
-                                                           animations:^{
-                                                               cell.imgGemMedia.image = image;
-                                                           } completion:nil];
+                                           
                                            [cell.activityIndicator stopAnimating];
                                        }];
         }
@@ -1150,6 +1154,14 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 #pragma mark - Generic Methods
 
+-(void)calculateHeight:(UIImage*)image withURL:(NSString*)url cell:(GemsListCollectionViewCell*)cell{
+    
+    float aspect =  image.size.width / image.size.height;
+    float height = cell.imgGemMedia.frame.size.width  / aspect;
+    [heightsCache setObject:[NSNumber numberWithFloat:height] forKey:url];
+}
+
+
 -(IBAction)showUserProfilePage:(UITapGestureRecognizer*)gesture{
     
     NSInteger tag = gesture.view.tag;
@@ -1261,6 +1273,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     [[self navigationController]popViewControllerAnimated:YES];
 }
 
+-(void)dealloc{
+    
+    collectionView = nil;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

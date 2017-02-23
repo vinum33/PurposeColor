@@ -59,7 +59,7 @@ typedef enum{
 @import GooglePlacePicker;
 
 
-@interface CreateActionInfoViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CLLocationManagerDelegate,ABPeoplePickerNavigationControllerDelegate,CustomeImagePickerDelegate,ActionInfoCellDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate>{
+@interface CreateActionInfoViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CLLocationManagerDelegate,ABPeoplePickerNavigationControllerDelegate,CustomeImagePickerDelegate,ActionInfoCellDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate>{
     
     IBOutlet UITableView *tableView;
     
@@ -94,7 +94,12 @@ typedef enum{
     NSString *strAchievementDate;
     NSString *strStatus;
     
+    CGPoint viewStartLocation;
+    
 }
+
+@property (nonatomic,strong) NSIndexPath *draggingCellIndexPath;
+@property (nonatomic,strong) UIView *cellSnapshotView;
 
 @end
 
@@ -129,6 +134,10 @@ typedef enum{
     lblTitle.text = _strTitle;
     vwPickerOverLay.hidden = true;
     datePicker.minimumDate = [NSDate date];
+    
+    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(dragCell:)];
+    [longPressGestureRecognizer setDelegate:self];
+    [tableView addGestureRecognizer:longPressGestureRecognizer];
     
 }
 
@@ -926,13 +935,117 @@ typedef enum{
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] || [gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        return YES;
+    }
     if ([touch.view isDescendantOfView:tableView])
         return NO;
     return YES;
 }
 
 
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    return YES;
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
 #pragma mark - Common Methods
+
+-(void)dragCell:(UILongPressGestureRecognizer *)panner
+{
+    if(panner.state == UIGestureRecognizerStateBegan)
+    {
+        viewStartLocation = [panner locationInView:tableView];
+        tableView.scrollEnabled = NO;
+        
+        //if needed do some initial setup or init of views here
+    }
+    else if(panner.state == UIGestureRecognizerStateChanged)
+    {
+        //move your views here.
+        if (! self.cellSnapshotView) {
+            CGPoint loc = [panner locationInView:tableView];
+            self.draggingCellIndexPath = [tableView indexPathForRowAtPoint:loc];
+            if (self.draggingCellIndexPath.section == eSectionOne) return;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:self.draggingCellIndexPath];
+            if (cell){
+                
+                UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);
+                [cell.layer renderInContext:UIGraphicsGetCurrentContext()];
+                UIImage *cellImage = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                
+                // create and image view that we will drag around the screen
+                self.cellSnapshotView = [[UIImageView alloc] initWithImage:cellImage];
+                
+                //self.cellSnapshotView = [cell snapshotViewAfterScreenUpdates:YES];
+                self.cellSnapshotView.alpha = 0.8;
+                self.cellSnapshotView.layer.borderColor = [UIColor redColor].CGColor;
+                self.cellSnapshotView.layer.borderWidth = 1;
+                self.cellSnapshotView.frame =  cell.frame;
+                [tableView addSubview:self.cellSnapshotView];
+                
+                //[tableView reloadRowsAtIndexPaths:@[self.draggingCellIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+            // replace the cell with a blank one until the drag is over
+        }
+        
+        CGPoint location = [panner locationInView:tableView];
+        CGPoint translation;
+        translation.x = location.x - viewStartLocation.x;
+        translation.y = location.y - viewStartLocation.y;
+        CGPoint cvCenter = self.cellSnapshotView.center;
+        cvCenter.x = location.x;
+        cvCenter.y = location.y;
+        self.cellSnapshotView.center = cvCenter;
+        
+        
+        
+    }
+    else if(panner.state == UIGestureRecognizerStateEnded || (panner.state == UIGestureRecognizerStateCancelled) || (panner.state == UIGestureRecognizerStateFailed))
+    {
+        tableView.scrollEnabled = YES;
+        UITableViewCell *droppedOnCell;
+        CGRect largestRect = CGRectZero;
+        for (UITableViewCell *cell in tableView.visibleCells) {
+            CGRect intersection = CGRectIntersection(cell.frame, self.cellSnapshotView.frame);
+            if (intersection.size.width * intersection.size.height >= largestRect.size.width * largestRect.size.height) {
+                largestRect = intersection;
+                droppedOnCell =  cell;
+            }
+        }
+        
+        NSIndexPath *droppedOnCellIndexPath = [tableView indexPathForCell:droppedOnCell];
+        if (droppedOnCellIndexPath.section == eSectionOne ) {
+            [self.cellSnapshotView removeFromSuperview];
+            self.cellSnapshotView = nil;
+            return;
+        }
+        [UIView animateWithDuration:.2 animations:^{
+            self.cellSnapshotView.center = droppedOnCell.center;
+        } completion:^(BOOL finished) {
+            [self.cellSnapshotView removeFromSuperview];
+            self.cellSnapshotView = nil;
+            NSIndexPath *savedDraggingCellIndexPath = self.draggingCellIndexPath;
+            if (![self.draggingCellIndexPath isEqual:droppedOnCellIndexPath]) {
+                self.draggingCellIndexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
+                [arrDataSource exchangeObjectAtIndex:savedDraggingCellIndexPath.row withObjectAtIndex:droppedOnCellIndexPath.row];
+                [tableView reloadRowsAtIndexPaths:@[savedDraggingCellIndexPath, droppedOnCellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            }else{
+                self.draggingCellIndexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
+                [tableView reloadRowsAtIndexPaths:@[savedDraggingCellIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }];
+        
+        tableView.scrollEnabled = YES;
+        
+    }
+}
 
 -(IBAction)showDatePicker:(id)sender{
     
@@ -2069,7 +2182,6 @@ typedef enum{
         [_circleProgressBar setProgress:0 animated:YES];
         if ([[responseObject objectForKey:@"code"] integerValue] == kSuccessCode ){
             
-            AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
             UINavigationController *nav = self.navigationController;
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:lblTitle.text
                                                                            message:[NSString stringWithFormat:@"%@ Create a Reminder for this Action?",[responseObject objectForKey:@"text"]]

@@ -50,7 +50,7 @@
 @property (nonatomic, assign) NSInteger section;
 @property (nonatomic, assign) NSInteger row;
 @property (nonatomic,weak)  id<GemDetailPageCellDelegate>delegate;
-
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
 
 
 -(void)setUpIndexPathWithRow:(NSInteger)row section:(NSInteger)section;

@@ -124,9 +124,10 @@
 @property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForTitle;
 @property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForDate;
 @property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForTitleTop;
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
 
 
-@property (nonatomic,strong)  MPMoviePlayerController *moviePlayer;
+@property (nonatomic,strong) MPMoviePlayerController *moviePlayer;
 @property (nonatomic,strong) NSString *strURL;
 
 -(void)setUpIndexPathWithRow:(NSInteger)row section:(NSInteger)section;

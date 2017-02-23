@@ -864,11 +864,51 @@ typedef enum{
         [journalView removeFromParentViewController];
         if (isCycleCompleted) {
             [self showSubmitOverLay];
+        }else{
+            [self continueEmotionListingAftrJournal];
         }
         
         
     }];
     
+}
+
+-(void)continueEmotionListingAftrJournal{
+    
+    switch (activeMenu) {
+        case eTypeFeel:
+            [self showRateSelection];
+            break;
+            
+        case eTypeEmotion:
+            if (![dictEmotionSelection objectForKey:[NSNumber numberWithInteger:eTypeFeel]]) return;
+            [self showEmotionSelection];
+            break;
+            
+        case eTypeEvent:
+            if (selectedEmotionTitle.length <= 0) return;
+            [self showEventSelection];
+            break;
+            
+        case eTypeDrive:
+            if (selectedEventTitle.length <= 0) return;
+            [self showDriveSelection];
+            break;
+            
+        case eTypeGoalsAndDreams:
+            if (![dictEmotionSelection objectForKey:[NSNumber numberWithInteger:eTypeDrive]]) return;
+            [self showGoalsAndDreamsSelection];
+            break;
+            
+        case eTypeAction:
+            if (selectedGoalsTitle.length <= 0) return;
+            [self showActionSelection];
+            break;
+            
+        default:
+            break;
+    }
+
 }
 
 #pragma mark - SUBMIT Activities

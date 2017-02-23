@@ -59,6 +59,7 @@ typedef enum{
     CustomAudioPlayerView *vwAudioPlayer;
     CommentComposeViewController *composeComment;
     PhotoBrowser *photoBrowser;
+    NSMutableDictionary *heightsCache;
     
 }
 
@@ -85,6 +86,7 @@ typedef enum{
     
     strTitle = [NSString new];
     strDescription = [NSString new];
+    heightsCache = [NSMutableDictionary new];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -174,7 +176,7 @@ typedef enum{
         cell.delegate = self;
         [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
         if (indexPath.row < arrDataSource.count)
-            [self showMediaDetailsWithCell:cell andDetails:arrDataSource[indexPath.row]];
+            [self showMediaDetailsWithCell:cell andDetails:arrDataSource[indexPath.row] index:indexPath.row];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
       
@@ -195,6 +197,24 @@ typedef enum{
             height += 15;
         }
         return height;
+    }else{
+        if (indexPath.row < arrDataSource.count) {
+            NSDictionary *details = arrDataSource[indexPath.row];
+            float imageHeight = 0;
+            float padding = 10;
+            if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
+            }else{
+                float width = [[details objectForKey:@"image_width"] floatValue];
+                float height = [[details objectForKey:@"image_height"] floatValue];
+                float ratio = width / height;
+                imageHeight = (_tableView.frame.size.width - padding) / ratio;
+                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+                
+            }
+            return imageHeight + 5;
+            
+        }
     }
     float height = 250;
     return height;
@@ -307,7 +327,7 @@ typedef enum{
     
 }
 
--(void)showMediaDetailsWithCell:(GemDetailsCustomTableViewCell*)cell andDetails:(NSDictionary*)mediaInfo{
+-(void)showMediaDetailsWithCell:(GemDetailsCustomTableViewCell*)cell andDetails:(NSDictionary*)mediaInfo index:(NSInteger)index{
     
     NSString *mediaType ;
     if (NULL_TO_NIL([mediaInfo objectForKey:@"media_type"])) {
@@ -318,11 +338,17 @@ typedef enum{
         
         if ([mediaType isEqualToString:@"image"]) {
             
+            float imageHeight = 0;
+            if ([heightsCache objectForKey:[NSNumber numberWithInt:index]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:index]] integerValue];
+                cell.constraintForHeight.constant = imageHeight;
+            }
+            
             // Type Image
-            [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
+           // [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
             [cell.activityIndicator startAnimating];
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]]
-                                placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                placeholderImage:[UIImage imageNamed:@""]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                            [UIView transitionWithView:cell.imgGemMedia
                                                              duration:.5f
@@ -359,9 +385,14 @@ typedef enum{
             if (NULL_TO_NIL([mediaInfo objectForKey:@"video_thumb"])) {
                 NSString *videoThumb = [mediaInfo objectForKey:@"video_thumb"];
                 if (videoThumb.length) {
+                    float imageHeight = 0;
+                    if ([heightsCache objectForKey:[NSNumber numberWithInt:index]]) {
+                        imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:index]] integerValue];
+                        cell.constraintForHeight.constant = imageHeight;
+                    }
                     [cell.activityIndicator startAnimating];
                     [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:videoThumb]
-                                        placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                        placeholderImage:[UIImage imageNamed:@""]
                                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                    [cell.activityIndicator stopAnimating];
                                                    [UIView transitionWithView:cell.imgGemMedia

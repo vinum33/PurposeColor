@@ -31,8 +31,11 @@
 @property (nonatomic,weak)  IBOutlet UIImageView *imgGem;
 @property (nonatomic,weak) IBOutlet UIButton *btnVideoPlay;
 @property (nonatomic,weak) IBOutlet  UIButton *btnAudioPlay;
+@property (nonatomic,weak) IBOutlet  UILabel *lblPlaceHolder;
 @property (nonatomic, assign) NSInteger section;
 @property (nonatomic, assign) NSInteger row;
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
+
 @property (nonatomic,weak)  id<GEMSMediaListDelegate>delegate;
 
 -(void)setUpIndexPathWithRow:(NSInteger)row section:(NSInteger)section;

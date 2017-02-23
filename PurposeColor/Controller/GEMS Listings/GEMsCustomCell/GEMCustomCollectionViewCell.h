@@ -14,6 +14,6 @@
 @property (nonatomic,weak) IBOutlet UILabel* lblTitle;
 @property (nonatomic,weak) IBOutlet UIImageView* imgDisplay;
 @property (nonatomic,weak) IBOutlet UIActivityIndicatorView* indicator;
-
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
 
 @end

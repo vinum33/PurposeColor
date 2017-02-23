@@ -21,11 +21,14 @@
     eMenu_Terms = 9,
     eMenu_Share = 10,
     eMenu_Logout = 11,
-    eMenu_Memories = 12,
-    eMenu_Help = 13,
-    eMenu_Favourites = 14,
-    eMenu_Profile = 15,
-    eMenu_Settings = 16,
+    eMenu_Journal = 12,
+     
+    eMenu_Memories = 13,
+    eMenu_Help = 14,
+    eMenu_Favourites = 15,
+    eMenu_Profile = 16,
+    eMenu_Settings = 17,
+    
      
  };typedef NSInteger EMenuActions ;
 
@@ -55,6 +58,7 @@
 - (void)changeHomePageDynamicallyWithType:(EMenuActions)menu_type;
 -(void)clearUserSessions;
 -(void)showEmotionalAwarenessPage;
+-(void)showJournalListView;
 
 @end
 
