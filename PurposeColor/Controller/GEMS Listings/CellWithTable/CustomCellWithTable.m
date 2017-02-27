@@ -108,6 +108,7 @@
             KILabel *lblInfo;
             if ([[[cell contentView] viewWithTag:1] isKindOfClass:[KILabel class]]) {
                 lblInfo = [[cell contentView] viewWithTag:1];
+                lblInfo.text = @"";
                 lblInfo.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
                     // Open URLs
                     [self attemptOpenURL:[NSURL URLWithString:string]];
@@ -184,6 +185,7 @@
         [[cell btnVideoPlay]setHidden:YES];
         [[cell btnAudioPlay]setHidden:YES];
         [[cell lblPlaceHolder]setHidden:true];
+        [[cell lblPlaceHolder]setText:_placeHolderText];
         cell.delegate = self;
         [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
         
@@ -194,6 +196,7 @@
                 if (indexPath.row - 1 < goalMedia.count) {
                     NSDictionary *mediaInfo = goalMedia[indexPath.row - 1];
                     NSString *placeHolderImageName = PlaceHolderImageAction;
+                    [[cell lblPlaceHolder]setHidden:true];
                     if (_isTabEmotion) {
                         placeHolderImageName = PlaceHolderImageEmotion;
                     }
@@ -226,7 +229,7 @@
                             }
                             
                             else if ([mediaType isEqualToString:@"audio"]) {
-                                
+                                [[cell lblPlaceHolder]setHidden:true];
                                 // Type Audio
                                 [cell.imgGem setImage:[UIImage imageNamed:@"NoImage.png"]];
                                 if (NULL_TO_NIL([mediaInfo objectForKey:@"gem_media"])) {
@@ -284,6 +287,8 @@
                         }
                         
                     }
+                    if (!_isTabEmotion)  [[cell lblPlaceHolder]setHidden:true];
+                    
                     
                 }
             }
@@ -342,6 +347,8 @@
                         NSDictionary *mediaInfo = mediaItems[indexPath.row - 1];
                         float _width = [[mediaInfo objectForKey:@"image_width"] floatValue];
                         float _height = [[mediaInfo objectForKey:@"image_height"] floatValue];
+                        if (_width <= 0) _width = 250;
+                        if (_height <= 0) _width = 250;
                         float ratio = _width / _height;
                         float deviceWidth = _deviceWidth;
                         if (deviceWidth <= 0)  deviceWidth = 320;
@@ -369,7 +376,7 @@
     [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwBG]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBG)]];
     [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwBG]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBG)]];
     vwBG.backgroundColor = [UIColor whiteColor];
-    //vwBG.backgroundColor = [UIColor greenColor];
+    vwBG.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     
     // Top Border
     
@@ -456,7 +463,7 @@
                                                     multiplier:1.0
                                                       constant:-10.0]];
     lblDate.font = [UIFont fontWithName:CommonFont size:11];
-    lblDate.textColor = [UIColor lightGrayColor];
+    lblDate.textColor = [UIColor blackColor];
     
     if (section < dataSource.count) {
         NSDictionary *details = dataSource[section];

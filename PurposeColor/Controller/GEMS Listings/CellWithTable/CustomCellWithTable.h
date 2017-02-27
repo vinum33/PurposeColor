@@ -32,7 +32,7 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topConstarintForTable;
 @property (nonatomic,assign) BOOL isTabEmotion;
 @property (nonatomic,assign) float deviceWidth;
-
+@property (nonatomic,strong) NSString *placeHolderText;
 
 -(void)setUpParentSection:(NSInteger)parentSection;
 -(void)setUpActionsWithDataSource:(NSArray*)dataSource;

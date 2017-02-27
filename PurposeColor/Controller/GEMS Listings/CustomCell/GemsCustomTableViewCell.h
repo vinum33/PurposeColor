@@ -35,6 +35,7 @@
 @property (nonatomic, assign) NSInteger section;
 @property (nonatomic, assign) NSInteger row;
 @property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
+@property (nonatomic,strong) NSString *placeHolderText;
 
 @property (nonatomic,weak)  id<GEMSMediaListDelegate>delegate;
 

@@ -5,12 +5,7 @@
 //  Created by Purpose Code on 28/07/16.
 //  Copyright © 2016 Purpose Code. All rights reserved.
 //
-typedef enum{
-    
-    eByEmotion = 0,
-    eByGoals = 1,
-    
-} eType;
+
 
 
 static NSString *CollectionViewCellIdentifier = @"GEMSListings";
@@ -40,8 +35,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     IBOutlet UIView *vwSegmentSelection;
     IBOutlet UIButton *btnEmotion;
     IBOutlet UIButton *btnGoal;
-    UIImage *headerImage;
-    float heightForImageCell;
     
     UIRefreshControl *refreshControl;
     
@@ -62,11 +55,12 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     NSArray *arrGoalColors;
     NSArray *arrEmotionColors;
     
-    eType eSelectionType;
-    
     CustomAudioPlayerView *vwAudioPlayer;
     PhotoBrowser *photoBrowser;
-    NSMutableDictionary *heightsCache;
+    UIImage *headerImage;
+    float heightForImageCell;
+    
+     NSMutableDictionary *heightsCache;
 }
 
 @end
@@ -75,8 +69,9 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        [self setUpHeaderImage];
     [self setUp];
+    [self setUpHeaderImage];
+    [self checkUserViewStatus];
     [self loadAllEmotionsByPagination:NO withPageNumber:currentPage_Emotions];
     // Do any additional setup after loading the view.
 }
@@ -85,6 +80,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 {
     return UIStatusBarStyleLightContent;
 }
+
 
 
 -(void)setUp{
@@ -98,29 +94,67 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     arrDataSource = [NSMutableArray new];
     arrEmotions = [NSMutableArray new];
     arrGoals = [NSMutableArray new];
-    arrGoalColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.08 green:0.40 blue:0.75 alpha:1.0],[UIColor colorWithRed:0.10 green:0.46 blue:0.82 alpha:1.0],[UIColor colorWithRed:0.12 green:0.53 blue:0.90 alpha:1.0], nil];
+    arrGoalColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.37 green:0.51 blue:0.82 alpha:1.0],[UIColor colorWithRed:0.65 green:0.45 blue:0.83 alpha:1.0],[UIColor colorWithRed:0.58 green:0.33 blue:0.34 alpha:1.0], nil];
     arrEmotionColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.26 green:0.65 blue:0.96 alpha:1.0],[UIColor colorWithRed:0.13 green:0.59 blue:0.95 alpha:1.0],[UIColor colorWithRed:0.12 green:0.53 blue:0.90 alpha:1.0], nil];
-    
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.tintColor = [UIColor grayColor];
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:refreshControl];
     tableView.hidden = false;
     isDataAvailable = false;
-    eSelectionType = eByEmotion;
     heightsCache = [NSMutableDictionary new];
     
+    
+    
 }
+
+
+
+-(void)checkUserViewStatus{
+    
+    firstTime = true;
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"GEMS_Show_Count"])
+    {
+        
+    }else{
+        
+        NSInteger count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"GEMS_Show_Count"] integerValue];
+        if (count == 2) {
+            firstTime = false;
+        }
+    }
+    
+}
+
+-(void)updateVisibilityStatus{
+    
+    firstTime = true;
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"GEMS_Show_Count"])
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:@"GEMS_Show_Count"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }else{
+        
+        NSInteger count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"GEMS_Show_Count"] integerValue];
+        if (count == 2) {
+            
+            firstTime = false;
+        }else{
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:2] forKey:@"GEMS_Show_Count"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    
+}
+
 
 -(void)setUpHeaderImage{
     headerImage = [Utility imageWithImage:[UIImage imageNamed:@"GEMS_Header.png"] scaledToWidth:self.view.frame.size.width];
     heightForImageCell = headerImage.size.height;
 }
 
-
 -(void)refreshData{
     
-    [heightsCache removeAllObjects];
     if (isPageRefresing){
         [refreshControl endRefreshing];
         return;
@@ -133,19 +167,9 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     isPageRefresing = YES;
     NSInteger currentPage = 1;
     
-    if (eSelectionType == eByEmotion) {
-        eSelectionType = eByEmotion;
-        currentPage_Emotions = 1;
-        totalPages_Emotions = 0;
-        [self loadAllEmotionsByPagination:NO withPageNumber:currentPage];
-        
-    }else{
-        eSelectionType = eByGoals;
-        currentPage_Goals = 1;
-        totalPages_Goals = 0;
-        [self loadAllGoalsByPagination:NO withPageNumber:currentPage];
-    }
-    
+    currentPage_Emotions = 1;
+    totalPages_Emotions = 0;
+    [self loadAllEmotionsByPagination:NO withPageNumber:currentPage];
 }
 
 
@@ -197,6 +221,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         [self getGemsFromResponds:responseObject];
         [self hideLoadingScreen];
         [self hidePaginationPopUp];
+        [self updateVisibilityStatus];
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
@@ -208,38 +233,22 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         [self hidePaginationPopUp];
         isDataAvailable = false;
         [tableView reloadData];
-        
+
     }];
 }
 
 -(void)getGemsFromResponds:(NSDictionary*)responds{
     
     NSArray *goals;
-    
-    if (eSelectionType == eByEmotion) {
-        eSelectionType = eByEmotion;
-        [arrEmotions removeAllObjects];
-        if (NULL_TO_NIL([responds objectForKey:@"emotions"])) {
-            goals = [responds objectForKey:@"emotions"];
-            if (goals.count) [arrEmotions addObjectsFromArray:goals];
-            if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"currentPage"]))
-                currentPage_Emotions = [[[responds objectForKey:@"header"] objectForKey:@"currentPage"] integerValue];
-            if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"pageCount"]))
-                totalPages_Emotions = [[[responds objectForKey:@"header"] objectForKey:@"pageCount"] integerValue];
-        }
-        
-    }else{
-        eSelectionType = eByGoals;
-        if (NULL_TO_NIL([responds objectForKey:@"goals"])) {
-            goals = [responds objectForKey:@"goals"];
-            [arrGoals removeAllObjects];
-            if (goals.count) [arrGoals addObjectsFromArray:goals];
-            if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"currentPage"]))
-                currentPage_Goals = [[[responds objectForKey:@"header"] objectForKey:@"currentPage"] integerValue];
-            if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"pageCount"]))
-                totalPages_Goals = [[[responds objectForKey:@"header"] objectForKey:@"pageCount"] integerValue];
-        }
-        
+   
+    [arrEmotions removeAllObjects];
+    if (NULL_TO_NIL([responds objectForKey:@"emotions"])) {
+        goals = [responds objectForKey:@"emotions"];
+        if (goals.count) [arrEmotions addObjectsFromArray:goals];
+        if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"currentPage"]))
+            currentPage_Emotions = [[[responds objectForKey:@"header"] objectForKey:@"currentPage"] integerValue];
+        if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"pageCount"]))
+            totalPages_Emotions = [[[responds objectForKey:@"header"] objectForKey:@"pageCount"] integerValue];
     }
     
     [self configureDataSource];
@@ -248,17 +257,8 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 -(void)configureDataSource{
     
     [arrDataSource removeAllObjects];
-    if (eSelectionType == eByEmotion) {
-        eSelectionType = eByEmotion;
-        if (arrEmotions.count > 0) {
-            arrDataSource = [NSMutableArray arrayWithArray:arrEmotions];
-        }
-    }else{
-        
-        eSelectionType = eByGoals;
-        if (arrGoals.count > 0) {
-            arrDataSource = [NSMutableArray arrayWithArray:arrGoals];
-        }
+    if (arrEmotions.count > 0) {
+        arrDataSource = [NSMutableArray arrayWithArray:arrEmotions];
     }
     isDataAvailable = false;
     if (arrDataSource.count) isDataAvailable = true;
@@ -295,14 +295,14 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         return 1;
     }
     
-    if (section - 1 < arrDataSource.count) {
-        NSDictionary *details = arrDataSource[section - 1];
-        NSArray *actions;
-        if (NULL_TO_NIL([details objectForKey:@"action"])) {
-            actions = [details objectForKey:@"action"];
-            if (actions.count > 0) {
-                totalCount = 1;
-            }
+       if (section - 1 < arrDataSource.count) {
+            NSDictionary *details = arrDataSource[section - 1];
+            NSArray *actions;
+            if (NULL_TO_NIL([details objectForKey:@"action"])) {
+                actions = [details objectForKey:@"action"];
+                if (actions.count > 0) {
+                    totalCount = 1;
+                }
             
             // Only actions so count is One always,since its showing like a table insdie a single cell;
         }
@@ -312,9 +312,9 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     return totalCount;
 }
 
-
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+     NSLog(@"cell %ld",(long)indexPath.section);
     UITableViewCell *cell;
     aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (indexPath.section == 0 && indexPath.row == 0) {
@@ -330,59 +330,55 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
     }
-    
+
     cell = [self configureCellForIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 -(UITableViewCell*)configureCellForIndexPath:(NSIndexPath*)indexPath{
     
+    NSLog(@"%ld",(long)indexPath.section);
     static NSString *MyIdentifier = @"MyIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:MyIdentifier];
     
-        // For emotions
-        
-        if (indexPath.section - 1 < arrDataSource.count) {
-            BOOL isActionAvailable = false;
-            NSDictionary *details = arrDataSource[indexPath.section - 1];
-            NSArray *actions;
-            if (NULL_TO_NIL([details objectForKey:@"action"])) {
-                actions = [details objectForKey:@"action"];
-                if (actions.count > 0) {
-                    isActionAvailable = true;
-                    NSArray *actions;
-                    if (NULL_TO_NIL([details objectForKey:@"action"])) {
-                        actions = [details objectForKey:@"action"];
-                        if (actions.count > 0) {
-                            static NSString *CellIdentifier = @"CustomCellWithTable";
-                            CustomCellWithTable *cell = (CustomCellWithTable *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                            cell.accessoryType = UITableViewCellAccessoryNone;
-                            cell.backgroundColor = [UIColor clearColor];
-                            cell.delegate = self;
-                            cell.isTabEmotion = true;
-                            cell.contentView.backgroundColor = [UIColor clearColor];
-                            cell.topConstarintForTable.constant = 0;
-                            cell.placeHolderText = [NSString stringWithFormat:@" %@ ",[details objectForKey:@"title"]];
-                            cell.deviceWidth = tableView.frame.size.width;
-                            [cell setUpActionsWithDataSource:actions];
-                            [cell setUpParentSection:indexPath.section - 1];
-                            return cell;
-                        }
+    if (indexPath.section -1 < arrDataSource.count) {
+        BOOL isActionAvailable = false;
+        NSDictionary *details = arrDataSource[indexPath.section - 1];
+        NSArray *actions;
+        if (NULL_TO_NIL([details objectForKey:@"action"])) {
+            actions = [details objectForKey:@"action"];
+            if (actions.count > 0) {
+                isActionAvailable = true;
+                NSArray *actions;
+                if (NULL_TO_NIL([details objectForKey:@"action"])) {
+                    actions = [details objectForKey:@"action"];
+                    if (actions.count > 0) {
+                        static NSString *CellIdentifier = @"CustomCellWithTable";
+                        CustomCellWithTable *cell = (CustomCellWithTable *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.accessoryType = UITableViewCellAccessoryNone;
+                        cell.backgroundColor = [UIColor clearColor];
+                        cell.delegate = self;
+                        cell.isTabEmotion = true;
+                        cell.contentView.backgroundColor = [UIColor clearColor];
+                        cell.topConstarintForTable.constant = 0;
+                        cell.placeHolderText = [NSString stringWithFormat:@" %@ ",[details objectForKey:@"title"]];
+                        [cell setUpActionsWithDataSource:actions];
+                        [cell setUpParentSection:indexPath.section -1];
+                        return cell;
                     }
-                    
                 }
+                
             }
-            // Check if reached Action Cell
         }
         
-        
+    }
     
     return cell;
-    
+
 }
 
 -(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -390,74 +386,73 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     if (indexPath.section == 0 && indexPath.row == 0) {
         return heightForImageCell;
     }
-    
-        // By Emotions
+    NSLog(@"%d",indexPath.section);
+    BOOL isActionAvailable = false;
+    if (indexPath.section - 1 < arrDataSource.count) {
+        NSDictionary *details = arrDataSource[indexPath.section - 1];
         
-        BOOL isActionAvailable = false;
-        if (indexPath.section  -1 < arrDataSource.count) {
-            NSDictionary *details = arrDataSource[indexPath.section  -1];
-            NSArray *actions;
-            if (NULL_TO_NIL([details objectForKey:@"action"])) {
-                actions = [details objectForKey:@"action"];
-                if (actions.count > 0) {
-                    isActionAvailable = true;;
-                }
-            }
-            // Check if reached Action Cell
-            NSInteger height = 0;
-            if (isActionAvailable) {
-                
-                for (NSDictionary *dict in actions) {
-                    if (NULL_TO_NIL([dict objectForKey:@"action_media"])) {
-                        NSArray *actionMedias = [dict objectForKey:@"action_media"];
-                        float finalImgHeight = 0;
-                        float padding = 15;
-                        for (NSDictionary *dict in actionMedias) {
-                            float _width = [[dict objectForKey:@"image_width"] floatValue];
-                            float _height = [[dict objectForKey:@"image_height"] floatValue];
-                            float ratio = _width / _height;
-                            float deviceWidth = _tableView.frame.size.width;
-                            float imageHeight = (deviceWidth - padding) / ratio;
-                            finalImgHeight += imageHeight;
-                        }
-                        height += finalImgHeight;
-                    }
-                    if (NULL_TO_NIL([dict objectForKey:@"action_details"])) {
-                        NSString *strDetails = [dict objectForKey:@"action_details"];
-                        if (strDetails.length) {
-                            height += [self getLabelHeightForActionDescription:[dict objectForKey:@"action_details"] withFont:[UIFont fontWithName:CommonFont size:14] withPadding:15]; // Description height
-                            CGFloat padding = 20;
-                            height +=  padding;
-                        }
-                        
-                    }
-                    
-                    float padding = 0;
-                    if (NULL_TO_NIL([dict objectForKey:@"contact_name"])) {
-                        height += [self getLabelHeightForOtherInfo:[dict objectForKey:@"contact_name"] withFont:[UIFont fontWithName:CommonFont size:12] withPadding:30];
-                        padding = 10;
-                    }
-                    
-                    if (NULL_TO_NIL([dict objectForKey:@"location_name"])) {
-                        height += [self getLabelHeightForOtherInfo:[dict objectForKey:@"location_name"] withFont:[UIFont fontWithName:CommonFontBold size:12] withPadding:30];
-                        padding = 10;
-                    }
-                    height +=  padding;
-                    
-                    if (NULL_TO_NIL([dict objectForKey:@"action_title"])) {
-                        CGFloat _height = [self getHeaderHeight:[dict objectForKey:@"action_title"] withPadding:15];
-                        height += _height;
-                        
-                    }
-                }
-                return height;
-                
-            }else{
-                //Action Not available
-                return kHeightForCell;
+        NSArray *actions;
+        if (NULL_TO_NIL([details objectForKey:@"action"])) {
+            actions = [details objectForKey:@"action"];
+            if (actions.count > 0) {
+                isActionAvailable = true;;
             }
         }
-    
+        // Check if reached Action Cell
+        NSInteger height = 0;
+        if (isActionAvailable) {
+            
+            for (NSDictionary *dict in actions) {
+                if (NULL_TO_NIL([dict objectForKey:@"action_media"])) {
+                    NSArray *actionMedias = [dict objectForKey:@"action_media"];
+                    
+                    float finalImgHeight = 0;
+                    float padding = 15;
+                    for (NSDictionary *dict in actionMedias) {
+                        float _width = [[dict objectForKey:@"image_width"] floatValue];
+                        float _height = [[dict objectForKey:@"image_height"] floatValue];
+                        float ratio = _width / _height;
+                        float deviceWidth = _tableView.frame.size.width;
+                        float imageHeight = (deviceWidth - padding) / ratio;
+                        finalImgHeight += imageHeight;
+                    }
+                    height += finalImgHeight;
+                }
+                if (NULL_TO_NIL([dict objectForKey:@"action_details"])) {
+                    NSString *strDetails = [dict objectForKey:@"action_details"];
+                    if (strDetails.length) {
+                        height += [self getLabelHeightForActionDescription:[dict objectForKey:@"action_details"] withFont:[UIFont fontWithName:CommonFont size:14]]; // Description height
+                        CGFloat padding = 20;
+                        height +=  padding;
+                    }
+                    
+                }
+                
+                float padding = 0;
+                if (NULL_TO_NIL([dict objectForKey:@"contact_name"])) {
+                    height += [self getLabelHeightForOtherInfo:[dict objectForKey:@"contact_name"] withFont:[UIFont fontWithName:CommonFont size:12]];
+                    padding = 10;
+                }
+                
+                if (NULL_TO_NIL([dict objectForKey:@"location_name"])) {
+                    height += [self getLabelHeightForOtherInfo:[dict objectForKey:@"location_name"] withFont:[UIFont fontWithName:CommonFontBold size:12]];
+                    padding = 10;
+                }
+                height +=  padding;
+                
+                if (NULL_TO_NIL([dict objectForKey:@"action_title"])) {
+                    CGFloat _height = [self getHeaderHeight:[dict objectForKey:@"action_title"] withPadding:15];
+                    height += _height;
+                    
+                }
+            }
+            return height;
+            
+        }else{
+            //Action Not available
+            return kHeightForCell;
+        }
+    }
     
     CGFloat height = kHeightForCell;
     return height;
@@ -473,6 +468,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         
     }
 }
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     /**! Pagination call !**/
@@ -482,41 +478,20 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
-    if (!isDataAvailable) return Nil;
+    if (!isDataAvailable || section == 0) return Nil;
     UIView *vwHeader = [UIView new];
     UIView *vwBG = [UIView new];
     [vwHeader addSubview:vwBG];
     vwBG.translatesAutoresizingMaskIntoConstraints = NO;
     [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwBG]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBG)]];
     [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwBG]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBG)]];
-    vwBG.backgroundColor =  arrGoalColors[section % 3];
-    if (eSelectionType == eByEmotion) {
-        vwBG.backgroundColor =  arrEmotionColors[section % 3];
-    }
+    vwBG.backgroundColor =  arrEmotionColors[section % 3];
     
     UILabel *_lblTitle = [UILabel new];
-    _lblTitle.numberOfLines = 0;
+    _lblTitle.numberOfLines = 2;
     _lblTitle.translatesAutoresizingMaskIntoConstraints = NO;
     [vwBG addSubview:_lblTitle];
-    
-    
-    
-    if (eSelectionType == eByGoals)
-        [vwBG addConstraint:[NSLayoutConstraint constraintWithItem:_lblTitle
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:vwBG
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0
-                                                          constant:-8.0]];
-    else
-        [vwBG addConstraint:[NSLayoutConstraint constraintWithItem:_lblTitle
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:vwBG
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0
-                                                          constant:0.0]];
+    [vwBG addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_lblTitle]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
     
     [vwBG addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_lblTitle]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
     _lblTitle.font = [UIFont fontWithName:CommonFontBold size:15];
@@ -528,31 +503,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         }
     }
     
-    if (eSelectionType == eByGoals) {
-        
-        UILabel *lblDate= [UILabel new];
-        lblDate.numberOfLines = 1;
-        lblDate.translatesAutoresizingMaskIntoConstraints = NO;
-        [vwBG addSubview:lblDate];
-        
-        [vwBG addConstraint:[NSLayoutConstraint constraintWithItem:lblDate
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:_lblTitle
-                                                         attribute:NSLayoutAttributeBottom
-                                                        multiplier:1.0
-                                                          constant:8.0]];
-        
-        
-        [vwBG addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[lblDate]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lblDate)]];
-        lblDate.font = [UIFont fontWithName:CommonFont size:11];
-        lblDate.textColor = [UIColor whiteColor];
-        if (section < arrDataSource.count) {
-            NSDictionary *details = arrDataSource[section];
-            lblDate.text = [NSString stringWithFormat:@"%@ - %@ | %@",[Utility getDateStringFromSecondsWith:[[details objectForKey:@"goal_startdate"] doubleValue] withFormat:@"d MMM,yyyy"],[Utility getDateStringFromSecondsWith:[[details objectForKey:@"goal_enddate"] doubleValue] withFormat:@"d MMM,yyyy"],@"Active"]  ;
-        }
-    }
-    
     return vwHeader;
     
 }
@@ -561,7 +511,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     
     if (!isDataAvailable || section == 0) return 0.01;
     return kHeightForHeader;
-    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -596,7 +545,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
             if (index - 1 < medias.count) {
                 NSDictionary *mediaItem = medias[index - 1];
                 if (NULL_TO_NIL([mediaItem objectForKey:@"media_type"])) {
-                    NSString *mediaType = [mediaItem objectForKey:@"media_type"];
+                   NSString *mediaType = [mediaItem objectForKey:@"media_type"];
                     if ([mediaType isEqualToString:@"video"]) {
                         [self playVideoWithURL:[mediaItem objectForKey:@"gem_media"]];
                     }
@@ -621,7 +570,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                         if (arrImages.count) [self presentGalleryWithImages:arrImages];
                         
                     }
-                    
+     
                 }
             }
         }
@@ -695,7 +644,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         [[AVAudioSession sharedInstance] setActive:NO error:&error];
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
         playerViewController.player = [AVPlayer playerWithURL:[NSURL URLWithString:mediaURL]];
-        [playerViewController.player play];
+         [playerViewController.player play];
         [self presentViewController:playerViewController animated:YES completion:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(videoDidFinish:)
@@ -708,7 +657,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         [self showAudioPlayerWithURL:audioURL];
     }
     
-    
+
 }
 
 -(void)playVideoWithURL:(NSString*)mediaURL{
@@ -774,7 +723,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         [[AVAudioSession sharedInstance] setActive:NO error:&error];
     }];
     
-    
+
 }
 - (void)presentGalleryWithImages:(NSArray*)images
 {
@@ -850,11 +799,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
-
-
-
-
-
 - (CGFloat)getLabelHeightForDescription:(NSString*)description withFont:(UIFont*)font
 {
     CGFloat height = 0;
@@ -866,21 +810,21 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineHeightMultiple = 1.2f;
     CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName:font,
-                                                             NSParagraphStyleAttributeName:paragraphStyle}
-                                                   context:context].size;
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes:@{NSFontAttributeName:font,
+                                                                     NSParagraphStyleAttributeName:paragraphStyle}
+                                                           context:context].size;
     size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
     height = size.height;
-    
+
     return height;
     
 }
 
-- (CGFloat)getLabelHeightForActionDescription:(NSString*)description withFont:(UIFont*)font withPadding:(float)padding
+- (CGFloat)getLabelHeightForActionDescription:(NSString*)description withFont:(UIFont*)font
 {
     CGFloat height = 10;
-    float widthPadding = padding;
+    float widthPadding = 15;
     CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
     CGSize size;
     NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
@@ -924,83 +868,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     
 }
 
-- (CGFloat)getGEMSHeaderHeight:(NSString*)description withPadding:(float)widthPadding
-{
-    float heightPadding = 0;
-    CGFloat height = 0;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    
-    if (description) {
-        constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-        CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                       options:NSStringDrawingUsesLineFragmentOrigin
-                                                    attributes:@{NSFontAttributeName:[UIFont fontWithName:CommonFont size:14],
-                                                                 }
-                                                       context:context].size;
-        
-        size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-        height = size.height + heightPadding;
-    }
-    
-    
-    return height;
-    
-}
-
-- (CGFloat)getLabelHeightForOtherInfo:(NSString*)description withFont:(UIFont*)font withPadding:(float)padding
-{
-    CGFloat height = 0;
-    float widthPadding = padding;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName:font
-                                                             }
-                                                   context:context].size;
-    size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-    height = size.height;
-    //    if (height < 15) {
-    //        height = 15;
-    //    }
-    
-    return height;
-    
-}
-
-
-- (void)attemptOpenURL:(NSURL *)url
-{
-    
-    
-    BOOL safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
-    if (!safariCompatible) {
-        
-        NSString *urlString = url.absoluteString;
-        urlString = [NSString stringWithFormat:@"http://%@",url.absoluteString];
-        url = [NSURL URLWithString:urlString];
-        
-    }
-    safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
-    if (safariCompatible && [[UIApplication sharedApplication] canOpenURL:url])
-    {
-        [[UIApplication sharedApplication] openURL:url];
-    }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
-                                                        message:@"The selected link cannot be opened."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Dismiss"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
 - (CGFloat)getLabelHeightForOtherInfo:(NSString*)description withFont:(UIFont*)font
 {
     CGFloat height = 0;
@@ -1016,35 +883,15 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                                                    context:context].size;
     size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
     height = size.height;
-    //    if (height < 15) {
-    //        height = 15;
-    //    }
+//    if (height < 15) {
+//        height = 15;
+//    }
     
     return height;
     
 }
 
-- (CGFloat)getLabelHeightForActionDescription:(NSString*)description withFont:(UIFont*)font
-{
-    CGFloat height = 10;
-    float widthPadding = 15;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 1.2f;
-    CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName:font,
-                                                             NSParagraphStyleAttributeName:paragraphStyle}
-                                                   context:context].size;
-    size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-    height = size.height;
-    
-    return height;
-    
-}
+
 
 
 
@@ -1054,13 +901,13 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 }
 
 /*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

@@ -67,6 +67,7 @@
 		E56AF3AF1DB5E48C00029DA1 /* GoalsCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56AF3AD1DB5E48C00029DA1 /* GoalsCustomCell.xib */; };
 		E56AF3B61DB626D300029DA1 /* JournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3B51DB626D300029DA1 /* JournalViewController.m */; };
 		E56BBA401E5468E400002DDE /* GemsListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */; };
+		E56C3F4A1E5F10A600954B2E /* Sweet Sensations Personal Use.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E56C3F491E5F10A600954B2E /* Sweet Sensations Personal Use.ttf */; };
 		E573C22D1E5D62F10070DF7E /* JournalImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2201E5D62F10070DF7E /* JournalImageCell.m */; };
 		E573C22E1E5D62F10070DF7E /* JournalNoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2241E5D62F10070DF7E /* JournalNoImageCell.m */; };
 		E573C22F1E5D62F10070DF7E /* JournalDateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2261E5D62F10070DF7E /* JournalDateInfo.m */; };
@@ -356,6 +357,7 @@
 		E56AF3B41DB626D300029DA1 /* JournalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalViewController.h; sourceTree = "<group>"; };
 		E56AF3B51DB626D300029DA1 /* JournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalViewController.m; sourceTree = "<group>"; };
 		E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GemsListCollectionViewCell.xib; sourceTree = "<group>"; };
+		E56C3F491E5F10A600954B2E /* Sweet Sensations Personal Use.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sweet Sensations Personal Use.ttf"; sourceTree = "<group>"; };
 		E573C21F1E5D62F10070DF7E /* JournalImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalImageCell.h; sourceTree = "<group>"; };
 		E573C2201E5D62F10070DF7E /* JournalImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalImageCell.m; sourceTree = "<group>"; };
 		E573C2231E5D62F10070DF7E /* JournalNoImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalNoImageCell.h; sourceTree = "<group>"; };
@@ -1097,6 +1099,7 @@
 		E506808D1D30F1490041B077 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				E56C3F491E5F10A600954B2E /* Sweet Sensations Personal Use.ttf */,
 				E573C2391E5D94540070DF7E /* Advertising Script Bold Trial.ttf */,
 				E506808E1D30F1490041B077 /* AARDC.ttf */,
 				E506808F1D30F1490041B077 /* ArialBlack.ttf */,
@@ -2344,6 +2347,7 @@
 				E50680CE1D30F1490041B077 /* Benguiat.ttf in Resources */,
 				E50680D01D30F1490041B077 /* CenturyGothic.ttf in Resources */,
 				E5F612DF1D4887A2002B7CB5 /* PhotoPickerCell_5.xib in Resources */,
+				E56C3F4A1E5F10A600954B2E /* Sweet Sensations Personal Use.ttf in Resources */,
 				E50680C21D30F1490041B077 /* Info.plist in Resources */,
 				E5ED400E1D82BCF000A3F455 /* animation10.png in Resources */,
 			);

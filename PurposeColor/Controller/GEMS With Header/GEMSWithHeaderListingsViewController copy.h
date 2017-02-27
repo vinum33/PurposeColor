@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GEMSListingsViewController : UIViewController
-
-@property (nonatomic,assign) BOOL isLauchPage;
+@interface GEMSWithHeaderListingsViewController : UIViewController
 
 @end

@@ -68,13 +68,14 @@
     [arrCategories addObject:@"Inspiring GEMs"];
     [arrCategories addObject:@"Reminders"];
     
+    [arrCategories addObject:@"My Journal"];
     [arrCategories addObject:@"Saved GEMs"];
     [arrCategories addObject:@"Notifications"];
     [arrCategories addObject:@"Privacy Policy"];
     [arrCategories addObject:@"Terms of Service"];
     [arrCategories addObject:@"App Share"];
     [arrCategories addObject:@"Logout"];
-    [arrCategories addObject:@"Journal"];
+   
     [_tableView reloadData];
 }
 
@@ -136,26 +137,27 @@
         }
         
         if (indexPath.row == 0) {
-            cell.imageView.image = [UIImage imageNamed:@"Menu_SavedGEM.png"];
+            cell.imageView.image = [UIImage imageNamed:@"Journal_Menu_Icon.png"];
         }
         else if (indexPath.row == 1) {
-            cell.imageView.image = [UIImage imageNamed:@"Menu_Notifications.png"];
+            cell.imageView.image = [UIImage imageNamed:@"Menu_SavedGEM.png"];
         }
         else if (indexPath.row == 2) {
-            cell.imageView.image = [UIImage imageNamed:@"Menu_Privacy.png"];
+            cell.imageView.image = [UIImage imageNamed:@"Menu_Notifications.png"];
         }
         else if (indexPath.row == 3) {
-            cell.imageView.image = [UIImage imageNamed:@"Menu_Terms.png"];
+            cell.imageView.image = [UIImage imageNamed:@"Menu_Privacy.png"];
         }
         else if (indexPath.row == 4) {
-            cell.imageView.image = [UIImage imageNamed:@"Menu_Share.png"];
+            cell.imageView.image = [UIImage imageNamed:@"Menu_Terms.png"];
         }
         else if (indexPath.row == 5) {
-            cell.imageView.image = [UIImage imageNamed:@"LogoutIcon.png"];
+            cell.imageView.image = [UIImage imageNamed:@"Menu_Share.png"];
         }
         else if (indexPath.row == 6) {
             cell.imageView.image = [UIImage imageNamed:@"LogoutIcon.png"];
         }
+       
         
     }
     

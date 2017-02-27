@@ -150,6 +150,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 
 -(IBAction)segmentChanged:(UIButton*)sender{
     
+    [heightsCache removeAllObjects];
     if (arrDataSource.count > 0) {
        [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
@@ -202,6 +203,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 
 -(void)refreshData{
     
+    [heightsCache removeAllObjects];
     if (isPageRefresing){
         [refreshControl endRefreshing];
         return;
@@ -462,6 +464,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                 }
                 lblInfo.hidden = false;
                 dateInfo.hidden = false;
+                lblInfo.text = @"";
                 
                 lblInfo.systemURLStyle = YES;
                 lblInfo.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
@@ -556,6 +559,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                         cell.isTabEmotion = false;
                         cell.contentView.backgroundColor = [UIColor clearColor];
                         cell.topConstarintForTable.constant = 40;
+                        cell.placeHolderText = [NSString stringWithFormat:@" %@ ",[details objectForKey:@"title"]];
                         [cell setUpActionsWithDataSource:actions];
                         [cell setUpParentSection:indexPath.section];
                         return cell;
@@ -582,6 +586,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
             
             if (indexPath.section < arrDataSource.count) {
                 NSDictionary *details = arrDataSource[indexPath.section];
+                [cell lblPlaceHolder].text = [NSString stringWithFormat:@" %@ ",[details objectForKey:@"title"]];
                 if (NULL_TO_NIL([details objectForKey:@"gem_media"])) {
                     NSArray *goalMedia = [details objectForKey:@"gem_media"];
                     if (indexPath.row - 1 < goalMedia.count) {
@@ -598,8 +603,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                                 if ([mediaType isEqualToString:@"image"]) {
                                     
                                    
-                                    NSString *JPEGfilename = [[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]] lastPathComponent];
-                                    if ([JPEGfilename isEqualToString:PlaceHolderImageGoal]) [[cell lblPlaceHolder]setHidden:false];
+                                   
                                     // Type Image
                                     float imageHeight = 0;
                                     if ([heightsCache objectForKey:indexPath]) {
@@ -659,8 +663,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                                     
                                     if (NULL_TO_NIL([mediaInfo objectForKey:@"video_thumb"])) {
                                         NSString *videoThumb = [mediaInfo objectForKey:@"video_thumb"];
-                                        NSString *JPEGfilename = [[NSURL URLWithString:videoThumb] lastPathComponent];
-                                        if ([JPEGfilename isEqualToString:PlaceHolderImageGoal]) [[cell lblPlaceHolder]setHidden:false];
+                                       
                                         if (videoThumb.length) {
                                             [cell.activityIndicator startAnimating];
                                             [cell.imgGem sd_setImageWithURL:[NSURL URLWithString:videoThumb]
@@ -714,7 +717,8 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
                             cell.isTabEmotion = true;
                             cell.contentView.backgroundColor = [UIColor clearColor];
                             cell.topConstarintForTable.constant = 0;
-                            cell.deviceWidth = 320;
+                            cell.placeHolderText = [NSString stringWithFormat:@" %@ ",[details objectForKey:@"title"]];
+                            cell.deviceWidth = tableView.frame.size.width;
                             [cell setUpActionsWithDataSource:actions];
                             [cell setUpParentSection:indexPath.section];
                             return cell;
@@ -974,7 +978,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     if (eSelectionType == eByEmotion) {
         vwBG.backgroundColor =  arrEmotionColors[section % 3];
     }
-    
     UILabel *_lblTitle = [UILabel new];
     _lblTitle.numberOfLines = 0;
     _lblTitle.translatesAutoresizingMaskIntoConstraints = NO;

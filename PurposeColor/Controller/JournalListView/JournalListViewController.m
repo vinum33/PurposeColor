@@ -204,22 +204,27 @@
                 
                 
             }
-            
-            [cell.activityIndicator startAnimating];
-            [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[journal objectForKey:@"display_image"]]
-                                placeholderImage:[UIImage imageNamed:@"NoImage.png"]
-                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                           [UIView transitionWithView:cell.imgGemMedia
-                                                             duration:.5f
-                                                              options:UIViewAnimationOptionTransitionCrossDissolve
-                                                           animations:^{
-                                                               cell.imgGemMedia.image = image;
-                                                           } completion:nil];
-                                           
-                                           
-                                           [cell.activityIndicator stopAnimating];
-                                       }];
+            cell.imgGemMedia.image = [UIImage imageNamed:@"NoImage.png"];
+            [cell.activityIndicator stopAnimating];
+            if ([journal objectForKey:@"display_image"]) {
+                [cell.activityIndicator startAnimating];
+                [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[journal objectForKey:@"display_image"]]
+                                    placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                           completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                               [UIView transitionWithView:cell.imgGemMedia
+                                                                 duration:.5f
+                                                                  options:UIViewAnimationOptionTransitionCrossDissolve
+                                                               animations:^{
+                                                                   cell.imgGemMedia.image = image;
+                                                               } completion:nil];
+                                               
+                                               
+                                               [cell.activityIndicator stopAnimating];
+                                           }];
 
+            }
+            
+            
 
             
         }
@@ -245,13 +250,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    JournalDetailPageViewController *journalVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalDetailPage];
     if (indexPath.row < arrJournal.count) {
         NSDictionary *joiurnal = arrJournal[indexPath.row];
+         JournalDetailPageViewController *journalVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalDetailPage];
+        
         journalVC.journalDetails = joiurnal;
+         [self.navigationController pushViewController:journalVC animated:YES];
     }
     
-    [self.navigationController pushViewController:journalVC animated:YES];
+   
+   
+    
+   
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -303,11 +313,13 @@
 -(IBAction)showGallery:(UIButton*)sender{
     
     if (sender.tag < arrJournal.count) {
-        JournalGalleryViewController *galleryVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalGallery];
-         NSDictionary *joiurnal = arrJournal[sender.tag];
-        if ([joiurnal objectForKey:@"journal_media"])
+        NSDictionary *joiurnal = arrJournal[sender.tag];
+        if ([joiurnal objectForKey:@"journal_media"]){
+             JournalGalleryViewController *galleryVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalGallery];
             galleryVC.arrMedia = [joiurnal objectForKey:@"journal_media"];
-        [self.navigationController pushViewController:galleryVC animated:YES];
+            [self.navigationController pushViewController:galleryVC animated:YES];
+        }
+        
     }
 }
 

@@ -64,14 +64,14 @@ typedef enum{
     arrAudios = [NSMutableArray new];
     arrVideos = [NSMutableArray new];
     arrImages = [NSMutableArray new];
-    [btnAudioList setEnabled:false];
-    [btnVideoList setEnabled:false];
-    [btnImageList setEnabled:false];
+    [btnAudioList setHidden:true];
+    [btnVideoList setHidden:true];
+    [btnImageList setHidden:true];
     
 }
 
 -(void)filterMedias{
-    
+    BOOL isSet = false;
     for (NSDictionary *dict in _arrMedia) {
         if ([[dict objectForKey:@"media_type"] isEqualToString:@"audio"]) {
             [arrAudios addObject:dict];
@@ -83,13 +83,43 @@ typedef enum{
             [arrVideos addObject:dict];
         }
     }
-    if (arrAudios.count)[btnAudioList setEnabled:true];
-    if (arrVideos.count)[btnVideoList setEnabled:true];
-    if (arrImages.count)[btnImageList setEnabled:true];
-    [btnImageList setImage:[UIImage imageNamed:@"Journal_Image_Menu_Active"] forState:UIControlStateNormal];
-    arrDataSource = [NSMutableArray arrayWithArray:arrImages];
-    selectedMenu = eMenuImage;
-    [tableView reloadData];
+    if (arrImages.count){
+        
+        isSet = true;
+        [btnImageList setHidden:false];
+        [btnImageList setImage:[UIImage imageNamed:@"Journal_Image_Menu_Active"] forState:UIControlStateNormal];
+        arrDataSource = [NSMutableArray arrayWithArray:arrImages];
+        selectedMenu = eMenuImage;
+        
+    }
+    if (arrAudios.count){
+        
+        [btnAudioList setHidden:false];
+        if (!isSet) {
+            [btnAudioList setImage:[UIImage imageNamed:@"Journal_Audio_Menu_Active"] forState:UIControlStateNormal];
+            arrDataSource = [NSMutableArray arrayWithArray:arrAudios];
+            selectedMenu = eMenuAudio;
+            isSet = true;
+        }
+       
+
+    }
+    if (arrVideos.count){
+        
+        [btnVideoList setHidden:false];
+        if (!isSet) {
+            [btnVideoList setImage:[UIImage imageNamed:@"Journal_Video_Menu_Active"] forState:UIControlStateNormal];
+            arrDataSource = [NSMutableArray arrayWithArray:arrVideos];
+            selectedMenu = eMenuVideo;
+            isSet = true;
+        }
+        
+        
+
+        
+    }
+    
+     [tableView reloadData];
 }
 
 -(IBAction)showImages:(id)sender{

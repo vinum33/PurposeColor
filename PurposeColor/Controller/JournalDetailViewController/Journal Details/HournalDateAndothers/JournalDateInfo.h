@@ -10,9 +10,11 @@
 
 @interface JournalDateInfo : UITableViewCell
 
-@property (nonatomic,weak) IBOutlet UIView *vwBoxTop;
-@property (nonatomic,weak) IBOutlet UIView *vwBoxBottom;
-@property (nonatomic,weak) IBOutlet UILabel *lblDateAndConatct;
-@property (nonatomic,weak) IBOutlet UILabel *lblOtherInfo;
+
+@property (nonatomic,weak) IBOutlet UILabel *lblDate;
+@property (nonatomic,weak) IBOutlet UILabel *lblContact;
+@property (nonatomic,weak) IBOutlet UILabel *lblLoc;
+@property (nonatomic,weak) IBOutlet UILabel *lblEmotion;
+@property (nonatomic,weak) IBOutlet UILabel *lblGoal;
 
 @end

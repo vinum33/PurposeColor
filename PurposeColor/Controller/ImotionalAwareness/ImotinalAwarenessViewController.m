@@ -143,6 +143,7 @@ typedef enum{
     NSInteger cellHeight = (self.view.frame.size.height - kPadding) / kMenuItems;
     height = (cellHeight < kCellminimumHeight) ? kCellminimumHeight : cellHeight;
     [tableView reloadData];
+    
 }
 
 -(void)setUpTable{
@@ -779,7 +780,8 @@ typedef enum{
     selectedGoalsValue = -1;
     selectedActions = nil;
     [tableView reloadData];
-    [self showSubmitOverLay];
+    //[self showSubmitOverLay];
+    [self createJournalClicked];
 }
 
 #pragma mark - SELECT YOUR ACTIONS methods
@@ -817,7 +819,8 @@ typedef enum{
     activeMenu = eTypeAction;
     isCycleCompleted = TRUE;
     [tableView reloadData];
-    [self showSubmitOverLay];
+    //[self showSubmitOverLay];
+    [self createJournalClicked];
     
 }
 
@@ -947,6 +950,7 @@ typedef enum{
 -(IBAction)submtJournal:(id)sender{
     
     [self hideSubmitOverLay:nil];
+    isJournalMediaAvailable = true;
     
     if (isJournalMediaAvailable) {
         

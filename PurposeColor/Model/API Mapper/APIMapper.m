@@ -1061,40 +1061,6 @@
     
 }
 
-+ (void)createNewReminderForActionWithActionID:(NSInteger)goalActionID title:(NSString*)title descrption:(NSString*)description startDate:(double)startDate endDate:(double)endDate  startTime:(NSString*)startTime endTime:(NSString*)endTime actionAlert:(NSInteger)alertTime userID:(NSString*)userID repeatValue:(NSString*)repeatValue success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
-    
-    NSString *urlString = [NSString stringWithFormat:@"%@action=newreminder",BaseURLString];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"ZZZZZ"];
-   
-    
-    NSDictionary *params = @{@"user_id": userID,
-                             @"goalaction_id": [NSNumber numberWithInteger:goalActionID],
-                             @"reminder_startdate": [NSNumber numberWithLong:startDate],
-                             @"reminder_starttime": startTime,
-                             @"reminder_enddate": [NSNumber numberWithLong:endDate],
-                             @"reminder_endtime": endTime,
-                             @"reminder_title": title,
-                             @"reminder_desc": description,
-                             @"reminder_alert": [NSNumber numberWithInteger:alertTime],
-                             @"reminder_repeat": repeatValue,
-                             @"timezone": [dateFormatter stringFromDate:[NSDate date]],
-                             };
-    
-    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        success(operation,responseObject);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        failure (operation,error);
-    }];
-
-}
-
-
 +(void)createAJournelWith:(NSArray*)dataSource description:(NSString*)descritption latitude:(double)latitude longitude:(double)longitude locName:(NSString*)locName address:(NSString*)locAddress contactName:(NSString*)conatctName emotionAwarenssValues:(NSDictionary*)awarenessValues OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure progress:(void (^)( long long totalBytesWritten,long long totalBytesExpectedToWrite))progress{
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=savejournal",BaseURLString];
@@ -1130,7 +1096,7 @@
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
     NSDictionary *json = @{@"json": jsonString};
-
+    
     AFHTTPRequestOperation *operation = [manager POST:urlString parameters:json constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSInteger index = 1;
         NSString *dataPath = [Utility getMediaSaveFolderPath];
@@ -1181,6 +1147,96 @@
     }];
     
 }
+
++(void)uploadMediasOnlyToServerwithSource:(NSArray*)dataSource folderName:(NSString*)folderName fileName:(NSString*)filename OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure progress:(void (^)( long long totalBytesWritten,long long totalBytesExpectedToWrite))progress{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=gemaction",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    [params setObject:[User sharedManager].userId forKey:@"user_id"];
+   
+    AFHTTPRequestOperation *operation = [manager POST:urlString parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        NSInteger index = 1;
+        NSString *dataPath = [Utility getMediaSaveFolderPath];
+        NSString *filePath = [dataPath stringByAppendingPathComponent:filename];
+        if([[NSFileManager defaultManager] fileExistsAtPath:filePath])
+        {
+            if ([[filename pathExtension] isEqualToString:@"jpeg"]){
+                NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
+                [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"image/jpeg"];
+            }
+            else if ([[filename pathExtension] isEqualToString:@"mp4"]){
+                NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
+                [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"video/mp4"];
+                UIImage *thumbnail = [Utility getThumbNailFromVideoURL:filePath];
+                NSData *imageData = UIImageJPEGRepresentation(thumbnail,1);
+                if (imageData.length)
+                    [formData appendPartWithFileData:imageData name:[NSString stringWithFormat:@"video_thumb%ld",(long)index] fileName:@"Media" mimeType:@"image/jpeg"];
+            }
+            else if ([[filename pathExtension] isEqualToString:@"aac"]){
+                NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
+                [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"audio/aac"];
+            }
+            
+            index ++;
+            
+        }
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+        
+    }];
+    
+    [operation setUploadProgressBlock:^(NSUInteger __unused bytesWritten,
+                                        long long totalBytesWritten,
+                                        long long totalBytesExpectedToWrite) {
+        
+        progress(totalBytesWritten,totalBytesExpectedToWrite);
+        
+    }];
+    
+}
+
++ (void)createNewReminderForActionWithActionID:(NSInteger)goalActionID title:(NSString*)title descrption:(NSString*)description startDate:(double)startDate endDate:(double)endDate  startTime:(NSString*)startTime endTime:(NSString*)endTime actionAlert:(NSInteger)alertTime userID:(NSString*)userID repeatValue:(NSString*)repeatValue success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=newreminder",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"ZZZZZ"];
+   
+    
+    NSDictionary *params = @{@"user_id": userID,
+                             @"goalaction_id": [NSNumber numberWithInteger:goalActionID],
+                             @"reminder_startdate": [NSNumber numberWithLong:startDate],
+                             @"reminder_starttime": startTime,
+                             @"reminder_enddate": [NSNumber numberWithLong:endDate],
+                             @"reminder_endtime": endTime,
+                             @"reminder_title": title,
+                             @"reminder_desc": description,
+                             @"reminder_alert": [NSNumber numberWithInteger:alertTime],
+                             @"reminder_repeat": repeatValue,
+                             @"timezone": [dateFormatter stringFromDate:[NSDate date]],
+                             };
+    
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+
+}
+
+
+
 
 
 
