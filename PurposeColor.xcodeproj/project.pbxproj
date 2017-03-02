@@ -2697,8 +2697,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2708,7 +2708,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
+				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2720,8 +2720,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2731,7 +2731,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
+				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

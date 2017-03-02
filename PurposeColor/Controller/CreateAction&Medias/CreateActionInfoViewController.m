@@ -1032,6 +1032,10 @@ typedef enum{
             [self.cellSnapshotView removeFromSuperview];
             self.cellSnapshotView = nil;
             NSIndexPath *savedDraggingCellIndexPath = self.draggingCellIndexPath;
+            
+            if (droppedOnCellIndexPath.section == eSectionOne ) return;
+            if (savedDraggingCellIndexPath.section == eSectionOne ) return;
+            
             if (![self.draggingCellIndexPath isEqual:droppedOnCellIndexPath]) {
                 self.draggingCellIndexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
                 [arrDataSource exchangeObjectAtIndex:savedDraggingCellIndexPath.row withObjectAtIndex:droppedOnCellIndexPath.row];
