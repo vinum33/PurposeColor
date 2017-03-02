@@ -20,7 +20,7 @@
 #import "GoalDetailViewController.h"
 #import "JournalGalleryViewController.h"
 
-@interface JournalListViewController () {
+@interface JournalListViewController () <UIGestureRecognizerDelegate> {
     
     IBOutlet UITableView *tableView;
     NSMutableArray *arrJournal;
@@ -61,6 +61,10 @@
     arrJournal = [NSMutableArray new];
     isDataAvailable = false;
     [tableView setHidden:true];
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.delegate = self;
+    [tableView addGestureRecognizer:lpgr];
 }
 
 -(void)loadAllJournalsWithPageNo:(NSInteger)pageNo isByPagination:(BOOL)isPagination{
@@ -298,6 +302,61 @@
     
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:tableView];
+    NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
+    if (indexPath == nil) {
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete"
+                                                                       message:@"Do you want to delete this Journal?"
+                                                                preferredStyle:UIAlertControllerStyleActionSheet]; // 1
+        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                              style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                              }]; // 2
+        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"Delete"
+                                                               style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   [self deleteJournalWithIndex:indexPath.row];
+                                                               }]; // 3
+        
+        [alert addAction:firstAction]; // 4
+        [alert addAction:secondAction]; // 5
+        
+        [self presentViewController:alert animated:YES completion:nil]; // 6
+        
+    } else {
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    
+    return YES;
+}
+
+-(void)deleteJournalWithIndex:(NSInteger)index{
+    
+    if (index < arrJournal.count) {
+        
+        NSDictionary *journal = arrJournal[index];
+        [self showLoadingScreen];
+        [APIMapper deleteJournalWithJournalID:[journal objectForKey:@"journal_id"] userID:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            [arrJournal removeObjectAtIndex:index];
+            [tableView reloadData];
+            [self hideLoadingScreen];
+            
+        } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+            
+             [self hideLoadingScreen];
+        }];
+        
+       
+    }
 }
 
 -(IBAction)showGoalDetails:(UIButton*)sender{

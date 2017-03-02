@@ -416,7 +416,6 @@ typedef enum{
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.lineHeightMultiple = 1.2f;
         NSDictionary *attributes = @{NSFontAttributeName:font
-                                     
                                      };
         NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[actionDetails objectForKey:@"gem_details"] attributes:attributes];
         cell.lblDescription.attributedText = attributedText;
@@ -447,12 +446,6 @@ typedef enum{
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]]
                                 placeholderImage:[UIImage imageNamed:@""]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                           [UIView transitionWithView:cell.imgGemMedia
-                                                             duration:.5f
-                                                              options:UIViewAnimationOptionTransitionCrossDissolve
-                                                           animations:^{
-                                                               cell.imgGemMedia.image = image;
-                                                           } completion:nil];
                                            
                                            
                                            [cell.activityIndicator stopAnimating];
@@ -632,6 +625,7 @@ typedef enum{
 
 -(void)goalsAndDreamsCreatedWithGoalTitle:(NSString*)goalTitle goalID:(NSInteger)_goalID{
     
+    [heightsCache removeAllObjects];
      isUpdated = true;
     [self getGoaDetailsByGoalID:goalID];
     
@@ -639,12 +633,14 @@ typedef enum{
 
 -(void)newActionCreatedWithActionTitle:(NSString*)actionTitle actionID:(NSInteger)_actionID{
     
+     [heightsCache removeAllObjects];
     isUpdated = true;
     [self getGoaDetailsByGoalID:goalID];
 }
 
 -(void)refershGoalsAndDreamsAfterUpdate{
     
+    [heightsCache removeAllObjects];
      isUpdated = true;
     [self getGoaDetailsByGoalID:goalID];
 }

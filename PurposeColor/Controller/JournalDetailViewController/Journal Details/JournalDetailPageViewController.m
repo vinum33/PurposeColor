@@ -12,6 +12,7 @@
 #import "JournalDateInfo.h"
 #import "JournalDescription.h"
 #import "Constants.h"
+#import "JournalGalleryViewController.h"
 
 @interface JournalDetailPageViewController (){
     
@@ -209,8 +210,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-  
+    if (indexPath.row == 2) {
+        [self showGallery:nil];
+    }
 }
+
+-(IBAction)showGallery:(id)sender{
+    
+    JournalGalleryViewController *galleryVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalGallery];
+    galleryVC.arrMedia = [_journalDetails objectForKey:@"journal_media"];
+    [self.navigationController pushViewController:galleryVC animated:YES];
+}
+
 -(IBAction)goBack:(id)sender{
     
     [[self navigationController] popViewControllerAnimated:YES];

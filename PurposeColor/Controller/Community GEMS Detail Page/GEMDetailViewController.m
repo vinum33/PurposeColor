@@ -25,7 +25,7 @@
 #import "ACRObservingPlayerItem.h"
 #import "KILabel.h"
 
-@interface GEMDetailViewController ()<GemDetailPageCellDelegate,CommentActionDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate,ACRObservingPlayerItemDelegate>{
+@interface GEMDetailViewController ()<GemDetailPageCellDelegate,CommentActionDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate,ACRObservingPlayerItemDelegate,CreateMediaInfoDelegate>{
     
     IBOutlet UITableView *tableView;
     IBOutlet UILabel *lblTitle;
@@ -134,7 +134,6 @@
             imageHeight = (self.view.frame.size.width - padding) / ratio;
             [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
         }
-        
         
     }
     
@@ -970,15 +969,84 @@
         
     CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
     detailPage.actionType = eActionTypeGoalsAndDreams;
+     if ([[_gemDetails objectForKey:@"gem_type"] isEqualToString:@"action"]) detailPage.actionType = eActionTypeActions;
+    if (_isFromGEM) detailPage.delegate = self;
     if ([gemType isEqualToString:@"event"]) detailPage.actionType = eActionTypeEvent;
-    detailPage.strTitle = @"EDIT EVENT";
+    detailPage.strTitle = [[NSString stringWithFormat:@"EDIT AS %@",[_gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
     [[self navigationController]pushViewController:detailPage animated:YES];
     [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:gemID GEMType:gemType];
     
 }
 
 
+-(void)newActionCreatedWithActionTitle:(NSString*)actionTitle actionID:(NSInteger)actionID;{
+    
+    // If the detail page comes from Saved gems , after edit , the page should be reloaded.
+    
+    [self getUpdatedGEMDetails];
+    
+}
 
+-(void)goalsAndDreamsCreatedWithGoalTitle:(NSString*)goalTitle goalID:(NSInteger)goalID{
+
+    [self getUpdatedGEMDetails];
+}
+
+-(void)getUpdatedGEMDetails{
+    
+    NSString *gemID;
+    NSString *gemType;
+    
+    if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_id"]))
+        gemID = [_gemDetails objectForKey:@"gem_id"];
+    
+    if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_type"]))
+        gemType = [_gemDetails objectForKey:@"gem_type"];
+    
+    [self showLoadingScreen];
+    [APIMapper getAnyGemDetailsWithGEMID:[_gemDetails objectForKey:@"gem_id"] gemType:gemType userID:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        [self hideLoadingScreen];
+        [self refreshDetailPageWith:responseObject];
+        
+    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+        
+        [self hideLoadingScreen];
+    }];
+
+    
+}
+
+-(void)refreshDetailPageWith:(NSMutableDictionary*)details{
+    
+    _gemDetails = details;
+    playingIndex = -1;
+    arrGemMedias = [NSArray new];
+    if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_media"]))
+        arrGemMedias = [_gemDetails objectForKey:@"gem_media"];
+    [heightsCache removeAllObjects];
+    [tableView reloadData];
+    if ([self.delegate respondsToSelector:@selector(refreshParentListings)]) {
+        [self.delegate refreshParentListings];
+    }
+   
+
+    
+}
+
+-(void)showLoadingScreen{
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.dimBackground = YES;
+    hud.detailsLabelText = @"Loading...";
+    hud.removeFromSuperViewOnHide = YES;
+    
+}
+-(void)hideLoadingScreen{
+    
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+}
 
 -(IBAction)goBack:(id)sender{
     

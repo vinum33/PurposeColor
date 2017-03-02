@@ -466,8 +466,8 @@ typedef enum{
 }
 
 -(IBAction)tapToLogin:(id)sender{
-    //[self bypasslogin];
-    //return;
+  //  [self bypasslogin];
+   // return;
     
     [self checkAllFieldsAreValid:^{
         [self showLoadingScreen];
@@ -505,7 +505,7 @@ typedef enum{
 
 -(void)bypasslogin{
     
-    [APIMapper loginUserWithUserName:@"nadeer@purposecodes.com" userPassword:@"123456"
+    [APIMapper loginUserWithUserName:@"vinayan@purposecodes.com" userPassword:@"12345"
                              success:^(AFHTTPRequestOperation *operation, id responseObject){
                                  NSDictionary *responds = (NSDictionary*)responseObject;
                                  if ( NULL_TO_NIL([responds objectForKey:@"code"])) {

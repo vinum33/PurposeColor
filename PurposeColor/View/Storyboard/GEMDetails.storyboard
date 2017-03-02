@@ -599,23 +599,23 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LtR-4p-Q27">
                                                             <rect key="frame" x="75" y="0.0" width="75" height="40"/>
                                                         </imageView>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xiU-fc-9FG">
+                                                            <rect key="frame" x="0.0" y="0.0" width="75" height="40"/>
+                                                        </imageView>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJn-pE-xJG">
+                                                            <rect key="frame" x="0.0" y="0.0" width="75" height="40"/>
+                                                            <color key="backgroundColor" red="0.12156862745098039" green="0.50588235294117645" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y9V-U8-6hD">
                                                             <rect key="frame" x="15" y="13" width="50" height="14"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeueLTStd-Lt" family="Helvetica Neue LT Std" pointSize="14"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xiU-fc-9FG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="75" height="40"/>
-                                                        </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Wt-tL-hCV">
                                                             <rect key="frame" x="78" y="14" width="62" height="13"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeueLTStd-Lt" family="Helvetica Neue LT Std" pointSize="13"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJn-pE-xJG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="75" height="40"/>
-                                                            <color key="backgroundColor" red="0.12156862745098039" green="0.50588235294117645" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </view>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpd-kV-T5Q">
                                                             <rect key="frame" x="0.0" y="0.0" width="75" height="40"/>
                                                             <connections>
@@ -670,10 +670,12 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="lblCompleted" destination="9Wt-tL-hCV" id="ye8-FS-mtf"/>
                                             <outlet property="lblContactDetails" destination="BCx-gm-9ww" id="IRg-fh-BdQ"/>
                                             <outlet property="lblDate" destination="Roz-Lt-10p" id="V7V-bD-HGJ"/>
                                             <outlet property="lblDescription" destination="L3K-xE-HQy" id="wwT-s1-Rm4"/>
                                             <outlet property="lblLocDetails" destination="lpd-w1-EGV" id="qyZ-3J-SYB"/>
+                                            <outlet property="lblPending" destination="y9V-U8-6hD" id="6t5-Av-CiN"/>
                                             <outlet property="lblTitle" destination="etR-U4-l5p" id="Qhs-tp-QBA"/>
                                             <outlet property="vwContactInfo" destination="ani-FW-KwR" id="FBz-Eb-dxX"/>
                                             <outlet property="vwContainer" destination="rg7-Wh-hL3" id="N3Z-GL-Umn"/>
@@ -692,14 +694,14 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="313"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="57o-MV-qaj">
-                                                    <rect key="frame" x="5" y="5" width="590" height="308"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="57o-MV-qaj">
+                                                    <rect key="frame" x="5" y="13" width="590" height="300"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="300" id="nCc-TF-Spq"/>
                                                     </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KnM-Ho-b9s">
-                                                    <rect key="frame" x="250" y="107" width="100" height="100"/>
+                                                    <rect key="frame" x="250" y="113" width="100" height="100"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="100" id="8wN-Fg-dzb"/>
                                                         <constraint firstAttribute="width" constant="100" id="mLr-M0-JSU"/>
@@ -709,8 +711,8 @@
                                                         <action selector="playVideo:" destination="Co2-AS-7lw" eventType="touchUpInside" id="DAg-av-QEw"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcJ-aM-8Wv">
-                                                    <rect key="frame" x="250" y="109" width="100" height="100"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcJ-aM-8Wv">
+                                                    <rect key="frame" x="250" y="113" width="100" height="100"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="100" id="CJI-cT-IXu"/>
                                                         <constraint firstAttribute="width" constant="100" id="adg-FJ-2b1"/>
@@ -720,24 +722,24 @@
                                                         <action selector="playAudioFile:" destination="Co2-AS-7lw" eventType="touchUpInside" id="BDf-w0-wp4"/>
                                                     </connections>
                                                 </button>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="JbZ-xO-DiD">
-                                                    <rect key="frame" x="290" y="149" width="20" height="20"/>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="JbZ-xO-DiD">
+                                                    <rect key="frame" x="290" y="153" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="qcJ-aM-8Wv" firstAttribute="centerY" secondItem="57o-MV-qaj" secondAttribute="centerY" id="09o-sM-bnR"/>
                                                 <constraint firstItem="c44-dB-p0E" firstAttribute="leading" secondItem="hMY-34-AH5" secondAttribute="leading" id="7SN-ol-BZU"/>
                                                 <constraint firstAttribute="bottom" secondItem="c44-dB-p0E" secondAttribute="bottom" id="Aai-xl-af2"/>
+                                                <constraint firstItem="qcJ-aM-8Wv" firstAttribute="centerX" secondItem="57o-MV-qaj" secondAttribute="centerX" id="Ap1-xv-dTK"/>
                                                 <constraint firstItem="c44-dB-p0E" firstAttribute="top" secondItem="hMY-34-AH5" secondAttribute="top" id="BAu-wZ-PUA"/>
-                                                <constraint firstItem="qcJ-aM-8Wv" firstAttribute="centerX" secondItem="57o-MV-qaj" secondAttribute="centerX" id="BOp-N9-lbY"/>
+                                                <constraint firstItem="KnM-Ho-b9s" firstAttribute="centerX" secondItem="57o-MV-qaj" secondAttribute="centerX" id="Dzl-xP-Q2s"/>
                                                 <constraint firstAttribute="trailing" secondItem="c44-dB-p0E" secondAttribute="trailing" id="FfC-WH-EVk"/>
                                                 <constraint firstAttribute="bottom" secondItem="57o-MV-qaj" secondAttribute="bottom" id="JTJ-3N-QKn"/>
+                                                <constraint firstItem="qcJ-aM-8Wv" firstAttribute="centerY" secondItem="57o-MV-qaj" secondAttribute="centerY" id="OCp-B3-cq3"/>
+                                                <constraint firstItem="KnM-Ho-b9s" firstAttribute="centerY" secondItem="57o-MV-qaj" secondAttribute="centerY" id="Scp-Mi-f0m"/>
                                                 <constraint firstItem="57o-MV-qaj" firstAttribute="leading" secondItem="hMY-34-AH5" secondAttribute="leading" constant="5" id="WxV-vX-BmH"/>
-                                                <constraint firstItem="KnM-Ho-b9s" firstAttribute="centerX" secondItem="c44-dB-p0E" secondAttribute="centerX" id="iBe-Cd-fdk"/>
                                                 <constraint firstItem="JbZ-xO-DiD" firstAttribute="centerX" secondItem="57o-MV-qaj" secondAttribute="centerX" id="rIY-BB-nij"/>
                                                 <constraint firstItem="JbZ-xO-DiD" firstAttribute="centerY" secondItem="57o-MV-qaj" secondAttribute="centerY" id="sTX-eb-Xz5"/>
-                                                <constraint firstItem="KnM-Ho-b9s" firstAttribute="centerX" secondItem="c44-dB-p0E" secondAttribute="centerX" id="sXa-c7-fPB"/>
-                                                <constraint firstItem="KnM-Ho-b9s" firstAttribute="centerY" secondItem="c44-dB-p0E" secondAttribute="centerY" id="wHa-SY-OCQ"/>
                                                 <constraint firstAttribute="trailing" secondItem="57o-MV-qaj" secondAttribute="trailing" constant="5" id="zQb-qS-tNf"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3547,15 +3549,15 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CX9-O4-7Ju">
                                                     <rect key="frame" x="5" y="5" width="590" height="163"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eu9-Ue-cZM">
-                                                            <rect key="frame" x="60" y="5" width="525" height="98"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eu9-Ue-cZM">
+                                                            <rect key="frame" x="60" y="5" width="525" height="131"/>
                                                             <string key="text">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not onlyLorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</string>
                                                             <fontDescription key="fontDescription" name="HelveticaNeueLTStd-Lt" family="Helvetica Neue LT Std" pointSize="14"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6D-SQ-AbW">
-                                                            <rect key="frame" x="60" y="108" width="31" height="13"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6D-SQ-AbW">
+                                                            <rect key="frame" x="60" y="141" width="32" height="16"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeueLTStd-Lt" family="Helvetica Neue LT Std" pointSize="13"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -4549,7 +4551,7 @@
         <image name="Like_Buton" width="40" height="40"/>
         <image name="Loc_Small" width="15" height="15"/>
         <image name="MyGems_Button" width="40" height="40"/>
-        <image name="NoImage" width="250" height="250"/>
+        <image name="NoImage" width="500" height="333"/>
         <image name="Radio_InActive" width="15" height="15"/>
         <image name="Right_Arrow" width="40" height="40"/>
         <image name="Share" width="40" height="40"/>

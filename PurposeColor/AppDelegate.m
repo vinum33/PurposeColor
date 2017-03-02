@@ -57,6 +57,7 @@
     // Override point for customization after application launch.
     [Fabric with:@[[Crashlytics class]]];
     [Utility setUpGoogleMapConfiguration];
+    [self getVersionStatus];
     [self checkUserStatus];
     [self reachability];
     [self resetBadgeCount];
@@ -64,7 +65,55 @@
 }
 
 
+-(void)getVersionStatus{
+    
+   [APIMapper getVersionStatusOnsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+       
+       if ([[responseObject objectForKey:@"status"] integerValue] == 1) {
+           
+           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"NEW VERSION AVAILABLE"
+                                                           message:[responseObject objectForKey:@"text"]
+                                                          delegate:self
+                                                 cancelButtonTitle:@"CANCEL"
+                                                 otherButtonTitles:@"UPDATE",nil];
+           [alert show];
+           alert.tag = 1;
+       }
+       
+       
+   } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+       
+       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR"
+                                                       message:error.localizedDescription
+                                                      delegate:self
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:nil];
+       [alert show];
+       alert.tag = 2;
 
+       
+   }];
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (alertView.tag == 2) {
+        
+    }else{
+        
+        if (buttonIndex == 0) {
+            //CANCEL
+        }
+        else {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:AppStoreURL]];
+            //UPDATE
+        }
+    }
+    
+   exit(0);
+   
+}
 
 #pragma mark - Reachability
 

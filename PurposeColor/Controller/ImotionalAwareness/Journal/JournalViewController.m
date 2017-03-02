@@ -197,6 +197,9 @@ typedef enum{
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
+    if (section == eSectionOne) {
+        return 30;
+    }
     if ((section == eSectionTwo) && arrDataSource.count > 0) {
         return kHeaderHeight;
     }
@@ -204,16 +207,35 @@ typedef enum{
 }
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
-    if (section == eSectionOne) return nil;
-    UIView *vwHeader = [UIView new];
-    vwHeader.backgroundColor = [UIColor clearColor];
-    UILabel *_lblTitle = [UILabel new];
-    _lblTitle.translatesAutoresizingMaskIntoConstraints = NO;
-    [vwHeader addSubview:_lblTitle];
-    [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_lblTitle]-9-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
-    [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_lblTitle]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
-     _lblTitle.backgroundColor = [UIColor colorWithRed:0.31 green:0.47 blue:0.61 alpha:1.0];
-    return vwHeader;
+    if (section == eSectionTwo){
+        
+        UIView *vwHeader = [UIView new];
+        vwHeader.backgroundColor = [UIColor clearColor];
+        UILabel *_lblTitle = [UILabel new];
+        _lblTitle.translatesAutoresizingMaskIntoConstraints = NO;
+        [vwHeader addSubview:_lblTitle];
+        [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_lblTitle]-9-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
+        [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_lblTitle]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
+        _lblTitle.backgroundColor = [UIColor colorWithRed:0.31 green:0.47 blue:0.61 alpha:1.0];
+        return vwHeader;
+    }else{
+        
+        UIView *vwHeader = [UIView new];
+        vwHeader.backgroundColor = [UIColor colorWithRed:0.02 green:0.24 blue:0.44 alpha:1.0];
+        UILabel *_lblTitle = [UILabel new];
+        _lblTitle.translatesAutoresizingMaskIntoConstraints = NO;
+        [vwHeader addSubview:_lblTitle];
+        _lblTitle.text = @"Capture the moment";
+        _lblTitle.textAlignment = NSTextAlignmentCenter;
+        _lblTitle.font = [UIFont fontWithName:CommonFont size:14];
+        [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_lblTitle]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
+        [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_lblTitle]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
+        _lblTitle.textColor = [UIColor colorWithRed:0.56 green:0.72 blue:0.86 alpha:1.0];
+        return vwHeader;
+
+    }
+    return nil;
+   
 }
 
 

@@ -59,6 +59,7 @@ typedef enum{
     
     CommentComposeViewController *composeComment;
     shareMedias *shareMediaView;
+    NSMutableDictionary *heightsCache;
 }
 
 @end
@@ -91,6 +92,7 @@ typedef enum{
     currentPage = 1;
     totalPages = 0;
     
+    heightsCache =  [NSMutableDictionary new];
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.tintColor = [UIColor grayColor];
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
@@ -140,6 +142,7 @@ typedef enum{
         [refreshControl endRefreshing];
         return;
     }
+    [heightsCache removeAllObjects];
     [arrGems removeAllObjects];
     [dictFollowers removeAllObjects];
     [self showLoadingScreen];
@@ -206,7 +209,7 @@ typedef enum{
     if (indexPath.row < arrGems.count) {
         
         NSDictionary *details = arrGems[indexPath.row];
-        [self configureTextVariables:details cell:cell];
+        [self configureTextVariables:details cell:cell indexPath:indexPath];
     }
     return cell;
 }
@@ -214,7 +217,9 @@ typedef enum{
 - (CGSize)collectionView:(UICollectionView *)_collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     float padding = 10;
-    float height = 410;
+    float defaultHeight = 185;
+    float finalHeight = 0;
+    float imageHeight = 0;
     float width = _collectionView.bounds.size.width;
     if (indexPath.row < arrGems.count) {
         NSDictionary *details = arrGems[indexPath.row];
@@ -223,16 +228,26 @@ typedef enum{
             if (lblHeight > 30) {
                 lblHeight = 30;
             }
-            if ([[details objectForKey:@"display_image"] isEqualToString:@"No"]) {
-                height = 180;
+            
+            finalHeight = defaultHeight + lblHeight;
+            if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
+            }else{
+                float width = [[details objectForKey:@"image_width"] floatValue];
+                float height = [[details objectForKey:@"image_height"] floatValue];
+                float ratio = width / height;
+                imageHeight = (collectionView.frame.size.width - padding) / ratio;
+                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+                
             }
-            float finalHeight = height + lblHeight;
+            
+            finalHeight += imageHeight;
             return CGSizeMake(width, finalHeight);
         }
         
     }
     
-    return CGSizeMake(width, height);
+    return CGSizeMake(width, 185);
 }
 
 
@@ -309,7 +324,7 @@ typedef enum{
 }
 
 
--(void)configureTextVariables:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell{
+-(void)configureTextVariables:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell indexPath:(NSIndexPath*)indexPath{
     
     cell.lblName.text = [details objectForKey:@"firstname"];
     cell.lblTime.text = [Utility getDaysBetweenTwoDatesWith:[[details objectForKey:@"gem_datetime"] doubleValue]];
@@ -369,6 +384,11 @@ typedef enum{
     if ([[details objectForKey:@"display_type"] isEqualToString:@"video"])cell.imgTransparentVideo.hidden = false;
     if ([[details objectForKey:@"display_image"] isEqualToString:@"No"]) cell.imgGemMedia.hidden = true;
     if (NULL_TO_NIL([details objectForKey:@"display_image"])){
+        float imageHeight = 0;
+        if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
+            cell.constraintForHeight.constant = imageHeight;
+        }
         NSString *url = [details objectForKey:@"display_image"];
         if (url.length) {
             [cell.activityIndicator startAnimating];
@@ -725,6 +745,7 @@ typedef enum{
         gemDetailVC.delegate = self;
         gemDetailVC.clickedIndex = index;
         gemDetailVC.canSave = false;
+        gemDetailVC.isFromGEM = true;
         [[self navigationController]pushViewController:gemDetailVC animated:YES];
         
     }
@@ -770,11 +791,6 @@ typedef enum{
     }];
 }
 
-
-
-
-#pragma mark - Custom Cell Delegate For Get Liked and Commented Users
-
 #pragma mark - Custom Cell Delegate For Get Liked and Commented Users
 
 -(void)showAllLikedUsers:(NSInteger)index{
@@ -786,7 +802,6 @@ typedef enum{
             LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
             [userListings loadUserListingsForType:@"like" gemID:[gemDetails objectForKey:@"gem_id"]];
             if (!deleagte.navGeneral) {
-                
                 AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
                 app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
                 app.navGeneral.navigationBarHidden = true;
@@ -955,6 +970,11 @@ typedef enum{
 
 
 #pragma mark - Generic Methods
+
+-(void)refreshParentListings{
+    
+    [self refreshData];
+}
 
 -(IBAction)showChatUser:(id)sender{
     

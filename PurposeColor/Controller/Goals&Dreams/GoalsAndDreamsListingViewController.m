@@ -199,6 +199,7 @@ typedef enum{
         [refreshControl endRefreshing];
         return;
     }
+    [heightsCache removeAllObjects];
     [arrCompleted removeAllObjects];
     [arrPending removeAllObjects];
     [arrDataSource removeAllObjects];

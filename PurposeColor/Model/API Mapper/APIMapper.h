@@ -132,6 +132,10 @@
 
 + (void)getUserJournalWithUserID:(NSString*)userID page:(NSInteger)pageNo Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
++ (void)getAnyGemDetailsWithGEMID:(NSString*)gemID gemType:(NSString*)gemType userID:(NSString*)userId success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
++ (void)deleteJournalWithJournalID:(NSString*)journalID userID:(NSString*)userId success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)getVersionStatusOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 @end

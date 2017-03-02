@@ -12,6 +12,9 @@
     
     IBOutlet UIView *vwSelection;
     IBOutlet UIView *vwContainer;
+    IBOutlet UILabel *lblPending;
+    IBOutlet UILabel *lblCompleted;
+    
     BOOL isLaunch;
     
     
@@ -82,14 +85,15 @@
     
     if(isLaunch){
         
-        vwSelection.backgroundColor = [UIColor colorWithRed:0.62 green:0.76 blue:0.15 alpha:0.9];
+        vwSelection.backgroundColor = [UIColor getThemeColor];
         [UIView animateWithDuration:0.3 animations:^{
             CGRect frame = vwSelection.frame;
             frame.origin.x = 75;
             vwSelection.frame = frame;
             vwContainer.backgroundColor = [UIColor getBackgroundOffWhiteColor];
         }completion:^(BOOL finished) {
-            
+            lblPending.textColor = [UIColor blackColor];
+            lblCompleted.textColor = [UIColor whiteColor];
             isLaunch = false;
             if (sender)[self updateActionStatus];
             
@@ -107,14 +111,17 @@
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"
                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                   
-                                                                  vwSelection.backgroundColor = [UIColor colorWithRed:0.62 green:0.76 blue:0.15 alpha:0.9];
+                                                                  vwSelection.backgroundColor = [UIColor getThemeColor];
                                                                   [UIView animateWithDuration:0.3 animations:^{
                                                                       CGRect frame = vwSelection.frame;
                                                                       frame.origin.x = 75;
                                                                       vwSelection.frame = frame;
                                                                       vwContainer.backgroundColor = [UIColor getBackgroundOffWhiteColor];
+                                                                     
                                                                   }completion:^(BOOL finished) {
                                                                       
+                                                                      lblPending.textColor = [UIColor blackColor];
+                                                                      lblCompleted.textColor = [UIColor whiteColor];
                                                                       if (sender)[self updateActionStatus];
                                                                       [self popToGoalsAndDreams];
                                                                       
@@ -138,7 +145,7 @@
 -(IBAction)switchToPending:(id)sender{
     
     if(isLaunch){
-        vwSelection.backgroundColor = [UIColor colorWithRed:0.83 green:0.33 blue:0.00 alpha:0.9];
+        vwSelection.backgroundColor = [UIColor getThemeColor];
         [UIView animateWithDuration:.3 animations:^{
             CGRect frame = vwSelection.frame;
             frame.origin.x = 0;
@@ -147,6 +154,8 @@
             
         }completion:^(BOOL finished) {
             
+            lblPending.textColor = [UIColor whiteColor];
+            lblCompleted.textColor = [UIColor blackColor];
             isLaunch = false;
             if (sender)[self updateActionStatus];
         }];
@@ -163,15 +172,18 @@
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"
                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                   
-                                                                  vwSelection.backgroundColor = [UIColor colorWithRed:0.83 green:0.33 blue:0.00 alpha:0.9];
+                                                                  vwSelection.backgroundColor = [UIColor getThemeColor];
                                                                   [UIView animateWithDuration:.3 animations:^{
                                                                       CGRect frame = vwSelection.frame;
                                                                       frame.origin.x = 0;
                                                                       vwSelection.frame = frame;
                                                                       vwContainer.backgroundColor = [UIColor whiteColor];
                                                                       
+                                                                      
                                                                   }completion:^(BOOL finished) {
                                                                       
+                                                                      lblPending.textColor = [UIColor whiteColor];
+                                                                      lblCompleted.textColor = [UIColor blackColor];
                                                                       if (sender)[self updateActionStatus];
                                                                        [self popToGoalsAndDreams];
                                                                   }];

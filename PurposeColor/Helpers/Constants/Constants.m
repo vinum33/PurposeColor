@@ -18,6 +18,7 @@ NSString * const CommonFont = @"HelveticaNeueLTStd-Lt";
 NSString * const CommonFontBold = @"HelveticaNeueLTStd-Bd";
 NSString * const BaseURLString = @"http://purposecodes.com/pc/api.php?";
 NSString * const BaseURL = @"http://purposecodes.com/pc/";
+NSString * const AppStoreURL = @"https://itunes.apple.com/us/app/purpose-color-life-success/id1186639523?ls=1&mt=8";
 
 NSString * const GoogleMapAPIKey = @"AIzaSyDLo-Q_ozqGPPl3UZKbyTK_FNfe-GFj7jg";
 

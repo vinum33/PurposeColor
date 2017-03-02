@@ -120,6 +120,7 @@ typedef enum{
 
 -(void)showActionDetailsWith:(NSDictionary*)details{
     
+    [heightsCache removeAllObjects];
     isDataAvailable = true;
     if (NULL_TO_NIL([details objectForKey:@"gem_media"]))
         arrDataSource = [NSMutableArray arrayWithArray:[details objectForKey:@"gem_media"]];
@@ -333,16 +334,15 @@ typedef enum{
     if (NULL_TO_NIL([mediaInfo objectForKey:@"media_type"])) {
         mediaType = [mediaInfo objectForKey:@"media_type"];
     }
+    float imageHeight = 0;
+    if ([heightsCache objectForKey:[NSNumber numberWithInt:index]]) {
+        imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:index]] integerValue];
+        cell.constraintForHeight.constant = imageHeight;
+    }
     
     if (mediaType) {
         
         if ([mediaType isEqualToString:@"image"]) {
-            
-            float imageHeight = 0;
-            if ([heightsCache objectForKey:[NSNumber numberWithInt:index]]) {
-                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:index]] integerValue];
-                cell.constraintForHeight.constant = imageHeight;
-            }
             
             // Type Image
            // [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];

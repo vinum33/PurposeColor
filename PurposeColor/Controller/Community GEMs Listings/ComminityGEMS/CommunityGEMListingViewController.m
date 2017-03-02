@@ -1154,13 +1154,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 #pragma mark - Generic Methods
 
--(void)calculateHeight:(UIImage*)image withURL:(NSString*)url cell:(GemsListCollectionViewCell*)cell{
-    
-    float aspect =  image.size.width / image.size.height;
-    float height = cell.imgGemMedia.frame.size.width  / aspect;
-    [heightsCache setObject:[NSNumber numberWithFloat:height] forKey:url];
-}
-
 
 -(IBAction)showUserProfilePage:(UITapGestureRecognizer*)gesture{
     

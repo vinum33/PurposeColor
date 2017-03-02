@@ -37,6 +37,13 @@
  */
 -(void)deleteAppliedFromMediaPage:(NSInteger)index ;
 
+/*!
+ *This method is invoked when user Edited GEM
+ */
+-(void)refreshParentListings ;
+
+
+
 
 @end
 

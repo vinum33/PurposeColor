@@ -26,6 +26,7 @@ extern NSString * const BaseURL;
 extern NSString * const PlaceHolderImageGoal;
 extern NSString * const PlaceHolderImageAction;
 extern NSString * const PlaceHolderImageEmotion;
+extern NSString * const AppStoreURL;
 
 extern NSString * const GoogleMapAPIKey;
 

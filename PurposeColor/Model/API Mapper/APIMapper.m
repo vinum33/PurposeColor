@@ -776,7 +776,7 @@
 
 +(void)createOrEditAGemWith:(NSArray*)dataSource eventTitle:(NSString*)title description:(NSString*)descritption latitude:(double)latitude longitude:(double)longitude locName:(NSString*)locName address:(NSString*)locAddress contactName:(NSString*)conatctName gemID:(NSString*)gemID goalID:(NSString*)goalID deletedIDs:(NSMutableArray*)deletedIDs gemType:(NSString*)gemType OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure progress:(void (^)( long long totalBytesWritten,long long totalBytesExpectedToWrite))progress{
     
-    NSString *urlString = [NSString stringWithFormat:@"%@action=gemaction",BaseURLString];
+    NSString *urlString = [NSString stringWithFormat:@"%@action=gemaction1",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
@@ -806,6 +806,40 @@
     }
     [params setObject:[NSNumber numberWithInteger:mediacount] forKey:@"media_count"];
     [params setObject:deletedIDs forKey:@"media_id"];
+    NSInteger _indexOfMedia = 0;
+    NSMutableArray *arrOrder = [NSMutableArray new];
+    NSMutableArray *arrVideoThumb = [[NSMutableArray alloc] initWithCapacity:dataSource.count];
+    for(int i = 0; i < dataSource.count; i++) [arrVideoThumb addObject: [NSNull null]];
+    
+    for (id object in dataSource) {
+        if ([object isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *_media  = (NSDictionary*)object;
+            if ([_media objectForKey:@"gem_media"]) {
+                NSURL *yourURL = [NSURL URLWithString:[_media objectForKey:@"gem_media"]];
+                NSString *fileName = [yourURL lastPathComponent];
+                [arrOrder addObject:fileName];
+                if ([[_media objectForKey:@"media_type"] isEqualToString:@"video"]) {
+                    NSURL *yourURL = [NSURL URLWithString:[_media objectForKey:@"video_thumb"]];
+                    NSString *fileName = [yourURL lastPathComponent];
+                    [arrVideoThumb insertObject:fileName atIndex:_indexOfMedia];
+                }
+            }
+            
+        }else{
+            
+            NSString *filename = (NSString*)object;
+            NSString *_fileName = [NSString stringWithFormat:@"media_file%d",_indexOfMedia];
+            [arrOrder addObject:_fileName];
+            if ([[filename pathExtension] isEqualToString:@"mp4"]){
+                [arrVideoThumb insertObject:[NSString stringWithFormat:@"video_thumb%d",_indexOfMedia] atIndex:_indexOfMedia];
+            }
+            
+        }
+        _indexOfMedia ++;
+        
+    }
+    [params setObject:arrOrder forKey:@"order_array"];
+    [params setObject:arrVideoThumb forKey:@"thumb_array"];
     
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
@@ -813,7 +847,7 @@
     NSDictionary *jsonEvent = [NSDictionary dictionaryWithObjectsAndKeys:jsonString,@"json_event", nil];
     
     AFHTTPRequestOperation *operation = [manager POST:urlString parameters:jsonEvent constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        NSInteger index = 1;
+        NSInteger index = 0;
         NSString *dataPath = [Utility getMediaSaveFolderPath];
         for (id object in dataSource) {
             if ([object isKindOfClass:[NSDictionary class]]) {
@@ -825,11 +859,11 @@
                 {
                     if ([[filename pathExtension] isEqualToString:@"jpeg"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"image/jpeg"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"image/jpeg"];
                     }
                     else if ([[filename pathExtension] isEqualToString:@"mp4"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"video/mp4"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"video/mp4"];
                         UIImage *thumbnail = [Utility getThumbNailFromVideoURL:filePath];
                         NSData *imageData = UIImageJPEGRepresentation(thumbnail,1);
                         if (imageData.length)
@@ -837,16 +871,16 @@
                     }
                     else if ([[filename pathExtension] isEqualToString:@"aac"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"audio/aac"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"audio/aac"];
                     }
                     
-                    index ++;
+                    
                     
                 }
             }
-           
+            index ++;
+            
         }
-        
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         success(operation,responseObject);
@@ -869,7 +903,7 @@
 
 +(void)createOrEditAGoalWith:(NSArray*)dataSource eventTitle:(NSString*)title description:(NSString*)descritption latitude:(double)latitude longitude:(double)longitude locName:(NSString*)locName address:(NSString*)locAddress contactName:(NSString*)conatctName gemID:(NSString*)gemID goalID:(NSString*)goalID deletedIDs:(NSMutableArray*)deletedIDs gemType:(NSString*)gemType achievementDate:(double)achievementDate status:(NSString*)status isPurposeColor:(BOOL)isPurposeColor OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure progress:(void (^)( long long totalBytesWritten,long long totalBytesExpectedToWrite))progress{
     
-    NSString *urlString = [NSString stringWithFormat:@"%@action=gemaction",BaseURLString];
+    NSString *urlString = [NSString stringWithFormat:@"%@action=gemaction1",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
@@ -909,13 +943,50 @@
     [params setObject:[NSNumber numberWithInteger:mediacount] forKey:@"media_count"];
     [params setObject:deletedIDs forKey:@"media_id"];
     
+    NSInteger _indexOfMedia = 0;
+    NSMutableArray *arrOrder = [NSMutableArray new];
+    NSMutableArray *arrVideoThumb = [[NSMutableArray alloc] initWithCapacity:dataSource.count];
+    for(int i = 0; i < dataSource.count; i++) [arrVideoThumb addObject: [NSNull null]];
+
+    for (id object in dataSource) {
+        if ([object isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *_media  = (NSDictionary*)object;
+            if ([_media objectForKey:@"gem_media"]) {
+                
+                NSURL *yourURL = [NSURL URLWithString:[_media objectForKey:@"gem_media"]];
+                NSString *fileName = [yourURL lastPathComponent];
+                [arrOrder addObject:fileName];
+                if ([[_media objectForKey:@"media_type"] isEqualToString:@"video"]) {
+                    NSURL *yourURL = [NSURL URLWithString:[_media objectForKey:@"video_thumb"]];
+                    NSString *fileName = [yourURL lastPathComponent];
+                    [arrVideoThumb insertObject:fileName atIndex:_indexOfMedia];
+                }
+            }
+            
+        }else{
+            
+            NSString *filename = (NSString*)object;
+            NSString *_fileName = [NSString stringWithFormat:@"media_file%d",_indexOfMedia];
+            [arrOrder addObject:_fileName];
+            if ([[filename pathExtension] isEqualToString:@"mp4"]){
+                [arrVideoThumb insertObject:[NSString stringWithFormat:@"video_thumb%d",_indexOfMedia] atIndex:_indexOfMedia];
+            }
+            
+        }
+        _indexOfMedia ++;
+        
+    }
+    [params setObject:arrOrder forKey:@"order_array"];
+    [params setObject:arrVideoThumb forKey:@"thumb_array"];
+   
+    
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSDictionary *jsonEvent = [NSDictionary dictionaryWithObjectsAndKeys:jsonString,@"json_event", nil];
     
     AFHTTPRequestOperation *operation = [manager POST:urlString parameters:jsonEvent constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        NSInteger index = 1;
+        NSInteger index = 0;
         NSString *dataPath = [Utility getMediaSaveFolderPath];
         for (id object in dataSource) {
             if ([object isKindOfClass:[NSDictionary class]]) {
@@ -927,11 +998,11 @@
                 {
                     if ([[filename pathExtension] isEqualToString:@"jpeg"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"image/jpeg"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"image/jpeg"];
                     }
                     else if ([[filename pathExtension] isEqualToString:@"mp4"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"video/mp4"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"video/mp4"];
                         UIImage *thumbnail = [Utility getThumbNailFromVideoURL:filePath];
                         NSData *imageData = UIImageJPEGRepresentation(thumbnail,1);
                         if (imageData.length)
@@ -939,13 +1010,14 @@
                     }
                     else if ([[filename pathExtension] isEqualToString:@"aac"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"audio/aac"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"audio/aac"];
                     }
                     
-                    index ++;
+                   
                     
                 }
             }
+             index ++;
             
         }
         
@@ -971,7 +1043,7 @@
 
 +(void)shareGEMToPurposeColorWith:(NSArray*)dataSource eventTitle:(NSString*)title description:(NSString*)descritption latitude:(double)latitude longitude:(double)longitude locName:(NSString*)locName address:(NSString*)locAddress contactName:(NSString*)conatctName gemID:(NSString*)gemID deletedIDs:(NSMutableArray*)deletedIDs gemType:(NSString*)gemType OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure progress:(void (^)( long long totalBytesWritten,long long totalBytesExpectedToWrite))progress{
     
-    NSString *urlString = [NSString stringWithFormat:@"%@action=shareaction",BaseURLString];
+    NSString *urlString = [NSString stringWithFormat:@"%@action=shareaction1",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
@@ -1001,13 +1073,49 @@
     [params setObject:[NSNumber numberWithInteger:mediacount] forKey:@"media_count"];
     [params setObject:deletedIDs forKey:@"media_id"];
     
+    NSInteger _indexOfMedia = 0;
+    NSMutableArray *arrOrder = [NSMutableArray new];
+    NSMutableArray *arrVideoThumb = [[NSMutableArray alloc] initWithCapacity:dataSource.count];
+    for(int i = 0; i < dataSource.count; i++) [arrVideoThumb addObject: [NSNull null]];
+    
+    for (id object in dataSource) {
+        if ([object isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *_media  = (NSDictionary*)object;
+            if ([_media objectForKey:@"gem_media"]) {
+                
+                NSURL *yourURL = [NSURL URLWithString:[_media objectForKey:@"gem_media"]];
+                NSString *fileName = [yourURL lastPathComponent];
+                [arrOrder addObject:fileName];
+                if ([[_media objectForKey:@"media_type"] isEqualToString:@"video"]) {
+                    NSURL *yourURL = [NSURL URLWithString:[_media objectForKey:@"video_thumb"]];
+                    NSString *fileName = [yourURL lastPathComponent];
+                    [arrVideoThumb insertObject:fileName atIndex:_indexOfMedia];
+                }
+            }
+            
+        }else{
+            
+            NSString *filename = (NSString*)object;
+            NSString *_fileName = [NSString stringWithFormat:@"media_file%d",_indexOfMedia];
+            [arrOrder addObject:_fileName];
+            if ([[filename pathExtension] isEqualToString:@"mp4"]){
+                [arrVideoThumb insertObject:[NSString stringWithFormat:@"video_thumb%d",_indexOfMedia] atIndex:_indexOfMedia];
+            }
+            
+        }
+        _indexOfMedia ++;
+        
+    }
+    [params setObject:arrOrder forKey:@"order_array"];
+    [params setObject:arrVideoThumb forKey:@"thumb_array"];
+    
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSDictionary *jsonEvent = [NSDictionary dictionaryWithObjectsAndKeys:jsonString,@"json_event", nil];
     
     AFHTTPRequestOperation *operation = [manager POST:urlString parameters:jsonEvent constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        NSInteger index = 1;
+        NSInteger index = 0;
         NSString *dataPath = [Utility getMediaSaveFolderPath];
         for (id object in dataSource) {
             if ([object isKindOfClass:[NSDictionary class]]) {
@@ -1019,11 +1127,11 @@
                 {
                     if ([[filename pathExtension] isEqualToString:@"jpeg"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"image/jpeg"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"image/jpeg"];
                     }
                     else if ([[filename pathExtension] isEqualToString:@"mp4"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"video/mp4"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"video/mp4"];
                         UIImage *thumbnail = [Utility getThumbNailFromVideoURL:filePath];
                         NSData *imageData = UIImageJPEGRepresentation(thumbnail,1);
                         if (imageData.length)
@@ -1031,13 +1139,14 @@
                     }
                     else if ([[filename pathExtension] isEqualToString:@"aac"]){
                         NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                        [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media_file%ld",(long)index] fileName:@"Media" mimeType:@"audio/aac"];
+                        [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"audio/aac"];
                     }
                     
-                    index ++;
+                    
                     
                 }
             }
+            index ++;
             
         }
         
@@ -1209,7 +1318,6 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"ZZZZZ"];
-   
     
     NSDictionary *params = @{@"user_id": userID,
                              @"goalaction_id": [NSNumber numberWithInteger:goalActionID],
@@ -1234,10 +1342,6 @@
     }];
 
 }
-
-
-
-
 
 
 + (void)getAllFavouritesByUserID:(NSString*)userID pageNo:(NSInteger)pageNo type:(BOOL)isInspired success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
@@ -1312,6 +1416,28 @@
         failure (operation,error);
     }];
 
+    
+}
+
++ (void)getAnyGemDetailsWithGEMID:(NSString*)gemID gemType:(NSString*)gemType userID:(NSString*)userId success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=gemdetails",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    NSDictionary *params = @{@"gem_id": gemID,
+                             @"gem_type": gemType,
+                             @"user_id" : userId
+                             };
+    
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+    
     
 }
 + (void)getGoalDetailsWithGoalID:(NSString*)goalID userID:(NSString*)userID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
@@ -1666,5 +1792,42 @@
     }];
 
 }
++ (void)deleteJournalWithJournalID:(NSString*)journalID userID:(NSString*)userId success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=hidejournal",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    NSDictionary *params = @{@"user_id": userId,
+                             @"journal_id": journalID,
+                             };
+    
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+
+}
+
++ (void)getVersionStatusOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=version_update",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+   
+    [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+    
+}
+
 
 @end

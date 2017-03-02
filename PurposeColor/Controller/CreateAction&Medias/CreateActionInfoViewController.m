@@ -1337,7 +1337,7 @@ typedef enum{
     EventCreateViewController *eventCreate =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForEventManager];
     eventCreate.goalID = goalActionID;
     eventCreate.strGoalTitle = strTitle;
-    eventCreate.achievementDate = endDate;
+    //eventCreate.achievementDate = endDate;
     eventCreate.strGoalDescription = strDescription;
     eventCreate.strRepeatValue = @"Never";
     
@@ -2204,9 +2204,9 @@ typedef enum{
                                                                       }
                                                                       goalActionID = [[responseObject objectForKey:@"id"] integerValue];
                                                                       
-                                                                      if (NULL_TO_NIL([responseObject objectForKey:@"goal_enddate"])) {
-                                                                          [self createReminderWithGoalEndDate:[[responseObject objectForKey:@"goal_enddate"] doubleValue]];
-                                                                      }
+                                                                     // if (NULL_TO_NIL([responseObject objectForKey:@"goal_enddate"])) {
+                                                                          [self createReminderWithGoalEndDate:0];
+                                                                     // }
                                                                       
                                                                      
                                                                       
