@@ -270,7 +270,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             if (lblHeight > 30) {
                 lblHeight = 30;
             }
-           
             finalHeight = defaultHeight + lblHeight;
             if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
                 imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
