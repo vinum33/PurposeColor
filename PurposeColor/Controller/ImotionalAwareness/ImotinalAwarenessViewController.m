@@ -611,11 +611,12 @@ typedef enum{
     
     isAnimationInProgress = false;
     selectedFeelValue = 0;
-    if (emotionType < 0) {
-        selectedFeelValue = -1;
-    }else if (emotionType >= 0){
-        selectedFeelValue =1;
-    }
+    selectedFeelValue = emotionType;
+//    if (emotionType < 0) {
+//        selectedFeelValue = -1;
+//    }else if (emotionType >= 0){
+//        selectedFeelValue =1;
+//    }
     [dictEmotionSelection setObject:[NSNumber numberWithInteger:emotionType] forKey:[NSNumber numberWithInteger:eTypeFeel]];
     activeMenu = eTypeEmotion;
     [tableView reloadData];
@@ -722,12 +723,13 @@ typedef enum{
 -(void)driveSelectedWithEmotionType:(NSInteger)emotionType{
     
     isAnimationInProgress = false;
-    selectedDriveValue = 0;
-    if (emotionType < 0) {
-        selectedDriveValue = -1;
-    }else if (emotionType >= 0){
-        selectedDriveValue =1;
-    }
+//    selectedDriveValue = 0;
+//    if (emotionType < 0) {
+//        selectedDriveValue = -1;
+//    }else if (emotionType >= 0){
+//        selectedDriveValue =1;
+//    }
+    selectedDriveValue = emotionType;
     [dictEmotionSelection setObject:[NSNumber numberWithInteger:emotionType] forKey:[NSNumber numberWithInteger:eTypeDrive]];
     activeMenu = eTypeGoalsAndDreams;
     [tableView reloadData];
@@ -870,8 +872,6 @@ typedef enum{
         }else{
             [self continueEmotionListingAftrJournal];
         }
-        
-        
     }];
     
 }

@@ -136,6 +136,18 @@
              NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] init];
             NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
             UIImage *icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+            
+            if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 2)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Very_Happy.png"];
+            if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 1)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+            if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 0)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Neutral.png"];
+            if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == -1)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Sad.png"];
+            if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == -2)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Very_Sad.png"];
+
             attachment.image = icon;
             attachment.bounds = CGRectMake(0, -(icon.size.height / 2) -  cell.lblEmotion.font.descender, icon.size.width, icon.size.height);
             
@@ -149,23 +161,37 @@
             
         }
         
-        if ([_journalDetails objectForKey:@"goal_title"]) {
-            
+       
             NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] init];
             NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
             UIImage *icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+            
+            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 2)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Very_Happy.png"];
+            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 1)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 0)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Neutral.png"];
+            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == -1)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Sad.png"];
+            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == -2)
+                icon = [UIImage imageNamed:@"Journal_Emotion_Very_Sad.png"];
+            
             attachment.image = icon;
             attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblGoal.font.descender), icon.size.width, icon.size.height);
             
             NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
             NSMutableAttributedString *strFeel = [[NSMutableAttributedString alloc] initWithAttributedString:attachmentString];
-            NSMutableAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[_journalDetails objectForKey:@"goal_title"]]];
-            [strFeel appendAttributedString:myText];
+            
+            if ([_journalDetails objectForKey:@"goal_title"]) {
+                NSMutableAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[_journalDetails objectForKey:@"goal_title"]]];
+                [strFeel appendAttributedString:myText];
+            }
+           
             [myString appendAttributedString:strFeel];
             cell.lblGoal.attributedText = myString;
             
-        }
-        
+       
         
         return cell;
 

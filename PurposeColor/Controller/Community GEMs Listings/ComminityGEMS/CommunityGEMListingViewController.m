@@ -178,6 +178,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         [refreshControl endRefreshing];
         return;
     }
+    [heightsCache removeAllObjects];
     [arrGems removeAllObjects];
     [dictFollowers removeAllObjects];
     [self showLoadingScreen];
@@ -620,6 +621,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     if (index < arrGems.count)
         [arrGems removeObjectAtIndex:index];
     totalGems -= 1;
+    [heightsCache removeAllObjects];
     [collectionView reloadData];
 }
 

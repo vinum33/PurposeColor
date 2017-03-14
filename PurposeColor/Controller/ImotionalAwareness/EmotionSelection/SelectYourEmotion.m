@@ -178,7 +178,6 @@ typedef enum{
         btnRecent.hidden = true;
         btnRecent.titleEdgeInsets = UIEdgeInsetsMake(3,0, 0, 0);
         [[cell contentView] addSubview:btnRecent];
-       
         [btnRecent addConstraint:[NSLayoutConstraint constraintWithItem:btnRecent
                                                               attribute:NSLayoutAttributeHeight
                                                               relatedBy:NSLayoutRelationEqual
@@ -186,7 +185,6 @@ typedef enum{
                                                               attribute:NSLayoutAttributeNotAnAttribute
                                                              multiplier:1.0
                                                                constant:20]];
-        
         [btnRecent addConstraint:[NSLayoutConstraint constraintWithItem:btnRecent
                                                               attribute:NSLayoutAttributeWidth
                                                               relatedBy:NSLayoutRelationEqual
@@ -194,8 +192,6 @@ typedef enum{
                                                               attribute:NSLayoutAttributeWidth
                                                              multiplier:1.0
                                                                constant:50]];
-        
-        
         [[cell contentView] addConstraint:[NSLayoutConstraint constraintWithItem:btnRecent
                                                                        attribute:NSLayoutAttributeRight
                                                                        relatedBy:NSLayoutRelationEqual
@@ -203,7 +199,6 @@ typedef enum{
                                                                        attribute:NSLayoutAttributeRight
                                                                       multiplier:1.0
                                                                         constant:0]];
-        
         [[cell contentView] addConstraint:[NSLayoutConstraint constraintWithItem:btnRecent
                                                                        attribute:NSLayoutAttributeCenterY
                                                                        relatedBy:NSLayoutRelationEqual
@@ -218,7 +213,6 @@ typedef enum{
         btnRecent = [[cell contentView] viewWithTag:100] ;
         btnRecent.hidden = true;
     }
-    
     
     ButtonWithID *btnMore;
     if (![[cell contentView] viewWithTag:101]) {
@@ -246,8 +240,6 @@ typedef enum{
                                                               attribute:NSLayoutAttributeWidth
                                                              multiplier:1.0
                                                                constant:40]];
-        
-        
         [[cell contentView] addConstraint:[NSLayoutConstraint constraintWithItem:btnMore
                                                                        attribute:NSLayoutAttributeRight
                                                                        relatedBy:NSLayoutRelationEqual
@@ -478,10 +470,8 @@ typedef enum{
 -(IBAction)postNewEmotion{
     
     if ([txtField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length > 0) {
-        
         NSString *title = txtField.text;
         strSelectedTitle = title;
-        
         NSString *searchTerm = title;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.title LIKE[cd] %@", searchTerm];
         NSArray *filtered = [arrDataSource filteredArrayUsingPredicate:predicate];
@@ -503,6 +493,7 @@ typedef enum{
     }
     
 }
+
 -(void)validateMewEmotion{
     
     if (actionType == eActionEdit) {
@@ -515,11 +506,9 @@ typedef enum{
                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                   [alert dismissViewControllerAnimated:YES completion:nil];
                                                                    [self postNewEmotionToWeb];
-                                                                  
                                                               }];
         UIAlertAction *second = [UIAlertAction actionWithTitle:@"NO"
                                                          style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                             
                                                              [alert dismissViewControllerAnimated:YES completion:nil];
                                                              
                                                          }];
@@ -533,7 +522,6 @@ typedef enum{
         [self postNewEmotionToWeb];
         
     }
-    
    
 }
 
@@ -611,9 +599,6 @@ typedef enum{
              }
          }
         
-       
-        
-        
     }
 }
 
@@ -650,7 +635,6 @@ typedef enum{
     
     containerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height , self.frame.size.width , 55)];
     containerView.backgroundColor = [UIColor colorWithRed:245/255.f green:245/255.f blue:245/255.f alpha:1];
-    
     txtField = [[UITextField alloc] initWithFrame:CGRectMake(5, 8, self.frame.size.width - 60, 40)];
     txtField.layer.borderWidth = 1.f;
     txtField.layer.borderColor = [UIColor getSeperatorColor].CGColor;
@@ -668,7 +652,6 @@ typedef enum{
     txtField.leftViewMode = UITextFieldViewModeAlways;
     [self addSubview:containerView];
     [containerView addSubview:txtField];
-    
     UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     doneBtn.frame = CGRectMake(containerView.frame.size.width - 50, 5, 40, 40);
     [doneBtn setImage:[UIImage imageNamed:@"Send_Button.png"]forState:UIControlStateNormal];
@@ -746,13 +729,9 @@ typedef enum{
     
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [MBProgressHUD hideHUDForView:delegate.window.rootViewController.view animated:YES];
-    
-    
-    
 }
 
 #pragma mark - Search Methods and Delegates
-
 
 - (void)searchBar:(UISearchBar *)_searchBar textDidChange:(NSString *)searchString{
     
@@ -795,10 +774,8 @@ typedef enum{
                 });
             }
             
-            
         }
     }
-    
     
 }
 - (void)searchBarSearchButtonClicked:(UISearchBar *)_searchBar{
@@ -806,7 +783,6 @@ typedef enum{
     [_searchBar resignFirstResponder];
     
 }
-
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)_searchBar{
     

@@ -256,9 +256,10 @@ typedef enum{
     
     if (row < arrDataSource.count) {
         
+        NSDictionary *_journalDetails = arrDataSource[row];
         float imageHeight = 0;
-        float width = 250;
-        float height = 250;
+        float width = [[_journalDetails objectForKey:@"image_width"] floatValue];
+        float height = [[_journalDetails objectForKey:@"image_height"] floatValue];
         float ratio = width / height;
         float padding = 10;
         imageHeight = (tableView.frame.size.width - padding) / ratio;

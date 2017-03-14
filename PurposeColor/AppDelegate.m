@@ -57,6 +57,7 @@
     // Override point for customization after application launch.
     [Fabric with:@[[Crashlytics class]]];
     [Utility setUpGoogleMapConfiguration];
+    [self checkForceSignOut];
     [self getVersionStatus];
     [self checkUserStatus];
     [self reachability];
@@ -114,6 +115,22 @@
    exit(0);
    
 }
+
+-(void)checkForceSignOut{
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Should_Sign_Out"])
+    {
+        
+    }else{
+        
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Should_Sign_Out"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (defaults && [defaults objectForKey:@"USER"])
+        [defaults removeObjectForKey:@"USER"];
+    }
+    
+}
+
 
 #pragma mark - Reachability
 
@@ -230,7 +247,6 @@
 
 
 -(void)handleNotificationWhenBackGroundWith:(NSDictionary*)userInfo{
-    NSLog(@"HAII");
     if (NULL_TO_NIL([userInfo objectForKey:@"aps"])) {
         if (NULL_TO_NIL([[userInfo objectForKey:@"aps"] objectForKey:@"notification_type"])) {
             NSString *notification_type =[[userInfo objectForKey:@"aps"] objectForKey:@"notification_type"];
