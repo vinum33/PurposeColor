@@ -268,7 +268,6 @@
 /* Begin PBXFileReference section */
 		0D5AEA3F508A3096F8D23532 /* libPods-PurposeColor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PurposeColor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B6742D2BA58E47133D6E51E /* Pods-PurposeColor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PurposeColor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PurposeColor/Pods-PurposeColor.debug.xcconfig"; sourceTree = "<group>"; };
-		B256E9A4472B2162C14EDC91 /* libPods-SignInstaller.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignInstaller.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50107F71D41D57600E8EE57 /* ActionDetailsCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDetailsCustomCell.h; sourceTree = "<group>"; };
 		E50107F81D41D57600E8EE57 /* ActionDetailsCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDetailsCustomCell.m; sourceTree = "<group>"; };
 		E50680291D30F1490041B077 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -653,7 +652,6 @@
 		E5FE412F1D51ECA600BEFBF0 /* JCNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCNotificationCenter.h; sourceTree = "<group>"; };
 		E5FE41301D51ECA600BEFBF0 /* JCNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCNotificationCenter.m; sourceTree = "<group>"; };
 		EBDE943B1CFAB4B34A68C3CC /* Pods-PurposeColor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PurposeColor.release.xcconfig"; path = "Pods/Target Support Files/Pods-PurposeColor/Pods-PurposeColor.release.xcconfig"; sourceTree = "<group>"; };
-		EE6276BB49E94BD5BF82362B /* libPods-SignSpot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignSpot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -712,8 +710,6 @@
 				E5F5FD031D4641BE002658B0 /* AssetsLibrary.framework */,
 				E5C30EEE1D325DB500BA6BFC /* AudioToolbox.framework */,
 				E5EFB3801D06C679002BB501 /* Foundation.framework */,
-				EE6276BB49E94BD5BF82362B /* libPods-SignSpot.a */,
-				B256E9A4472B2162C14EDC91 /* libPods-SignInstaller.a */,
 				0D5AEA3F508A3096F8D23532 /* libPods-PurposeColor.a */,
 			);
 			name = Frameworks;
@@ -2696,11 +2692,17 @@
 			baseConfigurationReference = 8B6742D2BA58E47133D6E51E /* Pods-PurposeColor.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"~/Documents/FacebookSDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PurposeColor/PrefixHeader.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/PurposeColor/Info.plist";
@@ -2719,11 +2721,17 @@
 			baseConfigurationReference = EBDE943B1CFAB4B34A68C3CC /* Pods-PurposeColor.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"~/Documents/FacebookSDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PurposeColor/PrefixHeader.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/PurposeColor/Info.plist";

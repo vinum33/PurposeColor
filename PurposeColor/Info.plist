@@ -104,5 +104,21 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+    
+    
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb976918209110946</string>
+            </array>
+        </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>976918209110946</string>
+    <key>FacebookDisplayName</key>
+    <string>Purpose Color-Life Success App</string>
+    
 </dict>
 </plist>
