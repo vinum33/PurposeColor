@@ -55,11 +55,12 @@ typedef enum{
 #import "SDAVAssetExportSession.h"
 #import "ActionMediaForGoalComposeCell.h"
 #import "FTPopOverMenu.h"
+#import "ContactsPickerViewController.h"
 
 @import GooglePlacePicker;
 
 
-@interface CreateActionInfoViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CLLocationManagerDelegate,ABPeoplePickerNavigationControllerDelegate,CustomeImagePickerDelegate,ActionInfoCellDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate>{
+@interface CreateActionInfoViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CLLocationManagerDelegate,ABPeoplePickerNavigationControllerDelegate,CustomeImagePickerDelegate,ActionInfoCellDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate,ContactPickerDelegate>{
     
     IBOutlet UITableView *tableView;
     
@@ -1601,10 +1602,8 @@ typedef enum{
 
 - (void)getAllContacts {
     
-    ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
-    
-    [picker setPeoplePickerDelegate:self];
-    
+    ContactsPickerViewController *picker =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForContactsPickerVC];
+    picker.delegate = self;
     [self presentViewController:picker animated:YES completion:NULL];
     
 }
@@ -1617,6 +1616,21 @@ typedef enum{
     [peoplePicker dismissViewControllerAnimated:YES completion:^{
         [tableView reloadData];
     }];
+}
+
+-(void)pickedContactsList:(NSMutableArray*)lists{
+    NSMutableArray *names = [NSMutableArray new];
+    for (NSDictionary *dict in lists) {
+        if ([[dict objectForKey:@"isSelected"] boolValue]) {
+            if ([dict objectForKey:@"name"]) {
+                [names addObject:[dict objectForKey:@"name"]];
+            }
+        }
+    }
+    if (names.count) strContactName = [NSMutableString stringWithString:[names componentsJoinedByString:@","]];
+    
+   
+    [tableView reloadData];
 }
 
 #pragma mark -  Edit A Gem or Add Action under A Goal

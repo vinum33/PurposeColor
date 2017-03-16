@@ -68,4 +68,5 @@ extern NSString * const StoryBoardIdentifierForReportAbuse;
 extern NSString * const StoryBoardIdentifierForJournalListVC;
 extern NSString * const StoryBoardIdentifierForJournalDetailPage;
 extern NSString * const StoryBoardIdentifierForJournalGallery;
+extern NSString * const StoryBoardIdentifierForContactsPickerVC;
 

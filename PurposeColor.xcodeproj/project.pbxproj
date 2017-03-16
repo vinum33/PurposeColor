@@ -63,11 +63,16 @@
 		E50680E91D30F5C10041B077 /* GEMDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E50680E81D30F5C10041B077 /* GEMDetails.storyboard */; };
 		E52DFB201DE7FB8D0033310F /* ReportAbuseListingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E52DFB1D1DE7FB8D0033310F /* ReportAbuseListingCell.m */; };
 		E52DFB211DE7FB8D0033310F /* ReportAbuseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E52DFB1F1DE7FB8D0033310F /* ReportAbuseViewController.m */; };
+		E5469D0A1E7943C9002907B7 /* ContactsPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5469D091E7943C9002907B7 /* ContactsPickerViewController.m */; };
+		E5469D0E1E795187002907B7 /* ContactsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5469D0D1E795187002907B7 /* ContactsTableViewCell.m */; };
 		E56AF3AE1DB5E48C00029DA1 /* GoalsCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3AC1DB5E48C00029DA1 /* GoalsCustomCell.m */; };
 		E56AF3AF1DB5E48C00029DA1 /* GoalsCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56AF3AD1DB5E48C00029DA1 /* GoalsCustomCell.xib */; };
 		E56AF3B61DB626D300029DA1 /* JournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3B51DB626D300029DA1 /* JournalViewController.m */; };
 		E56BBA401E5468E400002DDE /* GemsListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */; };
 		E56C3F4A1E5F10A600954B2E /* Sweet Sensations Personal Use.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E56C3F491E5F10A600954B2E /* Sweet Sensations Personal Use.ttf */; };
+		E56E341B1E79069100B4C96B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56E34171E79069100B4C96B /* Bolts.framework */; };
+		E56E341C1E79069100B4C96B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56E34181E79069100B4C96B /* FBSDKCoreKit.framework */; };
+		E56E341E1E79069100B4C96B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56E341A1E79069100B4C96B /* FBSDKShareKit.framework */; };
 		E573C22D1E5D62F10070DF7E /* JournalImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2201E5D62F10070DF7E /* JournalImageCell.m */; };
 		E573C22E1E5D62F10070DF7E /* JournalNoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2241E5D62F10070DF7E /* JournalNoImageCell.m */; };
 		E573C22F1E5D62F10070DF7E /* JournalDateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2261E5D62F10070DF7E /* JournalDateInfo.m */; };
@@ -350,6 +355,10 @@
 		E52DFB1D1DE7FB8D0033310F /* ReportAbuseListingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportAbuseListingCell.m; sourceTree = "<group>"; };
 		E52DFB1E1DE7FB8D0033310F /* ReportAbuseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportAbuseViewController.h; sourceTree = "<group>"; };
 		E52DFB1F1DE7FB8D0033310F /* ReportAbuseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportAbuseViewController.m; sourceTree = "<group>"; };
+		E5469D081E7943C9002907B7 /* ContactsPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsPickerViewController.h; sourceTree = "<group>"; };
+		E5469D091E7943C9002907B7 /* ContactsPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsPickerViewController.m; sourceTree = "<group>"; };
+		E5469D0C1E795187002907B7 /* ContactsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewCell.h; sourceTree = "<group>"; };
+		E5469D0D1E795187002907B7 /* ContactsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewCell.m; sourceTree = "<group>"; };
 		E56AF3AB1DB5E48C00029DA1 /* GoalsCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalsCustomCell.h; sourceTree = "<group>"; };
 		E56AF3AC1DB5E48C00029DA1 /* GoalsCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoalsCustomCell.m; sourceTree = "<group>"; };
 		E56AF3AD1DB5E48C00029DA1 /* GoalsCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoalsCustomCell.xib; sourceTree = "<group>"; };
@@ -357,6 +366,9 @@
 		E56AF3B51DB626D300029DA1 /* JournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalViewController.m; sourceTree = "<group>"; };
 		E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GemsListCollectionViewCell.xib; sourceTree = "<group>"; };
 		E56C3F491E5F10A600954B2E /* Sweet Sensations Personal Use.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sweet Sensations Personal Use.ttf"; sourceTree = "<group>"; };
+		E56E34171E79069100B4C96B /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../Users/purposecode/Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
+		E56E34181E79069100B4C96B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Users/purposecode/Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		E56E341A1E79069100B4C96B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../Users/purposecode/Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		E573C21F1E5D62F10070DF7E /* JournalImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalImageCell.h; sourceTree = "<group>"; };
 		E573C2201E5D62F10070DF7E /* JournalImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalImageCell.m; sourceTree = "<group>"; };
 		E573C2231E5D62F10070DF7E /* JournalNoImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalNoImageCell.h; sourceTree = "<group>"; };
@@ -660,6 +672,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5EA21031DCC4C80005B4AEB /* EventKitUI.framework in Frameworks */,
+				E56E341C1E79069100B4C96B /* FBSDKCoreKit.framework in Frameworks */,
 				E5EED6931D6DD2F300D38633 /* AVKit.framework in Frameworks */,
 				E5F613091D48AF29002B7CB5 /* AVFoundation.framework in Frameworks */,
 				E5F612B91D4873D9002B7CB5 /* EventKit.framework in Frameworks */,
@@ -667,6 +680,8 @@
 				E5F7C5B11D47358500585349 /* AddressBook.framework in Frameworks */,
 				E5F5FD041D4641BE002658B0 /* AssetsLibrary.framework in Frameworks */,
 				E5C30EEF1D325DB500BA6BFC /* AudioToolbox.framework in Frameworks */,
+				E56E341E1E79069100B4C96B /* FBSDKShareKit.framework in Frameworks */,
+				E56E341B1E79069100B4C96B /* Bolts.framework in Frameworks */,
 				E5EFB3811D06C679002BB501 /* Foundation.framework in Frameworks */,
 				B3C534DFF378F36AD09FE4E6 /* libPods-PurposeColor.a in Frameworks */,
 			);
@@ -701,6 +716,9 @@
 		D81A2F17790A832DA7C5A615 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E56E34171E79069100B4C96B /* Bolts.framework */,
+				E56E34181E79069100B4C96B /* FBSDKCoreKit.framework */,
+				E56E341A1E79069100B4C96B /* FBSDKShareKit.framework */,
 				E5EA21021DCC4C80005B4AEB /* EventKitUI.framework */,
 				E5EED6921D6DD2F300D38633 /* AVKit.framework */,
 				E5F613081D48AF29002B7CB5 /* AVFoundation.framework */,
@@ -1156,6 +1174,25 @@
 			children = (
 				E52DFB1C1DE7FB8D0033310F /* ReportAbuseListingCell.h */,
 				E52DFB1D1DE7FB8D0033310F /* ReportAbuseListingCell.m */,
+			);
+			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		E5469D071E79439B002907B7 /* Contacts Picker View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E5469D0B1E79516F002907B7 /* CustomCell */,
+				E5469D081E7943C9002907B7 /* ContactsPickerViewController.h */,
+				E5469D091E7943C9002907B7 /* ContactsPickerViewController.m */,
+			);
+			path = "Contacts Picker View Controller";
+			sourceTree = "<group>";
+		};
+		E5469D0B1E79516F002907B7 /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				E5469D0C1E795187002907B7 /* ContactsTableViewCell.h */,
+				E5469D0D1E795187002907B7 /* ContactsTableViewCell.m */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -1793,6 +1830,7 @@
 		E5F5FCEA1D45C96C002658B0 /* CreateAction&Medias */ = {
 			isa = PBXGroup;
 			children = (
+				E5469D071E79439B002907B7 /* Contacts Picker View Controller */,
 				E5EC6DE71DB8D169007A642E /* CustomeCellForCreateGoal */,
 				E5F75E381D6EA87D009EF545 /* CustomAudioPlayerView */,
 				E5F7C5BE1D47751700585349 /* CreateReminder */,
@@ -2493,6 +2531,7 @@
 				E5F9FE541D49C29400F22169 /* CommunityGEMListingViewController.m in Sources */,
 				E50680BC1D30F1490041B077 /* UIStoryboard+Storyboard.m in Sources */,
 				E5FE413A1D51ECA600BEFBF0 /* JCNotificationBannerWindow.m in Sources */,
+				E5469D0E1E795187002907B7 /* ContactsTableViewCell.m in Sources */,
 				E573C22F1E5D62F10070DF7E /* JournalDateInfo.m in Sources */,
 				E5FE41311D51ECA600BEFBF0 /* JCNotificationBanner.m in Sources */,
 				E5F612E01D4887A2002B7CB5 /* RNActivityView.m in Sources */,
@@ -2550,6 +2589,7 @@
 				E50680BF1D30F1490041B077 /* TextViewWithInset.m in Sources */,
 				E5E333ED1D659F4500C7CFA6 /* SelectYourDrive.m in Sources */,
 				E5EDF0FF1DB21421005D0660 /* AMPopTip+Entrance.m in Sources */,
+				E5469D0A1E7943C9002907B7 /* ContactsPickerViewController.m in Sources */,
 				E5824B001DB4AD8700BBA4F4 /* FTPopOverMenu.m in Sources */,
 				E5ED1FCB1DC1B59B003C38D3 /* NFXIntroViewController.m in Sources */,
 				E5FE41351D51ECA600BEFBF0 /* JCNotificationBannerPresenterSmokeStyle.m in Sources */,

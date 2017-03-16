@@ -1778,7 +1778,7 @@
     NSString *urlString = [NSString stringWithFormat:@"%@action=listjournal",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    NSDictionary *params = @{@"user_id": userID,
+   NSDictionary *params = @{@"user_id": userID,
                               @"page_no": [NSNumber numberWithInteger:pageNo],
                              };
     
@@ -1790,6 +1790,8 @@
         
         failure (operation,error);
     }];
+    
+
 
 }
 + (void)deleteJournalWithJournalID:(NSString*)journalID userID:(NSString*)userId success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{

@@ -23,11 +23,9 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.purposecodes.purposecolor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>PurposeColorApp</string>
+				<string>fb976918209110946</string>
 			</array>
 		</dict>
 	</array>
@@ -104,21 +102,11 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-    
-    
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>fb976918209110946</string>
-            </array>
-        </dict>
-    </array>
-    <key>FacebookAppID</key>
-    <string>976918209110946</string>
-    <key>FacebookDisplayName</key>
-    <string>Purpose Color-Life Success App</string>
-    
+	<key>FacebookAppID</key>
+	<string>976918209110946</string>
+	<key>NSContactsUsageDescription</key>
+	<string>App would like to access your contacts</string>
+	<key>FacebookDisplayName</key>
+	<string>Purpose Color-Life Success App</string>
 </dict>
 </plist>
