@@ -63,7 +63,7 @@ typedef enum{
     NSString* patientValue;
     NSString* detailedValue;
     NSInteger selectedSession;
-    
+    NSString *strNoDataText;
   
     NSString *strStartDate;
     NSString *strEndDate;
@@ -254,6 +254,11 @@ typedef enum{
             dictInfo = [responds objectForKey:@"info"];
         
         isDataAvailable = true;
+    }else{
+        if (NULL_TO_NIL([responds objectForKey:@"text"])) {
+            strNoDataText = [responds objectForKey:@"text"];
+        }
+        
     }
     
     tableView.hidden = false;
@@ -550,6 +555,7 @@ typedef enum{
     if ([cell.contentView viewWithTag:kTagForNoDataObject]) {
         lblNoData = (UILabel*)[cell.contentView viewWithTag:kTagForNoDataObject];
         lblNoData.hidden = false;
+        lblNoData.text = strNoDataText;
     }
     pieChart.hidden = false;
     lblNoData.hidden = true;

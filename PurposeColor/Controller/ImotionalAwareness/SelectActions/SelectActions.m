@@ -17,42 +17,89 @@
 #import "SelectActions.h"
 #import "Constants.h"
 #import "CreateActionInfoViewController.h"
-#import "GoalsCustomCell.h"
+#import "ActionsCustomCell.h"
 #import "QuickGoalViewController.h"
+#import "ASJTagsView.h"
 
 @interface SelectActions () <UITextFieldDelegate,CreateMediaInfoDelegate,QuickGoalDelegate>{
     
     IBOutlet NSLayoutConstraint *rightConstraint;
+    IBOutlet NSLayoutConstraint *heightForTags;
     IBOutlet UITableView *tableView;
+    IBOutlet UIButton *btnClear;
     IBOutlet UIButton *btnSend;
+
+    
     NSMutableArray *arrEmotions;
     NSMutableDictionary *dictSelections;
     BOOL isDataAvailable;
-     QuickGoalViewController *quickGoalView;
+    QuickGoalViewController *quickGoalView;
+    IBOutlet ASJTagsView *_tagsView;
 }
 
 @end
 
 @implementation SelectActions
 
+
 -(void)showSelectionPopUp{
     
     [self getAllActions];
     [self setUp];
+    [self handleTagBlocks];
     
 }
 
+
+- (void)handleTagBlocks
+{
+}
+
+-(IBAction)deleteAllTags:(id)sender{
+    [_tagsView deleteAllTags];
+     heightForTags.constant = _tagsView.contentSize.height;
+    [dictSelections removeAllObjects];
+    for (NSMutableDictionary *details in arrEmotions) {
+       [details setObject:[NSNumber numberWithBool:false] forKey:@"isSelected"];
+       
+    }
+    btnClear.hidden = true;
+    [tableView reloadData];
+    [self layoutIfNeeded];
+}
+- (IBAction)addTapped:(NSString*)title
+{
+     btnClear.hidden = false;
+    [_tagsView addTag:title];
+    if (_tagsView.contentSize.height < 100) {
+        heightForTags.constant = _tagsView.contentSize.height;
+    }else{
+        CGPoint bottomOffset = CGPointMake(0, _tagsView.contentSize.height - _tagsView.bounds.size.height);
+        [_tagsView setContentOffset:bottomOffset animated:YES];
+    }
+    [self layoutIfNeeded];
+
+}
+- (IBAction)resetTagViewAfterDelete
+{
+    btnClear.hidden = false;
+    heightForTags.constant = _tagsView.contentSize.height;
+    
+    [self layoutIfNeeded];
+    
+}
 -(void)setUp{
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopUp)];
     [tapGesture setNumberOfTapsRequired:1];
     tapGesture.delegate = self;
-    [self addGestureRecognizer:tapGesture];
+    //[self addGestureRecognizer:tapGesture];
     dictSelections = [NSMutableDictionary new];
     arrEmotions = [NSMutableArray new];
     btnSend.layer.borderColor = [[UIColor whiteColor] CGColor];
     btnSend.layer.borderWidth = 1.0f;
     btnSend.layer.cornerRadius = 5.0f;
+    btnClear.hidden = true;
 }
 
 -(void)getAllActions{
@@ -75,13 +122,25 @@
 
 -(void)showAllEmotionsWith:(NSDictionary*)dictEmotions{
     
+    NSArray *actions;
     if (NULL_TO_NIL([dictEmotions objectForKey:@"resultarray"]))
-        arrEmotions = [NSMutableArray arrayWithArray:[dictEmotions objectForKey:@"resultarray"]];
+        actions = [NSArray arrayWithArray:[dictEmotions objectForKey:@"resultarray"]];
+    for (NSDictionary *dcit in actions) {
+        NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:dcit];
+        [details setObject:[NSNumber numberWithBool:false] forKey:@"isSelected"];
+        if ([_selectedActions objectForKey:[details objectForKey:@"id"]]) {
+            [dictSelections setObject:details forKey:[details objectForKey:@"id"]];
+            [details setObject:[NSNumber numberWithBool:true] forKey:@"isSelected"];
+            [self addTapped:[details objectForKey:@"title"]];
+        }
+        [arrEmotions addObject:details];
+    }
+    
     if (arrEmotions.count) isDataAvailable = true;
         
     [tableView reloadData];
     [self layoutIfNeeded];
-    rightConstraint.constant = (self.frame.size.width * 80) / 100;
+    rightConstraint.constant = 0;
     [UIView animateWithDuration:.8
                      animations:^{
                          [self layoutIfNeeded]; // Called on parent view
@@ -105,87 +164,72 @@
 
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GoalsCustomCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BDCustomCell"];
-    if (cell == nil) {
-        // Load the top-level objects from the custom cell XIB.
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"GoalsCustomCell" owner:self options:nil];
-        // Grab a pointer to the first object (presumably the custom cell, as that's all the XIB should contain).
-        cell = [topLevelObjects objectAtIndex:0];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.font = [UIFont fontWithName:CommonFont size:15];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.backgroundColor = [UIColor clearColor];
-    cell.contentView.backgroundColor = [UIColor clearColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.userInteractionEnabled = true;
-    cell.btnQuickView.tag = indexPath.row;
-    [cell.btnQuickView addTarget:self action:@selector(enableQuickView:) forControlEvents:UIControlEventTouchUpInside];
-    if (!isDataAvailable) {
-        
-        static NSString *MyIdentifier = @"MyIdentifier";
-        UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:MyIdentifier];
-        if (cell == nil)
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                          reuseIdentifier:MyIdentifier];
-        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Actions Available."];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.contentView.backgroundColor = [UIColor clearColor];
-        cell.userInteractionEnabled = false;
+        ActionsCustomCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ActionsCustomCell"];
+        if (cell == nil) {
+            // Load the top-level objects from the custom cell XIB.
+            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ActionsCustomCell" owner:self options:nil];
+            // Grab a pointer to the first object (presumably the custom cell, as that's all the XIB should contain).
+            cell = [topLevelObjects objectAtIndex:0];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.font = [UIFont fontWithName:CommonFont size:15];
         cell.textLabel.textColor = [UIColor whiteColor];
-        return cell;
-    }
-    
-    if (indexPath.row < arrEmotions.count) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.userInteractionEnabled = true;
+        cell.btnQuickView.tag = indexPath.row;
+        cell.lblTitle.textColor =  [UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:1.0];;
+        if (!isDataAvailable) {
+            
+            static NSString *MyIdentifier = @"MyIdentifier";
+            UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:MyIdentifier];
+            if (cell == nil)
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                              reuseIdentifier:MyIdentifier];
+            cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Actions Available."];
+            cell.backgroundColor = [UIColor clearColor];
+            cell.contentView.backgroundColor = [UIColor clearColor];
+            cell.userInteractionEnabled = false;
+            cell.textLabel.textColor = [UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:1.0];
+            return cell;
+        }
         
-        cell.imgRadio.image = [UIImage imageNamed:@"Emotion_CheckBox.png"];
-        NSDictionary *details = arrEmotions[indexPath.row];
-        if (NULL_TO_NIL([details objectForKey:@"title"])) {
-            cell.lblTitle.text = [details objectForKey:@"title"];
+        if (indexPath.row < arrEmotions.count) {
+            
+            //cell.imgRadio.image = [UIImage imageNamed:@"Emotion_CheckBox.png"];
+            NSDictionary *details = arrEmotions[indexPath.row];
+            if (NULL_TO_NIL([details objectForKey:@"title"])) {
+                cell.lblTitle.text = [details objectForKey:@"title"];
+            }
+            if ([details objectForKey:@"isSelected"]) {
+                [cell.btnQuickView setImage:[UIImage imageNamed:@"CheckBox_Goals"] forState:UIControlStateNormal];
+                if ([[details objectForKey:@"isSelected"] boolValue]) {
+                    [cell.btnQuickView setImage:[UIImage imageNamed:@"CheckBox_Goals_Active"] forState:UIControlStateNormal];
+                    
+                }
+            }
+            [cell.imgRadio sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
+                             placeholderImage:[UIImage imageNamed:@"Purposecolor_Image"]
+                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                        
+                                    }];
+
+            
         }
-        if ([dictSelections objectForKey:[details objectForKey:@"id"]]) {
-             cell.imgRadio.image = [UIImage imageNamed:@"Emotion_CheckBox_Selected.png"];
-        }
-    }
+    
     return cell;
+   
 }
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  return 50;
+  return 60;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (arrEmotions.count <= 0) return;
     [self endEditing:YES];
-    UITableViewCell *cell = [aTableView cellForRowAtIndexPath:indexPath];
-    [UIView animateWithDuration:0.3/1.5 animations:^{
-        cell.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.4, 1.4);
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3/2 animations:^{
-            cell.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8, 0.8);
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:0.3/2 animations:^{
-                cell.transform = CGAffineTransformIdentity;
-                if (indexPath.row < arrEmotions.count ) {
-                    NSDictionary *details = arrEmotions[indexPath.row];
-                    if ([dictSelections objectForKey:[details objectForKey:@"id"]]) {
-                        [dictSelections removeObjectForKey:[details objectForKey:@"id"]];
-                        cell.imageView.image = [UIImage imageNamed:@"Emotion_CheckBox.png"];;
-                    }else{
-                        [dictSelections setObject:details forKey:[details objectForKey:@"id"]];
-                        cell.imageView.image = [UIImage imageNamed:@"Emotion_CheckBox_Selected.png"];;
-                    }
-                    [tableView reloadData];
-                }
-            } completion:^(BOOL finished) {
-                
-            }];
-        }];
-    }];
-    
-    
+    [self enableQuickView:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -206,6 +250,48 @@
         return NO;
     return YES;
 }
+
+-(IBAction)actionSelected:(id)object{
+    NSInteger index = 0;
+    if ([object isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)object;
+        index = btn.tag;
+    }else{
+        NSIndexPath *indexPath = (NSIndexPath*)object;
+        index = indexPath.row;
+    }
+    if (index < arrEmotions.count ) {
+        NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrEmotions[index]];
+        if ([details objectForKey:@"isSelected"]) {
+            
+            if ([[details objectForKey:@"isSelected"] boolValue]) {
+                [details setObject:[NSNumber numberWithBool:false] forKey:@"isSelected"];
+                [dictSelections removeObjectForKey:[details objectForKey:@"id"]];
+                [_tagsView deleteTag:[details objectForKey:@"title"]];
+                if (dictSelections.count <= 0) {
+                    [self deleteAllTags:nil];
+                }else{
+                    [self resetTagViewAfterDelete];
+                }
+            }else{
+                [details setObject:[NSNumber numberWithBool:true] forKey:@"isSelected"];
+                [dictSelections setObject:details forKey:[details objectForKey:@"id"]];
+                [self addTapped:[details objectForKey:@"title"]];
+            }
+            
+        }else{
+            
+            [dictSelections setObject:details forKey:[details objectForKey:@"id"]];
+            [details setObject:[NSNumber numberWithBool:true] forKey:@"isSelected"];
+            [self addTapped:[details objectForKey:@"title"]];
+        }
+       
+        [arrEmotions replaceObjectAtIndex:index withObject:details];
+    }
+    [tableView reloadData];
+    
+}
+
 
 -(IBAction)sendSeleciton:(UIButton*)btn{
     
@@ -242,7 +328,9 @@
 
 -(void)newActionCreatedWithActionTitle:(NSString*)actionTitle actionID:(NSInteger)actionID{
     
-    NSDictionary *newAction = [NSDictionary dictionaryWithObjectsAndKeys:actionTitle,@"title",[NSNumber numberWithInteger:actionID],@"id", nil];
+     NSMutableDictionary *newAction = [NSMutableDictionary dictionaryWithObjectsAndKeys:actionTitle,@"title",[NSNumber numberWithInteger:actionID],@"id",[NSNumber numberWithBool:true],@"isSelected", nil];
+    [dictSelections setObject:newAction forKey:[NSNumber numberWithInteger:actionID]];
+    [self addTapped:[newAction objectForKey:@"title"]];
     [arrEmotions addObject:newAction];
     if (arrEmotions.count > 0) isDataAvailable = true;
     [dictSelections setObject:newAction forKey:[NSNumber numberWithInteger:actionID]];
@@ -260,15 +348,15 @@
    
 }
 
--(void)enableQuickView:(UIButton*)sender{
+-(void)enableQuickView:(NSIndexPath*)indexPath{
     
     if (!quickGoalView) {
         quickGoalView =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForQuickGoalView];
         quickGoalView.delegate = self;
     }
     
-    if (sender.tag < arrEmotions.count) {
-        NSDictionary *details = arrEmotions[sender.tag];
+    if (indexPath.row < arrEmotions.count) {
+        NSDictionary *details = arrEmotions[indexPath.row ];
         [quickGoalView loadGoalDetailsWithGoalID:[NSString stringWithFormat:@"%d",[[details objectForKey:@"id"] integerValue]]];
     }
     quickGoalView.view.backgroundColor = [UIColor colorWithRed:0.00 green:0.00 blue:0.00 alpha:1];
@@ -308,10 +396,10 @@
 }
 
 
--(void)closePopUp{
+-(IBAction)closePopUp{
     
     [self layoutIfNeeded];
-    rightConstraint.constant = 0;
+    rightConstraint.constant = 500;
     [UIView animateWithDuration:.8
                          animations:^{
                              [self layoutIfNeeded];

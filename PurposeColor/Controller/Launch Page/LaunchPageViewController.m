@@ -11,7 +11,7 @@
 #import "MenuViewController.h"
 #import "Constants.h"
 #import "CommunityGEMListingViewController.h"
-#import "ImotinalAwarenessViewController.h"
+#import "EmotionalAwarenessViewController.h"
 #import "GEMSListingsViewController.h"
 #import "GoalsAndDreamsListingViewController.h"
 #import "EmotionalIntelligenceViewController.h"
@@ -107,8 +107,27 @@
 
 -(IBAction)showEmoitonalAwareness:(UIButton*)sender{
     
+    EmotionalAwarenessViewController *journalList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwareness];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:journalList];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+    CGPoint p = [sender.superview.superview convertPoint:sender.frame.origin toView:self.view];
+    if (popTip) {
+        [popTip hide];
+    }
+    popTip = [AMPopTip popTip];
+    [popTip showText:@"Emotional Awareness" direction:AMPopTipDirectionDown maxWidth:200 inView:journalList.view fromFrame:CGRectMake(p.x, p.y, 50, 50) duration:2];
+
+    
+    
+    /*
     [self resetCurrentNavController];
-    ImotinalAwarenessViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwareness];
+    EmotionalAwarenessViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwareness];
     navForTabController = [[UINavigationController alloc] init];
     navForTabController.viewControllers = [NSArray arrayWithObjects:imotionalAwareness, nil];
     navForTabController.navigationBarHidden = true;
@@ -121,6 +140,7 @@
     }
     popTip = [AMPopTip popTip];
     [popTip showText:@"Emotional Awareness" direction:AMPopTipDirectionDown maxWidth:200 inView:self.view fromFrame:CGRectMake(p.x, p.y, 50, 50) duration:2];
+     */
 }
 
 -(IBAction)showEmoitonalIntelligence:(UIButton*)sender{

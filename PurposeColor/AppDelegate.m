@@ -19,7 +19,7 @@
 #import "MyMemmoriesViewController.h"
 #import "Reachability.h"
 #import "CommunityGEMListingViewController.h"
-#import "ImotinalAwarenessViewController.h"
+#import "EmotionalAwarenessViewController.h"
 #import "GEMSListingsViewController.h"
 #import "GoalsAndDreamsListingViewController.h"
 #import "EmotionalIntelligenceViewController.h"
@@ -57,13 +57,15 @@
     // Override point for customization after application launch.
     [Fabric with:@[[Crashlytics class]]];
     [Utility setUpGoogleMapConfiguration];
-    [self checkForceSignOut];
     [self getVersionStatus];
+    [self getUserInfo];
     [self checkUserStatus];
     [self reachability];
     [self resetBadgeCount];
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
+    [self checkBuildForSignOut];
+   
     return YES;
 }
 
@@ -75,6 +77,35 @@
                                                           openURL:url
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation];
+}
+
+-(void)getUserInfo{
+    
+    [APIMapper getUserInfoOnsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        if ([[responseObject objectForKey:@"status"] integerValue] == 1) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[responseObject objectForKey:@"title"]
+                                                            message:[responseObject objectForKey:@"message"]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+        
+        
+    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR"
+                                                        message:error.localizedDescription
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+        
+    }];
+    
 }
 
 
@@ -128,21 +159,27 @@
    
 }
 
--(void)checkForceSignOut{
+
+
+-(void)checkBuildForSignOut{
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"Should_Sign_Out"])
+    NSString * currentBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
+    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Build_No"])
     {
+        NSString *lstBuild = [[NSUserDefaults standardUserDefaults] objectForKey:@"Build_No"];
+        if ([lstBuild integerValue] < [currentBuild integerValue]) {
+            [self clearUserSessions];
+        }
+         [[NSUserDefaults standardUserDefaults] setObject:currentBuild forKey:@"Build_No"];
         
     }else{
-        
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Should_Sign_Out"];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (defaults && [defaults objectForKey:@"USER"])
-        [defaults removeObjectForKey:@"USER"];
+        [[NSUserDefaults standardUserDefaults] setObject:currentBuild forKey:@"Build_No"];
+       [self clearUserSessions];
     }
-    
-}
 
+
+}
 
 #pragma mark - Reachability
 
@@ -694,6 +731,7 @@
     [User sharedManager].statusMsg = user.statusMsg;
     [User sharedManager].follow_status = user.follow_status;
     [User sharedManager].daily_notify  = user.daily_notify;
+    [User sharedManager].token  = user.token;
     
 }
 
@@ -831,7 +869,8 @@
 }
 -(void)showEmotionalAwarenessPage{
     
-    [launchPage showEmoitonalAwareness:nil];
+    [self showEmotionalAwarenessNew];
+   // [launchPage showEmoitonalAwareness:nil];
 }
 
 
@@ -1035,6 +1074,19 @@
                     completion:nil];
 }
 
+-(void)showEmotionalAwarenessNew{
+    
+    EmotionalAwarenessViewController *journalList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwareness];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:journalList];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+}
+
 
 
 
@@ -1140,7 +1192,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [FBSDKAppEvents activateApp];
+     [FBSDKAppEvents activateApp];
     if ([User sharedManager].userId.length) [self enablePushNotification];
 }
 

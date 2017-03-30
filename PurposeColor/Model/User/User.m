@@ -39,6 +39,7 @@
         self.notificationCount = 0;
         self.companyID = [NSString new];
         self.statusMsg = [NSString new];
+        self.token = [NSString new];
         
      
     }
@@ -62,6 +63,7 @@
     [encoder encodeObject:self.statusMsg forKey:@"StatusMessage"];
     [encoder encodeBool:self.daily_notify forKey:@"DailyNotify"];
     [encoder encodeBool:self.follow_status forKey:@"FollowStatus"];
+    [encoder encodeObject:self.token forKey:@"Token"];
     
     
     
@@ -85,6 +87,7 @@
         self.statusMsg = [decoder decodeObjectForKey:@"StatusMessage"];
         self.daily_notify = [decoder decodeBoolForKey:@"DailyNotify"];
         self.follow_status = [decoder decodeBoolForKey:@"FollowStatus"];
+        self.token = [decoder decodeObjectForKey:@"Token"];
     }
     return self;
 }

@@ -52,6 +52,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     NSInteger currentPage;
     NSMutableDictionary *dictFollowers;
     eFollowStatus followStatus;
+    NSString *strNoDataText;
     
     BOOL isPageRefresing;
     BOOL isDataAvailable;
@@ -196,8 +197,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         NSArray *results = [responseObject objectForKey:@"resultarray"];
         for (NSDictionary *dict in results)
             [arrGems addObject:dict];
+    }else{
+        strNoDataText = [responseObject objectForKey:@"text"];
     }
-      if (arrGems.count) isDataAvailable = true;
+    if (arrGems.count) isDataAvailable = true;
     if (NULL_TO_NIL([responseObject objectForKey:@"pageCount"]))
         totalPages =  [[responseObject objectForKey:@"pageCount"]integerValue];
     
@@ -234,6 +237,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     if (!isDataAvailable) {
         
         UICollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+        if ([cell.contentView viewWithTag:1]) {
+            UILabel *lblNoData =  [cell.contentView viewWithTag:1];
+            lblNoData.text = strNoDataText;
+        }
         return cell;
         
     }
@@ -513,7 +520,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         UIAlertController * alert=  [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction* hide;
         if (isOthers) {
-            
             hide = [UIAlertAction actionWithTitle:@"Report Abuse" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
                 
                 [alert dismissViewControllerAnimated:YES completion:nil];
@@ -538,9 +544,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         [alert addAction:hide];
         [alert addAction:cancel];
         [self.navigationController presentViewController:alert animated:YES completion:nil];
-        
-        
-        
+      
         
     }
     
@@ -724,7 +728,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 -(void)updateGEMWithLikeStatus:(NSInteger)index{
     
     if (index < arrGems.count) {
-        
         NSDictionary *gemsInfo = arrGems[index];
         NSString *gemID;
         NSInteger count = 0;
@@ -748,7 +751,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             }
             [gemDetails setValue:[NSNumber numberWithInteger:count] forKey:@"likecount"];
             [arrGems replaceObjectAtIndex:index withObject:gemDetails];
-        
     }
     
     [collectionView reloadData];
@@ -810,10 +812,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     
     [collectionView reloadData];
 }
-
-
-
-
 
 #pragma mark - Custom Cell Delegate For Share Method
 
@@ -898,7 +896,9 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             [UIView transitionWithView:app.window
                               duration:0.3
                                options:UIViewAnimationOptionTransitionCrossDissolve
-                            animations:^{  app.window.rootViewController = app.navGeneral; }
+                            animations:^{
+                                app.window.rootViewController = app.navGeneral;
+                            }
                             completion:nil];
             deleagte.navGeneral = app.navGeneral;
             

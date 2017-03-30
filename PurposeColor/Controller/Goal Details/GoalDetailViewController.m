@@ -183,7 +183,6 @@ typedef enum{
         cell.accessoryType = UITableViewCellAccessoryNone;
         return cell;
     }
-    
     if (indexPath.section == eSectionInfo)
         cell = [self configureActionDetailsInfoCell:indexPath];
     
@@ -259,7 +258,6 @@ typedef enum{
                 float ratio = width / height;
                 imageHeight = (_tableView.frame.size.width - padding) / ratio;
                 [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
-                
             }
             return imageHeight + 5;
 

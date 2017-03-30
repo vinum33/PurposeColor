@@ -59,7 +59,7 @@
     [recorder prepareToRecord];
     
     UIImageView *imgBubble = [UIImageView new];
-    imgBubble.backgroundColor = [UIColor getThemeColor];
+    imgBubble.backgroundColor = [UIColor redColor];
     [self addSubview:imgBubble];
     imgBubble.layer.cornerRadius = 5.f;
     imgBubble.layer.borderWidth = 1.f;

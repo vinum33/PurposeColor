@@ -63,12 +63,19 @@
 		E50680E91D30F5C10041B077 /* GEMDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E50680E81D30F5C10041B077 /* GEMDetails.storyboard */; };
 		E52DFB201DE7FB8D0033310F /* ReportAbuseListingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E52DFB1D1DE7FB8D0033310F /* ReportAbuseListingCell.m */; };
 		E52DFB211DE7FB8D0033310F /* ReportAbuseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E52DFB1F1DE7FB8D0033310F /* ReportAbuseViewController.m */; };
+		E53A91001E85262200AB98A8 /* CellForContactAndLoc.m in Sources */ = {isa = PBXBuildFile; fileRef = E53A90FF1E85262200AB98A8 /* CellForContactAndLoc.m */; };
 		E5469D0A1E7943C9002907B7 /* ContactsPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5469D091E7943C9002907B7 /* ContactsPickerViewController.m */; };
 		E5469D0E1E795187002907B7 /* ContactsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5469D0D1E795187002907B7 /* ContactsTableViewCell.m */; };
 		E56AF3AE1DB5E48C00029DA1 /* GoalsCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3AC1DB5E48C00029DA1 /* GoalsCustomCell.m */; };
 		E56AF3AF1DB5E48C00029DA1 /* GoalsCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56AF3AD1DB5E48C00029DA1 /* GoalsCustomCell.xib */; };
 		E56AF3B61DB626D300029DA1 /* JournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3B51DB626D300029DA1 /* JournalViewController.m */; };
 		E56BBA401E5468E400002DDE /* GemsListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */; };
+		E56C1D081E83BDAD00DFFE5B /* ActionsCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E56C1D061E83BDAD00DFFE5B /* ActionsCustomCell.m */; };
+		E56C1D091E83BDAD00DFFE5B /* ActionsCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56C1D071E83BDAD00DFFE5B /* ActionsCustomCell.xib */; };
+		E56C1D281E83F24700DFFE5B /* ASJTag.m in Sources */ = {isa = PBXBuildFile; fileRef = E56C1D231E83F24700DFFE5B /* ASJTag.m */; };
+		E56C1D291E83F24700DFFE5B /* ASJTag.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56C1D241E83F24700DFFE5B /* ASJTag.xib */; };
+		E56C1D2A1E83F24700DFFE5B /* ASJTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = E56C1D261E83F24700DFFE5B /* ASJTagsView.m */; };
+		E56C1D2B1E83F24700DFFE5B /* Resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E56C1D271E83F24700DFFE5B /* Resources.bundle */; };
 		E56C3F4A1E5F10A600954B2E /* Sweet Sensations Personal Use.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E56C3F491E5F10A600954B2E /* Sweet Sensations Personal Use.ttf */; };
 		E56E341B1E79069100B4C96B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56E34171E79069100B4C96B /* Bolts.framework */; };
 		E56E341C1E79069100B4C96B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56E34181E79069100B4C96B /* FBSDKCoreKit.framework */; };
@@ -91,6 +98,13 @@
 		E57AD6B81D40E7390042A8C4 /* InnerTableCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6B51D40E7390042A8C4 /* InnerTableCustomCell.m */; };
 		E57AD6C01D40E7610042A8C4 /* ActionDetailPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */; };
 		E5824B001DB4AD8700BBA4F4 /* FTPopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E5824AFF1DB4AD8700BBA4F4 /* FTPopOverMenu.m */; };
+		E586A7201E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E586A71F1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m */; };
+		E586A7231E7FB0BE000F0A37 /* DroidSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E586A7211E7FB0BE000F0A37 /* DroidSans.ttf */; };
+		E586A7241E7FB0BE000F0A37 /* DroidSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E586A7221E7FB0BE000F0A37 /* DroidSans-Bold.ttf */; };
+		E586A7281E7FB85B000F0A37 /* CellForEventDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = E586A7271E7FB85B000F0A37 /* CellForEventDisplay.m */; };
+		E58F49AA1E7FD8A500994836 /* CellForMenus.m in Sources */ = {isa = PBXBuildFile; fileRef = E58F49A91E7FD8A500994836 /* CellForMenus.m */; };
+		E58F49AE1E7FF6B500994836 /* EventTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E58F49AD1E7FF6B500994836 /* EventTitleCell.m */; };
+		E58F49B21E80024D00994836 /* EventDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E58F49B11E80024D00994836 /* EventDescriptionCell.m */; };
 		E59168D11DE6BD0200A3BDB9 /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E59168D01DE6BD0200A3BDB9 /* KILabel.m */; };
 		E59D746F1E5AF32B005844D5 /* JournalListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E59D746E1E5AF32B005844D5 /* JournalListViewController.m */; };
 		E59D74731E5AF6F0005844D5 /* JournalListCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E59D74721E5AF6F0005844D5 /* JournalListCustomCell.m */; };
@@ -351,10 +365,13 @@
 		E50680A61D30F1490041B077 /* Login&RegisterStoryBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Login&RegisterStoryBoard.storyboard"; sourceTree = "<group>"; };
 		E50680A81D30F1490041B077 /* HomeDetails.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HomeDetails.storyboard; sourceTree = "<group>"; };
 		E50680E81D30F5C10041B077 /* GEMDetails.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GEMDetails.storyboard; sourceTree = "<group>"; };
+		E521FD621E7BAF2400B7DC6A /* Purpose Color.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Purpose Color.entitlements"; sourceTree = "<group>"; };
 		E52DFB1C1DE7FB8D0033310F /* ReportAbuseListingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportAbuseListingCell.h; sourceTree = "<group>"; };
 		E52DFB1D1DE7FB8D0033310F /* ReportAbuseListingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportAbuseListingCell.m; sourceTree = "<group>"; };
 		E52DFB1E1DE7FB8D0033310F /* ReportAbuseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportAbuseViewController.h; sourceTree = "<group>"; };
 		E52DFB1F1DE7FB8D0033310F /* ReportAbuseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportAbuseViewController.m; sourceTree = "<group>"; };
+		E53A90FE1E85262200AB98A8 /* CellForContactAndLoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellForContactAndLoc.h; sourceTree = "<group>"; };
+		E53A90FF1E85262200AB98A8 /* CellForContactAndLoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellForContactAndLoc.m; sourceTree = "<group>"; };
 		E5469D081E7943C9002907B7 /* ContactsPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsPickerViewController.h; sourceTree = "<group>"; };
 		E5469D091E7943C9002907B7 /* ContactsPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsPickerViewController.m; sourceTree = "<group>"; };
 		E5469D0C1E795187002907B7 /* ContactsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewCell.h; sourceTree = "<group>"; };
@@ -365,6 +382,15 @@
 		E56AF3B41DB626D300029DA1 /* JournalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalViewController.h; sourceTree = "<group>"; };
 		E56AF3B51DB626D300029DA1 /* JournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalViewController.m; sourceTree = "<group>"; };
 		E56BBA3F1E5468E400002DDE /* GemsListCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GemsListCollectionViewCell.xib; sourceTree = "<group>"; };
+		E56C1D051E83BDAD00DFFE5B /* ActionsCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionsCustomCell.h; sourceTree = "<group>"; };
+		E56C1D061E83BDAD00DFFE5B /* ActionsCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionsCustomCell.m; sourceTree = "<group>"; };
+		E56C1D071E83BDAD00DFFE5B /* ActionsCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionsCustomCell.xib; sourceTree = "<group>"; };
+		E56C1D221E83F24700DFFE5B /* ASJTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASJTag.h; sourceTree = "<group>"; };
+		E56C1D231E83F24700DFFE5B /* ASJTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASJTag.m; sourceTree = "<group>"; };
+		E56C1D241E83F24700DFFE5B /* ASJTag.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ASJTag.xib; sourceTree = "<group>"; };
+		E56C1D251E83F24700DFFE5B /* ASJTagsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASJTagsView.h; sourceTree = "<group>"; };
+		E56C1D261E83F24700DFFE5B /* ASJTagsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASJTagsView.m; sourceTree = "<group>"; };
+		E56C1D271E83F24700DFFE5B /* Resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resources.bundle; sourceTree = "<group>"; };
 		E56C3F491E5F10A600954B2E /* Sweet Sensations Personal Use.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sweet Sensations Personal Use.ttf"; sourceTree = "<group>"; };
 		E56E34171E79069100B4C96B /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../Users/purposecode/Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
 		E56E34181E79069100B4C96B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Users/purposecode/Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -402,6 +428,18 @@
 		E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDetailPageViewController.m; sourceTree = "<group>"; };
 		E5824AFE1DB4AD8700BBA4F4 /* FTPopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPopOverMenu.h; sourceTree = "<group>"; };
 		E5824AFF1DB4AD8700BBA4F4 /* FTPopOverMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPopOverMenu.m; sourceTree = "<group>"; };
+		E586A71E1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmotionalAwarenessViewController.h; sourceTree = "<group>"; };
+		E586A71F1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmotionalAwarenessViewController.m; sourceTree = "<group>"; };
+		E586A7211E7FB0BE000F0A37 /* DroidSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DroidSans.ttf; sourceTree = "<group>"; };
+		E586A7221E7FB0BE000F0A37 /* DroidSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DroidSans-Bold.ttf"; sourceTree = "<group>"; };
+		E586A7261E7FB85B000F0A37 /* CellForEventDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellForEventDisplay.h; sourceTree = "<group>"; };
+		E586A7271E7FB85B000F0A37 /* CellForEventDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellForEventDisplay.m; sourceTree = "<group>"; };
+		E58F49A81E7FD8A500994836 /* CellForMenus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellForMenus.h; sourceTree = "<group>"; };
+		E58F49A91E7FD8A500994836 /* CellForMenus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellForMenus.m; sourceTree = "<group>"; };
+		E58F49AC1E7FF6B500994836 /* EventTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTitleCell.h; sourceTree = "<group>"; };
+		E58F49AD1E7FF6B500994836 /* EventTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTitleCell.m; sourceTree = "<group>"; };
+		E58F49B01E80024D00994836 /* EventDescriptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDescriptionCell.h; sourceTree = "<group>"; };
+		E58F49B11E80024D00994836 /* EventDescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDescriptionCell.m; sourceTree = "<group>"; };
 		E59168CF1DE6BD0200A3BDB9 /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		E59168D01DE6BD0200A3BDB9 /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
 		E59D746D1E5AF32B005844D5 /* JournalListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalListViewController.h; sourceTree = "<group>"; };
@@ -745,6 +783,7 @@
 		E50680281D30F1490041B077 /* PurposeColor */ = {
 			isa = PBXGroup;
 			children = (
+				E521FD621E7BAF2400B7DC6A /* Purpose Color.entitlements */,
 				E50680291D30F1490041B077 /* AppDelegate.h */,
 				E506802A1D30F1490041B077 /* AppDelegate.m */,
 				E506807F1D30F1490041B077 /* API Mapper */,
@@ -762,6 +801,7 @@
 		E506802C1D30F1490041B077 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E586A71D1E7F9E0B000F0A37 /* New Emotional Awareness */,
 				E573C21C1E5D62F10070DF7E /* JournalDetailViewController */,
 				E59D746C1E5AF26A005844D5 /* JournalListView */,
 				E52DFB1A1DE7FB8D0033310F /* Report Abuse */,
@@ -1113,6 +1153,8 @@
 		E506808D1D30F1490041B077 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				E586A7211E7FB0BE000F0A37 /* DroidSans.ttf */,
+				E586A7221E7FB0BE000F0A37 /* DroidSans-Bold.ttf */,
 				E56C3F491E5F10A600954B2E /* Sweet Sensations Personal Use.ttf */,
 				E573C2391E5D94540070DF7E /* Advertising Script Bold Trial.ttf */,
 				E506808E1D30F1490041B077 /* AARDC.ttf */,
@@ -1178,6 +1220,15 @@
 			path = CustomCell;
 			sourceTree = "<group>";
 		};
+		E53A90FD1E85262200AB98A8 /* CellForLocAndContact */ = {
+			isa = PBXGroup;
+			children = (
+				E53A90FE1E85262200AB98A8 /* CellForContactAndLoc.h */,
+				E53A90FF1E85262200AB98A8 /* CellForContactAndLoc.m */,
+			);
+			path = CellForLocAndContact;
+			sourceTree = "<group>";
+		};
 		E5469D071E79439B002907B7 /* Contacts Picker View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -1214,6 +1265,37 @@
 				E56AF3B51DB626D300029DA1 /* JournalViewController.m */,
 			);
 			path = Journal;
+			sourceTree = "<group>";
+		};
+		E56C1D041E83BDAD00DFFE5B /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				E56C1D051E83BDAD00DFFE5B /* ActionsCustomCell.h */,
+				E56C1D061E83BDAD00DFFE5B /* ActionsCustomCell.m */,
+				E56C1D071E83BDAD00DFFE5B /* ActionsCustomCell.xib */,
+			);
+			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		E56C1D101E83DC2A00DFFE5B /* CellWithTags */ = {
+			isa = PBXGroup;
+			children = (
+				E56C1D211E83F24700DFFE5B /* ASJTagsView */,
+			);
+			path = CellWithTags;
+			sourceTree = "<group>";
+		};
+		E56C1D211E83F24700DFFE5B /* ASJTagsView */ = {
+			isa = PBXGroup;
+			children = (
+				E56C1D221E83F24700DFFE5B /* ASJTag.h */,
+				E56C1D231E83F24700DFFE5B /* ASJTag.m */,
+				E56C1D241E83F24700DFFE5B /* ASJTag.xib */,
+				E56C1D251E83F24700DFFE5B /* ASJTagsView.h */,
+				E56C1D261E83F24700DFFE5B /* ASJTagsView.m */,
+				E56C1D271E83F24700DFFE5B /* Resources.bundle */,
+			);
+			path = ASJTagsView;
 			sourceTree = "<group>";
 		};
 		E573C21C1E5D62F10070DF7E /* JournalDetailViewController */ = {
@@ -1378,6 +1460,56 @@
 			name = Compose;
 			sourceTree = "<group>";
 		};
+		E586A71D1E7F9E0B000F0A37 /* New Emotional Awareness */ = {
+			isa = PBXGroup;
+			children = (
+				E53A90FD1E85262200AB98A8 /* CellForLocAndContact */,
+				E58F49AF1E80023800994836 /* EventDescription */,
+				E58F49AB1E7FF6A000994836 /* EventTitleCell */,
+				E586A7251E7FB818000F0A37 /* CellForSectionTopPlaceHolder */,
+				E58F49A71E7FD28800994836 /* CellForMenus */,
+				E586A71E1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.h */,
+				E586A71F1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m */,
+			);
+			path = "New Emotional Awareness";
+			sourceTree = "<group>";
+		};
+		E586A7251E7FB818000F0A37 /* CellForSectionTopPlaceHolder */ = {
+			isa = PBXGroup;
+			children = (
+				E586A7261E7FB85B000F0A37 /* CellForEventDisplay.h */,
+				E586A7271E7FB85B000F0A37 /* CellForEventDisplay.m */,
+			);
+			path = CellForSectionTopPlaceHolder;
+			sourceTree = "<group>";
+		};
+		E58F49A71E7FD28800994836 /* CellForMenus */ = {
+			isa = PBXGroup;
+			children = (
+				E58F49A81E7FD8A500994836 /* CellForMenus.h */,
+				E58F49A91E7FD8A500994836 /* CellForMenus.m */,
+			);
+			path = CellForMenus;
+			sourceTree = "<group>";
+		};
+		E58F49AB1E7FF6A000994836 /* EventTitleCell */ = {
+			isa = PBXGroup;
+			children = (
+				E58F49AC1E7FF6B500994836 /* EventTitleCell.h */,
+				E58F49AD1E7FF6B500994836 /* EventTitleCell.m */,
+			);
+			path = EventTitleCell;
+			sourceTree = "<group>";
+		};
+		E58F49AF1E80023800994836 /* EventDescription */ = {
+			isa = PBXGroup;
+			children = (
+				E58F49B01E80024D00994836 /* EventDescriptionCell.h */,
+				E58F49B11E80024D00994836 /* EventDescriptionCell.m */,
+			);
+			path = EventDescription;
+			sourceTree = "<group>";
+		};
 		E59168CE1DE6BD0200A3BDB9 /* KILabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1489,6 +1621,8 @@
 		E5E333F51D65B7D200C7CFA6 /* SelectActions */ = {
 			isa = PBXGroup;
 			children = (
+				E56C1D101E83DC2A00DFFE5B /* CellWithTags */,
+				E56C1D041E83BDAD00DFFE5B /* CustomCell */,
 				E5E333F61D65B7D200C7CFA6 /* SelectActions.h */,
 				E5E333F71D65B7D200C7CFA6 /* SelectActions.m */,
 				E5E333F81D65B7D200C7CFA6 /* SelectActions.xib */,
@@ -2342,6 +2476,8 @@
 				E5F613011D4887D4002B7CB5 /* front-camera.png in Resources */,
 				E5E333F41D65AEAA00C7CFA6 /* SelectYourGoalsAndDreams.xib in Resources */,
 				E50680D31D30F1490041B077 /* HelveticaNeueLTStd-Bd.otf in Resources */,
+				E56C1D091E83BDAD00DFFE5B /* ActionsCustomCell.xib in Resources */,
+				E56C1D291E83F24700DFFE5B /* ASJTag.xib in Resources */,
 				E5F612FB1D4887D4002B7CB5 /* flash-off.png in Resources */,
 				E50680CD1D30F1490041B077 /* ArialBlack.ttf in Resources */,
 				E5ED6C8E1D648CDD009B9B37 /* SelectYourEvent.xib in Resources */,
@@ -2349,6 +2485,7 @@
 				E5A947421D33B0E6008BBC7F /* MessageEntrySendButtonPressed.png in Resources */,
 				E5ED40121D82BCF000A3F455 /* animation4.png in Resources */,
 				E50680DA1D30F1490041B077 /* Tahoma_Bold.ttf in Resources */,
+				E586A7241E7FB0BE000F0A37 /* DroidSans-Bold.ttf in Resources */,
 				E50680E11D30F1490041B077 /* Login&RegisterStoryBoard.storyboard in Resources */,
 				E50680DD1D30F1490041B077 /* TimesNewRomanMTStd.otf in Resources */,
 				E5F3F1DD1DDDAB5D006C5911 /* Action_Alarm.mp3 in Resources */,
@@ -2356,6 +2493,7 @@
 				E5ED40101D82BCF000A3F455 /* animation2.png in Resources */,
 				E5EEBADD1D3208C200D60FAD /* AudioImage.png in Resources */,
 				E5ED40151D82BCF000A3F455 /* animation7.png in Resources */,
+				E56C1D2B1E83F24700DFFE5B /* Resources.bundle in Resources */,
 				E50680D51D30F1490041B077 /* HPImpact.ttf in Resources */,
 				E5E333FA1D65B7D200C7CFA6 /* SelectActions.xib in Resources */,
 				E5F612FF1D4887D4002B7CB5 /* focus-crosshair.png in Resources */,
@@ -2367,6 +2505,7 @@
 				E56AF3AF1DB5E48C00029DA1 /* GoalsCustomCell.xib in Resources */,
 				E57669141D62F5F700A1451F /* SelectYourFeel.xib in Resources */,
 				E5ED400D1D82BCF000A3F455 /* animation1.png in Resources */,
+				E586A7231E7FB0BE000F0A37 /* DroidSans.ttf in Resources */,
 				E5F612F81D4887D4002B7CB5 /* discard@2x.png in Resources */,
 				E50680DF1D30F1490041B077 /* Verdana Ref.ttf in Resources */,
 				E5F555DC1D8C0DEE00B739AC /* PhotoBrowserCell.xib in Resources */,
@@ -2495,6 +2634,7 @@
 				E5B286021DAE0AA8006CE3AF /* EmotionSessionLists.m in Sources */,
 				E5F9FE551D49C29400F22169 /* GemsListCollectionViewCell.m in Sources */,
 				E5E333F91D65B7D200C7CFA6 /* SelectActions.m in Sources */,
+				E58F49AA1E7FD8A500994836 /* CellForMenus.m in Sources */,
 				E50680B21D30F1490041B077 /* CustomCellForLogin.m in Sources */,
 				E573C2341E5D6EA50070DF7E /* JournalGalleryViewController.m in Sources */,
 				E56AF3AE1DB5E48C00029DA1 /* GoalsCustomCell.m in Sources */,
@@ -2523,6 +2663,7 @@
 				E5F9FE521D49C29400F22169 /* GemDetailsCustomTableViewCell.m in Sources */,
 				E57AD6B81D40E7390042A8C4 /* InnerTableCustomCell.m in Sources */,
 				E50680C01D30F1490041B077 /* Constants.m in Sources */,
+				E58F49B21E80024D00994836 /* EventDescriptionCell.m in Sources */,
 				E5F75E471D6EE96C009EF545 /* MyMemmoriesViewController.m in Sources */,
 				E5F70EF41D50BDD900BD1A4A /* ChatComposeViewController.m in Sources */,
 				E5ED40001D827F6700A3F455 /* UITextView+Placeholder.m in Sources */,
@@ -2530,6 +2671,7 @@
 				E57AD6B61D40E7390042A8C4 /* GoalsAndDreamsCustomCell.m in Sources */,
 				E5F9FE541D49C29400F22169 /* CommunityGEMListingViewController.m in Sources */,
 				E50680BC1D30F1490041B077 /* UIStoryboard+Storyboard.m in Sources */,
+				E56C1D281E83F24700DFFE5B /* ASJTag.m in Sources */,
 				E5FE413A1D51ECA600BEFBF0 /* JCNotificationBannerWindow.m in Sources */,
 				E5469D0E1E795187002907B7 /* ContactsTableViewCell.m in Sources */,
 				E573C22F1E5D62F10070DF7E /* JournalDateInfo.m in Sources */,
@@ -2546,10 +2688,12 @@
 				E50680A91D30F1490041B077 /* AppDelegate.m in Sources */,
 				E5ED09731D81113B003DE611 /* Reachability.m in Sources */,
 				E56AF3B61DB626D300029DA1 /* JournalViewController.m in Sources */,
+				E586A7281E7FB85B000F0A37 /* CellForEventDisplay.m in Sources */,
 				E5EC866B1D7023A700537A90 /* GoalDetailViewController.m in Sources */,
 				E5E8A3161DD31957006DF12E /* ReminderListingCell.m in Sources */,
 				E5EDF0FD1DB21421005D0660 /* AMPopTip+Animation.m in Sources */,
 				E5F612E11D4887A2002B7CB5 /* UIView+RNActivityView.m in Sources */,
+				E586A7201E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m in Sources */,
 				E50680C91D30F1490041B077 /* User.m in Sources */,
 				E573C2381E5D71350070DF7E /* JournalGalleryCell.m in Sources */,
 				E5FE41361D51ECA600BEFBF0 /* JCNotificationBannerView.m in Sources */,
@@ -2559,9 +2703,11 @@
 				E59D74731E5AF6F0005844D5 /* JournalListCustomCell.m in Sources */,
 				E5F51DF71DA6311A000E8487 /* GemsCustomTableViewCell.m in Sources */,
 				E5F6131C1D48C5DA002B7CB5 /* UIColor+HexColor.m in Sources */,
+				E56C1D081E83BDAD00DFFE5B /* ActionsCustomCell.m in Sources */,
 				E50680B71D30F1490041B077 /* CountryListView.m in Sources */,
 				E5EDF1011DB21421005D0660 /* AMPopTip.m in Sources */,
 				E5F612D71D4887A2002B7CB5 /* ColorUtil.m in Sources */,
+				E58F49AE1E7FF6B500994836 /* EventTitleCell.m in Sources */,
 				E5E9221A1DDB090C00BE8A1D /* LaunchPageViewController.m in Sources */,
 				E5F555D41D8BC1A600B739AC /* LikedAndCommentedUserListings.m in Sources */,
 				E5F9FE571D49C29400F22169 /* GEMSListingHeaderView.m in Sources */,
@@ -2583,6 +2729,7 @@
 				E5F666EC1D4B4169006F0C70 /* NotificationListingCell.m in Sources */,
 				E5A947321D33B057008BBC7F /* HPGrowingTextView.m in Sources */,
 				E50107F91D41D57600E8EE57 /* ActionDetailsCustomCell.m in Sources */,
+				E56C1D2A1E83F24700DFFE5B /* ASJTagsView.m in Sources */,
 				E5E333F31D65AEAA00C7CFA6 /* SelectYourGoalsAndDreams.m in Sources */,
 				E5ED6C8D1D648CDD009B9B37 /* SelectYourEvent.m in Sources */,
 				E5E075971DA3AF0200B2B49F /* ActionCustomCell.m in Sources */,
@@ -2593,6 +2740,7 @@
 				E5824B001DB4AD8700BBA4F4 /* FTPopOverMenu.m in Sources */,
 				E5ED1FCB1DC1B59B003C38D3 /* NFXIntroViewController.m in Sources */,
 				E5FE41351D51ECA600BEFBF0 /* JCNotificationBannerPresenterSmokeStyle.m in Sources */,
+				E53A91001E85262200AB98A8 /* CellForContactAndLoc.m in Sources */,
 				E50680C71D30F1490041B077 /* main.m in Sources */,
 				E5F5FD021D461002002658B0 /* AudioManagerView.m in Sources */,
 				E5F70EF81D50C0D300BD1A4A /* ComposeMessageTableViewCell.m in Sources */,
@@ -2734,9 +2882,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				CODE_SIGN_ENTITLEMENTS = "PurposeColor/Purpose Color.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = WT8KCK2SX3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2750,7 +2900,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
+				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
+				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: com.purposecodes.purposecolor";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2763,9 +2914,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				CODE_SIGN_ENTITLEMENTS = "PurposeColor/Purpose Color.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = WT8KCK2SX3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2779,7 +2932,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
+				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
+				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: com.purposecodes.purposecolor";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

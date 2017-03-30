@@ -25,6 +25,7 @@
 @property (nonatomic,assign) NSInteger cartCount;
 @property (nonatomic,assign) NSInteger notificationCount;
 @property (nonatomic,strong) NSString * companyID;
+@property (nonatomic,strong) NSString * token;
 
 
 + (User*)sharedManager;

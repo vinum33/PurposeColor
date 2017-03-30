@@ -34,6 +34,7 @@
 
 @property (nonatomic,weak)  id<SelectYourActionsDelegate>delegate;
 @property (nonatomic,assign)  NSInteger goalID;
+@property (nonatomic,assign)  NSDictionary *selectedActions;
 
 -(void)showSelectionPopUp;
 -(void)closePopUp;

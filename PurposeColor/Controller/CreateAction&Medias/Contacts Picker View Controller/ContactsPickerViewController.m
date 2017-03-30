@@ -17,6 +17,7 @@
     NSMutableArray *contactList;
     NSMutableArray *arrFiltered;
     IBOutlet UITableView *tableView;
+    IBOutlet UIButton *btnDone;
     UISearchBar *searchBar;
     BOOL isDataAvailable;
 }
@@ -39,6 +40,7 @@
 
 -(void)setUpSearchBar{
     
+    btnDone.hidden = true;
     searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     [searchBar setShowsCancelButton:YES];
     searchBar.delegate = self;
@@ -133,7 +135,6 @@
     arrFiltered = [NSMutableArray arrayWithArray:contactList];
     [tableView reloadData];
         
-    
     //NSLog(@"Contacts = %@",contactList);
 }
 
@@ -205,6 +206,7 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    [self selectContact:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -217,9 +219,15 @@
     return nil;
 }
 
--(IBAction)selectContact:(UIButton*)sender{
-    
-    NSInteger index = sender.tag;
+-(IBAction)selectContact:(id)sender{
+    NSInteger index = 0;
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *_sender = (UIButton*)sender;
+        index = _sender.tag;
+    }else{
+        NSIndexPath *indexPath = (NSIndexPath*)sender;
+        index = indexPath.row;
+    }
     if (index < arrFiltered.count) {
         NSMutableDictionary *details = arrFiltered[index];
         if ([[details objectForKey:@"isSelected"] boolValue]) {
@@ -229,6 +237,13 @@
         }
         
         [tableView reloadData];
+        btnDone.hidden = true;
+        for (NSDictionary *dict in arrFiltered) {
+            if ([[dict objectForKey:@"isSelected"] boolValue]) {
+                   btnDone.hidden = false;
+            }
+        }
+       
         
     }
 

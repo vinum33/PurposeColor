@@ -9,15 +9,19 @@ NSString * const GEMDetailsStoryBoard = @"GEMDetails";
 NSString * const ChatDetailsStoryBoard = @"ChatDetails";
 NSString * const PROJECT_NAME = @"PurposeColor";
 NSString * const NETWORK_ERROR_MESSAGE = @"Something went wrong!!";
-NSString * const ExternalWebPageURL = @"http://purposecodes.com/signpost/";
+NSString * const ExternalWebPageURL = @"";
 NSString * const PlaceHolderImageGoal = @"default_goal.jpg";
 NSString * const PlaceHolderImageAction = @"default_action.jpg";
 NSString * const PlaceHolderImageEmotion = @"default_emotion.jpg";
 
 NSString * const CommonFont = @"HelveticaNeueLTStd-Lt";
 NSString * const CommonFontBold = @"HelveticaNeueLTStd-Bd";
-NSString * const BaseURLString = @"http://purposecodes.com/pc/api.php?";
-NSString * const BaseURL = @"http://purposecodes.com/production/";
+
+NSString * const CommonFont_New = @"DroidSans";
+NSString * const CommonFontBold_New = @"DroidSans-Bold";
+
+NSString * const BaseURLString = @"http://purposecodes.com/purposetest/api.php?";
+NSString * const ExternalWebURL = @"http://purposecodes.com/purposetest/";
 NSString * const AppStoreURL = @"https://itunes.apple.com/us/app/purpose-color-life-success/id1186639523?ls=1&mt=8";
 
 NSString * const GoogleMapAPIKey = @"AIzaSyDLo-Q_ozqGPPl3UZKbyTK_FNfe-GFj7jg";
@@ -40,7 +44,8 @@ NSString * const StoryBoardIdentifierForGEMSEventListings = @"EventListingPage";
 NSString * const StoryBoardIdentifierForNotificationsListing = @"NotificationsListing";
 NSString * const StoryBoardIdentifierForChatUserListings = @"ChatUserListings";
 NSString * const StoryBoardIdentifierForChatComposer = @"ChatComposer";
-NSString * const StoryBoardIdentifierForImotionalAwareness = @"ImotionalAwareness";
+NSString * const StoryBoardIdentifierForImotionalAwareness = @"ImotionalAwarenessNew";
+
 NSString * const StoryBoardIdentifierForMyFavourites = @"MyFavourites";
 NSString * const StoryBoardIdentifierForMyMemmories = @"MyMemmories";
 NSString * const StoryBoardIdentifierForGoalDetails = @"GoalDetails";

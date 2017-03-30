@@ -21,8 +21,11 @@ extern NSString * const NETWORK_ERROR_MESSAGE;
 
 extern NSString * const CommonFont;
 extern NSString * const CommonFontBold;
+extern NSString * const CommonFont_New ;
+extern NSString * const CommonFontBold_New;
+
 extern NSString * const BaseURLString;
-extern NSString * const BaseURL;
+extern NSString * const ExternalWebURL;
 extern NSString * const PlaceHolderImageGoal;
 extern NSString * const PlaceHolderImageAction;
 extern NSString * const PlaceHolderImageEmotion;

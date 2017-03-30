@@ -247,15 +247,8 @@
                                            }];
 
             }
-            
-            
-
-            
-        }
+       }
       
-       
-       
-        
         cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), 99999);
         cell.contentView.bounds = cell.bounds;
         [cell layoutIfNeeded];
@@ -281,9 +274,6 @@
         journalVC.journalDetails = joiurnal;
          [self.navigationController pushViewController:journalVC animated:YES];
     }
-    
-   
-   
     
    
 }

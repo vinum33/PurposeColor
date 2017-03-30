@@ -47,6 +47,7 @@ typedef enum{
     
     NSInteger currentPage_completed;
     NSInteger currentPage_pending;
+    NSString *strNoDataText;
     
     NSMutableArray *arrCompleted;
     NSMutableArray *arrPending;
@@ -244,6 +245,9 @@ typedef enum{
 
         }
     }
+    if ([[[responds objectForKey:@"header"] objectForKey:@"code"] integerValue] != kSuccessCode) {
+        strNoDataText = [[responds objectForKey:@"header"] objectForKey:@"text"];
+    }
     [self configureDataSource];
 }
 
@@ -263,7 +267,7 @@ typedef enum{
     }
     isDataAvailable = false;
     if (arrDataSource.count) isDataAvailable = true;
-   [tableView reloadData];
+    [tableView reloadData];
 
 }
 
@@ -287,7 +291,7 @@ typedef enum{
     UITableViewCell *cell;
     aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (!isDataAvailable) {
-        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Goals Available."];
+        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strNoDataText];
         cell.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1.0];
         cell.contentView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1.0];
         return cell;
@@ -555,9 +559,6 @@ typedef enum{
                     animations:^{  app.window.rootViewController = app.navGeneral; }
                     completion:nil];
 
-   
-    
-   
 }
 
 

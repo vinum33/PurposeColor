@@ -49,7 +49,6 @@
     [self addGestureRecognizer:tapGesture];
     arrEmotions = [NSMutableArray new];
     selectedIndex = -1;
-    [tableView setContentInset:UIEdgeInsetsMake(0, 0, 80, 0)];
 
 
 }
@@ -80,7 +79,7 @@
         
     [tableView reloadData];
     [self layoutIfNeeded];
-    rightConstraint.constant = (self.frame.size.width * 80) / 100;
+    rightConstraint.constant = 0;
     [UIView animateWithDuration:.8
                      animations:^{
                          [self layoutIfNeeded]; // Called on parent view
@@ -115,10 +114,13 @@
     cell.contentView.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.btnQuickView.tag = indexPath.row;
-    [cell.btnQuickView addTarget:self action:@selector(enableQuickView:) forControlEvents:UIControlEventTouchUpInside];
-    cell.imgRadio.image = [UIImage imageNamed:@"Goal_Radio_Inactive.png"];
-   if (indexPath.row == selectedIndex) {
-        cell.imgRadio.image = [UIImage imageNamed:@"Goal_Radio_Active.png"];
+   // cell.imgRadio.image = [UIImage imageNamed:@"Goal_Radio_Inactive.png"];
+    cell.btnQuickView.layer.borderColor = [UIColor getThemeColor].CGColor;
+    cell.btnQuickView.layer.borderWidth = 1.f;
+    cell.btnQuickView.layer.cornerRadius = 5.f;
+    cell.lblTitle.textColor =  [UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:1.0];;
+    if (indexPath.row == selectedIndex) {
+        //cell.imgRadio.image = [UIImage imageNamed:@"Goal_Radio_Active.png"];
    }
     if (!isDataAvailable) {
         cell =  (GoalsCustomCell*)[Utility getNoDataCustomCellWith:aTableView withTitle:@"No Goals Available."];
@@ -130,25 +132,31 @@
     }
     
     if (indexPath.row < arrEmotions.count) {
+        cell.btnQuickView.tag = indexPath.row;
         NSDictionary *details = arrEmotions[indexPath.row];
         if (NULL_TO_NIL([details objectForKey:@"title"])) {
              cell.lblTitle.text = [details objectForKey:@"title"];
         }
         
         if ([[details objectForKey:@"type"] isEqualToString:@"purposecolor"]) {
-            cell.imgRadio.image = [UIImage imageNamed:@"PurposeColor_InActive.png"];
-            cell.lblTitle.text = [NSString stringWithFormat:@"eg : %@",[details objectForKey:@"title"]];
+            cell.imgRadio.image = [UIImage imageNamed:@"Purposecolor_Image"];
+           // cell.lblTitle.text = [NSString stringWithFormat:@"eg : %@",[details objectForKey:@"title"]];
         }else{
-            cell.imgRadio.image = [UIImage imageNamed:@"Goal_Radio_Inactive.png"];
+            [cell.imgRadio sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
+                                placeholderImage:[UIImage imageNamed:@"Purposecolor_Image"]
+                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                           
+                                       }];
+
         }
         
-        if (_selectedGoalID == [[details objectForKey:@"id"] integerValue]) {
-            if ([[details objectForKey:@"type"] isEqualToString:@"purposecolor"]) {
-                cell.imgRadio.image = [UIImage imageNamed:@"PurposeColor_Active.png"];
-            }else{
-                cell.imgRadio.image = [UIImage imageNamed:@"Goal_Radio_Active.png"];
-            }
-        }
+//        if (_selectedGoalID == [[details objectForKey:@"id"] integerValue]) {
+//            if ([[details objectForKey:@"type"] isEqualToString:@"purposecolor"]) {
+//                cell.imgRadio.image = [UIImage imageNamed:@"PurposeColor_Active.png"];
+//            }else{
+//                cell.imgRadio.image = [UIImage imageNamed:@"Goal_Radio_Active.png"];
+//            }
+//        }
     }
     return cell;
 }
@@ -157,45 +165,13 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    return 50;
+    return 60;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (arrEmotions.count <= 0) return;
-    GoalsCustomCell *cell = [aTableView cellForRowAtIndexPath:indexPath];
     selectedIndex = indexPath.row;
-    [UIView animateWithDuration:0.3/1.5 animations:^{
-        cell.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.4, 1.4);
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3/2 animations:^{
-            cell.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8, 0.8);
-           
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:0.3/2 animations:^{
-                cell.transform = CGAffineTransformIdentity;
-            } completion:^(BOOL finished) {
-                if (finished) {
-                    if (indexPath.row < arrEmotions.count ) {
-                        NSDictionary *details = arrEmotions[indexPath.row];
-                        NSString *title = [details objectForKey:@"title"];
-                        NSInteger emotionID = [[details objectForKey:@"id"] integerValue];
-                         _selectedGoalID = [[details objectForKey:@"id"] integerValue];
-                        if ([[details objectForKey:@"type"] isEqualToString:@"purposecolor"]) {
-                            [self showPurposeColorTemplateGoalWithID:_selectedGoalID];
-                            
-                        }else{
-                            if ([self.delegate respondsToSelector:@selector(goalsAndDreamsSelectedWithTitle:goalId:)])
-                                [self.delegate goalsAndDreamsSelectedWithTitle:title goalId:emotionID];
-                            [self closePopUp];
-                        }
-                        
-                    }
-                    
-                }
-            }];
-        }];
-    }];
-
+    [self enableQuickView:indexPath.row];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -214,6 +190,40 @@
     if ([touch.view isDescendantOfView:tableView])
         return NO;
     return YES;
+}
+-(IBAction)goalSelected:(UIButton*)sender{
+    
+    if (arrEmotions.count <= 0) return;
+    selectedIndex = sender.tag;
+    if (selectedIndex < arrEmotions.count ) {
+        
+        GoalsCustomCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedIndex inSection:0]];
+        [UIView animateWithDuration:0.3/1.5 animations:^{
+            cell.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.4, 1.4);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.3/2 animations:^{
+                cell.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8, 0.8);
+                
+            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:0.3/2 animations:^{
+                    cell.transform = CGAffineTransformIdentity;
+                } completion:^(BOOL finished) {
+                    if (finished) {
+                        NSDictionary *details = arrEmotions[selectedIndex];
+                        NSString *title = [details objectForKey:@"title"];
+                        NSInteger emotionID = [[details objectForKey:@"id"] integerValue];
+                        _selectedGoalID = [[details objectForKey:@"id"] integerValue];
+                        if ([self.delegate respondsToSelector:@selector(goalsAndDreamsSelectedWithTitle:goalId:)])
+                            [self.delegate goalsAndDreamsSelectedWithTitle:title goalId:emotionID];
+                        [self closePopUp];
+                    }
+                }];
+            }];
+        }];
+        
+     
+        
+    }
 }
 
 -(void)showPurposeColorTemplateGoalWithID:(NSInteger)goalActionID{
@@ -281,10 +291,10 @@
     [self closePopUp];
 }
 
--(void)closePopUp{
+-(IBAction)closePopUp{
     
     [self layoutIfNeeded];
-    rightConstraint.constant = 0;
+    rightConstraint.constant = -500;
     [UIView animateWithDuration:.8
                          animations:^{
                              [self layoutIfNeeded];
@@ -299,15 +309,15 @@
     
 }
 
--(void)enableQuickView:(UIButton*)sender{
+-(void)enableQuickView:(NSInteger)index{
    
     if (!quickGoalView) {
         quickGoalView =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForQuickGoalView];
         quickGoalView.delegate = self;
     }
     
-    if (sender.tag < arrEmotions.count) {
-        NSDictionary *details = arrEmotions[sender.tag];
+    if (index < arrEmotions.count) {
+        NSDictionary *details = arrEmotions[index];
         [quickGoalView loadGoalDetailsWithGoalID:[NSString stringWithFormat:@"%d",[[details objectForKey:@"id"] integerValue]]];
     }
     quickGoalView.view.backgroundColor = [UIColor colorWithRed:0.00 green:0.00 blue:0.00 alpha:1];

@@ -603,9 +603,10 @@ typedef enum{
          if ([userDetails objectForKey:@"daily_notify"]) {
              [User sharedManager].daily_notify  = [[userDetails objectForKey:@"daily_notify"] boolValue];
          }
-         
-         
-         
+         if ([userDetails objectForKey:@"token_id"]) {
+             [User sharedManager].token  = [userDetails objectForKey:@"token_id"];
+         }
+                  
          /*!............ Saving user to NSUserDefaults.............!*/
          
          [Utility saveUserObject:[User sharedManager] key:@"USER"];

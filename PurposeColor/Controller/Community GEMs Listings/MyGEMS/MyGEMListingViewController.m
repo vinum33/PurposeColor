@@ -39,6 +39,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     BOOL isPageRefresing;
     BOOL isDataAvailable;
     NSInteger totalGems;
+    NSString *strNoDataText;
     
     CommentComposeViewController *composeComment;
     shareMedias *shareMediaView;
@@ -141,6 +142,8 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         NSArray *results = [responseObject objectForKey:@"resultarray"];
         for (NSDictionary *dict in results)
             [arrGems addObject:dict];
+    }else{
+        strNoDataText = [responseObject objectForKey:@"text"];
     }
     if (arrGems.count) isDataAvailable = true;
     
@@ -179,6 +182,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     if (!isDataAvailable) {
         
         UICollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+        if ([cell.contentView viewWithTag:1]) {
+            UILabel *lblNoData =  [cell.contentView viewWithTag:1];
+            lblNoData.text = strNoDataText;
+        }
         return cell;
         
     }
@@ -186,9 +193,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     cell.delegate = self;
     [self resetCellVariables:cell];
     [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
-    
     if (indexPath.row < arrGems.count) {
-        
         NSDictionary *details = arrGems[indexPath.row];
         [self configureTextVariables:details cell:cell indexPath:indexPath];
     }

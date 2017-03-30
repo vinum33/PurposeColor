@@ -160,8 +160,8 @@ typedef enum{
             cell.txtView.editable = NO;
             cell.txtView.delegate = self;
             NSMutableAttributedString * str = [[NSMutableAttributedString alloc] initWithString:@"I agree to the terms of service and privacy policy."];
-            [str addAttribute: NSLinkAttributeName value:[NSString stringWithFormat:@"%@terms.php",BaseURL] range: NSMakeRange(15, 16)];
-            [str addAttribute: NSLinkAttributeName value:[NSString stringWithFormat:@"%@privacy_policy.php",BaseURL] range: NSMakeRange(36, 15)];
+            [str addAttribute: NSLinkAttributeName value:[NSString stringWithFormat:@"%@terms.php",ExternalWebURL] range: NSMakeRange(15, 16)];
+            [str addAttribute: NSLinkAttributeName value:[NSString stringWithFormat:@"%@privacy_policy.php",ExternalWebURL] range: NSMakeRange(36, 15)];
             [str addAttribute:NSFontAttributeName  value:[UIFont fontWithName:CommonFont size:14] range:NSMakeRange(0, str.length)];
              cell.txtView.attributedText = str;
              break;

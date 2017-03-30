@@ -28,15 +28,14 @@ typedef enum{
 #import "Constants.h"
 #import "ButtonWithID.h"
 
-@interface SelectYourEvent () <UITextFieldDelegate>{
+@interface SelectYourEvent () <UITextFieldDelegate,UISearchBarDelegate>{
     
     IBOutlet NSLayoutConstraint *rightConstraint;
     IBOutlet UITableView *tableView;
     NSMutableArray *arrDataSource;
     NSMutableArray *arrFiltered;
     BOOL isDataAvailable;
-    IBOutlet UISearchBar *searchBar;
-    IBOutlet UIButton *btnSearch;
+    UISearchBar *searchBar;
     UIView *containerView;
     UITextField *txtField;
     
@@ -59,11 +58,18 @@ typedef enum{
 
 -(void)setUp{
     
-    searchBar.alpha = 0;
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 50, 44)];
+    [searchBar setShowsCancelButton:YES];
+    searchBar.delegate = self;
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:searchBar.frame];
+    [headerView addSubview:searchBar];
+    tableView.tableHeaderView = headerView;
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopUp)];
     [tapGesture setNumberOfTapsRequired:1];
     tapGesture.delegate = self;
-    [self addGestureRecognizer:tapGesture];
+   // [self addGestureRecognizer:tapGesture];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -73,21 +79,10 @@ typedef enum{
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-     [tableView setContentInset:UIEdgeInsetsMake(0, 0, 80, 0)];
     
 }
 
--(IBAction)showSearchBar:(id)sender{
-    
-    UIButton *cancelButton = [searchBar valueForKey:@"_cancelButton"];
-    [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [UIView animateWithDuration:0.5 animations:^(void) {
-        searchBar.alpha = 1;
-        btnSearch.alpha = 0;
-    }];
-    
-    [searchBar becomeFirstResponder];
-}
+
 
 -(void)getAllEvents{
     
@@ -115,7 +110,7 @@ typedef enum{
     if (arrFiltered.count > 0) isDataAvailable = true;
     [tableView reloadData];
     [self layoutIfNeeded];
-    rightConstraint.constant = (self.frame.size.width * 80) / 100;
+    rightConstraint.constant = 0;
     [UIView animateWithDuration:.8
                      animations:^{
                          [self layoutIfNeeded]; // Called on parent view
@@ -187,8 +182,8 @@ typedef enum{
              _lblTitle.numberOfLines = 0;
              [[cell contentView] addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_lblTitle]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
              [[cell contentView] addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-45-[_lblTitle]-45-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
-             _lblTitle.font = [UIFont fontWithName:CommonFont size:14];
-             _lblTitle.textColor = [UIColor whiteColor];
+             _lblTitle.font = [UIFont fontWithName:CommonFont_New size:14];
+             _lblTitle.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
              lblTitle = _lblTitle;
              lblTitle.tag = 51;
             
@@ -260,7 +255,7 @@ typedef enum{
             if ([[details objectForKey:@"type"] isEqualToString:@"purposecolor"]) {
                 cell.imageView.image = [UIImage imageNamed:@"PurposeColor_Active.png"];
             }else{
-                cell.imageView.image = [UIImage imageNamed:@"Goal_Radio_Active.png"];
+                cell.imageView.image = [UIImage imageNamed:@"Radio_Active.png"];
             }
         }
         
@@ -372,10 +367,10 @@ typedef enum{
     return YES;
 }
 
--(void)closePopUp{
+-(IBAction)closePopUp{
     
     [self layoutIfNeeded];
-    rightConstraint.constant = 0;
+    rightConstraint.constant = -500;
     [self resetComposeView];
     [UIView animateWithDuration:.8
                      animations:^{
@@ -504,10 +499,7 @@ typedef enum{
     [tableView reloadData];
     searchBar.text = @"";
     
-    [UIView animateWithDuration:0.5 animations:^(void) {
-        searchBar.alpha = 0;
-        btnSearch.alpha = 1;
-    }];
+    
     
     
 }

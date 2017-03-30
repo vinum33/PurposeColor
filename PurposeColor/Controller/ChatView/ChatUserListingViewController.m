@@ -26,6 +26,7 @@
     NSMutableArray *arrChatUser;
     BOOL isDataAvailable;
     BOOL showIndicator;
+    NSString *strNoDataText;
 }
 
 @end
@@ -114,7 +115,7 @@
     UITableViewCell *cell;
     aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (!isDataAvailable) {
-        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Users Available."];
+        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strNoDataText];
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor =  [UIColor clearColor];
         return cell;

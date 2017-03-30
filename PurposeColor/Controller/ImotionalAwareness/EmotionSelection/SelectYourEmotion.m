@@ -28,11 +28,11 @@ typedef enum{
 #import "Constants.h"
 #import "ButtonWithID.h"
 
-@interface SelectYourEmotion () <UITextFieldDelegate>{
+@interface SelectYourEmotion () <UITextFieldDelegate,UISearchBarDelegate>{
     
     IBOutlet NSLayoutConstraint *rightConstraint;
     IBOutlet UITableView *tableView;
-    IBOutlet UISearchBar *searchBar;
+    UISearchBar *searchBar;
     IBOutlet UIButton *btnSearch;
     BOOL isDataAvailable;
     UIView *containerView;
@@ -60,8 +60,13 @@ typedef enum{
 
 -(void)setUp{
     
-    [tableView setContentInset:UIEdgeInsetsMake(0, 0, 80, 0)];
-    searchBar.alpha = 0;
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 50, 44)];
+    [searchBar setShowsCancelButton:YES];
+    searchBar.delegate = self;
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:searchBar.frame];
+    [headerView addSubview:searchBar];
+    tableView.tableHeaderView = headerView;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopUp)];
     [tapGesture setNumberOfTapsRequired:1];
     tapGesture.delegate = self;
@@ -103,7 +108,7 @@ typedef enum{
     if (arrFiltered.count > 0) isDataAvailable = true;
     [tableView reloadData];
     [self layoutIfNeeded];
-    rightConstraint.constant = (self.frame.size.width * 80) / 100;
+    rightConstraint.constant = 0;
     [UIView animateWithDuration:.8
                      animations:^{
                          [self layoutIfNeeded]; // Called on parent view
@@ -112,15 +117,7 @@ typedef enum{
     
 }
 
--(IBAction)showSearchBar:(id)sender{
-    
-    [UIView animateWithDuration:0.5 animations:^(void) {
-        searchBar.alpha = 1;
-        btnSearch.alpha = 0;
-    }];
-    
-    [searchBar becomeFirstResponder];
-}
+
 
 #pragma mark - Table view data source
 
@@ -143,8 +140,8 @@ typedef enum{
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:MyIdentifier];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.font = [UIFont fontWithName:CommonFont size:15];
-    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.font = [UIFont fontWithName:CommonFont_New size:15];
+    cell.textLabel.textColor = [UIColor blackColor];
     cell.backgroundColor = [UIColor clearColor];
     cell.contentView.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -198,7 +195,7 @@ typedef enum{
                                                                           toItem:[cell contentView]
                                                                        attribute:NSLayoutAttributeRight
                                                                       multiplier:1.0
-                                                                        constant:0]];
+                                                                        constant:-10]];
         [[cell contentView] addConstraint:[NSLayoutConstraint constraintWithItem:btnRecent
                                                                        attribute:NSLayoutAttributeCenterY
                                                                        relatedBy:NSLayoutRelationEqual
@@ -283,12 +280,12 @@ typedef enum{
         
         if (NULL_TO_NIL([details objectForKey:@"type"])) {
             NSString *type = [details objectForKey:@"type"];
-            cell.textLabel.textColor = [UIColor whiteColor];
+            cell.textLabel.textColor = [UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:1.0];
             if ([type isEqualToString:@"recent"]) {
-                 cell.textLabel.textColor = [UIColor colorWithRed:0.53 green:0.53 blue:0.53 alpha:1.0];
+                 cell.textLabel.textColor = [UIColor getThemeColor];
             }
             else if ([type isEqualToString:@"second"]) {
-                cell.textLabel.textColor = [UIColor colorWithRed:0.41 green:0.65 blue:0.77 alpha:1.0];
+                cell.textLabel.textColor = [UIColor grayColor];
             }
         }
         
@@ -602,11 +599,11 @@ typedef enum{
     }
 }
 
--(void)closePopUp{
+-(IBAction)closePopUp{
     
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     [self layoutIfNeeded];
-    rightConstraint.constant = 0;
+    rightConstraint.constant = 500;
     [self resetComposeView];
     [UIView animateWithDuration:.8
                          animations:^{
@@ -791,10 +788,7 @@ typedef enum{
     [tableView reloadData];
     searchBar.text = @"";
     
-    [UIView animateWithDuration:0.5 animations:^(void) {
-        searchBar.alpha = 0;
-        btnSearch.alpha = 1;
-    }];
+  
 
     
 }

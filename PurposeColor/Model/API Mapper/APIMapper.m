@@ -49,7 +49,6 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        NSLog(@"%@",error.localizedDescription);
         failure (operation,error);
     }];
 
@@ -83,6 +82,11 @@
     NSString *urlString = [NSString stringWithFormat:@"%@action=getallcommunitygems",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    if ( [User sharedManager].token) {
+         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+   
+    
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
                              @"first_time":[NSNumber numberWithBool:shouldShow]
@@ -104,6 +108,9 @@
     NSString *urlString = [NSString stringWithFormat:@"%@action=like",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
                              @"gem_type": gemType
@@ -124,6 +131,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=addtofavorite",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
@@ -147,6 +157,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=getcomments",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"gem_id": gemID,
                              @"gem_type": gemType,
@@ -169,6 +182,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=addcomments",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"gem_id": gemID,
                              @"gem_type": gemType,
@@ -191,6 +207,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=removecomment",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"comment_id": commentID,
                              @"user_id": [User sharedManager].userId,
@@ -210,6 +229,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=follow",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"followid": followerID
@@ -230,6 +252,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=mygems",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo]
@@ -250,6 +275,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=deletegem",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
@@ -271,6 +299,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=hidegem",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
@@ -292,6 +323,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=sharetocommunity",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
@@ -313,6 +347,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=goalsanddreams",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
@@ -335,6 +372,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=getactiondetails",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"goalaction_id": goalActionID,
                              @"user_id": userID,
@@ -357,6 +397,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=updategoalaction",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"goal_id": goalID,
@@ -379,6 +422,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=addmedia",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"media_count": [NSNumber numberWithInteger:dataSource.count],
                              };
@@ -432,6 +478,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=emotional_intelligence",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
     NSMutableDictionary *params = [NSMutableDictionary new];
@@ -459,6 +508,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=GEMemotions",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
@@ -480,6 +532,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=GEMgoals",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
@@ -500,6 +555,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=detailedGEMview",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                             @"group_id": groupID,
@@ -522,6 +580,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=setusertoken",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     if (userID.length > 0) {
         NSDictionary *params = @{@"user_id": userID,
@@ -547,6 +608,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=updatefollowstatus",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"follow_status": status,
@@ -568,6 +632,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=getallnotifications",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNumber]
@@ -588,6 +655,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=getallreminder",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNumber]
@@ -609,6 +679,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=chatuserlist",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              };
@@ -628,6 +701,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=chatmessage",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"from_id": userID,
                              @"to_id": toUser,
@@ -649,6 +725,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=chathistory",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"from_id": userID,
                              @"to_id": toUser,
@@ -670,6 +749,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=deletechat",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"chat_ids": ids,
                              @"user_id": [User sharedManager].userId,
@@ -689,6 +771,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=emotions",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"emotion_value" : [NSNumber numberWithInteger:emotionID]
@@ -709,6 +794,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=manageemotion",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"emotion_value" : [NSNumber numberWithInteger:feelValue],
@@ -732,6 +820,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=manageevent",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"event_title": title,
@@ -754,6 +845,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=getallgems",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
     NSMutableDictionary *params = [NSMutableDictionary new];
@@ -778,6 +872,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=gemaction1",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
@@ -905,6 +1002,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=gemaction1",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
@@ -1045,6 +1145,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=shareaction1",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
@@ -1174,6 +1277,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=savejournal",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
@@ -1261,6 +1367,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=gemaction",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
@@ -1315,6 +1424,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=newreminder",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"ZZZZZ"];
@@ -1347,6 +1459,9 @@
 + (void)getAllFavouritesByUserID:(NSString*)userID pageNo:(NSInteger)pageNo type:(BOOL)isInspired success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     NSString *urlString = [NSString stringWithFormat:@"%@action=getallfavourites",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
@@ -1375,6 +1490,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=removefavourite",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"id": favouriteID,
@@ -1402,6 +1520,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=editgem",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"gem_id": gemID,
                              @"gem_type": gemType
@@ -1423,6 +1544,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=gemdetails",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"gem_id": gemID,
                              @"gem_type": gemType,
@@ -1444,6 +1568,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=getgoaldetails",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              @"goal_id": goalID,
@@ -1464,6 +1591,9 @@
 + (void)getAllTodaysMemoryWithUserID:(NSString*)userID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     NSString *urlString = [NSString stringWithFormat:@"%@action=memories",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              };
@@ -1484,6 +1614,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=getuserprofile",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              };
@@ -1503,6 +1636,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=editprofile",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:userID forKey:@"user_id"];
@@ -1530,6 +1666,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=editsettings",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:userID forKey:@"user_id"];
@@ -1560,6 +1699,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=userlist",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"gem_id": gemID,
                              @"type": listType,
@@ -1581,6 +1723,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=addtosupportemotion",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"emotion_id": emotionID,
                              @"user_id": userID,
@@ -1601,6 +1746,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=removesupportemotion",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"emotion_id": emotionID,
                              @"user_id": userID,
@@ -1621,6 +1769,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=copygem",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"gem_id": gemID,
                              @"user_id": userID,
@@ -1642,6 +1793,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=logout",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userID,
                              };
@@ -1661,6 +1815,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=changepassword",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": [User sharedManager].userId,
                              @"oldpass": currentPWD,
@@ -1682,6 +1839,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=updatebadge",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": [User sharedManager].userId,
                              };
@@ -1700,6 +1860,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=reportquestions",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -1716,6 +1879,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=sendreportabuse",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
     NSMutableDictionary *params = [NSMutableDictionary new];
@@ -1740,6 +1906,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=webcontent",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"type": type,
                              };
@@ -1759,6 +1928,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=listusersettings",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": [User sharedManager].userId,
                              };
@@ -1777,6 +1949,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=listjournal",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
    NSDictionary *params = @{@"user_id": userID,
                               @"page_no": [NSNumber numberWithInteger:pageNo],
@@ -1798,6 +1973,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=hidejournal",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     NSDictionary *params = @{@"user_id": userId,
                              @"journal_id": journalID,
@@ -1818,6 +1996,9 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=version_update",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
    
     [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1830,6 +2011,27 @@
     }];
     
 }
+
++ (void)getUserInfoOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=alert_message",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    
+    [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+    
+}
+
 
 
 @end
