@@ -45,6 +45,8 @@ NSString * const StoryBoardIdentifierForNotificationsListing = @"NotificationsLi
 NSString * const StoryBoardIdentifierForChatUserListings = @"ChatUserListings";
 NSString * const StoryBoardIdentifierForChatComposer = @"ChatComposer";
 NSString * const StoryBoardIdentifierForImotionalAwareness = @"ImotionalAwarenessNew";
+NSString * const StoryBoardIdentifierForImotionalAwarenessMedia = @"AwarenessMedia";
+
 
 NSString * const StoryBoardIdentifierForMyFavourites = @"MyFavourites";
 NSString * const StoryBoardIdentifierForMyMemmories = @"MyMemmories";

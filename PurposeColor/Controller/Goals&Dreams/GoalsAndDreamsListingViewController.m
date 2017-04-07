@@ -20,6 +20,7 @@ typedef enum{
 #define kHeaderHeight               0
 #define kCellHeight                 395
 #define kEmptyHeaderAndFooter       0
+#define kUnAuthorized               403
 
 #import "GoalsAndDreamsListingViewController.h"
 #import "GoalsAndDreamsCustomCell.h"
@@ -246,6 +247,19 @@ typedef enum{
         }
     }
     if ([[[responds objectForKey:@"header"] objectForKey:@"code"] integerValue] != kSuccessCode) {
+        if ([[[responds objectForKey:@"header"] objectForKey:@"code"] integerValue] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app clearUserSessions];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Session Invalid"
+                                                            message:@"Please login to continue.."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            return;
+            
+        }
+        
         strNoDataText = [[responds objectForKey:@"header"] objectForKey:@"text"];
     }
     [self configureDataSource];

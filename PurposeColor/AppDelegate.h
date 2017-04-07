@@ -58,7 +58,7 @@
 -(void)enablePushNotification;
 - (void)changeHomePageDynamicallyWithType:(EMenuActions)menu_type;
 -(void)clearUserSessions;
--(void)showEmotionalAwarenessPage;
+-(void)showEmotionalAwarenessPageIsFromVisualization:(BOOL)isFromVsiualization;
 -(void)showJournalListView;
 
 @end

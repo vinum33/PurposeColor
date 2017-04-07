@@ -34,6 +34,7 @@
 
 @property (nonatomic,weak)  id<SelectYourEmotionDelegate>delegate;
 @property (nonatomic,assign) NSInteger emotionaValue;
+@property (nonatomic,assign) NSInteger selectedEmotionID;
 
 -(void)showSelectionPopUp;
 -(void)closePopUp;

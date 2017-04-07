@@ -58,7 +58,8 @@ typedef enum{
 
 -(void)setUp{
     
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 50, 44)];
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, delegate.window.frame.size.width, 44)];
     [searchBar setShowsCancelButton:YES];
     searchBar.delegate = self;
     
@@ -203,7 +204,7 @@ typedef enum{
             btnMore.tag = 101;
             btnMore.hidden = true;
             btnMore.alpha = 0.5;
-            [btnMore setImage:[UIImage imageNamed:@"More_Icon.png"] forState:UIControlStateNormal];
+            [btnMore setImage:[UIImage imageNamed:@"More_Gray_Icon"] forState:UIControlStateNormal];
             [btnMore addTarget:self action:@selector(showMoreOptions:) forControlEvents:UIControlEventTouchUpInside];
             [[cell contentView] addSubview:btnMore];
             [btnMore addConstraint:[NSLayoutConstraint constraintWithItem:btnMore

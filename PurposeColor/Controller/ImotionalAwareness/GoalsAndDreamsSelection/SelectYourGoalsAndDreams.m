@@ -23,6 +23,7 @@
 @interface SelectYourGoalsAndDreams () <UITextFieldDelegate,CreateMediaInfoDelegate,QuickGoalDelegate>{
     
     IBOutlet NSLayoutConstraint *rightConstraint;
+    IBOutlet UIButton *btnSkip;
     IBOutlet UITableView *tableView;
     NSMutableArray *arrEmotions;
     BOOL isDataAvailable;
@@ -43,12 +44,16 @@
 
 -(void)setUp{
     
+    [tableView setContentInset:UIEdgeInsetsMake(0,0,60,0)];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopUp)];
     [tapGesture setNumberOfTapsRequired:1];
     tapGesture.delegate = self;
     [self addGestureRecognizer:tapGesture];
     arrEmotions = [NSMutableArray new];
     selectedIndex = -1;
+    btnSkip.layer.cornerRadius = 5;
+    btnSkip.layer.borderWidth = 1.f;
+    btnSkip.layer.borderColor = [UIColor getThemeColor].CGColor;
 
 
 }
@@ -354,6 +359,20 @@
         
     }];
     
+}
+
+-(void)goalSelectedFromQuickView{
+    if (selectedIndex < arrEmotions.count) {
+        NSDictionary *details = arrEmotions[selectedIndex];
+        NSString *title = [details objectForKey:@"title"];
+        NSInteger emotionID = [[details objectForKey:@"id"] integerValue];
+        _selectedGoalID = [[details objectForKey:@"id"] integerValue];
+        if ([self.delegate respondsToSelector:@selector(goalsAndDreamsSelectedWithTitle:goalId:)])
+            [self.delegate goalsAndDreamsSelectedWithTitle:title goalId:emotionID];
+        [self closeQuickGoalViewPopUp];
+        [self closePopUp];
+    }
+   
 }
 
 -(void)showLoadingScreen{

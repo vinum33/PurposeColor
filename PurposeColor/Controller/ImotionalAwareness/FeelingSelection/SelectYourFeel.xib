@@ -34,8 +34,8 @@
                                 <action selector="closePopUp" destination="iN0-l3-epB" eventType="touchUpInside" id="JYp-Mw-7TK"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RATE YOUR FEELING" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1V-Ix-fVn" userLabel="Rate your feeling">
-                            <rect key="frame" x="124.5" y="10" width="127" height="16.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you like how you're feeling now?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1V-Ix-fVn" userLabel="Rate your feeling">
+                            <rect key="frame" x="75" y="10" width="226" height="16.5"/>
                             <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>

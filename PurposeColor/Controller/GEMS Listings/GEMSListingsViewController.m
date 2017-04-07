@@ -19,6 +19,8 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 #define kDefaultNumberOfCells   1
 #define kHeightForCell          250
 #define kHeightForHeader        50
+#define kUnAuthorized           403
+
 
 #import "CustomAudioPlayerView.h"
 #import <AVKit/AVKit.h>
@@ -297,6 +299,20 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 }
 
 -(void)getGemsFromResponds:(NSDictionary*)responds{
+    
+    if ([[[responds objectForKey:@"header"] objectForKey:@"code"] integerValue] == kUnAuthorized) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app clearUserSessions];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Session Invalid"
+                                                        message:@"Please login to continue.."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+        
+    }
+
     
     NSArray *goals;
    

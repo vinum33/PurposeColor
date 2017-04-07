@@ -21,6 +21,7 @@ typedef enum{
 #define kSectionCount                   6
 #define kMinimumSectionCount            1
 #define kSuccessCode                    200
+#define kUnAuthorized                   403
 #define kMinimumCellCount               1
 #define kHeaderHeight                   60
 #define kCellHeightForPieChart          300
@@ -209,7 +210,7 @@ typedef enum{
                 float value  = [[chartPercentage objectForKey:@"optimal_percent"] floatValue];
                 detailedValue = [NSString stringWithFormat:@"%.02f", value];
             }
-            [pieChart setHoleRadiusPrecent:0.3]; /* hole inside of chart */
+            [pieChart setHoleRadiusPrecent:0.4]; /* hole inside of chart */
             _chartValues = [NSMutableArray new];
             
             if ([assertValue integerValue] > 0)
@@ -255,9 +256,24 @@ typedef enum{
         
         isDataAvailable = true;
     }else{
-        if (NULL_TO_NIL([responds objectForKey:@"text"])) {
-            strNoDataText = [responds objectForKey:@"text"];
+        if ([[responds objectForKey:@"code"] integerValue] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app clearUserSessions];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Session Invalid"
+                                                            message:@"Please login to continue.."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            return;
+            
+        }else{
+            
+            if (NULL_TO_NIL([responds objectForKey:@"text"])) {
+                strNoDataText = [responds objectForKey:@"text"];
+            }
         }
+       
         
     }
     
@@ -635,6 +651,7 @@ typedef enum{
         UIImageView *imgArrow;
         UIButton *btnClick;
         UIButton *btnInfo;
+        UIButton *btnQuestion;
         UIView *bgView;
         if ([view viewWithTag:1]) {
             imgIcon = [view viewWithTag:1];
@@ -668,6 +685,14 @@ typedef enum{
             btnInfo.tag = section;
             btnInfo.userInteractionEnabled = true;
             btnInfo.hidden = false;
+        }
+        if ([view viewWithTag:10]) {
+            btnQuestion = (UIButton*) [view viewWithTag:10];
+            btnQuestion.hidden = true;
+            btnQuestion.layer.cornerRadius = 15;
+            btnQuestion.layer.borderWidth = 1.f;
+            btnQuestion.layer.borderColor = [UIColor whiteColor].CGColor;
+            [btnQuestion setTitle:@"?" forState:UIControlStateNormal];
         }
         switch (section) {
             case eDetailed:
@@ -708,6 +733,7 @@ typedef enum{
                 btnInfo.hidden = true;
                 title.textColor = [UIColor whiteColor];
                 bgView.backgroundColor = [UIColor getThemeColor];
+                btnQuestion.hidden = false;
                 break;
                 
             default:
@@ -718,6 +744,17 @@ typedef enum{
     
     return nil;
     
+}
+-(IBAction)showHelpToolTip:(UIButton*)sender{
+    
+    if (popTip) {
+        [popTip hide];
+    }
+    CGPoint point = CGPointMake(sender.center.x - 20 , sender.center.y - 20);
+    CGPoint p = [sender.superview convertPoint:point toView:self.view];
+    popTip = [AMPopTip popTip];
+    [popTip showText:@"Supporting Emotions" direction:AMPopTipDirectionUp maxWidth:(self.view.frame.size.width - p.x) inView:self.view fromFrame:CGRectMake(p.x, p.y, 40, 40) duration:2];
+
 }
 
 -(IBAction)expandOrCollapseTable:(UIButton*)sender{

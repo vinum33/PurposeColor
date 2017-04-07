@@ -799,7 +799,7 @@
             break;
             
         case eMenu_EmotionalAwareness:
-            [self showEmotionalAwarenessPage];
+             [self showEmotionalAwarenessPageIsFromVisualization:NO];
             break;
             
         case eMenu_GEMS:
@@ -869,7 +869,7 @@
 }
 -(void)showEmotionalAwarenessPage{
     
-    [self showEmotionalAwarenessNew];
+    [self showEmotionalAwarenessPageIsFromVisualization:NO];
    // [launchPage showEmoitonalAwareness:nil];
 }
 
@@ -1074,9 +1074,10 @@
                     completion:nil];
 }
 
--(void)showEmotionalAwarenessNew{
+-(void)showEmotionalAwarenessPageIsFromVisualization:(BOOL)isFromVsiualization{
     
     EmotionalAwarenessViewController *journalList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwareness];
+    journalList.shouldOpenFirstMenu = isFromVsiualization;
     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
     app.navGeneral = [[UINavigationController alloc] initWithRootViewController:journalList];
     app.navGeneral.navigationBarHidden = true;
@@ -1122,6 +1123,7 @@
 }
 
 -(void)clearUserSessions{
+    
     [self showLoadingScreen];
     [APIMapper logoutFromAccount:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

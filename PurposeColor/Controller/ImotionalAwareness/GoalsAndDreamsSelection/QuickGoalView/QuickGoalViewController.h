@@ -16,7 +16,7 @@
  *This method is invoked when user Clicks "CLOSE" Button
  */
 -(void)closeQuickGoalViewPopUp;
-
+-(void)goalSelectedFromQuickView;
 
 
 

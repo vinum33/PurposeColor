@@ -178,20 +178,21 @@
             }
             cell.lblLocAndContact.attributedText = myString;
             
+            
             if ([journal objectForKey:@"emotion_title"]){
                 
                 NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
                 UIImage *icon ;
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == 2)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Very_Happy.png"];
+                    icon = [UIImage imageNamed:@"Strongly_Agree_Blue_Small"];
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == 1)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+                    icon = [UIImage imageNamed:@"Agree_Blue_Small"];
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == 0)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Neutral.png"];
+                    icon = [UIImage imageNamed:@"Neutral_Blue_Small"];
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == -1)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Sad.png"];
+                    icon = [UIImage imageNamed:@"Disagree_Blue_Small"];
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == -2)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Very_Sad.png"];
+                    icon = [UIImage imageNamed:@"Strongly_DisAgree_Blue_Small"];
 
                 attachment.image = icon;
                 attachment.bounds = CGRectMake(0, -(icon.size.height / 2) -  cell.lblLocAndContact.font.descender, icon.size.width, icon.size.height);
@@ -203,20 +204,18 @@
                 cell.lblFeel.attributedText = strFeel;
                 
             }
-            
                 NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
                 UIImage *icon ;
                 if ([[journal objectForKey:@"drive_value"] integerValue] == 2)
-                   icon = [UIImage imageNamed:@"Journal_Emotion_Very_Happy.png"];
+                   icon = [UIImage imageNamed:@"5_Star_Small"];
                 if ([[journal objectForKey:@"drive_value"] integerValue] == 1)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+                    icon = [UIImage imageNamed:@"4_Star_Small"];
                 if ([[journal objectForKey:@"drive_value"] integerValue] == 0)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Neutral.png"];
+                    icon = [UIImage imageNamed:@"3_Star_Small"];
                 if ([[journal objectForKey:@"drive_value"] integerValue] == -1)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Sad.png"];
+                    icon = [UIImage imageNamed:@"2_Star_Small"];
                 if ([[journal objectForKey:@"drive_value"] integerValue] == -2)
-                    icon = [UIImage imageNamed:@"Journal_Emotion_Very_Sad.png"];
-                
+                    icon = [UIImage imageNamed:@"1_Star_Small"];
                 attachment.image = icon;
                 attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblLocAndContact.font.descender), icon.size.width, icon.size.height);
                 NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];

@@ -19,6 +19,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 #define kDefaultNumberOfCells   1
 #define kHeightForCell          250
 #define kHeightForHeader        50
+#define kUnAuthorized           403
 
 #import "CustomAudioPlayerView.h"
 #import <AVKit/AVKit.h>
@@ -75,7 +76,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        [self setUpHeaderImage];
     [self setUp];
     [self loadAllEmotionsByPagination:NO withPageNumber:currentPage_Emotions];
     // Do any additional setup after loading the view.
@@ -112,10 +112,6 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     
 }
 
--(void)setUpHeaderImage{
-    headerImage = [Utility imageWithImage:[UIImage imageNamed:@"GEMS_Header.png"] scaledToWidth:self.view.frame.size.width];
-    heightForImageCell = headerImage.size.height;
-}
 
 
 -(void)refreshData{
@@ -213,6 +209,20 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 }
 
 -(void)getGemsFromResponds:(NSDictionary*)responds{
+    
+    if ([[[responds objectForKey:@"header"] objectForKey:@"code"] integerValue] == kUnAuthorized) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app clearUserSessions];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Session Invalid"
+                                                        message:@"Please login to continue.."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+        
+    }
+
     
     NSArray *goals;
     
@@ -321,10 +331,10 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         static NSString *CellIdentifier = @"HeaderImage";
         UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         UIImageView *imgHdeader;
-        if ([cell.contentView viewWithTag:101]) {
-            imgHdeader = (UIImageView*)[cell.contentView viewWithTag:101];
-        }
-        imgHdeader.image = headerImage;
+//        if ([cell.contentView viewWithTag:101]) {
+//            imgHdeader = (UIImageView*)[cell.contentView viewWithTag:101];
+//        }
+//        imgHdeader.image = headerImage;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
@@ -388,7 +398,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 -(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 && indexPath.row == 0) {
-        return heightForImageCell;
+        return 150;
     }
     
         // By Emotions
@@ -469,7 +479,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     if (indexPath.section == 0 && indexPath.row == 0) {
         
         AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        [app showEmotionalAwarenessPage];
+        [app showEmotionalAwarenessPageIsFromVisualization:YES];
         
     }
 }

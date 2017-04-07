@@ -71,7 +71,6 @@
         cell.lblTitle.text = [_journalDetails objectForKey:@"event_title"];
         return cell;
         
-
     }
     
    else if (indexPath.row == 1) {
@@ -130,23 +129,23 @@
        if (strContactInfo.length) {
            cell.lblLoc.attributedText = strContactInfo;
        }
-       
+       NSMutableAttributedString *myString;
         if ([_journalDetails objectForKey:@"emotion_title"]){
             
-             NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] init];
+            myString = [[NSMutableAttributedString alloc] init];
             NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-            UIImage *icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+            UIImage *icon = [UIImage imageNamed:@"Strongly_Agree_Blue_Small"];
             
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 2)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Very_Happy.png"];
+                icon = [UIImage imageNamed:@"Strongly_Agree_Blue_Small"];
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 1)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+                icon = [UIImage imageNamed:@"Agree_Blue_Small"];
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 0)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Neutral.png"];
+                icon = [UIImage imageNamed:@"Neutral_Blue_Small"];
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == -1)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Sad.png"];
+                icon = [UIImage imageNamed:@"Disagree_Blue_Small"];
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == -2)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Very_Sad.png"];
+                icon = [UIImage imageNamed:@"Strongly_DisAgree_Blue_Small"];
 
             attachment.image = icon;
             attachment.bounds = CGRectMake(0, -(icon.size.height / 2) -  cell.lblEmotion.font.descender, icon.size.width, icon.size.height);
@@ -157,49 +156,51 @@
             [strFeel appendAttributedString:myText];
             [myString appendAttributedString:strFeel];
             [myString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0,9)];
-            cell.lblEmotion.attributedText = myString;
-            
+             cell.lblEmotion.attributedText = myString;
         }
-        
        
-            NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] init];
+            NSMutableAttributedString *driveString = [[NSMutableAttributedString alloc] init];
             NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-            UIImage *icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
-            
+            UIImage *icon = [UIImage imageNamed:@"5_Star_Small"];
+       
             if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 2)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Very_Happy.png"];
+                icon = [UIImage imageNamed:@"5_Star_Filled"];
             if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 1)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Happy.png"];
+                icon = [UIImage imageNamed:@"4_Star_Filled"];
             if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 0)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Neutral.png"];
+                icon = [UIImage imageNamed:@"3_Star_Filled"];
             if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == -1)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Sad.png"];
+                icon = [UIImage imageNamed:@"2_Star_Filled"];
             if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == -2)
-                icon = [UIImage imageNamed:@"Journal_Emotion_Very_Sad.png"];
+                icon = [UIImage imageNamed:@"1_Star_Filled"];
             
             attachment.image = icon;
             attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblGoal.font.descender), icon.size.width, icon.size.height);
             
             NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
             NSMutableAttributedString *strFeel = [[NSMutableAttributedString alloc] initWithAttributedString:attachmentString];
+            [driveString appendAttributedString:strFeel];
+            [myString appendAttributedString:driveString];
+            cell.lblEmotion.attributedText = myString;
             
             if ([_journalDetails objectForKey:@"goal_title"]) {
-                NSMutableAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[_journalDetails objectForKey:@"goal_title"]]];
-                [strFeel appendAttributedString:myText];
+                NSString *strText = [NSString stringWithFormat:@"Reaction affecting goal : %@",[_journalDetails objectForKey:@"goal_title"]] ;
+                NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:strText];
+                [title addAttribute:NSForegroundColorAttributeName
+                              value:[UIColor colorWithWhite:1 alpha:0.5]
+                              range:NSMakeRange(0, 26)];
+                cell.lblGoal.attributedText = title;
             }
-           
-            [myString appendAttributedString:strFeel];
-            cell.lblGoal.attributedText = myString;
-            
        
-        
+       
+            
         return cell;
 
     }
     else if (indexPath.row == 2) {
         
         JournalImageCell *cell = (JournalImageCell *)[aTableView dequeueReusableCellWithIdentifier:@"JournalImageCell"];
-        float imageHeight = 1;
+        float imageHeight = 0.01;
         float width = [[_journalDetails objectForKey:@"image_width"] floatValue];
         float height = [[_journalDetails objectForKey:@"image_height"] floatValue];
         [cell.activityIndicator stopAnimating];
@@ -215,7 +216,8 @@
                                           
                                       }];
         }
-       
+        cell.backgroundColor = [UIColor clearColor];
+        cell.backgroundColor = [UIColor clearColor];
         cell.heightConstraint.constant = imageHeight;
         return cell;
 

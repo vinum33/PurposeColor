@@ -12,7 +12,10 @@
 
 @property (nonatomic,weak) IBOutlet UILabel *lblMenu;
 @property (nonatomic,weak) IBOutlet UIImageView *imgIcon;
-@property (nonatomic,weak) IBOutlet UIImageView *imgSelected;
-@property (nonatomic,weak) IBOutlet UIImageView *imgDriveSelected;
+@property (nonatomic,weak) IBOutlet UIView *vwTopBorder;
+@property (nonatomic,weak) IBOutlet UIView *vwBotomBorder;
+@property (nonatomic,weak) IBOutlet UIButton *btnNext;
+@property (nonatomic,weak) IBOutlet UIImageView *imgTick;
+@property (nonatomic,weak) IBOutlet UIButton *btnPost;
 
 @end

@@ -19,7 +19,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 #define kPadding                10
 #define kDefaultNumberOfCells   1
 #define kSuccessCode            200
-
+#define kUnAuthorized           403
 
 #import "CommunityGEMListingViewController.h"
 #import "GemsListCollectionViewCell.h"
@@ -191,6 +191,20 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 }
 
 -(void)getGemsFromResponds:(NSDictionary*)responseObject{
+    
+    if ([[[responseObject objectForKey:@"header"] objectForKey:@"code"] integerValue] == kUnAuthorized) {
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [app clearUserSessions];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Session Invalid"
+                                                        message:@"Please login to continue.."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+        
+    }
+
     
     isDataAvailable = false;
     if ( NULL_TO_NIL([responseObject objectForKey:@"resultarray"])) {

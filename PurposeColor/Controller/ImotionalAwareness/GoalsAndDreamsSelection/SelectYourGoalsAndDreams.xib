@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="DroidSansMerged-Regular.ttf">
+        <array key="DroidSans.ttf">
             <string>DroidSans</string>
         </array>
     </customFonts>
@@ -34,42 +34,29 @@
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gyw-PF-Jmj">
-                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="30" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="2j2-Ko-lf9"/>
-                                        <constraint firstAttribute="width" constant="40" id="Zff-Dh-YS0"/>
+                                        <constraint firstAttribute="width" constant="30" id="Zff-Dh-YS0"/>
                                     </constraints>
                                     <state key="normal" image="BackArrow"/>
                                     <connections>
                                         <action selector="closePopUp" destination="iN0-l3-epB" eventType="touchUpInside" id="8Xn-Tt-mYq"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GOALS &amp; DREAMS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0u-CV-62z">
-                                    <rect key="frame" x="50" y="12" width="113" height="16.5"/>
-                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Which goal is affected by your reaction?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0u-CV-62z">
+                                    <rect key="frame" x="30" y="13.5" width="214" height="14"/>
+                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="12"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGU-lW-yO7">
-                                    <rect key="frame" x="245" y="2.5" width="50" height="35"/>
-                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="50" id="ZjF-M0-aa8"/>
-                                        <constraint firstAttribute="height" constant="35" id="dHo-tN-KkD"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
-                                    <state key="normal" title="SKIP"/>
-                                    <connections>
-                                        <action selector="skip:" destination="iN0-l3-epB" eventType="touchUpInside" id="1Hf-cq-MLs"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVe-ma-sft">
-                                    <rect key="frame" x="295" y="2.5" width="80" height="35"/>
+                                    <rect key="frame" x="315" y="2.5" width="60" height="35"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="80" id="Wtn-kG-VMa"/>
+                                        <constraint firstAttribute="width" constant="60" id="Wtn-kG-VMa"/>
                                         <constraint firstAttribute="height" constant="35" id="utI-KV-uN6"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="12"/>
                                     <state key="normal" title="ADD GOAL"/>
                                     <connections>
                                         <action selector="showComposeView:" destination="iN0-l3-epB" eventType="touchUpInside" id="9BR-FX-sFu"/>
@@ -87,13 +74,18 @@
                                 <constraint firstAttribute="trailing" secondItem="3RH-GA-5pN" secondAttribute="trailing" id="Z0f-iQ-pWP"/>
                                 <constraint firstAttribute="height" constant="40" id="cxf-zW-HME"/>
                                 <constraint firstItem="F0u-CV-62z" firstAttribute="centerY" secondItem="Rzq-rL-1eF" secondAttribute="centerY" id="dJF-hd-itm"/>
-                                <constraint firstItem="F0u-CV-62z" firstAttribute="leading" secondItem="Gyw-PF-Jmj" secondAttribute="trailing" constant="10" id="i69-HK-jrM"/>
-                                <constraint firstItem="VGU-lW-yO7" firstAttribute="centerY" secondItem="Rzq-rL-1eF" secondAttribute="centerY" id="ute-Yv-Ns5"/>
-                                <constraint firstItem="kVe-ma-sft" firstAttribute="leading" secondItem="VGU-lW-yO7" secondAttribute="trailing" id="wMr-X5-BqT"/>
+                                <constraint firstItem="F0u-CV-62z" firstAttribute="leading" secondItem="Gyw-PF-Jmj" secondAttribute="trailing" id="i69-HK-jrM"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wNa-q4-9UX" userLabel="SKIP Seperator">
+                            <rect key="frame" x="0.0" y="67" width="375" height="1"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="0.29891988255033558" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="HmF-Ze-mLY"/>
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WZm-2Z-2z7">
-                            <rect key="frame" x="0.0" y="40" width="375" height="627"/>
+                            <rect key="frame" x="0.0" y="90" width="375" height="577"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="separatorColor" red="0.81176470588235294" green="0.81568627450980391" blue="0.82352941176470584" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -102,16 +94,36 @@
                                 <outlet property="delegate" destination="iN0-l3-epB" id="uAH-9B-8ey"/>
                             </connections>
                         </tableView>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGU-lW-yO7">
+                            <rect key="frame" x="285" y="50" width="80" height="35"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="80" id="ZjF-M0-aa8"/>
+                                <constraint firstAttribute="height" constant="35" id="dHo-tN-KkD"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="13"/>
+                            <state key="normal" title="SKIP">
+                                <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.77175964765100669" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="skip:" destination="iN0-l3-epB" eventType="touchUpInside" id="1Hf-cq-MLs"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="WZm-2Z-2z7" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" constant="40" id="16L-Zn-qmj"/>
+                        <constraint firstItem="WZm-2Z-2z7" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" constant="90" id="16L-Zn-qmj"/>
+                        <constraint firstAttribute="trailing" secondItem="wNa-q4-9UX" secondAttribute="trailing" id="2va-EN-62e"/>
+                        <constraint firstItem="VGU-lW-yO7" firstAttribute="top" secondItem="Rzq-rL-1eF" secondAttribute="bottom" constant="10" id="5eX-gJ-JBw"/>
+                        <constraint firstAttribute="trailing" secondItem="VGU-lW-yO7" secondAttribute="trailing" constant="10" id="K6S-PY-u9A"/>
                         <constraint firstAttribute="bottom" secondItem="WZm-2Z-2z7" secondAttribute="bottom" id="QuL-Gg-g5Y"/>
                         <constraint firstAttribute="trailing" secondItem="WZm-2Z-2z7" secondAttribute="trailing" id="S1r-Di-rL7"/>
+                        <constraint firstItem="wNa-q4-9UX" firstAttribute="top" secondItem="VGU-lW-yO7" secondAttribute="top" constant="17" id="bD5-PC-xpk"/>
                         <constraint firstAttribute="trailing" secondItem="Rzq-rL-1eF" secondAttribute="trailing" id="f7f-0s-rT3"/>
                         <constraint firstItem="Rzq-rL-1eF" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" id="m13-FQ-Rje"/>
                         <constraint firstItem="WZm-2Z-2z7" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="q0K-eV-KcX"/>
                         <constraint firstItem="Rzq-rL-1eF" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="u8h-Zw-sgg"/>
+                        <constraint firstItem="wNa-q4-9UX" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="yg5-Jb-c3z"/>
                     </constraints>
                 </view>
             </subviews>
@@ -123,9 +135,11 @@
                 <constraint firstItem="4nn-AR-uOq" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="svy-DX-Wkx"/>
             </constraints>
             <connections>
+                <outlet property="btnSkip" destination="VGU-lW-yO7" id="MZZ-OJ-g3h"/>
                 <outlet property="rightConstraint" destination="8mQ-wx-Qll" id="KaL-wn-bhY"/>
                 <outlet property="tableView" destination="WZm-2Z-2z7" id="BUb-nF-KsH"/>
             </connections>
+            <point key="canvasLocation" x="26.5" y="51.5"/>
         </view>
     </objects>
     <resources>

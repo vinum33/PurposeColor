@@ -60,7 +60,8 @@ typedef enum{
 
 -(void)setUp{
     
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 50, 44)];
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, delegate.window.frame.size.width, 44)];
     [searchBar setShowsCancelButton:YES];
     searchBar.delegate = self;
     
@@ -107,6 +108,19 @@ typedef enum{
     arrFiltered = [NSMutableArray arrayWithArray:arrDataSource];
     if (arrFiltered.count > 0) isDataAvailable = true;
     [tableView reloadData];
+    NSInteger index = 0;
+    if (_selectedEmotionID > 0) {
+        for (NSDictionary *dict in arrFiltered) {
+            if ([[dict objectForKey:@"id"] integerValue] == _selectedEmotionID) {
+                break;
+            }
+            index ++;
+        }
+        [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]
+                         atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }
+   
+    
     [self layoutIfNeeded];
     rightConstraint.constant = 0;
     [UIView animateWithDuration:.8
@@ -219,7 +233,7 @@ typedef enum{
         btnMore.tag = 101;
         btnMore.hidden = true;
         btnMore.alpha = 0.5;
-        [btnMore setImage:[UIImage imageNamed:@"More_Icon.png"] forState:UIControlStateNormal];
+        [btnMore setImage:[UIImage imageNamed:@"More_Gray_Icon"] forState:UIControlStateNormal];
         [btnMore addTarget:self action:@selector(showMoreOptions:) forControlEvents:UIControlEventTouchUpInside];
         [[cell contentView] addSubview:btnMore];
         [btnMore addConstraint:[NSLayoutConstraint constraintWithItem:btnMore
@@ -256,7 +270,7 @@ typedef enum{
         btnMore = [[cell contentView] viewWithTag:101] ;
         btnMore.hidden = true;
     }
-    btnMore.hidden = false;
+    btnMore.hidden = true;
     btnMore.index = indexPath.row;
     if (indexPath.row < arrFiltered.count) {
         
@@ -268,13 +282,16 @@ typedef enum{
             NSString *type = [details objectForKey:@"type"];
             if ([type isEqualToString:@"recent"]) {
                 btnRecent.hidden = false;
-                btnMore.hidden = true;
             }
         }
         if (NULL_TO_NIL([details objectForKey:@"user_id"])) {
             NSString *userID = [details objectForKey:@"user_id"];
-            if (![userID isEqualToString:[User sharedManager].userId]) {
-                btnMore.hidden = true;
+            if ([userID isEqualToString:[User sharedManager].userId]) {
+                btnMore.hidden = false;
+                NSString *type = [details objectForKey:@"type"];
+                if ([type isEqualToString:@"recent"]) {
+                    btnMore.hidden = true;
+                }
             }
         }
         
@@ -287,6 +304,15 @@ typedef enum{
             else if ([type isEqualToString:@"second"]) {
                 cell.textLabel.textColor = [UIColor grayColor];
             }
+        }
+        
+        if ([[details objectForKey:@"id"] integerValue] == _selectedEmotionID) {
+            if (NULL_TO_NIL([details objectForKey:@"type"])) {
+                NSString *type = [details objectForKey:@"type"];
+                if ([type isEqualToString:@"recent"]) cell.backgroundColor = [UIColor clearColor];
+                else cell.backgroundColor = [UIColor colorWithRed:240.f/255.f green:240.f/255.f blue:240.f/255.f alpha:1];
+            }
+            
         }
         
     }

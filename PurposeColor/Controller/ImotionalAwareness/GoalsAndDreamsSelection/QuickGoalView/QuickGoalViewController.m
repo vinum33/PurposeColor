@@ -217,7 +217,7 @@ typedef enum{
         
         if (indexPath.row == 0) {
             // Date amd Loc Info
-            CGFloat height = 20;
+            CGFloat height = 40;
             float padding = 0;
             
             if (NULL_TO_NIL([_gemDetails objectForKey:@"contact_name"])) {
@@ -643,6 +643,12 @@ typedef enum{
         }
         
     }
+    if ([[[cell contentView] viewWithTag:101] isKindOfClass:[UIButton class]]){
+        UIButton *btnSelect = [[cell contentView] viewWithTag:101];
+        btnSelect.layer.borderColor = [UIColor getThemeColor].CGColor;
+        btnSelect.layer.borderWidth = 1.f;
+        btnSelect.layer.cornerRadius = 5.f;
+    }
 
 }
 
@@ -874,7 +880,14 @@ typedef enum{
 }
 
 
-
+-(IBAction)goalSelected:(id)sender{
+    
+    if ([self.delegate respondsToSelector:@selector(goalSelectedFromQuickView)]) {
+        [self.delegate goalSelectedFromQuickView];
+    }
+    
+    
+}
 
 -(IBAction)goBack:(id)sender{
     

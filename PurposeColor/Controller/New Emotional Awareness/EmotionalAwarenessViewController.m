@@ -13,11 +13,12 @@ typedef enum{
     eTypeEmotion = 1,
     eTypeDrive = 2,
     eTypeGoalsAndDreams = 3,
-    eTypeAction = 4
+    eTypeAction = 4,
+    eTypeDate = 5
     
 }ESelectedMenuType;
 
-#define kSectionCount               3
+#define kSectionCount               2
 #define kDefaultCellHeight          95
 #define kSuccessCode                200
 #define kMinimumCellCount           1
@@ -51,29 +52,38 @@ typedef enum{
 #import "SelectActions.h"
 #import "CellForContactAndLoc.h"
 #import "AMPopTip.h"
+#import "AwarenessHeader.h"
+#import "SelectedValue_1.h"
+#import "SelectedValue_2.h"
+#import "AwarenessMediaViewController.h"
 
 @import GooglePlacePicker;
 
-@interface EmotionalAwarenessViewController () <SelectYourEventDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CustomeImagePickerDelegate,CLLocationManagerDelegate,ContactPickerDelegate,ActionInfoCellDelegate,PhotoBrowserDelegate,CustomAudioPlayerDelegate,SelectYourFeelingDelegate,SelectYourEmotionDelegate,SelectYourDriveDelegate,SelectYourGoalsAndDreamsDelegate,SelectYourActionsDelegate,UIGestureRecognizerDelegate,UITextViewDelegate>{
+@interface EmotionalAwarenessViewController () <SelectYourEventDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CustomeImagePickerDelegate,CLLocationManagerDelegate,ContactPickerDelegate,ActionInfoCellDelegate,PhotoBrowserDelegate,CustomAudioPlayerDelegate,SelectYourFeelingDelegate,SelectYourEmotionDelegate,SelectYourDriveDelegate,SelectYourGoalsAndDreamsDelegate,SelectYourActionsDelegate,UIGestureRecognizerDelegate,UITextViewDelegate,AwarenessMediaDelegate>{
     
     IBOutlet UITableView *tableView;
-    IBOutlet NSLayoutConstraint *tableBottom;
+    IBOutlet UITableView *tableView_Menu;
+    IBOutlet NSLayoutConstraint *tableHeight;
     IBOutlet UIView *vwMediaMenuOverLay;
-    IBOutlet UIView *vwFooter;
     IBOutlet UIButton *btnAudioRecorder;
     IBOutlet UIButton *btnPost;
+    IBOutlet UILabel *lblMenuName;
+    IBOutlet UIButton *btnHand;
+
     UIView *inputAccView;
     
     BOOL isJournalSet;
     BOOL shouldHideMenus;
     BOOL isCycleCompleted;
+    NSInteger menuCount;
     NSInteger requiredCellCount;
     NSMutableArray *arrDataSource;
     NSMutableArray *arrDeletedIDs;
     NSMutableArray *arrFeelImages;
     NSMutableArray *arrDriveImages;
     NSMutableDictionary *dictSelectedSteps;
-    ESelectedMenuType activeMenu;
+    NSMutableDictionary *dictSuccessSteps;
+    ESelectedMenuType nextActiveMenu;
     
     SelectYourEvent *vwEventSelection;
     NSString  *eventTitle;
@@ -112,17 +122,11 @@ typedef enum{
     CustomAudioPlayerView *vwAudioPlayer;
     AMPopTip *popTip;
     
-    IBOutlet UILabel *lblDate;
+     NSString *strDate;
     IBOutlet UIView *vwPickerOverLay;
     IBOutlet UIDatePicker *datePicker;
     
-    IBOutlet UIImageView *imgFeel;
-    IBOutlet UIImageView *imgEmotion;
-    IBOutlet UIImageView *imgRate;
-    IBOutlet UIImageView *imgGoalsAndDreams;
-    IBOutlet UIImageView *imgAction;
     
-    IBOutlet UIView *vwDateView;
 }
 
 @property (nonatomic,strong) NSIndexPath *draggingCellIndexPath;
@@ -139,6 +143,8 @@ typedef enum{
     [self removeAllContentsInMediaFolder];
     [self getCurrentDate];
     [self createInputAccessoryView];
+   // if (_shouldOpenFirstMenu) [self performSelector:@selector(showEventSelectionView) withObject:self afterDelay:0.7];
+    
         // Do any additional setup after loading the view.
 }
 
@@ -150,6 +156,14 @@ typedef enum{
 
 -(void)setUp{
     
+    [UIView animateWithDuration:0.5 delay:0 options:(UIViewAnimationCurveLinear | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat) animations:^{
+        [btnHand setTransform:CGAffineTransformMakeScale(1.5, 1.5)];
+        btnHand.alpha = 0.2;
+    }  completion:nil];
+    
+    nextActiveMenu = -1;
+    menuCount = 4;
+    
     btnPost.layer.cornerRadius = 5.f;
     btnPost.layer.borderColor = [UIColor whiteColor].CGColor;
     btnPost.layer.borderWidth = 1.f;
@@ -157,11 +171,10 @@ typedef enum{
     btnPost.alpha = 0.3;
     
     isCycleCompleted = false;
-    vwDateView.hidden = true;
     dictSelectedSteps = [NSMutableDictionary new];
+    dictSuccessSteps = [NSMutableDictionary new];
     isJournalSet = false;
     tableView.estimatedRowHeight = 100;
-    vwFooter.hidden = true;
     shouldHideMenus = false;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     arrDataSource = [NSMutableArray new];
@@ -173,9 +186,6 @@ typedef enum{
     longPress.minimumPressDuration = .5;
     [btnAudioRecorder addGestureRecognizer:longPress];
     
-    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(dragCell:)];
-    [longPressGestureRecognizer setDelegate:self];
-    [tableView addGestureRecognizer:longPressGestureRecognizer];
     
 
 }
@@ -210,15 +220,24 @@ typedef enum{
 
 #pragma mark - UITableViewDataSource Methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)_tableView {
     
-    
+    if (_tableView == tableView_Menu) {
+        return 1;
+    }
     return kSectionCount;
 }
 
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+-(NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (_tableView == tableView_Menu) {
+        if (isCycleCompleted) {
+            return 5;
+        }
+        return 4;
+    }
+    
     if (section == 0) {
         if (!isJournalSet) {
             return 1;
@@ -226,285 +245,324 @@ typedef enum{
         return requiredCellCount;
     }
     if (section == 1) {
-        return arrDataSource.count;
-    }else return 5;
-    return 1;
+        NSInteger count = 0;
+        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]] || [dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]] || [dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]) {
+            count += 1;
+            
+        }
+        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]] || [dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeAction]]) {
+            count += 1;
+        }
+        return count;
+    }
+    return 0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    if (indexPath.section == 0) {
-        if (!isJournalSet) {
-            static NSString *CellIdentifier = @"SectionOnePlaceHolder";
-            UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            cell.backgroundColor = [UIColor clearColor];
+    
+    static NSString *CellIdentifier = @"SectionOnePlaceHolder";
+    UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (aTableView == tableView_Menu) {
+        
+        if (indexPath.row == 4) {
+            static NSString *CellIdentifier = @"CellForDate";
+            UITableViewCell *cell = (UITableViewCell*)[tableView_Menu dequeueReusableCellWithIdentifier:CellIdentifier];
+            if ([[cell contentView] viewWithTag:1]) {
+                UILabel *lblDate = (UILabel*)[[cell contentView] viewWithTag:1];
+                lblDate.text = strDate;
+            }
+            if ([[cell contentView] viewWithTag:2]) {
+                UIButton *_btnPost = (UIButton*)[[cell contentView] viewWithTag:2];
+                _btnPost.layer.cornerRadius = 5;
+                _btnPost.layer.borderWidth = 1.f;
+                _btnPost.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+                
+            }
+          cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
-            
-        }else{
-            
-            if (indexPath.row == 0) {
-                
-                static NSString *CellIdentifier = @"EventTitleCell";
-                EventTitleCell *cell = (EventTitleCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                cell.backgroundColor = [UIColor clearColor];
-                NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-                UIImage *icon = [UIImage imageNamed:@"Edit_Blue"];
-                attachment.image = icon;
-                attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblTitle.font.descender), icon.size.width, icon.size.height);
-                NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
-                if (eventTitle.length) {
-                    NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:eventTitle];
-                    [myString appendAttributedString:attachmentString];
-                    cell.lblTitle.attributedText = myString;
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                return cell;
-            }
-            else if (indexPath.row == 1) {
-                
-                static NSString *CellIdentifier = @"EventDescription";
-                EventDescriptionCell *cell = (EventDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                cell.txtVwDescription.text = strDescription;
-                cell.txtVwDescription.delegate = self;
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                return cell;
-            }
-            else if (indexPath.row == 2) {
-                
-                static NSString *CellIdentifier = @"LocationCell";
-                UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                if ([[cell contentView] viewWithTag:1]) {
-                    UILabel *lblInfo = [[cell contentView] viewWithTag:1];
-                    if (strLocationName.length) {
-                        NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"At %@",strLocationName]];
-                        [mutableAttString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor getThemeColor]
-                                         range:NSMakeRange(3, strLocationName.length)];
-                        lblInfo.attributedText = mutableAttString;
-                        
-                        
-                    }
-                   
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                return cell;
-            }
-            else if (indexPath.row == 3) {
-                
-                static NSString *CellIdentifier = @"ContactCell";
-                UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                 if ([[cell contentView] viewWithTag:1]) {
-                 UILabel *lblInfo = [[cell contentView] viewWithTag:1];
-                 NSMutableAttributedString *myString= [NSMutableAttributedString new];
-                 NSInteger nextIndex = 0;
-                
-                 if (strContactName.length) {
-                 NSArray *names = [strContactName componentsSeparatedByString:@","];
-                 NSInteger nextLength = strContactName.length;
-                 NSString *strCntact = strContactName;
-                 if (names.count > 1) {
-                 NSString *firstName = [names firstObject];
-                 nextLength = firstName.length;
-                 strCntact = [NSString stringWithFormat:@"With %@ and %d other(s)",firstName,names.count - 1];
-                 }else{
-                 strCntact = [NSString stringWithFormat:@"With %@",strCntact];
-                 }
-                 NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",strCntact]];
-                 [myString appendAttributedString:mutableAttString];
-                 [myString addAttribute:NSForegroundColorAttributeName
-                 value:[UIColor getThemeColor]
-                 range:NSMakeRange(nextIndex + 5, nextLength)];
-                 }
-                 lblInfo.attributedText = myString;
-              
-                
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                return cell;
-            }
-            
-            
         }
-      
-    }
-    if (indexPath.section == 1) {
-        static NSString *CellIdentifier = @"MediaList";
-        ActionMediaListCell *cell = (ActionMediaListCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        [[cell btnVideoPlay]setHidden:true];
-        [[cell btnAudioPlay]setHidden:true];
-        cell.delegate = self;
-        [cell.indicator stopAnimating];
-        [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
-        
-        if (indexPath.row < arrDataSource.count) {
-            id object = arrDataSource[indexPath.row];
-            NSString *strFile;
-            if ([object isKindOfClass:[NSString class]]) {
-                
-                //When Create
-                
-                strFile = (NSString*)arrDataSource[indexPath.row];
-                cell.lblTitle.text = strFile;
-                cell.imgMediaThumbnail.backgroundColor = [UIColor clearColor];
-                NSString *fileName = arrDataSource[indexPath.row];
-                if ([[fileName pathExtension] isEqualToString:@"jpeg"]) {
-                    //This is Image File with .png Extension , Photos.
-                    NSString *filePath = [Utility getMediaSaveFolderPath];
-                    NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
-                    if (imagePath.length) {
-                        [cell.indicator startAnimating];
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-                            NSData *data = [[NSFileManager defaultManager] contentsAtPath:imagePath];
-                            UIImage *image = [UIImage imageWithData:data];
-                            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                                cell.imgMediaThumbnail.image = image;
-                                [cell.indicator stopAnimating];
-                            });
-                        });
-                        
-                    }
-                }
-                else if ([[fileName pathExtension] isEqualToString:@"mp4"]) {
-                    //This is Image File with .mp4 Extension , Video Files
-                    NSString *filePath = [Utility getMediaSaveFolderPath];
-                    NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
-                    [[cell btnVideoPlay]setHidden:false];
-                    if (imagePath.length){
-                        [cell.indicator startAnimating];
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-                            UIImage *thumbnail = [Utility getThumbNailFromVideoURL:imagePath];
-                            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                                cell.imgMediaThumbnail.image = thumbnail;
-                                [cell.indicator stopAnimating];
-                            });
-                        });
-                        cell.imgMediaThumbnail.image = [UIImage imageNamed:@"Video_Play_Button.png"];
-                    }
-                }
-                else if ([[fileName pathExtension] isEqualToString:@"aac"]){
-                    // Recorded Audio
-                    [cell.indicator startAnimating];
-                    [[cell btnAudioPlay]setHidden:false];
-                    cell.imgMediaThumbnail.image = [UIImage imageNamed:@"NoImage.png"];
-                    [cell.indicator stopAnimating];
-                }
-                
-            }
-            
-            
-        }
-        
-        cell.btnDelete.tag = indexPath.row;
-        [cell.btnDelete addTarget:self action:@selector(deleteSelectedMedia:) forControlEvents:UIControlEventTouchUpInside];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-        
-    }else{
         static NSString *CellIdentifier = @"CellForMenus";
-        CellForMenus *cell = (CellForMenus*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        CellForMenus *cell = (CellForMenus*)[tableView_Menu dequeueReusableCellWithIdentifier:CellIdentifier];
         [self configureMenuCell:cell indexPath:indexPath];
         cell.lblMenu.hidden = false;
-        cell.imgDriveSelected.hidden = true;
-        cell.imgSelected.hidden = true;
         cell.backgroundColor = [UIColor clearColor];
         cell.lblMenu.textColor = [UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:1.0];
         cell.lblMenu.alpha = 0.5;
         cell.imgIcon.alpha = 0.5;
+        cell.vwTopBorder.hidden = true;
+        cell.vwBotomBorder.hidden = true;
+        cell.lblMenu.font = [UIFont fontWithName:CommonFont_New size:13];
+        cell.btnNext.tag = indexPath.row;
+        cell.btnNext.hidden = true;
+        cell.imgTick.hidden = true;
         switch (indexPath.row) {
             case eTypeFeel:
+                cell.lblMenu.text = @"Do you like how you're feeling now?";
+                cell.vwTopBorder.hidden = false;
+                cell.vwBotomBorder.hidden = false;
                 if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]) {
-                    NSInteger index = [[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]] integerValue];
-                    cell.imgSelected.image = [UIImage imageNamed:[arrFeelImages objectAtIndex:index]];
-                    cell.imgSelected.hidden = false;
-                    cell.lblMenu.hidden = true;
+                    cell.lblMenu.alpha = 1;
                     cell.imgIcon.alpha = 1;
-                    cell.imgIcon.image = [UIImage imageNamed:@"Feel_Tick"];
+                }
+                if (nextActiveMenu == eTypeFeel) {
+                    cell.lblMenu.alpha = 1;
+                    cell.imgIcon.alpha = 1;
+                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:12];
+                    cell.btnNext.hidden = false;
+                    
+                }
+                
+                if ([[dictSuccessSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]] boolValue]) {
+                    cell.imgTick.hidden = false;
+                    cell.btnNext.hidden = true;
                 }
                 break;
             case eTypeEmotion:
+                cell.vwBotomBorder.hidden = false;
+                cell.lblMenu.text = @"What's your emotional state?";
                 if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]]) {
-                    cell.lblMenu.text = selectedEmotionTitle;
                     cell.lblMenu.alpha = 1;
                     cell.imgIcon.alpha = 1;
-                    cell.imgIcon.image = [UIImage imageNamed:@"Emotion_Tick"];
+
+                }
+                if (nextActiveMenu == eTypeEmotion) {
+                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:12];
+                    cell.lblMenu.alpha = 1;
+                    cell.imgIcon.alpha = 1;
+                    cell.btnNext.hidden = false;
+                }
+               
+                if ([[dictSuccessSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]] boolValue]) {
+                    cell.imgTick.hidden = false;
+                     cell.btnNext.hidden = true;
                 }
                 break;
-                
             case eTypeDrive:
+                cell.vwBotomBorder.hidden = false;
+                cell.lblMenu.text = @"Do you like your reaction to the situation?";
                 if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]]) {
-                    cell.lblMenu.hidden = true;
-                    NSInteger index = [[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]] integerValue];
-                    cell.imgDriveSelected.image = [UIImage imageNamed:[arrDriveImages objectAtIndex:index]];
-                    cell.lblMenu.hidden = true;
-                    cell.imgDriveSelected.hidden = false;
                     cell.lblMenu.alpha = 1;
                     cell.imgIcon.alpha = 1;
-                    cell.imgIcon.image = [UIImage imageNamed:@"Drive_Tick"];
+
                 }
-                break;
-                
-            case eTypeGoalsAndDreams:
-                cell.lblMenu.text = @"Select Goal";
-                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]]) {
-                    cell.lblMenu.hidden = false;
-                    cell.lblMenu.text = selectedGoalsTitle;
+                if (nextActiveMenu == eTypeDrive) {
+                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:12];
                     cell.lblMenu.alpha = 1;
                     cell.imgIcon.alpha = 1;
-                    cell.imgIcon.image = [UIImage imageNamed:@"Goals_Tick"];
+                    cell.btnNext.hidden = false;
                 }
-                break;
-            case eTypeAction:
-                cell.lblMenu.text = @"Select Action";
-                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeAction]]) {
-                    cell.lblMenu.hidden = false;
-                    cell.lblMenu.alpha = 1;
-                    cell.imgIcon.alpha = 1;
-                     cell.imgIcon.image = [UIImage imageNamed:@"Action_Tick"];
-                    NSMutableString *mutableAttString = [NSMutableString new];
-                    NSArray *Actions = [selectedActions allValues];
-                    NSMutableArray *actionTitles = [NSMutableArray new];
-                    for (NSDictionary *dict in Actions) {
-                        if ([dict objectForKey:@"title"]) {
-                            [actionTitles addObject:[dict objectForKey:@"title"]];
-                        }
-                    }
-                    if (actionTitles.count) {
-                        NSString *firstActon = [actionTitles firstObject];
-                        if (actionTitles.count > 1) {
-                            cell.lblMenu.textColor = [UIColor getThemeColor];
-                            NSInteger start = 0;
-                            NSInteger final = firstActon.length + 2;
-                            mutableAttString = [NSMutableString stringWithFormat:@"%@ & %d more..",firstActon,actionTitles.count -  1];
-                            NSMutableAttributedString *titles = [[NSMutableAttributedString alloc] initWithString:mutableAttString];
-                            [titles addAttribute:NSForegroundColorAttributeName
-                                           value:[UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:1.0]
-                                           range:NSMakeRange(start, final)];
-                            cell.lblMenu.attributedText = titles;
-                        }else{
-                            cell.lblMenu.text = firstActon;
-                        }
-                      
-                    }
+               
+                if ([[dictSuccessSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]] boolValue]) {
+                    cell.imgTick.hidden = false;
+                     cell.btnNext.hidden = true;
                     
                 }
                 break;
+            case eTypeGoalsAndDreams:
+                cell.vwBotomBorder.hidden = false;
+                cell.lblMenu.text = @"Which goal is affected by your reaction?";
+                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]]) {
+                    cell.lblMenu.alpha = 1;
+                    cell.imgIcon.alpha = 1;
+                }
+                if (nextActiveMenu == eTypeGoalsAndDreams) {
+                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:12];
+                    cell.lblMenu.alpha = 1;
+                    cell.imgIcon.alpha = 1;
+                    cell.btnNext.hidden = false;
+                }
+                if ([[dictSuccessSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]] boolValue]) {
+                    cell.imgTick.hidden = false;
+                    cell.btnNext.hidden = true;
+                    cell.lblMenu.alpha = 1;
+                    cell.imgIcon.alpha = 1;
+                }
+                
+                break;
+           
+
                 
             default:
                 break;
         }
-       cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
+        
+    }else{
+        
+        if (indexPath.section == 0) {
+            if (!isJournalSet) {
+                static NSString *CellIdentifier = @"SectionOnePlaceHolder";
+                UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                cell.backgroundColor = [UIColor clearColor];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+                
+            }else{
+                
+                if (indexPath.row == 0) {
+                    
+                    static NSString *CellIdentifier = @"EventTitleCell";
+                    EventTitleCell *cell = (EventTitleCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                    cell.backgroundColor = [UIColor clearColor];
+                    cell.lblTitle.text = eventTitle;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
+                else if (indexPath.row == 1) {
+                    
+                    static NSString *CellIdentifier = @"EventDescription";
+                    EventDescriptionCell *cell = (EventDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                    cell.txtVwDescription.text = strDescription;
+                    cell.txtVwDescription.delegate = self;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
+                else if (indexPath.row == 2) {
+                    
+                    static NSString *CellIdentifier = @"LocationCell";
+                    UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                    if ([[cell contentView] viewWithTag:1]) {
+                        UILabel *lblInfo = [[cell contentView] viewWithTag:1];
+                        if (strLocationName.length) {
+                            NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"At %@",strLocationName]];
+                            [mutableAttString addAttribute:NSForegroundColorAttributeName
+                                                     value:[UIColor getThemeColor]
+                                                     range:NSMakeRange(3, strLocationName.length)];
+                            lblInfo.attributedText = mutableAttString;
+                            
+                            
+                        }
+                        
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
+                else if (indexPath.row == 3) {
+                    
+                    static NSString *CellIdentifier = @"ContactCell";
+                    UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                    if ([[cell contentView] viewWithTag:1]) {
+                        UILabel *lblInfo = [[cell contentView] viewWithTag:1];
+                        NSMutableAttributedString *myString= [NSMutableAttributedString new];
+                        NSInteger nextIndex = 0;
+                        
+                        if (strContactName.length) {
+                            NSArray *names = [strContactName componentsSeparatedByString:@","];
+                            NSInteger nextLength = strContactName.length;
+                            NSString *strCntact = strContactName;
+                            if (names.count > 1) {
+                                NSString *firstName = [names firstObject];
+                                nextLength = firstName.length;
+                                strCntact = [NSString stringWithFormat:@"With %@ and %d other(s)",firstName,names.count - 1];
+                            }else{
+                                strCntact = [NSString stringWithFormat:@"With %@",strCntact];
+                            }
+                            NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",strCntact]];
+                            [myString appendAttributedString:mutableAttString];
+                            [myString addAttribute:NSForegroundColorAttributeName
+                                             value:[UIColor getThemeColor]
+                                             range:NSMakeRange(nextIndex + 5, nextLength)];
+                        }
+                        lblInfo.attributedText = myString;
+                        
+                        
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return cell;
+                }
+                
+                
+            }
+            
+        }
+        if (indexPath.section == 1) {
+            // Selected values
+            if (indexPath.row == 0) {
+                static NSString *CellIdentifier = @"EmotionCell";
+                SelectedValue_1 *cell = (SelectedValue_1*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]){
+                    NSInteger index = [[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]] integerValue];
+                    cell.imgFeel.image = [UIImage imageNamed:[arrFeelImages objectAtIndex:index]];
+                }
+                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]]){
+                    NSString *strText = [NSString stringWithFormat:@"Feeling %@",selectedEmotionTitle] ;
+                    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:strText];
+                    [title addAttribute:NSForegroundColorAttributeName
+                                   value:[UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:.5]
+                                   range:NSMakeRange(0, 7)];
+                    cell.lblEmotin.attributedText = title;
+                    
+                }
+                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]]){
+                    NSInteger index = [[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]] integerValue];
+                    cell.imgDrive.image = [UIImage imageNamed:[arrDriveImages objectAtIndex:index]];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+            }
+            if (indexPath.row == 1) {
+                static NSString *CellIdentifier = @"GoalsCell";
+                SelectedValue_2 *cell = (SelectedValue_2*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                NSMutableString *strTtile;
+                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]]){
+                    strTtile = [NSMutableString stringWithString:selectedGoalsTitle];
+                }
+                NSArray *actions;
+                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeAction]]){
+                    if (selectedActionTitle) {
+                        actions = [selectedActionTitle componentsSeparatedByString:@","];
+                        if (actions.count > 2) {
+                            NSMutableString *strOthers = [NSMutableString stringWithFormat:@",%@ & %d more..",[actions firstObject],[actions count] - 1] ;
+                            [strTtile appendString:strOthers];
+                        }else{
+                             [strTtile appendString:selectedActionTitle];
+                        }
+                    }
+                    
+                }
+                if (strTtile) {
+                    NSString *strText = [NSString stringWithFormat:@"Reaction affecting goal:%@",strTtile] ;
+                    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:strText];
+                    [title addAttribute:NSForegroundColorAttributeName
+                                  value:[UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:.5]
+                                  range:NSMakeRange(0, 24)];
+                    
+                    NSRange range = [strText rangeOfString:@"&"];
+                    if (range.location == NSNotFound) {
+                    } else {
+                        NSArray *myArray = [strText componentsSeparatedByString:@"&"];
+                        NSString *more = [myArray lastObject];
+                        [title addAttribute:NSForegroundColorAttributeName
+                                      value:[UIColor getThemeColor]
+                                      range:NSMakeRange(range.location + 1, more.length)];
+                    }
+                    
+                    cell.lblGoalsActions.attributedText = title;
+                }
+               
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                 return cell;
+            }
+            
+        }
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+   
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+-(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_tableView == tableView_Menu){
+        return 40;
+    }
     if (indexPath.section == 0) {
         if (isJournalSet) {
             if (indexPath.row == 1) {
-                 return 100;
+                 return 30;
                 // Textview height
             }
             else if (indexPath.row == 2) {
@@ -526,87 +584,159 @@ typedef enum{
             }
              return UITableViewAutomaticDimension;
         }else{
-            float heightforView = self.view.frame.size.height - 65;
-            float otherHeights = 5 * 60;
-            float heightForFirstCell = heightforView - otherHeights;
-            return heightForFirstCell;
+           
+            return 50;
         }
     }
     if (indexPath.section == 1) {
-        return 200;
-    }
-    else{
-        if (indexPath.row == 3) {
+        if (indexPath.row == 0) {
+            return 50;
+            // Textview height
+        }
+        else if (indexPath.row == 1) {
             return UITableViewAutomaticDimension;
+            
+            // Loc  height
         }
         
-        return 60;
     }
-    
-    
+   
     return 100;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (indexPath.section == 0) {
-        
-        if (indexPath.row == 0) {
-            [self showEventSelectionView];
-        }
-        if (indexPath.row == 3) {
-          //  CGRect myRect = [tableView rectForRowAtIndexPath:indexPath];
-
-           // [self showOtherContactsIfAny:myRect];
-        }
-    
-    }
-    if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-             [self showRateSelection];
-        }
-        if (indexPath.row == 1) {
-            if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]) [self showEmotionSelection];
-        }
-        if (indexPath.row == 2) {
-             if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]]) [self showDriveSelection];
-        }
-        if (indexPath.row == 3) {
-             if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]]) [self showGoalsAndDreamsSelection];
-        }
-        if (indexPath.row == 4) {
-             if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]]) [self showActionSelection];
-        }
-    }
-    else{
-        
-        NSMutableArray *images = [NSMutableArray new];
-            if (indexPath.row < arrDataSource.count) {
-                    NSString *strURL = (NSString*)arrDataSource[indexPath.row];
-                    if ([strURL hasPrefix:@"PurposeColorImage"]) {
-                        if (![images containsObject:strURL]) {
-                            [images addObject:strURL];
+- (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+     
+    if (_tableView == tableView_Menu) {
+            if (indexPath.row == 0 && [[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEvent]] boolValue] ) {
+                [self showRateSelection];
+            }
+            if (indexPath.row == 1 ) {
+                if (!isCycleCompleted) {
+                    if (nextActiveMenu == eTypeEmotion || ([[dictSuccessSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]] boolValue])) {
+                        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]) [self showEmotionSelection];
                     }
+                }else{
+                    [self showEmotionSelection];
                 }
-        }
-        
-        if (images.count) {
-            for (id details in arrDataSource) {
-                NSString *strURL = (NSString*)details;
-                if ([strURL hasPrefix:@"PurposeColorImage"]) {
-                    if (![images containsObject:strURL]) {
-                        [images addObject:strURL];
+               
+                
+            }
+            if (indexPath.row == 2) {
+                
+                if (!isCycleCompleted) {
+                    if (nextActiveMenu == eTypeDrive || ([[dictSuccessSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]] boolValue])) {
+                        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]]) [self showDriveSelection];
                     }
+                }else{
+                    [self showDriveSelection];
                 }
             }
+            if (indexPath.row == 3)  {
+                if (!isCycleCompleted) {
+                    if (nextActiveMenu == eTypeGoalsAndDreams || ([[dictSuccessSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]] boolValue])) {
+                        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]]) [self showGoalsAndDreamsSelection];
+                    }
+                }else{
+                    [self showGoalsAndDreamsSelection];
+                }
+                
+            }
+            if (indexPath.row == 4) {
+                [self showDatePicker:nil];
+            }
+    }else{
+        if (indexPath.section == 0) {
+            if (indexPath.row == 0) {
+                [self showEventSelectionView];
+            }
+        }else{
+            if (indexPath.row == 1) {
+                [self showGoalsAndDreamsSelection];
+            }
+        }
+       
+        
+    }
+    
+}
+
+- (nullable UIView *)tableView:(UITableView *)_tableView viewForHeaderInSection:(NSInteger)section{
+    if (_tableView == tableView_Menu) {
+        return nil;
+    }
+    if (section == 0) {
+        NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"AwarenessHeader" owner:self options:nil];
+        AwarenessHeader *view = [viewArray objectAtIndex:0];
+        view.lblGalleryCount.text = [NSString stringWithFormat:@"%d",arrDataSource.count];
+        if (arrDataSource.count) {
+            id object = [arrDataSource lastObject];
+            if ([object isKindOfClass:[NSString class]]) {
+                
+                //When Create
+                NSString *fileName = [arrDataSource lastObject];
+                if ([[fileName pathExtension] isEqualToString:@"jpeg"]) {
+                    //This is Image File with .png Extension , Photos.
+                    NSString *filePath = [Utility getMediaSaveFolderPath];
+                    NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
+                    if (imagePath.length) {
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+                            NSData *data = [[NSFileManager defaultManager] contentsAtPath:imagePath];
+                            UIImage *image = [UIImage imageWithData:data];
+                            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+                                view.imgGallery.image = image;
+                            });
+                        });
+                        
+                    }
+                }
+                else if ([[fileName pathExtension] isEqualToString:@"mp4"]) {
+                    //This is Image File with .mp4 Extension , Video Files
+                    NSString *filePath = [Utility getMediaSaveFolderPath];
+                    NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
+                    if (imagePath.length){
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+                            UIImage *thumbnail = [Utility getThumbNailFromVideoURL:imagePath];
+                            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+                                view.imgGallery.image = thumbnail;
+                            });
+                        });
+                    }
+                }
+                else if ([[fileName pathExtension] isEqualToString:@"aac"]){
+                    // Recorded Audio
+                    view.imgGallery.image = [UIImage imageNamed:@"NoImage.png"];
+                }
+                
+            }
+            
         }
         
-        if (images.count) {
-            [self presentGalleryWithImages:images];
-        }
-
+        return view;
     }
+   
+    return nil;
+    
 }
+- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)_tableView heightForHeaderInSection:(NSInteger)section{
+    
+    if (_tableView == tableView_Menu) {
+        return 0;
+    }
+    
+    if (section == 0) {
+        return 130;
+    }
+    return 0.01;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    
+    return 0.01;
+}
+
 
 -(void)configureMenuCell:(CellForMenus*)cell indexPath:(NSIndexPath*)indexPath{
     
@@ -617,19 +747,19 @@ typedef enum{
             break;
         case eTypeEmotion:
             cell.lblMenu.text = @"Select Emotion";
-             cell.imgIcon.image = [UIImage imageNamed:@"Select_Emotion"];
+            cell.imgIcon.image = [UIImage imageNamed:@"Select_Emotion"];
             break;
         case eTypeDrive:
             cell.lblMenu.text = @"Rate Reaction";
-             cell.imgIcon.image = [UIImage imageNamed:@"Rate_Reaction"];
+            cell.imgIcon.image = [UIImage imageNamed:@"Rate_Reaction"];
             break;
         case eTypeGoalsAndDreams:
             cell.lblMenu.text = @"Select Goal";
-             cell.imgIcon.image = [UIImage imageNamed:@"Select_Goal"];
+            cell.imgIcon.image = [UIImage imageNamed:@"Select_Goal"];
             break;
         case eTypeAction:
             cell.lblMenu.text = @"Select Action";
-             cell.imgIcon.image = [UIImage imageNamed:@"Select_Action"];
+            cell.imgIcon.image = [UIImage imageNamed:@"Select_Action"];
             break;
             
         default:
@@ -637,11 +767,65 @@ typedef enum{
     }
 
 }
+-(IBAction)showNextMenuOptions:(UIButton*)sender{
+    
+    if (sender.tag == eTypeFeel) {
+        [self showRateSelection];
+        // next menu
+        
+    }
+    if (sender.tag == eTypeEmotion) {
+         [self showEmotionSelection];
+        // next menu
+       
+    }
+    if (sender.tag == eTypeDrive) {
+        [self showDriveSelection];
+        // next menu
+        
+    }
+    if (sender.tag == eTypeGoalsAndDreams) {
+        [self showGoalsAndDreamsSelection];
+        // next menu
+        
+    }
+   
+}
 
 -(void)showOtherContactsIfAny:(CGRect)myRect{
     
     popTip = [AMPopTip popTip];
     [popTip showText:@"AMPopTipDirectionUp AMPopTipDirectionUp AMPopTipDirectionUpAMPopTipDirectionUpAMPopTipDirectionUpAMPopTipDirectionUpAMPopTipDirectionUp AMPopTipDirectionUpAMPopTipDirectionUp AMPopTipDirectionUp" direction:AMPopTipDirectionUp maxWidth:(self.view.frame.size.width) inView:self.view fromFrame:CGRectMake(myRect.origin.x, myRect.origin.y, self.view.frame.size.width, 50) duration:2];
+}
+
+-(IBAction)showFeelsListFromSelection:(id)sender{
+  if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]) [self showRateSelection];
+    
+}
+-(IBAction)showEmotionListFromSelection:(id)sender{
+    if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]]) [self showEmotionSelection];
+}
+
+-(IBAction)showDriveListFromSelection:(id)sender{
+      if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]]) [self showDriveSelection];
+}
+
+
+
+
+-(IBAction)showMedias:(id)sender{
+    
+    if (arrDataSource.count) {
+        AwarenessMediaViewController *profilePage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwarenessMedia];
+        profilePage.delegate = self;
+        profilePage.arrMedias = arrDataSource;
+        [[self navigationController]pushViewController:profilePage animated:YES];
+    }
+   
+}
+-(void)closeButtonAppliedWithChangedArray:(NSMutableArray*)array{
+    arrDataSource = [NSMutableArray arrayWithArray:array];
+    [tableView reloadData];
 }
 
 -(void)playSelectedMediaWithIndex:(NSInteger)tag {
@@ -688,7 +872,6 @@ typedef enum{
             
         }
         
-        
     }
     
 }
@@ -714,7 +897,6 @@ typedef enum{
     vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
     [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
     [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
-    
     vwPopUP.transform = CGAffineTransformMakeScale(0.01, 0.01);
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         // animate it to the identity transform (100% scale)
@@ -739,9 +921,9 @@ typedef enum{
         [[AVAudioSession sharedInstance] setActive:NO error:&error];
     }];
     
-    
-    
 }
+
+
 
 #pragma mark - Media Drag and Drop Methods
 
@@ -755,8 +937,6 @@ typedef enum{
     return YES;
 }
 
-
-
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     return YES;
@@ -765,9 +945,6 @@ typedef enum{
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
-
-
-
 
 -(IBAction)moveCellImage:(UIPanGestureRecognizer *)panner {
     if (! self.cellSnapshotView) {
@@ -845,7 +1022,7 @@ typedef enum{
         if (! self.cellSnapshotView) {
             CGPoint loc = [panner locationInView:tableView];
             self.draggingCellIndexPath = [tableView indexPathForRowAtPoint:loc];
-            if ((self.draggingCellIndexPath.section == 0) || (self.draggingCellIndexPath.section == 2)) return;
+            if ((self.draggingCellIndexPath.section == 0) || (self.draggingCellIndexPath.section == 1)) return;
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:self.draggingCellIndexPath];
             if (cell){
                 
@@ -899,7 +1076,7 @@ typedef enum{
         }
         
         NSIndexPath *droppedOnCellIndexPath = [tableView indexPathForCell:droppedOnCell];
-         if ((droppedOnCellIndexPath.section == 0) || (droppedOnCellIndexPath.section == 2)) {
+         if ((droppedOnCellIndexPath.section == 0) || (droppedOnCellIndexPath.section == 1)) {
             [self.cellSnapshotView removeFromSuperview];
             self.cellSnapshotView = nil;
             return;
@@ -919,8 +1096,6 @@ typedef enum{
                 [tableView reloadRowsAtIndexPaths:@[savedDraggingCellIndexPath] withRowAnimation:UITableViewRowAnimationNone];
             }
         }];
-        
-        
         
     }
 }
@@ -1443,7 +1618,6 @@ typedef enum{
 -(void)showEventSelectionView{
     
     [self.view endEditing:YES];
-    activeMenu = eTypeEvent;
     vwEventSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourEvent" owner:self options:nil] objectAtIndex:0];
     vwEventSelection.translatesAutoresizingMaskIntoConstraints = NO;
     vwEventSelection.delegate = self;
@@ -1465,12 +1639,15 @@ typedef enum{
 
 
 -(void)eventSelectedWithEventTitle:(NSString*)_eventTitle eventID:(NSInteger)eventID;{
+    nextActiveMenu = eTypeFeel;
     eventValue = eventID;
     selectedEventValue = eventID;
     eventTitle = _eventTitle;
-    activeMenu = eTypeDrive;
+    [btnHand.layer removeAllAnimations];
+    [btnHand removeFromSuperview];
     [dictSelectedSteps setObject:[NSNumber numberWithInteger:eventID] forKey:[NSNumber numberWithInteger:eTypeEvent]];
     [self collapseAllSectionMenus];
+    [tableView_Menu reloadData];
     [tableView reloadData];
     [self shouldeablePostButton:YES];
     
@@ -1482,7 +1659,6 @@ typedef enum{
 
 -(void)showRateSelection{
     
-    activeMenu = eTypeFeel;
     vwFeelSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourFeel" owner:self options:nil] objectAtIndex:0];
     vwFeelSelection.translatesAutoresizingMaskIntoConstraints = NO;
     vwFeelSelection.delegate = self;
@@ -1505,11 +1681,18 @@ typedef enum{
     
     selectedEmotionValue = emotionType;
     [dictSelectedSteps setObject:[NSNumber numberWithInteger:emotionType] forKey:[NSNumber numberWithInteger:eTypeFeel]];
-    activeMenu = eTypeFeel;
     [self collapseAllSectionMenus];
+    if (menuCount > 1) {
+        
+    }else{
+        menuCount = 1;
+    }
+    
    [tableView reloadData];
-    [self performSelector:@selector(showEmotionSelection) withObject:self afterDelay:0.5];
-    imgFeel.image = [UIImage imageNamed:@"Feel_Tick"];
+    nextActiveMenu = eTypeEmotion;
+    [dictSuccessSteps setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:eTypeFeel]];
+    [tableView_Menu reloadData];
+   // [self performSelector:@selector(showEmotionSelection) withObject:self afterDelay:0.5];
     
 }
 
@@ -1518,10 +1701,10 @@ typedef enum{
 
 -(void)showEmotionSelection{
     
-    activeMenu = eTypeEmotion;
     vwEmotionSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourEmotion" owner:self options:nil] objectAtIndex:0];
     vwEmotionSelection.translatesAutoresizingMaskIntoConstraints = NO;
     vwEmotionSelection.delegate = self;
+    vwEmotionSelection.selectedEmotionID = selectedEmotionValue;
    // vwEmotionSelection.emotionaValue = selectedFeelValue;
     [self.view addSubview:vwEmotionSelection];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[vwEmotionSelection]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwEmotionSelection)]];
@@ -1540,20 +1723,26 @@ typedef enum{
 
 
 -(void)emotionSelectedWithEmotionTitle:(NSString*)emotionTitle emotionID:(NSInteger)emotionID;{
+    if (menuCount > 2) {
+        
+    }else{
+        menuCount = 2;
+    }
     selectedEmotionValue = emotionID;
     selectedEmotionTitle = emotionTitle;
     [dictSelectedSteps setObject:[NSNumber numberWithInteger:emotionID] forKey:[NSNumber numberWithInteger:eTypeEmotion]];
     [self collapseAllSectionMenus];
     [tableView reloadData];
-    [self performSelector:@selector(showDriveSelection) withObject:self afterDelay:0.5];
-    imgEmotion.image = [UIImage imageNamed:@"Emotion_Tick"];
+    nextActiveMenu = eTypeDrive;
+    [dictSuccessSteps setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:eTypeEmotion]];
+    [tableView_Menu reloadData];
+   // [self performSelector:@selector(showDriveSelection) withObject:self afterDelay:0.5];
 }
 
 #pragma mark - SELECT YOUR DRIVE Actions
 
 -(void)showDriveSelection{
     
-    activeMenu = eTypeDrive;
     vwDriveSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourDrive" owner:self options:nil] objectAtIndex:0];
     vwDriveSelection.translatesAutoresizingMaskIntoConstraints = NO;
     vwDriveSelection.delegate = self;
@@ -1574,13 +1763,19 @@ typedef enum{
 
 -(void)driveSelectedWithEmotionType:(NSInteger)emotionType{
     
+    if (menuCount > 3) {
+        
+    }else{
+        menuCount = 3;
+    }
     selectedDriveValue = emotionType;
     [dictSelectedSteps setObject:[NSNumber numberWithInteger:emotionType] forKey:[NSNumber numberWithInteger:eTypeDrive]];
-    activeMenu = eTypeGoalsAndDreams;
      [self collapseAllSectionMenus];
     [tableView reloadData];
-    [self performSelector:@selector(showGoalsAndDreamsSelection) withObject:self afterDelay:0.5];
-     imgRate.image = [UIImage imageNamed:@"Drive_Tick"];
+    nextActiveMenu = eTypeGoalsAndDreams;
+    [dictSuccessSteps setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:eTypeDrive]];
+    [tableView_Menu reloadData];
+    //[self performSelector:@selector(showGoalsAndDreamsSelection) withObject:self afterDelay:0.5];
     
     
 }
@@ -1591,7 +1786,6 @@ typedef enum{
     
      isCycleCompleted = false;
     [self shouldeablePostButton:NO];
-    activeMenu = eTypeGoalsAndDreams;
     vwGoalsSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourGoalsAndDreams" owner:self options:nil] objectAtIndex:0];
     vwGoalsSelection.translatesAutoresizingMaskIntoConstraints = NO;
     vwGoalsSelection.delegate = self;
@@ -1612,28 +1806,38 @@ typedef enum{
 
 -(void)goalsAndDreamsSelectedWithTitle:(NSString*)title goalId:(NSInteger)goalsId{
     
+    if (menuCount > 4) {
+        
+    }else{
+        menuCount = 4;
+    }
+    [dictSuccessSteps setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]];
      isCycleCompleted = false;
-   // selectedActionTitle = @"";
+    selectedActionTitle = @"";
     selectedGoalsTitle = title;
     selectedGoalsValue = goalsId;
-    activeMenu = eTypeAction;
     [dictSelectedSteps setObject:[NSNumber numberWithInteger:goalsId] forKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]];
     selectedActionTitle = @"";
     [dictSelectedSteps removeObjectForKey:[NSNumber numberWithInt:eTypeAction]];
-    vwDateView.hidden = TRUE;
-    vwFooter.hidden = false;
-    tableBottom.constant = 70;
-    [tableView setNeedsUpdateConstraints];
     
     [self collapseAllSectionMenus];
     [tableView reloadData];
+    nextActiveMenu = eTypeAction;
+    [dictSuccessSteps setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]];
+    [tableView_Menu reloadData];
+    
      [self performSelector:@selector(showActionSelection) withObject:self afterDelay:0.5];
-      imgGoalsAndDreams.image = [UIImage imageNamed:@"Goals_Tick"];
     
 }
 
 -(void)skipButtonApplied{
     
+    if (menuCount > 4) {
+        
+    }else{
+        menuCount = 4;
+    }
+    [dictSuccessSteps setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]];
     isCycleCompleted = true;
     selectedActionTitle = @"";
     selectedGoalsTitle = @"";
@@ -1641,11 +1845,12 @@ typedef enum{
     [dictSelectedSteps removeObjectForKey:[NSNumber numberWithInt:eTypeGoalsAndDreams]];
     selectedGoalsValue = -1;
     selectedActions = nil;
-    vwDateView.hidden = false;
-    vwFooter.hidden = true;
-    tableBottom.constant = 50;
+   // vwDateView.hidden = false;
+    tableHeight.constant = 200;
     [tableView setNeedsUpdateConstraints];
     [tableView reloadData];
+     nextActiveMenu = eTypeAction;
+    [tableView_Menu reloadData];
    [self shouldeablePostButton:YES];
     //[self showSubmitOverLay];
     //[self createJournalClicked];
@@ -1657,7 +1862,6 @@ typedef enum{
 
 -(void)showActionSelection{
     
-    activeMenu = eTypeAction;
     vwActions = [[[NSBundle mainBundle] loadNibNamed:@"SelectActions" owner:self options:nil] objectAtIndex:0];
     vwActions.translatesAutoresizingMaskIntoConstraints = NO;
     vwActions.delegate = self;
@@ -1680,21 +1884,24 @@ typedef enum{
 
 -(void)actionsSelectedWithTitle:(NSString*)title actionIDs:(NSDictionary*)selectedAcitons{
     
-    
+    if (menuCount > 5) {
+        
+    }else{
+        menuCount = 5;
+    }
+    [dictSuccessSteps setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]];
+    nextActiveMenu = -1;
     isCycleCompleted = true;
     selectedActionTitle = title;
     selectedActions = selectedAcitons;
-    activeMenu = eTypeAction;
      [dictSelectedSteps setObject:selectedAcitons forKey:[NSNumber numberWithInteger:eTypeAction]];
     [tableView reloadData];
-    imgAction.image = [UIImage imageNamed:@"Action_Tick"];
-    vwFooter.hidden = true;
-    vwDateView.hidden = false;
-    tableBottom.constant = 50;
+     nextActiveMenu = eTypeAction;
+     [tableView_Menu reloadData];
+   // vwDateView.hidden = false;
+   tableHeight.constant = 200;
     [tableView setNeedsUpdateConstraints];
     [self shouldeablePostButton:YES];
-    //[self showSubmitOverLay];
-//    [self createJournalClicked];
     
 }
 
@@ -1727,19 +1934,23 @@ typedef enum{
     datePicker.date = [NSDate date];
     NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
     [dateformater setDateFormat:@"d MMM,yyyy h:mm a"];
-    lblDate.text = [dateformater stringFromDate:datePicker.date];
+    strDate = [dateformater stringFromDate:datePicker.date];
 }
 
 -(IBAction)getSelectedDate{
     
     NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
     [dateformater setDateFormat:@"d MMM,yyyy h:mm a"];
-    lblDate.text = [dateformater stringFromDate:datePicker.date];
+    strDate = [dateformater stringFromDate:datePicker.date];
 }
 
 -(IBAction)hidePicker:(id)sender{
     
     vwPickerOverLay.hidden = true;
+    NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
+    [dateformater setDateFormat:@"d MMM,yyyy h:mm a"];
+    strDate = [dateformater stringFromDate:datePicker.date];
+    [tableView_Menu reloadData];
 }
 
 -(void)getCurrentDate{
@@ -1747,7 +1958,7 @@ typedef enum{
     datePicker.date = [NSDate date];
     NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
     [dateformater setDateFormat:@"d MMM,yyyy h:mm a"];
-    lblDate.text = [dateformater stringFromDate:[NSDate date]];
+   strDate = [dateformater stringFromDate:[NSDate date]];
 }
 
 #pragma mark - GENERIC Actions
@@ -1762,23 +1973,79 @@ typedef enum{
 -(IBAction)showJournalMediaMenus:(id)sender{
     
     [self.view endEditing:YES];
+    
+    NSMutableArray *attButons  = [NSMutableArray new];
+    float delay = .1;
+    if ([vwMediaMenuOverLay viewWithTag:1]) {
+        UIView *nextView = [vwMediaMenuOverLay viewWithTag:1];
+        if ([nextView viewWithTag:2]) {
+            UIView *_nextView = [nextView viewWithTag:2];
+            for (UIButton *btn in [_nextView subviews]) {
+                btn.alpha = 0;
+                [attButons addObject:btn];
+            }
+        }
+    }
     vwMediaMenuOverLay.hidden = false;
+    
+    for (UIButton *btn in attButons) {
+        
+        [UIView animateWithDuration:0.5
+                              delay:delay
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             btn.alpha = 1.0;
+                         } 
+                         completion:^(BOOL finished){
+                         }];
+        delay += .1;
+    }
+    
+        
+        
+   
+    
 }
 
 -(IBAction)hideJournalMediaMenus:(id)sender{
    
-      vwMediaMenuOverLay.hidden = true;
-}
-
-
--(IBAction)hideFooterMenus:(id)sender{
+    NSMutableArray *attButons  = [NSMutableArray new];
+    float delay = .1;
+    if ([vwMediaMenuOverLay viewWithTag:1]) {
+        UIView *nextView = [vwMediaMenuOverLay viewWithTag:1];
+        if ([nextView viewWithTag:2]) {
+            UIView *_nextView = [nextView viewWithTag:2];
+            for (UIButton *btn in [_nextView subviews]) {
+                btn.alpha = 1;
+                [attButons addObject:btn];
+            }
+        }
+    }
     
-    tableBottom.constant = 0;
-    [tableView setNeedsUpdateConstraints];
-    vwFooter.hidden = true;
-    shouldHideMenus = false;
-    [tableView reloadData];
+    int count = 0;
+    for (int i = [attButons count] - 1; i >= 0; i --) {
+        UIButton *btn = attButons[i];
+        count ++;
+        [UIView animateWithDuration:0.5
+                              delay:delay
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             btn.alpha = 0.0;
+                         }
+                         completion:^(BOOL finished){
+                             if (count == 5) {
+                                 vwMediaMenuOverLay.hidden = true;
+                             }
+                         }];
+        delay += .1;
+    }
+   
+    
+    
 }
+
+
+
 -(void)collapseAllSectionMenus{
     
     shouldHideMenus = true;
@@ -1788,13 +2055,10 @@ typedef enum{
         isJournalSet = true;
          requiredCellCount = 4;
     }
-    vwDateView.hidden = true;
-    vwFooter.hidden = false;
-    tableBottom.constant = 70;
+    tableHeight.constant = 160;
     if (isCycleCompleted) {
-        vwDateView.hidden = false;
-        vwFooter.hidden = true;
-        tableBottom.constant = 50;
+       // vwDateView.hidden = false;
+        tableHeight.constant = 200;;
     }
     
     [tableView setNeedsUpdateConstraints];
@@ -1816,7 +2080,7 @@ typedef enum{
     [self getAllMediaFiles];
     [tableView reloadData];
     [self.view hideActivityView];
-
+    
     
     
 }
@@ -1954,13 +2218,59 @@ typedef enum{
     [self showLoadingScreen];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"d MMM,yyyy h:mm a"];
-    NSDate *dateFromString = [dateFormatter dateFromString:lblDate.text];
+    NSDate *dateFromString = [dateFormatter dateFromString:strDate];
     
     NSMutableDictionary *params = [NSMutableDictionary new];
-    [params setObject:[NSNumber numberWithInteger:selectedFeelValue] forKey:@"emotion_value"];
+    
+    NSInteger feelValue = 0;
+    switch (selectedFeelValue) {
+        case 0:
+            feelValue = 2;
+            break;
+        case 1:
+            feelValue = 1;
+            break;
+        case 2:
+            feelValue = 0;
+            break;
+        case 3:
+            feelValue = -1;
+            break;
+        case 4:
+            feelValue = -2;
+            break;
+            
+        default:
+            break;
+    }
+    
+    NSInteger driveValue = 0;
+    switch (selectedDriveValue) {
+        case 0:
+            driveValue = 2;
+            break;
+        case 1:
+            driveValue = 1;
+            break;
+        case 2:
+            driveValue = 0;
+            break;
+        case 3:
+            driveValue = -1;
+            break;
+        case 4:
+            driveValue = -2;
+            break;
+            
+        default:
+            break;
+    }
+
+    
+    [params setObject:[NSNumber numberWithInteger:feelValue] forKey:@"emotion_value"];
     [params setObject:[NSNumber numberWithInteger:selectedEmotionValue] forKey:@"emotion_id"];
     [params setObject:[NSNumber numberWithInteger:selectedEventValue] forKey:@"event_id"];
-    [params setObject:[NSNumber numberWithInteger:selectedDriveValue] forKey:@"drive_value"];
+    [params setObject:[NSNumber numberWithInteger:driveValue] forKey:@"drive_value"];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
     [params setObject:[NSNumber numberWithDouble:[dateFromString timeIntervalSince1970] ] forKey:@"journal_date"];
     if (selectedGoalsValue > 0) [params setObject:[NSNumber numberWithInteger:selectedGoalsValue] forKey:@"goal_id"];

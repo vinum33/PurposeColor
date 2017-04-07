@@ -28,6 +28,7 @@
     IBOutlet UITableView *tableView;
     IBOutlet UIButton *btnClear;
     IBOutlet UIButton *btnSend;
+    NSInteger selectedIndex;
 
     
     NSMutableArray *arrEmotions;
@@ -256,9 +257,12 @@
     if ([object isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)object;
         index = btn.tag;
-    }else{
+    }else if([object isKindOfClass:[NSIndexPath class]]){
         NSIndexPath *indexPath = (NSIndexPath*)object;
         index = indexPath.row;
+    }
+    else{
+        index = [object integerValue];
     }
     if (index < arrEmotions.count ) {
         NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrEmotions[index]];
@@ -356,6 +360,7 @@
     }
     
     if (indexPath.row < arrEmotions.count) {
+        selectedIndex = indexPath.row ;
         NSDictionary *details = arrEmotions[indexPath.row ];
         [quickGoalView loadGoalDetailsWithGoalID:[NSString stringWithFormat:@"%d",[[details objectForKey:@"id"] integerValue]]];
     }
@@ -392,6 +397,16 @@
         quickGoalView = nil;
         
     }];
+    
+}
+
+-(void)goalSelectedFromQuickView{
+    
+    if (selectedIndex < arrEmotions.count) {
+       
+        [self actionSelected:[NSNumber numberWithInteger:selectedIndex]];
+        [self closeQuickGoalViewPopUp];
+    }
     
 }
 

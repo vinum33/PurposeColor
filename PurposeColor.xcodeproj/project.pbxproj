@@ -97,15 +97,20 @@
 		E57AD6B71D40E7390042A8C4 /* GoalsAndDreamsListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6B21D40E7390042A8C4 /* GoalsAndDreamsListingViewController.m */; };
 		E57AD6B81D40E7390042A8C4 /* InnerTableCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6B51D40E7390042A8C4 /* InnerTableCustomCell.m */; };
 		E57AD6C01D40E7610042A8C4 /* ActionDetailPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */; };
+		E581A4EF1E94E0D90024D052 /* AwarenessMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E581A4EE1E94E0D90024D052 /* AwarenessMediaViewController.m */; };
 		E5824B001DB4AD8700BBA4F4 /* FTPopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E5824AFF1DB4AD8700BBA4F4 /* FTPopOverMenu.m */; };
 		E586A7201E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E586A71F1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m */; };
 		E586A7231E7FB0BE000F0A37 /* DroidSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E586A7211E7FB0BE000F0A37 /* DroidSans.ttf */; };
 		E586A7241E7FB0BE000F0A37 /* DroidSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E586A7221E7FB0BE000F0A37 /* DroidSans-Bold.ttf */; };
 		E586A7281E7FB85B000F0A37 /* CellForEventDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = E586A7271E7FB85B000F0A37 /* CellForEventDisplay.m */; };
+		E58D16CE1E93738F0094C48B /* SelectedValue_2.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D16CA1E93738F0094C48B /* SelectedValue_2.m */; };
+		E58D16CF1E93738F0094C48B /* SelectedValue_1.m in Sources */ = {isa = PBXBuildFile; fileRef = E58D16CD1E93738F0094C48B /* SelectedValue_1.m */; };
 		E58F49AA1E7FD8A500994836 /* CellForMenus.m in Sources */ = {isa = PBXBuildFile; fileRef = E58F49A91E7FD8A500994836 /* CellForMenus.m */; };
 		E58F49AE1E7FF6B500994836 /* EventTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E58F49AD1E7FF6B500994836 /* EventTitleCell.m */; };
 		E58F49B21E80024D00994836 /* EventDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E58F49B11E80024D00994836 /* EventDescriptionCell.m */; };
 		E59168D11DE6BD0200A3BDB9 /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E59168D01DE6BD0200A3BDB9 /* KILabel.m */; };
+		E5918E261E92112300E203D3 /* AwarenessHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5918E251E92112300E203D3 /* AwarenessHeader.xib */; };
+		E5918E291E92117000E203D3 /* AwarenessHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = E5918E281E92117000E203D3 /* AwarenessHeader.m */; };
 		E59D746F1E5AF32B005844D5 /* JournalListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E59D746E1E5AF32B005844D5 /* JournalListViewController.m */; };
 		E59D74731E5AF6F0005844D5 /* JournalListCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E59D74721E5AF6F0005844D5 /* JournalListCustomCell.m */; };
 		E5A947321D33B057008BBC7F /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A9472F1D33B057008BBC7F /* HPGrowingTextView.m */; };
@@ -426,6 +431,8 @@
 		E57AD6B51D40E7390042A8C4 /* InnerTableCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InnerTableCustomCell.m; sourceTree = "<group>"; };
 		E57AD6BE1D40E7610042A8C4 /* ActionDetailPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDetailPageViewController.h; sourceTree = "<group>"; };
 		E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDetailPageViewController.m; sourceTree = "<group>"; };
+		E581A4ED1E94E0D90024D052 /* AwarenessMediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwarenessMediaViewController.h; sourceTree = "<group>"; };
+		E581A4EE1E94E0D90024D052 /* AwarenessMediaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwarenessMediaViewController.m; sourceTree = "<group>"; };
 		E5824AFE1DB4AD8700BBA4F4 /* FTPopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPopOverMenu.h; sourceTree = "<group>"; };
 		E5824AFF1DB4AD8700BBA4F4 /* FTPopOverMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPopOverMenu.m; sourceTree = "<group>"; };
 		E586A71E1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmotionalAwarenessViewController.h; sourceTree = "<group>"; };
@@ -434,6 +441,10 @@
 		E586A7221E7FB0BE000F0A37 /* DroidSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DroidSans-Bold.ttf"; sourceTree = "<group>"; };
 		E586A7261E7FB85B000F0A37 /* CellForEventDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellForEventDisplay.h; sourceTree = "<group>"; };
 		E586A7271E7FB85B000F0A37 /* CellForEventDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellForEventDisplay.m; sourceTree = "<group>"; };
+		E58D16C91E93738F0094C48B /* SelectedValue_2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedValue_2.h; sourceTree = "<group>"; };
+		E58D16CA1E93738F0094C48B /* SelectedValue_2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedValue_2.m; sourceTree = "<group>"; };
+		E58D16CC1E93738F0094C48B /* SelectedValue_1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedValue_1.h; sourceTree = "<group>"; };
+		E58D16CD1E93738F0094C48B /* SelectedValue_1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedValue_1.m; sourceTree = "<group>"; };
 		E58F49A81E7FD8A500994836 /* CellForMenus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellForMenus.h; sourceTree = "<group>"; };
 		E58F49A91E7FD8A500994836 /* CellForMenus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellForMenus.m; sourceTree = "<group>"; };
 		E58F49AC1E7FF6B500994836 /* EventTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTitleCell.h; sourceTree = "<group>"; };
@@ -442,6 +453,9 @@
 		E58F49B11E80024D00994836 /* EventDescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDescriptionCell.m; sourceTree = "<group>"; };
 		E59168CF1DE6BD0200A3BDB9 /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		E59168D01DE6BD0200A3BDB9 /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
+		E5918E251E92112300E203D3 /* AwarenessHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AwarenessHeader.xib; sourceTree = "<group>"; };
+		E5918E271E92117000E203D3 /* AwarenessHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwarenessHeader.h; sourceTree = "<group>"; };
+		E5918E281E92117000E203D3 /* AwarenessHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwarenessHeader.m; sourceTree = "<group>"; };
 		E59D746D1E5AF32B005844D5 /* JournalListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalListViewController.h; sourceTree = "<group>"; };
 		E59D746E1E5AF32B005844D5 /* JournalListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalListViewController.m; sourceTree = "<group>"; };
 		E59D74711E5AF6F0005844D5 /* JournalListCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalListCustomCell.h; sourceTree = "<group>"; };
@@ -801,7 +815,7 @@
 		E506802C1D30F1490041B077 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E586A71D1E7F9E0B000F0A37 /* New Emotional Awareness */,
+				E586A71D1E7F9E0B000F0A37 /* New Emotional Awareness1 */,
 				E573C21C1E5D62F10070DF7E /* JournalDetailViewController */,
 				E59D746C1E5AF26A005844D5 /* JournalListView */,
 				E52DFB1A1DE7FB8D0033310F /* Report Abuse */,
@@ -1442,6 +1456,15 @@
 			path = ../ActionDetailPage;
 			sourceTree = "<group>";
 		};
+		E581A4EC1E94E0B20024D052 /* Medias */ = {
+			isa = PBXGroup;
+			children = (
+				E581A4ED1E94E0D90024D052 /* AwarenessMediaViewController.h */,
+				E581A4EE1E94E0D90024D052 /* AwarenessMediaViewController.m */,
+			);
+			path = Medias;
+			sourceTree = "<group>";
+		};
 		E5824AFD1DB4AD8700BBA4F4 /* FTPopOverMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1460,9 +1483,13 @@
 			name = Compose;
 			sourceTree = "<group>";
 		};
-		E586A71D1E7F9E0B000F0A37 /* New Emotional Awareness */ = {
+		E586A71D1E7F9E0B000F0A37 /* New Emotional Awareness1 */ = {
 			isa = PBXGroup;
 			children = (
+				E581A4EC1E94E0B20024D052 /* Medias */,
+				E58D16C81E93738F0094C48B /* SelectedValues_2 */,
+				E58D16CB1E93738F0094C48B /* SelectedValues_1 */,
+				E5918E241E9210BA00E203D3 /* Header */,
 				E53A90FD1E85262200AB98A8 /* CellForLocAndContact */,
 				E58F49AF1E80023800994836 /* EventDescription */,
 				E58F49AB1E7FF6A000994836 /* EventTitleCell */,
@@ -1471,6 +1498,7 @@
 				E586A71E1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.h */,
 				E586A71F1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m */,
 			);
+			name = "New Emotional Awareness1";
 			path = "New Emotional Awareness";
 			sourceTree = "<group>";
 		};
@@ -1481,6 +1509,24 @@
 				E586A7271E7FB85B000F0A37 /* CellForEventDisplay.m */,
 			);
 			path = CellForSectionTopPlaceHolder;
+			sourceTree = "<group>";
+		};
+		E58D16C81E93738F0094C48B /* SelectedValues_2 */ = {
+			isa = PBXGroup;
+			children = (
+				E58D16C91E93738F0094C48B /* SelectedValue_2.h */,
+				E58D16CA1E93738F0094C48B /* SelectedValue_2.m */,
+			);
+			path = SelectedValues_2;
+			sourceTree = "<group>";
+		};
+		E58D16CB1E93738F0094C48B /* SelectedValues_1 */ = {
+			isa = PBXGroup;
+			children = (
+				E58D16CC1E93738F0094C48B /* SelectedValue_1.h */,
+				E58D16CD1E93738F0094C48B /* SelectedValue_1.m */,
+			);
+			path = SelectedValues_1;
 			sourceTree = "<group>";
 		};
 		E58F49A71E7FD28800994836 /* CellForMenus */ = {
@@ -1517,6 +1563,16 @@
 				E59168D01DE6BD0200A3BDB9 /* KILabel.m */,
 			);
 			path = KILabel;
+			sourceTree = "<group>";
+		};
+		E5918E241E9210BA00E203D3 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				E5918E251E92112300E203D3 /* AwarenessHeader.xib */,
+				E5918E271E92117000E203D3 /* AwarenessHeader.h */,
+				E5918E281E92117000E203D3 /* AwarenessHeader.m */,
+			);
+			path = Header;
 			sourceTree = "<group>";
 		};
 		E59D746C1E5AF26A005844D5 /* JournalListView */ = {
@@ -2480,6 +2536,7 @@
 				E56C1D291E83F24700DFFE5B /* ASJTag.xib in Resources */,
 				E5F612FB1D4887D4002B7CB5 /* flash-off.png in Resources */,
 				E50680CD1D30F1490041B077 /* ArialBlack.ttf in Resources */,
+				E5918E261E92112300E203D3 /* AwarenessHeader.xib in Resources */,
 				E5ED6C8E1D648CDD009B9B37 /* SelectYourEvent.xib in Resources */,
 				E5A9473D1D33B0E6008BBC7F /* MessageEntryBackground@2x.png in Resources */,
 				E5A947421D33B0E6008BBC7F /* MessageEntrySendButtonPressed.png in Resources */,
@@ -2610,6 +2667,7 @@
 			files = (
 				E5F7C5BD1D4761EA00585349 /* CircleProgressBar.m in Sources */,
 				E50680C81D30F1490041B077 /* APIMapper.m in Sources */,
+				E5918E291E92117000E203D3 /* AwarenessHeader.m in Sources */,
 				E5EC866E1D7042B500537A90 /* MemmoriesDisplayCell.m in Sources */,
 				E5ED83DA1D9B83E000266CD5 /* ACRObservingPlayerItem.m in Sources */,
 				E5EFC2F21D74394500844ED3 /* ProfilePageViewController.m in Sources */,
@@ -2632,6 +2690,7 @@
 				E5F51DFF1DA65251000E8487 /* InnerTableViewCell.m in Sources */,
 				E5ED4EAD1D90FDF90051B177 /* shareMedias.m in Sources */,
 				E5B286021DAE0AA8006CE3AF /* EmotionSessionLists.m in Sources */,
+				E581A4EF1E94E0D90024D052 /* AwarenessMediaViewController.m in Sources */,
 				E5F9FE551D49C29400F22169 /* GemsListCollectionViewCell.m in Sources */,
 				E5E333F91D65B7D200C7CFA6 /* SelectActions.m in Sources */,
 				E58F49AA1E7FD8A500994836 /* CellForMenus.m in Sources */,
@@ -2664,6 +2723,7 @@
 				E57AD6B81D40E7390042A8C4 /* InnerTableCustomCell.m in Sources */,
 				E50680C01D30F1490041B077 /* Constants.m in Sources */,
 				E58F49B21E80024D00994836 /* EventDescriptionCell.m in Sources */,
+				E58D16CF1E93738F0094C48B /* SelectedValue_1.m in Sources */,
 				E5F75E471D6EE96C009EF545 /* MyMemmoriesViewController.m in Sources */,
 				E5F70EF41D50BDD900BD1A4A /* ChatComposeViewController.m in Sources */,
 				E5ED40001D827F6700A3F455 /* UITextView+Placeholder.m in Sources */,
@@ -2690,6 +2750,7 @@
 				E56AF3B61DB626D300029DA1 /* JournalViewController.m in Sources */,
 				E586A7281E7FB85B000F0A37 /* CellForEventDisplay.m in Sources */,
 				E5EC866B1D7023A700537A90 /* GoalDetailViewController.m in Sources */,
+				E58D16CE1E93738F0094C48B /* SelectedValue_2.m in Sources */,
 				E5E8A3161DD31957006DF12E /* ReminderListingCell.m in Sources */,
 				E5EDF0FD1DB21421005D0660 /* AMPopTip+Animation.m in Sources */,
 				E5F612E11D4887A2002B7CB5 /* UIView+RNActivityView.m in Sources */,
@@ -2883,8 +2944,8 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "PurposeColor/Purpose Color.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = WT8KCK2SX3;
 				ENABLE_BITCODE = NO;
@@ -2900,8 +2961,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
-				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: com.purposecodes.purposecolor";
+				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
+				PROVISIONING_PROFILE_SPECIFIER = "PurposeColor Dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2915,8 +2976,8 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "PurposeColor/Purpose Color.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = WT8KCK2SX3;
 				ENABLE_BITCODE = NO;
@@ -2932,8 +2993,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "dd2c673e-f44b-4399-ad24-7cc9f8eaa483";
-				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: com.purposecodes.purposecolor";
+				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
+				PROVISIONING_PROFILE_SPECIFIER = "PurposeColor Dev";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

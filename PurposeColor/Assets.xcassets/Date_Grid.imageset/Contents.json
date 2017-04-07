@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icons-all60.png",
+      "filename" : "clock60.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons-all120.png",
+      "filename" : "clock120.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons-all180.png",
+      "filename" : "clock180.png",
       "scale" : "3x"
     }
   ],
