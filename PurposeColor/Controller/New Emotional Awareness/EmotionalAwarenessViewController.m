@@ -669,11 +669,11 @@ typedef enum{
         AwarenessHeader *view = [viewArray objectAtIndex:0];
         view.lblGalleryCount.text = [NSString stringWithFormat:@"%d",arrDataSource.count];
         if (arrDataSource.count) {
-            id object = [arrDataSource lastObject];
+            id object = [arrDataSource firstObject];
             if ([object isKindOfClass:[NSString class]]) {
                 
                 //When Create
-                NSString *fileName = [arrDataSource lastObject];
+                NSString *fileName = [arrDataSource firstObject];
                 if ([[fileName pathExtension] isEqualToString:@"jpeg"]) {
                     //This is Image File with .png Extension , Photos.
                     NSString *filePath = [Utility getMediaSaveFolderPath];
@@ -1615,7 +1615,7 @@ typedef enum{
 
 #pragma mark - SELECT YOUR EVENT Actions
 
--(void)showEventSelectionView{
+-(IBAction)showEventSelectionView{
     
     [self.view endEditing:YES];
     vwEventSelection = [[[NSBundle mainBundle] loadNibNamed:@"SelectYourEvent" owner:self options:nil] objectAtIndex:0];

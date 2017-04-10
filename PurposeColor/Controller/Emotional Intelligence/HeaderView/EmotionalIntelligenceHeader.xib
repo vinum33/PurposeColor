@@ -72,7 +72,7 @@
                         <constraint firstAttribute="width" constant="30" id="B39-ak-gW0"/>
                         <constraint firstAttribute="height" constant="30" id="ivb-Mf-jbj"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="18"/>
                     <state key="normal">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>

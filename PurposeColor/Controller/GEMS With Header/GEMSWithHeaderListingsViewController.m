@@ -41,6 +41,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     IBOutlet UIView *vwSegmentSelection;
     IBOutlet UIButton *btnEmotion;
     IBOutlet UIButton *btnGoal;
+    UIButton *btnHand;
     UIImage *headerImage;
     float heightForImageCell;
     
@@ -78,8 +79,10 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     [super viewDidLoad];
     [self setUp];
     [self loadAllEmotionsByPagination:NO withPageNumber:currentPage_Emotions];
+
     // Do any additional setup after loading the view.
 }
+
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -89,6 +92,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 
 -(void)setUp{
     
+       
     currentPage_Emotions = 1;
     currentPage_Goals = 1;
     
@@ -322,6 +326,25 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     return totalCount;
 }
 
+-(void)checking{
+    
+}
+
+-(void) tableView:(UITableView *) tableView willDisplayCell:(UITableViewCell *) cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //row number on which you want to animate your view
+    //row number could be either 0 or 1 as you are creating two cells
+    //suppose you want to animate view on cell at 0 index
+    if (indexPath.section == 0 && indexPath.row == 0) { //check for the 0th index cell
+    {
+           }
+        
+}
+
+    
+        // access the view which you want to animate from it's tag
+        
+}
 
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -330,14 +353,26 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     if (indexPath.section == 0 && indexPath.row == 0) {
         static NSString *CellIdentifier = @"HeaderImage";
         UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        UIImageView *imgHdeader;
-//        if ([cell.contentView viewWithTag:101]) {
-//            imgHdeader = (UIImageView*)[cell.contentView viewWithTag:101];
-//        }
-//        imgHdeader.image = headerImage;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
+        if ([[cell contentView]viewWithTag:101]) {
+            UIButton *_btnHand = [[cell contentView]viewWithTag:101];
+            [_btnHand removeFromSuperview];
+        }
+        
+        UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        doneBtn.frame = CGRectMake(aTableView.frame.size.width / 2.0 - 15, 155, 20, 20);
+        [doneBtn setImage:[UIImage imageNamed:@"hand"] forState:UIControlStateNormal];
+        doneBtn.tag = 101;
+        [cell.contentView addSubview:doneBtn];
+        
+        [UIView animateWithDuration:0.5 delay:0 options:(UIViewAnimationCurveLinear | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat) animations:^{
+            [doneBtn setTransform:CGAffineTransformMakeScale(1.5, 1.5)];
+            doneBtn.alpha = 0.2;
+        }  completion:nil];
+        
+        
         return cell;
     }
     
@@ -398,7 +433,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 -(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 && indexPath.row == 0) {
-        return 150;
+        return 180;
     }
     
         // By Emotions
@@ -484,7 +519,7 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     }
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    
+   
     /**! Pagination call !**/
     
 }

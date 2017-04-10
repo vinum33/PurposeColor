@@ -753,7 +753,7 @@ typedef enum{
     CGPoint point = CGPointMake(sender.center.x - 20 , sender.center.y - 20);
     CGPoint p = [sender.superview convertPoint:point toView:self.view];
     popTip = [AMPopTip popTip];
-    [popTip showText:@"Supporting Emotions" direction:AMPopTipDirectionUp maxWidth:(self.view.frame.size.width - p.x) inView:self.view fromFrame:CGRectMake(p.x, p.y, 40, 40) duration:2];
+    [popTip showText:@"When rating for your feeling & its reactions are positive." direction:AMPopTipDirectionUp maxWidth:(self.view.frame.size.width - p.x) inView:self.view fromFrame:CGRectMake(p.x, p.y, 40, 40) duration:3];
 
 }
 
