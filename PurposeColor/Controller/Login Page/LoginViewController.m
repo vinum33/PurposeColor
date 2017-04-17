@@ -467,8 +467,8 @@ typedef enum{
 
 -(IBAction)tapToLogin:(id)sender{
   
-//    [self bypassLogin];
-//    return;
+ [self bypassLogin];
+  return;
     
     [self checkAllFieldsAreValid:^{
         [self showLoadingScreen];
@@ -590,63 +590,61 @@ typedef enum{
 
 -(void)createUserWithInfo:(NSDictionary*)userDetails{
     
-     if ([[userDetails objectForKey:@"code"] integerValue] == kSuccessCode) {
-         
-         if ([userDetails objectForKey:@"user_id"]) {
-             [User sharedManager].userId = [userDetails objectForKey:@"user_id"];
-         }
-         if ([userDetails objectForKey:@"usertype_id"]) {
-             [User sharedManager].userTypeId  = [userDetails objectForKey:@"usertype_id"];
-         }
-         if ([userDetails objectForKey:@"firstname"]) {
-             [User sharedManager].name  = [userDetails objectForKey:@"firstname"];
-         }
-         if ([userDetails objectForKey:@"email"]) {
-             [User sharedManager].email  = [userDetails objectForKey:@"email"];
-         }
-         if ([userDetails objectForKey:@"regdate"]) {
-             [User sharedManager].regDate  = [userDetails objectForKey:@"regdate"];
-         }
-         if ([userDetails objectForKey:@"logged_status"]) {
-             [User sharedManager].loggedStatus  = [userDetails objectForKey:@"logged_status"];
-         }
-         if ([userDetails objectForKey:@"verified_status"]) {
-             [User sharedManager].verifiedStatus  = [userDetails objectForKey:@"verified_status"];
-         }
-         if ([userDetails objectForKey:@"profileurl"]) {
-             [User sharedManager].profileurl  = [userDetails objectForKey:@"profileurl"];
-         }
-         if ([userDetails objectForKey:@"cartcount"]) {
-             [User sharedManager].cartCount  = [[userDetails objectForKey:@"cartcount"] integerValue];
-         }
-         if ([userDetails objectForKey:@"notificationcount"]) {
-             [User sharedManager].notificationCount  = [[userDetails objectForKey:@"notificationcount"] integerValue];
-         }
-         if ([userDetails objectForKey:@"company_id"]) {
-             [User sharedManager].companyID  = [userDetails objectForKey:@"company_id"];
-         }
-         if ([userDetails objectForKey:@"status"]) {
-             [User sharedManager].statusMsg  = [userDetails objectForKey:@"status"];
-         }
-         if ([userDetails objectForKey:@"follow_status"]) {
-             [User sharedManager].follow_status  = [[userDetails objectForKey:@"follow_status"] boolValue];
-         }
-         if ([userDetails objectForKey:@"daily_notify"]) {
-             [User sharedManager].daily_notify  = [[userDetails objectForKey:@"daily_notify"] boolValue];
-         }
-         if ([userDetails objectForKey:@"token_id"]) {
-             [User sharedManager].token  = [userDetails objectForKey:@"token_id"];
-         }
-                  
-         /*!............ Saving user to NSUserDefaults.............!*/
-         
-         [Utility saveUserObject:[User sharedManager] key:@"USER"];
-     }
+    if ([[userDetails objectForKey:@"code"] integerValue] == kSuccessCode) {
+        
+        if ([userDetails objectForKey:@"user_id"]) {
+            [User sharedManager].userId = [userDetails objectForKey:@"user_id"];
+        }
+        if ([userDetails objectForKey:@"usertype_id"]) {
+            [User sharedManager].userTypeId  = [userDetails objectForKey:@"usertype_id"];
+        }
+        if ([userDetails objectForKey:@"firstname"]) {
+            [User sharedManager].name  = [userDetails objectForKey:@"firstname"];
+        }
+        if ([userDetails objectForKey:@"email"]) {
+            [User sharedManager].email  = [userDetails objectForKey:@"email"];
+        }
+        if ([userDetails objectForKey:@"regdate"]) {
+            [User sharedManager].regDate  = [userDetails objectForKey:@"regdate"];
+        }
+        if ([userDetails objectForKey:@"logged_status"]) {
+            [User sharedManager].loggedStatus  = [userDetails objectForKey:@"logged_status"];
+        }
+        if ([userDetails objectForKey:@"verified_status"]) {
+            [User sharedManager].verifiedStatus  = [userDetails objectForKey:@"verified_status"];
+        }
+        if ([userDetails objectForKey:@"profileurl"]) {
+            [User sharedManager].profileurl  = [userDetails objectForKey:@"profileurl"];
+        }
+        if ([userDetails objectForKey:@"cartcount"]) {
+            [User sharedManager].cartCount  = [[userDetails objectForKey:@"cartcount"] integerValue];
+        }
+        if ([userDetails objectForKey:@"notificationcount"]) {
+            [User sharedManager].notificationCount  = [[userDetails objectForKey:@"notificationcount"] integerValue];
+        }
+        if ([userDetails objectForKey:@"company_id"]) {
+            [User sharedManager].companyID  = [userDetails objectForKey:@"company_id"];
+        }
+        if ([userDetails objectForKey:@"status"]) {
+            [User sharedManager].statusMsg  = [userDetails objectForKey:@"status"];
+        }
+        if ([userDetails objectForKey:@"follow_status"]) {
+            [User sharedManager].follow_status  = [[userDetails objectForKey:@"follow_status"] boolValue];
+        }
+        if ([userDetails objectForKey:@"daily_notify"]) {
+            [User sharedManager].daily_notify  = [[userDetails objectForKey:@"daily_notify"] boolValue];
+        }
+        if ([userDetails objectForKey:@"token_id"]) {
+            [User sharedManager].token  = [userDetails objectForKey:@"token_id"];
+        }
+        
+        /*!............ Saving user to NSUserDefaults.............!*/
+        
+        [Utility saveUserObject:[User sharedManager] key:@"USER"];
+    }
     
- 
+    
 }
-
-
 
 
 

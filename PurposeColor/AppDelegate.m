@@ -55,6 +55,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // Override point for customization after application launch.
+    [[NSNotificationCenter defaultCenter] addObserver : self
+                                             selector : @selector(logoutSinceUnAuthorized:)
+                                                 name : @"UNAUTHORIZED"
+                                               object : nil];
+    
     [Fabric with:@[[Crashlytics class]]];
     [Utility setUpGoogleMapConfiguration];
     [self getVersionStatus];
@@ -77,6 +82,25 @@
                                                           openURL:url
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation];
+}
+
+-(void)logoutSinceUnAuthorized:(NSNotification*)notification{
+    NSLog(@"LOGOUT");
+    BOOL userExists = [self loadUserObjectWithKey:@"USER"];
+    if (!userExists) return;
+    
+    NSString *text = @"Invalid authentication token!";
+    if (notification.userInfo) {
+        NSDictionary *dict  = notification.userInfo;
+        text = [dict objectForKey:@"text"];
+    }
+    [self clearUserSessions];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Logout"
+                                                    message:text
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 -(void)getUserInfo{
@@ -236,6 +260,9 @@
 
 -(void)resetBadgeCount{
     
+    BOOL userExists = [self loadUserObjectWithKey:@"USER"];
+    if (!userExists) return;
+    
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [APIMapper updateBadgeCountWithuserIDOnsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -265,8 +292,10 @@
 }
 
 -(void)updateTokenToWebServerWithToken:(NSString*)token{
-    
-    if (token.length)
+    NSLog(@"PUSH");
+    BOOL userExists = [self loadUserObjectWithKey:@"USER"];
+    if (!userExists) return;
+    if ((token.length) && [User sharedManager].userId.length)
         [APIMapper setPushNotificationTokenWithUserID:[User sharedManager].userId token:token success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
         } failure:^(AFHTTPRequestOperation *task, NSError *error) {
@@ -1124,6 +1153,9 @@
 
 -(void)clearUserSessions{
     
+    BOOL userExists = [self loadUserObjectWithKey:@"USER"];
+    if (!userExists) return;
+    
     [self showLoadingScreen];
     [APIMapper logoutFromAccount:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -1188,7 +1220,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     
-    [self resetBadgeCount];
+     [self resetBadgeCount];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

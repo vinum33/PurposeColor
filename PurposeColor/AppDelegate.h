@@ -60,6 +60,9 @@
 -(void)clearUserSessions;
 -(void)showEmotionalAwarenessPageIsFromVisualization:(BOOL)isFromVsiualization;
 -(void)showJournalListView;
-
+-(void)showCommubityGEMS;
+-(void)showGEMSListingsPage;
+-(void)emotionalIntelligencePage;
+-(void)logoutSinceUnAuthorized;
 @end
 

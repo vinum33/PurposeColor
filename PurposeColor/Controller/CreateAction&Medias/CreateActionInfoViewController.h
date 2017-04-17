@@ -30,6 +30,11 @@
  */
 -(void)newActionCreatedWithActionTitle:(NSString*)actionTitle actionID:(NSInteger)actionID;
 
+/*!
+ *This method is invoked when user Created A New Generic Post
+ */
+-(void)newPostCreatedWithPostTitle:(NSString*)title postID:(NSInteger)postID;
+
 
 @end
 
@@ -41,6 +46,7 @@ typedef enum{
     eActionTypeGoalsAndDreams = 1,
     eActionTypeActions = 2,
     eActionTypeShare = 3,
+    eActionTypeCommunity = 4,
     
 }ActionType;
 

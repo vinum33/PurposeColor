@@ -23,6 +23,7 @@
 @interface JournalListViewController () <UIGestureRecognizerDelegate> {
     
     IBOutlet UITableView *tableView;
+    IBOutlet UILabel *lblJournal;
     NSMutableArray *arrJournal;
     BOOL isDataAvailable;
     NSInteger totalPages;
@@ -50,6 +51,9 @@
 }
 
 -(void)setUp{
+    if (_strRegion.length) {
+        lblJournal.text = [NSString stringWithFormat:@"%@ JOURNALS", [_strRegion uppercaseString]];
+    }
     
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight = 200;
@@ -73,7 +77,7 @@
     if (!isPagination) {
         [self showLoadingScreen];
     }
-    [APIMapper getUserJournalWithUserID:[User sharedManager].userId page:pageNo Onsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [APIMapper getUserJournalWithUserID:[User sharedManager].userId page:pageNo region:_strRegion Onsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self getJournalsFromResponds:responseObject];
         [self hideLoadingScreen];
         [tableView setHidden:false];

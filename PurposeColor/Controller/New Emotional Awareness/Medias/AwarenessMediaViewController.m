@@ -18,6 +18,7 @@
     PhotoBrowser *photoBrowser;
     CustomAudioPlayerView *vwAudioPlayer;
      CGPoint viewStartLocation;
+    BOOL isDataAvailable;
 }
 
 @property (nonatomic,strong) NSIndexPath *draggingCellIndexPath;
@@ -32,7 +33,12 @@
     [super viewDidLoad];
     UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(dragCell:)];
     [longPressGestureRecognizer setDelegate:self];
+    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [tableView addGestureRecognizer:longPressGestureRecognizer];
+    isDataAvailable = false;
+    if (_arrMedias.count)  isDataAvailable = true;
+        
+    
     [tableView reloadData];
     // Do any additional setup after loading the view.
 }
@@ -48,6 +54,8 @@
 
 -(NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (!isDataAvailable) return 1;
+    
    return  _arrMedias.count;
 }
 
@@ -61,6 +69,21 @@
     [cell.indicator stopAnimating];
     [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
     
+    if (!isDataAvailable) {
+        
+        static NSString *MyIdentifier = @"MyIdentifier";
+        UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:MyIdentifier];
+        if (cell == nil)
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                          reuseIdentifier:MyIdentifier];
+        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Medias Available."];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.contentView.backgroundColor = [UIColor clearColor];
+        cell.userInteractionEnabled = false;
+        cell.textLabel.textColor = [UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:1.0];
+        return cell;
+    }
+
     if (indexPath.row < _arrMedias.count) {
         id object = _arrMedias[indexPath.row];
         NSString *strFile;
@@ -397,6 +420,10 @@
         NSDictionary *dict = sortedFiles[i];
         [_arrMedias insertObject:[dict objectForKey:@"path" ] atIndex:0];
     }
+    isDataAvailable = false;
+    if (_arrMedias.count) isDataAvailable = true;
+        
+    
     
 }
 

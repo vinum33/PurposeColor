@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "journal50.png",
+      "filename" : "eyeblue30.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "journal100.png",
+      "filename" : "eyeblue60.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "journal150.png",
+      "filename" : "eyeblue90.png",
       "scale" : "3x"
     }
   ],

@@ -432,6 +432,9 @@ static __inline__ CGFloat CGPointDistanceBetweenTwoPoints(CGPoint point1, CGPoin
         
         if (_hitLayer.accentPrecent < FLT_EPSILON) {
             [_hitLayer animateToAccent:_maxAccentPrecent];
+            if ([self.delegate respondsToSelector:@selector(pieChartClickedWithRegion:)]) {
+                [self.delegate pieChartClickedWithRegion:_hitLayer.data.regionName];
+            }
         } else {
             [_hitLayer animateToAccent:0];
         }

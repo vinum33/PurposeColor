@@ -16,7 +16,7 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=register",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"firstname": userName,
                              @"email": email,
                              @"password":password,
@@ -26,6 +26,7 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         failure (operation,error);
     }];
 
@@ -38,7 +39,7 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=login",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"email": userName,
                              @"password": password,
                              };
@@ -61,7 +62,7 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=forgotpassword",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"email": email,
                              };
     
@@ -81,7 +82,7 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=getallcommunitygems",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     if ( [User sharedManager].token) {
          [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
@@ -107,7 +108,7 @@
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=like",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
@@ -134,7 +135,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
                              @"gem_type": gemType
@@ -160,7 +161,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"gem_id": gemID,
                              @"gem_type": gemType,
                              @"user_id": [User sharedManager].userId,
@@ -185,7 +186,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"gem_id": gemID,
                              @"gem_type": gemType,
                              @"share_comment": [NSNumber numberWithInteger:shareType],
@@ -210,7 +211,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"comment_id": commentID,
                              @"user_id": [User sharedManager].userId,
                              };
@@ -232,7 +233,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"followid": followerID
                              };
@@ -255,7 +256,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo]
                              };
@@ -278,7 +279,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
                              @"gem_type": gemType
@@ -302,7 +303,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
                              @"gem_type": gemType
@@ -326,7 +327,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"gem_id": gemID,
                              @"gem_type": gemType
@@ -350,7 +351,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
                               @"status": [NSNumber numberWithInteger:status],
@@ -375,7 +376,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"goalaction_id": goalActionID,
                              @"user_id": userID,
                              @"goal_id": goalID,
@@ -400,7 +401,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"goal_id": goalID,
                              @"action_id": actionID,
@@ -425,7 +426,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"media_count": [NSNumber numberWithInteger:dataSource.count],
                              };
     AFHTTPRequestOperation *operation = [manager POST:urlString parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -481,8 +482,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:userID forKey:@"user_id"];
     if (startDate > 0) [params setObject:[NSNumber numberWithDouble:startDate] forKey:@"start_date"];
@@ -490,7 +490,6 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"ZZZZZ"];
     [params setObject:[dateFormatter stringFromDate:[NSDate date]] forKey:@"timezone"];
-    
     [params setObject:[NSNumber numberWithInteger:session] forKey:@"time_at"];
     [params setObject:[NSNumber numberWithBool:isFirstTime] forKey:@"first_time"];
     [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -511,7 +510,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
                                @"first_time":[NSNumber numberWithBool:isFirstTime]
@@ -535,7 +534,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
                              };
@@ -558,7 +557,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                             @"group_id": groupID,
                             @"page_no": [NSNumber numberWithInteger:pageNo],
@@ -583,7 +582,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     if (userID.length > 0) {
         NSDictionary *params = @{@"user_id": userID,
                                  @"registration_id": token,
@@ -611,7 +610,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"follow_status": status,
                              @"followrequest_id" : [NSNumber numberWithInteger:followRequestID]
@@ -635,7 +634,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNumber]
                              };
@@ -658,7 +657,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNumber]
                              };
@@ -682,7 +681,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              };
     
@@ -704,7 +703,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"from_id": userID,
                              @"to_id": toUser,
                              @"msg": message,
@@ -728,7 +727,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"from_id": userID,
                              @"to_id": toUser,
                              @"page_no": [NSNumber numberWithInteger:pageNo]
@@ -752,7 +751,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"chat_ids": ids,
                              @"user_id": [User sharedManager].userId,
                              };
@@ -774,7 +773,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"emotion_value" : [NSNumber numberWithInteger:emotionID]
                              };
@@ -797,7 +796,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"emotion_value" : [NSNumber numberWithInteger:feelValue],
                              @"emotion_title": title,
@@ -823,7 +822,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"event_title": title,
                              @"type" : [NSNumber numberWithInteger:type],
@@ -848,7 +847,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
@@ -875,7 +874,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
     [params setObject:title forKey:@"title"];
@@ -1005,7 +1004,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
     [params setObject:title forKey:@"title"];
@@ -1148,7 +1147,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
     [params setObject:title forKey:@"title"];
@@ -1280,7 +1279,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
     if (descritption.length)[params setObject:descritption forKey:@"journal_desc"];
@@ -1370,7 +1369,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
    
@@ -1427,7 +1426,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"ZZZZZ"];
     
@@ -1462,7 +1461,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"page_no": [NSNumber numberWithInteger:pageNo],
                              @"type" : @"favourite"
@@ -1493,7 +1492,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"id": favouriteID,
                              @"type": @"favourite",
@@ -1523,7 +1522,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"gem_id": gemID,
                              @"gem_type": gemType
                              };
@@ -1547,7 +1546,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"gem_id": gemID,
                              @"gem_type": gemType,
                              @"user_id" : userId
@@ -1571,7 +1570,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              @"goal_id": goalID,
                              };
@@ -1594,7 +1593,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              };
     
@@ -1617,7 +1616,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              };
     
@@ -1639,7 +1638,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:userID forKey:@"user_id"];
     [params setObject:fname forKey:@"firstname"];
@@ -1669,7 +1668,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:userID forKey:@"user_id"];
     [params setObject:[NSNumber numberWithBool:canFollow] forKey:@"can_follow"];
@@ -1702,7 +1701,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"gem_id": gemID,
                              @"type": listType,
                              @"user_id": userID,
@@ -1726,7 +1725,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"emotion_id": emotionID,
                              @"user_id": userID,
                              };
@@ -1749,7 +1748,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"emotion_id": emotionID,
                              @"user_id": userID,
                              };
@@ -1772,7 +1771,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"gem_id": gemID,
                              @"user_id": userID,
                              };
@@ -1796,7 +1795,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userID,
                              };
     
@@ -1818,7 +1817,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": [User sharedManager].userId,
                              @"oldpass": currentPWD,
                              @"newpass": newPWD,
@@ -1842,7 +1841,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": [User sharedManager].userId,
                              };
     
@@ -1863,7 +1862,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         success(operation,responseObject);
@@ -1882,7 +1881,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     
     NSMutableDictionary *params = [NSMutableDictionary new];
     if (otherInfo.length)[params setObject:otherInfo forKey:@"other_info"];
@@ -1909,7 +1908,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"type": type,
                              };
     
@@ -1931,7 +1930,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": [User sharedManager].userId,
                              };
     
@@ -1945,18 +1944,18 @@
     }];
 
 }
-+ (void)getUserJournalWithUserID:(NSString*)userID page:(NSInteger)pageNo Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
++ (void)getUserJournalWithUserID:(NSString*)userID page:(NSInteger)pageNo region:(NSString*)region Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@action=listjournal",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-   NSDictionary *params = @{@"user_id": userID,
-                              @"page_no": [NSNumber numberWithInteger:pageNo],
-                             };
-    
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    if (region.length)[params setObject:region forKey:@"region"];
+    [params setObject:userID forKey:@"user_id"];
+    [params setObject:[NSNumber numberWithInteger:pageNo] forKey:@"page_no"];
     [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         success(operation,responseObject);
@@ -1976,7 +1975,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSDictionary *params = @{@"user_id": userId,
                              @"journal_id": journalID,
                              };
@@ -1999,7 +1998,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
    
     [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -2019,7 +2018,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     
     [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

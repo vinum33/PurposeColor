@@ -56,6 +56,21 @@ typedef CGPoint (^VBLabelBlock)(CALayer*layer, NSInteger index);
               animation:YES];
  @endcode
  */
+
+@protocol PieChartClickDelegate <NSObject>
+
+
+/*!
+ *This method is invoked when user Clicks "A Piece" chart
+ */
+-(void)pieChartClickedWithRegion:(NSString*)regionName;
+
+
+
+
+@end
+
+
 @interface VBPieChart : UIView
 
 /*!
@@ -98,6 +113,8 @@ typedef CGPoint (^VBLabelBlock)(CALayer*layer, NSInteger index);
  @note Default 0.
  */
 @property (nonatomic) double startAngle;
+
+@property (nonatomic,weak)  id<PieChartClickDelegate>delegate;
 
 
 /*!

@@ -339,7 +339,9 @@ typedef enum{
     else if ([[details objectForKey:@"gem_type"] isEqualToString:@"event"]) {
         [cell.btnBanner setTitle:@"EVENT" forState:UIControlStateNormal];;
     }
-    
+    else if ([[details objectForKey:@"gem_type"] isEqualToString:@"community"]) {
+        [cell.btnBanner setTitle:@"COMMUNITY" forState:UIControlStateNormal];;
+    }
     if (NULL_TO_NIL([details objectForKey:@"gem_details"]))
         cell.lblDescription.text = [details objectForKey:@"gem_details"];
 

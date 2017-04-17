@@ -40,8 +40,9 @@ typedef enum{
 #import "AMPopTip.h"
 #import "ButtonWithID.h"
 #import "NFXIntroViewController.h"
+#import "JournalListViewController.h"
 
-@interface EmotionalIntelligenceViewController () <SWRevealViewControllerDelegate,SessionPopUpDelegate>{
+@interface EmotionalIntelligenceViewController () <SWRevealViewControllerDelegate,SessionPopUpDelegate,PieChartClickDelegate>{
     
     IBOutlet UITableView *tableView;
     IBOutlet UIButton *btnSlideMenu;
@@ -191,9 +192,7 @@ typedef enum{
     if ([[responds objectForKey:@"code"] integerValue] == kSuccessCode) {
         
         if ( NULL_TO_NIL([responds objectForKey:@"chartpercentage"])) {
-            
             NSDictionary *chartPercentage = [responds objectForKey:@"chartpercentage"];
-            
             if (NULL_TO_NIL([chartPercentage objectForKey:@"passive_percent"])){
                 float value  = [[chartPercentage objectForKey:@"passive_percent"] floatValue];
                 assertValue = [NSString stringWithFormat:@"%.02f", value];
@@ -214,17 +213,16 @@ typedef enum{
             _chartValues = [NSMutableArray new];
             
             if ([assertValue integerValue] > 0)
-                [_chartValues addObject:@{@"name":[NSString stringWithFormat:@"%@%%",assertValue], @"value":assertValue, @"color":[UIColor colorWithRed:0.00 green:0.51 blue:0.78 alpha:1.0]}];
+                [_chartValues addObject:@{@"name":[NSString stringWithFormat:@"%@%%",assertValue], @"value":assertValue, @"color":[UIColor colorWithRed:0.00 green:0.51 blue:0.78 alpha:1.0],@"region":@"passive"}];
             if ([warmValue integerValue] > 0)
-                [_chartValues addObject:@{@"name":[NSString stringWithFormat:@"%@%%",warmValue], @"value":warmValue, @"color":[UIColor colorWithRed:0.93 green:0.02 blue:0.02 alpha:1.0]}];
+                [_chartValues addObject:@{@"name":[NSString stringWithFormat:@"%@%%",warmValue], @"value":warmValue, @"color":[UIColor colorWithRed:0.93 green:0.02 blue:0.02 alpha:1.0],@"region":@"destructive"}];
             if ([patientValue integerValue] > 0)
-                [_chartValues addObject:@{@"name":[NSString stringWithFormat:@"%@%%",patientValue], @"value":patientValue, @"color":[UIColor colorWithRed:0.91 green:0.78 blue:0.14 alpha:1.0]}];
+                [_chartValues addObject:@{@"name":[NSString stringWithFormat:@"%@%%",patientValue], @"value":patientValue, @"color":[UIColor colorWithRed:0.91 green:0.78 blue:0.14 alpha:1.0],@"region":@"stressfull"}];
             if ([detailedValue integerValue] > 0)
-                [_chartValues addObject:@{@"name":[NSString stringWithFormat:@"%@%%",detailedValue], @"value":detailedValue, @"color":[UIColor colorWithRed:0.00 green:0.60 blue:0.29 alpha:1.0]}];
-            
+                [_chartValues addObject:@{@"name":[NSString stringWithFormat:@"%@%%",detailedValue], @"value":detailedValue, @"color":[UIColor colorWithRed:0.00 green:0.60 blue:0.29 alpha:1.0],@"region":@"optimal"}];
             [pieChart setLabelsPosition:VBLabelsPositionOnChart];
             [pieChart setChartValues:[NSArray arrayWithArray:_chartValues] animation:YES duration:0.4 options:VBPieChartAnimationFanAll];
-            
+            pieChart.delegate = self;
         }
         
         [arrDetailed removeAllObjects];
@@ -281,6 +279,21 @@ typedef enum{
     [tableView reloadData];
     [self performSelector:@selector(checkUserViewStatus) withObject:self afterDelay:.5];
     
+}
+
+-(void)pieChartClickedWithRegion:(NSString*)regionName{
+    if (regionName.length) {
+        JournalListViewController *journalList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalListVC];
+        journalList.strRegion = regionName;
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:journalList];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+    }
 }
 
 -(IBAction)showSessionPopUp{
@@ -900,6 +913,8 @@ typedef enum{
     
     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [app showJournalListView];
+    //AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+   // [app showGEMSListingsPage];
 }
 
 - (void)didReceiveMemoryWarning {

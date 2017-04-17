@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
-#define kUnauthorizedCode               401
+#define kUnauthorizedCode               403
 
 extern NSString * const StoryboardForLogin;
 extern NSString * const DetailsStoryBoard;

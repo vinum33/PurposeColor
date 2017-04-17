@@ -292,7 +292,7 @@ typedef enum{
         cell.imgIcon.alpha = 0.5;
         cell.vwTopBorder.hidden = true;
         cell.vwBotomBorder.hidden = true;
-        cell.lblMenu.font = [UIFont fontWithName:CommonFont_New size:13];
+        cell.lblMenu.font = [UIFont fontWithName:CommonFont_New size:14];
         cell.btnNext.tag = indexPath.row;
         cell.btnNext.hidden = true;
         cell.imgTick.hidden = true;
@@ -308,7 +308,7 @@ typedef enum{
                 if (nextActiveMenu == eTypeFeel) {
                     cell.lblMenu.alpha = 1;
                     cell.imgIcon.alpha = 1;
-                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:12];
+                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:13];
                     cell.btnNext.hidden = false;
                     
                 }
@@ -327,7 +327,7 @@ typedef enum{
 
                 }
                 if (nextActiveMenu == eTypeEmotion) {
-                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:12];
+                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:13];
                     cell.lblMenu.alpha = 1;
                     cell.imgIcon.alpha = 1;
                     cell.btnNext.hidden = false;
@@ -347,7 +347,7 @@ typedef enum{
 
                 }
                 if (nextActiveMenu == eTypeDrive) {
-                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:12];
+                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:13];
                     cell.lblMenu.alpha = 1;
                     cell.imgIcon.alpha = 1;
                     cell.btnNext.hidden = false;
@@ -367,7 +367,7 @@ typedef enum{
                     cell.imgIcon.alpha = 1;
                 }
                 if (nextActiveMenu == eTypeGoalsAndDreams) {
-                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:12];
+                    cell.lblMenu.font = [UIFont fontWithName:CommonFontBold_New size:13];
                     cell.lblMenu.alpha = 1;
                     cell.imgIcon.alpha = 1;
                     cell.btnNext.hidden = false;
@@ -557,6 +557,9 @@ typedef enum{
 -(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_tableView == tableView_Menu){
+        if (indexPath.row == 2) {
+            return 50;
+        }
         return 40;
     }
     if (indexPath.section == 0) {
@@ -649,10 +652,6 @@ typedef enum{
             if (indexPath.row == 0) {
                 [self showEventSelectionView];
             }
-        }else{
-            if (indexPath.row == 1) {
-                [self showGoalsAndDreamsSelection];
-            }
         }
        
         
@@ -668,6 +667,16 @@ typedef enum{
         NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"AwarenessHeader" owner:self options:nil];
         AwarenessHeader *view = [viewArray objectAtIndex:0];
         view.lblGalleryCount.text = [NSString stringWithFormat:@"%d",arrDataSource.count];
+        UIImage *image = [UIImage imageNamed:@"NoImage_TopText"];
+        view.imgGallery.image = image;
+        float _width = image.size.width;
+        float _height = image.size.height;
+        float ratio = _width / _height;
+        float deviceWidth = _tableView.frame.size.width;
+        float imageHeight = (deviceWidth - 0) / ratio;
+        float finalImgHeight = imageHeight;
+        view.imgHeight.constant = finalImgHeight;
+        [view layoutSubviews];
         if (arrDataSource.count) {
             id object = [arrDataSource firstObject];
             if ([object isKindOfClass:[NSString class]]) {
@@ -684,6 +693,15 @@ typedef enum{
                             UIImage *image = [UIImage imageWithData:data];
                             dispatch_sync(dispatch_get_main_queue(), ^(void) {
                                 view.imgGallery.image = image;
+                                float _width = image.size.width;
+                                float _height = image.size.height;
+                                float ratio = _width / _height;
+                                float deviceWidth = _tableView.frame.size.width;
+                                float imageHeight = (deviceWidth - 0) / ratio;
+                                float finalImgHeight = imageHeight;
+                                view.imgHeight.constant = finalImgHeight;
+                                [view layoutSubviews];
+                                
                             });
                         });
                         
@@ -698,13 +716,30 @@ typedef enum{
                             UIImage *thumbnail = [Utility getThumbNailFromVideoURL:imagePath];
                             dispatch_sync(dispatch_get_main_queue(), ^(void) {
                                 view.imgGallery.image = thumbnail;
+                                float _width = thumbnail.size.width;
+                                float _height = thumbnail.size.height;
+                                float ratio = _width / _height;
+                                float deviceWidth = _tableView.frame.size.width;
+                                float imageHeight = (deviceWidth - 0) / ratio;
+                                float finalImgHeight = imageHeight;
+                                view.imgHeight.constant = finalImgHeight;
+                                [view layoutSubviews];
                             });
                         });
                     }
                 }
                 else if ([[fileName pathExtension] isEqualToString:@"aac"]){
                     // Recorded Audio
-                    view.imgGallery.image = [UIImage imageNamed:@"NoImage.png"];
+                    UIImage *image = [UIImage imageNamed:@"NoImage.png"];
+                    view.imgGallery.image = image;
+                    float _width = image.size.width;
+                    float _height = image.size.height;
+                    float ratio = _width / _height;
+                    float deviceWidth = _tableView.frame.size.width;
+                    float imageHeight = (deviceWidth - 0) / ratio;
+                    float finalImgHeight = imageHeight;
+                    view.imgHeight.constant = finalImgHeight;
+                    [view layoutSubviews];
                 }
                 
             }
@@ -813,13 +848,13 @@ typedef enum{
 
 
 
--(IBAction)showMedias:(id)sender{
+-(IBAction)showUploadingMedias:(id)sender{
     
     if (arrDataSource.count) {
-        AwarenessMediaViewController *profilePage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwarenessMedia];
-        profilePage.delegate = self;
-        profilePage.arrMedias = arrDataSource;
-        [[self navigationController]pushViewController:profilePage animated:YES];
+        AwarenessMediaViewController *medias =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwarenessMedia];
+        medias.delegate = self;
+        medias.arrMedias = arrDataSource;
+        [[self navigationController]pushViewController:medias animated:YES];
     }
    
 }
@@ -1846,7 +1881,7 @@ typedef enum{
     selectedGoalsValue = -1;
     selectedActions = nil;
    // vwDateView.hidden = false;
-    tableHeight.constant = 200;
+    tableHeight.constant = 210;
     [tableView setNeedsUpdateConstraints];
     [tableView reloadData];
      nextActiveMenu = eTypeAction;
@@ -1899,7 +1934,7 @@ typedef enum{
      nextActiveMenu = eTypeAction;
      [tableView_Menu reloadData];
    // vwDateView.hidden = false;
-   tableHeight.constant = 200;
+   tableHeight.constant = 210;
     [tableView setNeedsUpdateConstraints];
     [self shouldeablePostButton:YES];
     
@@ -1963,10 +1998,11 @@ typedef enum{
 
 #pragma mark - GENERIC Actions
 
--(void)showGEMSWithHeadingPage{
+-(void)emotionalIntelligencePage{
     
+    [self goBack:nil];
     AppDelegate *appdelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    [appdelegate goToHomeAfterLogin];
+    [appdelegate emotionalIntelligencePage];
     
 }
 
@@ -2000,10 +2036,6 @@ typedef enum{
                          }];
         delay += .1;
     }
-    
-        
-        
-   
     
 }
 
@@ -2055,10 +2087,10 @@ typedef enum{
         isJournalSet = true;
          requiredCellCount = 4;
     }
-    tableHeight.constant = 160;
+    tableHeight.constant = 170;
     if (isCycleCompleted) {
        // vwDateView.hidden = false;
-        tableHeight.constant = 200;;
+        tableHeight.constant = 210;;
     }
     
     [tableView setNeedsUpdateConstraints];
@@ -2163,7 +2195,6 @@ typedef enum{
                                  }
                                  
                              }
-                             
                              
                              
                          }];
@@ -2306,7 +2337,7 @@ typedef enum{
             UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"OK"
                                                                   style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                       
-                                                                      [self showGEMSWithHeadingPage];
+                                                                      [self emotionalIntelligencePage];
                                                                       
                                                                   }];
             [alert addAction:firstAction];

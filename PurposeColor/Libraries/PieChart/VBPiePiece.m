@@ -61,6 +61,7 @@
         NSDictionary *options = (NSDictionary*)object;
         data.name = options[@"name"];
         data.value = options[@"value"];
+        data.regionName = options[@"region"];
         
         id color = options[@"color"];
         if (color && [color isKindOfClass:[NSString class]]) {

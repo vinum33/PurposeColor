@@ -28,6 +28,7 @@
     IBOutlet UITableView *tableView;
     IBOutlet UIButton *btnClear;
     IBOutlet UIButton *btnSend;
+    IBOutlet UIButton *btnAddAction;
     NSInteger selectedIndex;
 
     
@@ -91,15 +92,20 @@
 }
 -(void)setUp{
     
+    btnAddAction.layer.cornerRadius = 5;
+    btnAddAction.layer.borderWidth = 1.f;
+    btnAddAction.layer.borderColor = [UIColor clearColor].CGColor;
+    btnSend.layer.cornerRadius = 5;
+    btnSend.layer.borderWidth = 1.f;
+    btnSend.layer.borderColor = [UIColor getThemeColor].CGColor;
+
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopUp)];
     [tapGesture setNumberOfTapsRequired:1];
     tapGesture.delegate = self;
     //[self addGestureRecognizer:tapGesture];
     dictSelections = [NSMutableDictionary new];
     arrEmotions = [NSMutableArray new];
-    btnSend.layer.borderColor = [[UIColor whiteColor] CGColor];
-    btnSend.layer.borderWidth = 1.0f;
-    btnSend.layer.cornerRadius = 5.0f;
     btnClear.hidden = true;
 }
 

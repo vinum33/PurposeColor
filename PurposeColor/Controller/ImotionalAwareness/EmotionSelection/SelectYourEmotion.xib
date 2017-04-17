@@ -27,8 +27,8 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's your emotional state?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MEr-Ls-FXe">
-                                    <rect key="frame" x="45" y="12" width="170" height="16"/>
-                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="13"/>
+                                    <rect key="frame" x="45" y="12" width="183" height="16"/>
+                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -53,8 +53,77 @@
                                 <constraint firstAttribute="height" constant="40" id="r1U-lk-IAq"/>
                             </constraints>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jwc-Q0-mwC" userLabel="Search Bar">
+                            <rect key="frame" x="0.0" y="40" width="375" height="80"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PT6-MB-mJk" userLabel="Search">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                    <subviews>
+                                        <searchBar contentMode="redraw" placeholder="Search emotion..." showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FVW-TD-pMY">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="iN0-l3-epB" id="kEO-Yd-1zp"/>
+                                            </connections>
+                                        </searchBar>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.17254901959999999" green="0.74117647060000003" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="FVW-TD-pMY" firstAttribute="top" secondItem="PT6-MB-mJk" secondAttribute="top" id="6xJ-Qj-fRF"/>
+                                        <constraint firstAttribute="bottom" secondItem="FVW-TD-pMY" secondAttribute="bottom" id="CGU-k9-lEu"/>
+                                        <constraint firstItem="FVW-TD-pMY" firstAttribute="leading" secondItem="PT6-MB-mJk" secondAttribute="leading" id="N2D-he-UD7"/>
+                                        <constraint firstAttribute="height" constant="40" id="VzO-0X-clJ"/>
+                                        <constraint firstAttribute="trailing" secondItem="FVW-TD-pMY" secondAttribute="trailing" id="wzr-KR-eod"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tgm-D7-64e" userLabel="Add Event view">
+                                    <rect key="frame" x="0.0" y="40" width="375" height="40"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ee-4h-oqd" userLabel="Seperator">
+                                            <rect key="frame" x="0.0" y="19.5" width="375" height="1"/>
+                                            <color key="backgroundColor" white="0.66666666669999997" alpha="0.30020448830000002" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="bsR-Hr-aUe"/>
+                                            </constraints>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qi5-lM-50o">
+                                            <rect key="frame" x="245" y="5" width="120" height="30"/>
+                                            <color key="backgroundColor" red="0.1215686275" green="0.50588235290000005" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="Ifm-No-atT"/>
+                                                <constraint firstAttribute="width" constant="120" id="eVr-a8-1va"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="13"/>
+                                            <state key="normal" title="CREATE EMOTION"/>
+                                            <connections>
+                                                <action selector="createEmotion" destination="iN0-l3-epB" eventType="touchUpInside" id="em9-dR-tzf"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="8Ee-4h-oqd" firstAttribute="centerY" secondItem="Tgm-D7-64e" secondAttribute="centerY" id="10U-N6-0Qe"/>
+                                        <constraint firstAttribute="height" constant="40" id="7R5-W1-SVk"/>
+                                        <constraint firstAttribute="trailing" secondItem="Qi5-lM-50o" secondAttribute="trailing" constant="10" id="BXh-MB-np1"/>
+                                        <constraint firstItem="Qi5-lM-50o" firstAttribute="centerY" secondItem="Tgm-D7-64e" secondAttribute="centerY" id="Qr2-yI-9G7"/>
+                                        <constraint firstAttribute="trailing" secondItem="8Ee-4h-oqd" secondAttribute="trailing" id="afG-9d-hBt"/>
+                                        <constraint firstItem="8Ee-4h-oqd" firstAttribute="leading" secondItem="Tgm-D7-64e" secondAttribute="leading" id="xpU-Wy-XK8"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" red="0.1215686275" green="0.50588235290000005" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstItem="Tgm-D7-64e" firstAttribute="leading" secondItem="Jwc-Q0-mwC" secondAttribute="leading" id="Bxa-Ci-i3E"/>
+                                <constraint firstItem="PT6-MB-mJk" firstAttribute="leading" secondItem="Jwc-Q0-mwC" secondAttribute="leading" id="CdR-56-HyX"/>
+                                <constraint firstAttribute="height" constant="80" id="Wze-or-Tbz"/>
+                                <constraint firstItem="PT6-MB-mJk" firstAttribute="top" secondItem="Jwc-Q0-mwC" secondAttribute="top" id="dkP-PD-KWd"/>
+                                <constraint firstAttribute="trailing" secondItem="Tgm-D7-64e" secondAttribute="trailing" id="kzg-kU-Cbp"/>
+                                <constraint firstAttribute="bottom" secondItem="Tgm-D7-64e" secondAttribute="bottom" id="ria-UT-GXB"/>
+                                <constraint firstAttribute="trailing" secondItem="PT6-MB-mJk" secondAttribute="trailing" id="sEb-WR-RFC"/>
+                            </constraints>
+                        </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WZm-2Z-2z7">
-                            <rect key="frame" x="0.0" y="40" width="375" height="617"/>
+                            <rect key="frame" x="0.0" y="120" width="375" height="537"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="separatorColor" red="0.81176470588235294" green="0.81568627450980391" blue="0.82352941176470584" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -63,29 +132,18 @@
                                 <outlet property="delegate" destination="iN0-l3-epB" id="uAH-9B-8ey"/>
                             </connections>
                         </tableView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mW4-sh-hUn">
-                            <rect key="frame" x="275" y="5" width="100" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="30" id="i27-uf-J1e"/>
-                                <constraint firstAttribute="width" constant="100" id="tkf-PA-o5R"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
-                            <state key="normal" title="ADD EMOTION"/>
-                            <connections>
-                                <action selector="createEmotion" destination="iN0-l3-epB" eventType="touchUpInside" id="FAb-ic-DTb"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="WZm-2Z-2z7" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" constant="40" id="16L-Zn-qmj"/>
+                        <constraint firstItem="Jwc-Q0-mwC" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="2qL-3O-O0G"/>
                         <constraint firstAttribute="trailing" secondItem="oGd-ie-mil" secondAttribute="trailing" id="3qy-IO-WTl"/>
+                        <constraint firstItem="Jwc-Q0-mwC" firstAttribute="top" secondItem="oGd-ie-mil" secondAttribute="bottom" id="9Hg-yI-klS"/>
+                        <constraint firstAttribute="trailing" secondItem="Jwc-Q0-mwC" secondAttribute="trailing" id="Hbi-Ok-Bo5"/>
                         <constraint firstItem="oGd-ie-mil" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" id="Kl9-K9-7bA"/>
                         <constraint firstAttribute="bottom" secondItem="WZm-2Z-2z7" secondAttribute="bottom" constant="10" id="QuL-Gg-g5Y"/>
                         <constraint firstAttribute="trailing" secondItem="WZm-2Z-2z7" secondAttribute="trailing" id="S1r-Di-rL7"/>
-                        <constraint firstItem="mW4-sh-hUn" firstAttribute="top" secondItem="oGd-ie-mil" secondAttribute="top" constant="5" id="STX-8r-kOL"/>
+                        <constraint firstItem="WZm-2Z-2z7" firstAttribute="top" secondItem="Jwc-Q0-mwC" secondAttribute="bottom" id="TUj-4M-lfD"/>
                         <constraint firstItem="WZm-2Z-2z7" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="q0K-eV-KcX"/>
-                        <constraint firstAttribute="trailing" secondItem="mW4-sh-hUn" secondAttribute="trailing" id="rvk-yJ-YSl"/>
                         <constraint firstItem="oGd-ie-mil" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="uem-Fh-OlT"/>
                     </constraints>
                 </view>
@@ -98,8 +156,11 @@
                 <constraint firstItem="4nn-AR-uOq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="rCH-Pb-or8"/>
             </constraints>
             <connections>
+                <outlet property="btnAddEvent" destination="Qi5-lM-50o" id="Ett-pq-IAI"/>
                 <outlet property="rightConstraint" destination="PYq-tO-76y" id="aBw-UU-YXS"/>
+                <outlet property="searchBar" destination="FVW-TD-pMY" id="7yo-VR-r6D"/>
                 <outlet property="tableView" destination="WZm-2Z-2z7" id="BUb-nF-KsH"/>
+                <outlet property="vwHeader" destination="Jwc-Q0-mwC" id="SBL-gC-924"/>
             </connections>
         </view>
     </objects>

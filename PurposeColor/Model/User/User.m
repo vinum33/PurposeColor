@@ -41,7 +41,7 @@
         self.statusMsg = [NSString new];
         self.token = [NSString new];
         
-     
+        
     }
     return self;
 }

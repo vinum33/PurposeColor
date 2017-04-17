@@ -12,5 +12,7 @@
 
 @property (nonatomic,weak) IBOutlet UILabel *lblGalleryCount;
  @property (nonatomic,weak) IBOutlet UIImageView *imgGallery;
+ @property (nonatomic,weak) IBOutlet UIScrollView *scrollView;
+ @property (nonatomic,weak) IBOutlet NSLayoutConstraint *imgHeight;
 
 @end

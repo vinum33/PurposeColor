@@ -263,8 +263,8 @@
             size = [message boundingRectWithSize:CGSizeMake(tableView.frame.size.width - kWidthPadding, MAXFLOAT)
                                          options:NSStringDrawingUsesLineFragmentOrigin
                                       attributes:@{
-                                                   NSFontAttributeName : [UIFont fontWithName:CommonFont size:14],
-                                                   NSParagraphStyleAttributeName:paragraphStyle,
+                                                   NSFontAttributeName : [UIFont fontWithName:CommonFont size:14]
+                                                   
                                                    }
                                          context:nil].size;
         }
@@ -291,8 +291,8 @@
            }
            
        }else{
-           float calculatedHeight = size.height;
-           minimumHeight = 65;
+           float calculatedHeight = size.height + 30;
+           minimumHeight = 70;
            if (calculatedHeight < minimumHeight) {
                return minimumHeight;
            }

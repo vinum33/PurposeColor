@@ -29,6 +29,7 @@
     BOOL isDataAvailable;
     NSInteger selectedIndex;
     QuickGoalViewController *quickGoalView;
+     IBOutlet UIButton *btnAddGoal;
 }
 
 @end
@@ -44,7 +45,10 @@
 
 -(void)setUp{
     
-    [tableView setContentInset:UIEdgeInsetsMake(0,0,60,0)];
+    btnAddGoal.layer.cornerRadius = 5;
+    btnAddGoal.layer.borderWidth = 1.f;
+    btnAddGoal.layer.borderColor = [UIColor clearColor].CGColor;
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopUp)];
     [tapGesture setNumberOfTapsRequired:1];
     tapGesture.delegate = self;
@@ -54,7 +58,6 @@
     btnSkip.layer.cornerRadius = 5;
     btnSkip.layer.borderWidth = 1.f;
     btnSkip.layer.borderColor = [UIColor getThemeColor].CGColor;
-
 
 }
 
@@ -225,8 +228,6 @@
                 }];
             }];
         }];
-        
-     
         
     }
 }

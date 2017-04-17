@@ -35,13 +35,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you like your reaction to the situation?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T3i-WY-lJD">
-                            <rect key="frame" x="50" y="10" width="315" height="14"/>
-                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="12"/>
+                            <rect key="frame" x="40" y="10" width="335" height="16.5"/>
+                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Tdw-cC-fGZ">
-                            <rect key="frame" x="0.0" y="34" width="375" height="633"/>
+                            <rect key="frame" x="0.0" y="36.5" width="375" height="630.5"/>
                             <color key="backgroundColor" red="0.0039215686274509803" green="0.12941176470588234" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="separatorColor" red="0.047058823530000002" green="0.23137254900000001" blue="0.37254901959999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -54,12 +54,12 @@
                     <color key="backgroundColor" red="0.12156862745098039" green="0.50588235294117645" blue="0.81960784313725488" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="T3i-WY-lJD" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" constant="10" id="1Pe-iz-TJf"/>
-                        <constraint firstItem="T3i-WY-lJD" firstAttribute="leading" secondItem="DEH-uW-YNC" secondAttribute="trailing" constant="10" id="GtL-OP-7rZ"/>
+                        <constraint firstItem="T3i-WY-lJD" firstAttribute="leading" secondItem="DEH-uW-YNC" secondAttribute="trailing" id="GtL-OP-7rZ"/>
                         <constraint firstItem="DEH-uW-YNC" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" id="I51-wI-Rm3"/>
                         <constraint firstItem="Tdw-cC-fGZ" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="JDZ-ui-YfB"/>
                         <constraint firstAttribute="bottom" secondItem="Tdw-cC-fGZ" secondAttribute="bottom" id="SMe-38-m5y"/>
                         <constraint firstAttribute="trailing" secondItem="Tdw-cC-fGZ" secondAttribute="trailing" id="TCx-do-g6a"/>
-                        <constraint firstAttribute="trailing" secondItem="T3i-WY-lJD" secondAttribute="trailing" constant="10" id="X0W-U4-LhN"/>
+                        <constraint firstAttribute="trailing" secondItem="T3i-WY-lJD" secondAttribute="trailing" id="X0W-U4-LhN"/>
                         <constraint firstItem="DEH-uW-YNC" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="ng7-1W-h06"/>
                         <constraint firstItem="Tdw-cC-fGZ" firstAttribute="top" secondItem="T3i-WY-lJD" secondAttribute="bottom" constant="10" id="pjN-4U-7EK"/>
                     </constraints>

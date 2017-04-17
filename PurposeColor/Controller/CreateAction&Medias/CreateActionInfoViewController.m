@@ -85,7 +85,8 @@ typedef enum{
     IBOutlet UIView *vwPickerOverLay;
     IBOutlet UIDatePicker *datePicker;
     IBOutlet UILabel *lblTitle;
-    
+    IBOutlet UIButton *btnUpload;
+    IBOutlet UIButton *btnPost;
     CustomAudioPlayerView *vwAudioPlayer;
     NSMutableArray *arrDeletedIDs;
     PhotoBrowser *photoBrowser;
@@ -139,6 +140,18 @@ typedef enum{
     UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(dragCell:)];
     [longPressGestureRecognizer setDelegate:self];
     [tableView addGestureRecognizer:longPressGestureRecognizer];
+    
+    btnPost.layer.cornerRadius = 5;
+    btnPost.layer.borderWidth = 1.f;
+    btnPost.layer.borderColor = [UIColor whiteColor].CGColor;
+    
+    btnPost.hidden = true;
+    btnUpload.hidden = true;
+    if (_actionType == eActionTypeCommunity) {
+        btnPost.hidden = false;
+    }else{
+        btnUpload.hidden = false;
+    }
     
 }
 
@@ -1974,6 +1987,10 @@ typedef enum{
                 [self shareGEMToPurposeColor];
                 break;
                 
+            case eActionTypeCommunity:
+                [self createOrUpdateAGenericPost];
+                break;
+                
                 
             default:
                 break;
@@ -2065,6 +2082,92 @@ typedef enum{
                 UINavigationController *nav = self.navigationController;
                 [nav presentViewController:alert animated:YES completion:nil];
 
+            }
+            
+        }
+        
+        
+    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:lblTitle.text
+                                                                       message:[error localizedDescription]
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"OK"
+                                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                  vwProgressOverLay.hidden = true;
+                                                                  [_circleProgressBar setProgress:0 animated:YES];
+                                                                  
+                                                              }];
+        
+        [alert addAction:firstAction];
+        UINavigationController *nav = self.navigationController;
+        [nav presentViewController:alert animated:YES completion:nil];
+        
+    } progress:^(long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        vwProgressOverLay.hidden = false;
+        float percentage = (totalBytesWritten * 100)/totalBytesExpectedToWrite;
+        float progress = percentage/100;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_circleProgressBar setProgress:progress animated:YES];
+        });
+        
+    }];
+}
+
+-(void)createOrUpdateAGenericPost{
+    
+    [APIMapper createOrEditAGemWith:arrDataSource eventTitle:strTitle description:strDescription latitude:locationCordinates.latitude longitude:locationCordinates.longitude locName:strLocationName address:strLocationAddress contactName:strContactName gemID:gemID goalID:_strGoalID deletedIDs:arrDeletedIDs gemType:@"community" OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        vwProgressOverLay.hidden = true;
+        [_circleProgressBar setProgress:0 animated:YES];
+        if ([[responseObject objectForKey:@"code"] integerValue] == kSuccessCode ){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:lblTitle.text
+                                                                           message:[responseObject objectForKey:@"text"]
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                      if ([self.delegate respondsToSelector:@selector(newPostCreatedWithPostTitle:postID:)]) {
+                                                                          [self.delegate newPostCreatedWithPostTitle:strTitle postID:[[responseObject objectForKey:@"id"] integerValue]];
+                                                                         
+                                                                      }
+                                                                      [self goBack:nil];
+                                                                      
+                                                                  }];
+            
+            [alert addAction:firstAction];
+            
+            UINavigationController *nav = self.navigationController;
+            [nav presentViewController:alert animated:YES completion:nil];
+        }else{
+            
+            if ([[responseObject objectForKey:@"code"]integerValue] == kUnauthorizedCode){
+                
+                if (NULL_TO_NIL([responseObject objectForKey:@"text"])) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:lblTitle.text
+                                                                        message:[responseObject objectForKey:@"text"]
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"OK"
+                                                              otherButtonTitles:nil];
+                    [alertView show];
+                    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                    [delegate clearUserSessions];
+                    
+                }
+                
+            }else{
+                
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:lblTitle.text
+                                                                               message:[responseObject objectForKey:@"text"]
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                          
+                                                                          
+                                                                      }];
+                
+                [alert addAction:firstAction];
+                UINavigationController *nav = self.navigationController;
+                [nav presentViewController:alert animated:YES completion:nil];
+                
             }
             
         }

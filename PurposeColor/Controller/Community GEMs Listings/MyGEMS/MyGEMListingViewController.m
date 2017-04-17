@@ -358,7 +358,9 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     else if ([[details objectForKey:@"gem_type"] isEqualToString:@"event"]) {
         [cell.btnBanner setTitle:@"MOMENT" forState:UIControlStateNormal];;
     }
-    
+    else if ([[details objectForKey:@"gem_type"] isEqualToString:@"community"]) {
+        [cell.btnBanner setTitle:@"COMMUNITY" forState:UIControlStateNormal];;
+    }
     cell.bnExpandGallery.hidden = TRUE;
     cell.lblMediaCount.hidden = TRUE;
     if (NULL_TO_NIL([details objectForKey:@"gem_media"])){

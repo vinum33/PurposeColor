@@ -7,68 +7,59 @@
 //
 typedef enum{
     
-    eByEmotion = 0,
-    eByGoals = 1,
+    eFollow = 0,
+    eFollowPending = 1,
+    eFollowed = 2,
     
-} eType;
+} eFollowStatus;
 
-
-static NSString *CollectionViewCellIdentifier = @"GEMSListings";
+static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 #define OneK                    1000
 #define kPadding                10
 #define kDefaultNumberOfCells   1
-#define kHeightForCell          250
-#define kHeightForHeader        50
+#define kSuccessCode            200
 #define kUnAuthorized           403
 
-#import "CustomAudioPlayerView.h"
-#import <AVKit/AVKit.h>
 #import "GEMSWithHeaderListingsViewController.h"
+#import "GemsListCollectionViewCell.h"
+#import "CommentComposeViewController.h"
+#import "GEMDetailViewController.h"
+#import "MyGEMListingViewController.h"
+#import "GEMSListingHeaderView.h"
 #import "Constants.h"
+#import "ChatUserListingViewController.h"
+#import "ProfilePageViewController.h"
+#import "LikedAndCommentedUserListings.h"
+#import "shareMedias.h"
+#import "CreateActionInfoViewController.H"
 #import "MenuViewController.h"
-#import "GemsCustomTableViewCell.h"
-#import "CustomCellWithTable.h"
-#import "PhotoBrowser.h"
-#import "KILabel.h"
+#import "FTPopOverMenu.h"
+#import "ReportAbuseViewController.h"
 
-@interface GEMSWithHeaderListingsViewController () <SWRevealViewControllerDelegate,GEMSMediaListDelegate,ActionDetailCellDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate>{
+@interface GEMSWithHeaderListingsViewController ()<GemListingsDelegate,CommentActionDelegate,MediaListingPageDelegate,shareMediasDelegate,SWRevealViewControllerDelegate,CreateMediaInfoDelegate>{
     
-    IBOutlet UITableView *tableView;
+    IBOutlet UICollectionView *collectionView;
     IBOutlet UIView *vwPaginationPopUp;
     IBOutlet NSLayoutConstraint *paginationBottomConstraint;
+    UIRefreshControl *refreshControl;
     IBOutlet UIButton *btnSlideMenu;
     IBOutlet UIView *vwOverLay;
-    IBOutlet UIView *vwSegmentSelection;
-    IBOutlet UIButton *btnEmotion;
-    IBOutlet UIButton *btnGoal;
-    UIButton *btnHand;
-    UIImage *headerImage;
-    float heightForImageCell;
     
-    UIRefreshControl *refreshControl;
+    NSMutableArray *arrGems;
+    NSMutableDictionary *heightsCache;
+    NSInteger totalPages;
+    NSInteger currentPage;
+    NSMutableDictionary *dictFollowers;
+    eFollowStatus followStatus;
+    NSString *strNoDataText;
     
     BOOL isPageRefresing;
     BOOL isDataAvailable;
-    BOOL firstTime;
+    BOOL shouldShowPurposeColorGem;
     NSInteger totalGems;
     
-    NSInteger totalPages_Emotions;
-    NSInteger totalPages_Goals;
-    
-    NSInteger currentPage_Emotions;
-    NSInteger currentPage_Goals;
-    
-    NSMutableArray *arrEmotions;
-    NSMutableArray *arrGoals;
-    NSMutableArray *arrDataSource;
-    NSArray *arrGoalColors;
-    NSArray *arrEmotionColors;
-    
-    eType eSelectionType;
-    
-    CustomAudioPlayerView *vwAudioPlayer;
-    PhotoBrowser *photoBrowser;
-    NSMutableDictionary *heightsCache;
+    CommentComposeViewController *composeComment;
+    shareMedias *shareMediaView;
 }
 
 @end
@@ -78,11 +69,10 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
-    [self loadAllEmotionsByPagination:NO withPageNumber:currentPage_Emotions];
-
+    [self checkUserViewStatus];
+    [self getAllProductsByPagination:NO withPageNumber:currentPage];
     // Do any additional setup after loading the view.
 }
-
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -90,131 +80,122 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
 }
 
 
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [collectionView reloadData];
+}
 -(void)setUp{
     
-       
-    currentPage_Emotions = 1;
-    currentPage_Goals = 1;
+    UINib *cellNib = [UINib nibWithNibName:@"GemsListCollectionViewCell" bundle:nil];
+    [collectionView registerNib:cellNib forCellWithReuseIdentifier:CollectionViewCellIdentifier];
+    collectionView.hidden = false;
+    dictFollowers = [NSMutableDictionary new];
     
-    totalPages_Emotions = 0;
-    totalPages_Goals = 0;
-    
-    arrDataSource = [NSMutableArray new];
-    arrEmotions = [NSMutableArray new];
-    arrGoals = [NSMutableArray new];
-    arrGoalColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.08 green:0.40 blue:0.75 alpha:1.0],[UIColor colorWithRed:0.10 green:0.46 blue:0.82 alpha:1.0],[UIColor colorWithRed:0.12 green:0.53 blue:0.90 alpha:1.0], nil];
-    arrEmotionColors = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.26 green:0.65 blue:0.96 alpha:1.0],[UIColor colorWithRed:0.13 green:0.59 blue:0.95 alpha:1.0],[UIColor colorWithRed:0.12 green:0.53 blue:0.90 alpha:1.0], nil];
+    arrGems = [NSMutableArray new];
+    heightsCache =  [NSMutableDictionary new];
+    currentPage = 1;
+    totalPages = 0;
     
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.tintColor = [UIColor grayColor];
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
-    [tableView addSubview:refreshControl];
-    tableView.hidden = false;
+    [collectionView addSubview:refreshControl];
+    collectionView.alwaysBounceVertical = YES;
+    collectionView.hidden = true;
     isDataAvailable = false;
-    eSelectionType = eByEmotion;
-    heightsCache = [NSMutableDictionary new];
+    
     
 }
 
+-(void)checkUserViewStatus{
+    
+    shouldShowPurposeColorGem = true;
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"Community_Show_Count"])
+    {
+        
+    }else{
+        
+        NSInteger count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"Community_Show_Count"] integerValue];
+        if (count == 2) {
+            shouldShowPurposeColorGem = false;
+        }
+    }
+    
+}
 
+-(void)updateVisibilityStatus{
+    
+    shouldShowPurposeColorGem = true;
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"Community_Show_Count"])
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:@"Community_Show_Count"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }else{
+        
+        NSInteger count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"Community_Show_Count"] integerValue];
+        if (count == 2) {
+            
+            shouldShowPurposeColorGem = false;
+        }else{
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:2] forKey:@"Community_Show_Count"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    
+}
+
+-(void)getAllProductsByPagination:(BOOL)isPagination withPageNumber:(NSInteger)pageNumber{
+    
+    if (!isPagination) {
+        [self showLoadingScreen];
+    }
+    
+    [APIMapper getAllCommunityGemsByUserID:[User sharedManager].userId pageNo:pageNumber purposeGemShow:shouldShowPurposeColorGem success:^(AFHTTPRequestOperation *operation, id responseObject){
+        
+        collectionView.hidden = false;
+        isPageRefresing = NO;
+        [refreshControl endRefreshing];
+        [self getGemsFromResponds:responseObject];
+        [collectionView reloadData];
+        [self hideLoadingScreen];
+        [self hidePaginationPopUp];
+        [self updateVisibilityStatus];
+        
+    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+        
+        if (error && error.localizedDescription) [ALToastView toastInView:self.view withText:NETWORK_ERROR_MESSAGE];
+        collectionView.hidden = false;
+        isDataAvailable = false;
+        isPageRefresing = NO;
+        [refreshControl endRefreshing];
+        [self hideLoadingScreen];
+        [self hidePaginationPopUp];
+        [collectionView reloadData];
+    }];
+    
+}
 
 -(void)refreshData{
     
-    [heightsCache removeAllObjects];
     if (isPageRefresing){
         [refreshControl endRefreshing];
         return;
     }
-    [arrDataSource removeAllObjects];
-    [arrGoals removeAllObjects];
-    [arrEmotions removeAllObjects];
-    currentPage_Goals = 1;
-    currentPage_Emotions = 1;
+    [heightsCache removeAllObjects];
+    [arrGems removeAllObjects];
+    [dictFollowers removeAllObjects];
+    [self showLoadingScreen];
+    currentPage = 1;
     isPageRefresing = YES;
-    NSInteger currentPage = 1;
+    [self getAllProductsByPagination:YES withPageNumber:currentPage];
     
-    if (eSelectionType == eByEmotion) {
-        eSelectionType = eByEmotion;
-        currentPage_Emotions = 1;
-        totalPages_Emotions = 0;
-        [self loadAllEmotionsByPagination:NO withPageNumber:currentPage];
-        
-    }else{
-        eSelectionType = eByGoals;
-        currentPage_Goals = 1;
-        totalPages_Goals = 0;
-        [self loadAllGoalsByPagination:NO withPageNumber:currentPage];
-    }
     
 }
 
-
--(void)loadAllGoalsByPagination:(BOOL)isPagination withPageNumber:(NSInteger)pageNo{
+-(void)getGemsFromResponds:(NSDictionary*)responseObject{
     
-    if (!isPagination) {
-        [self showLoadingScreen];
-        tableView.hidden = true;
-    }
-    
-    [APIMapper getAllGoalsWith:[User sharedManager].userId pageNo:pageNo success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        tableView.hidden = false;
-        isPageRefresing = NO;
-        [refreshControl endRefreshing];
-        [self getGemsFromResponds:responseObject];
-        [self hideLoadingScreen];
-        [self hidePaginationPopUp];
-        
-    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-        
-        if (error && error.localizedDescription) [ALToastView toastInView:self.view withText:NETWORK_ERROR_MESSAGE];
-        isPageRefresing = NO;
-        [refreshControl endRefreshing];
-        tableView.hidden = false;
-        [self hideLoadingScreen];
-        [self hidePaginationPopUp];
-        [tableView reloadData];
-        
-        
-    }];
-    
-}
-
-
--(void)loadAllEmotionsByPagination:(BOOL)isPagination withPageNumber:(NSInteger)pageNo{
-    
-    if (!isPagination) {
-        [self showLoadingScreen];
-        tableView.hidden = true;
-    }
-    
-    
-    [APIMapper getAllGEMEmotionsByUserID:[User sharedManager].userId pageNo:pageNo isFirstTime:firstTime success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        tableView.hidden = false;
-        isPageRefresing = NO;
-        [refreshControl endRefreshing];
-        [self getGemsFromResponds:responseObject];
-        [self hideLoadingScreen];
-        [self hidePaginationPopUp];
-        
-    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-        
-        if (error && error.localizedDescription) [ALToastView toastInView:self.view withText:NETWORK_ERROR_MESSAGE];
-        isPageRefresing = NO;
-        [refreshControl endRefreshing];
-        tableView.hidden = false;
-        [self hideLoadingScreen];
-        [self hidePaginationPopUp];
-        isDataAvailable = false;
-        [tableView reloadData];
-        
-    }];
-}
-
--(void)getGemsFromResponds:(NSDictionary*)responds{
-    
-    if ([[[responds objectForKey:@"header"] objectForKey:@"code"] integerValue] == kUnAuthorized) {
+    if ([[[responseObject objectForKey:@"header"] objectForKey:@"code"] integerValue] == kUnAuthorized) {
         AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
         [app clearUserSessions];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Session Invalid"
@@ -226,143 +207,82 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         return;
         
     }
-
     
-    NSArray *goals;
     
-    if (eSelectionType == eByEmotion) {
-        eSelectionType = eByEmotion;
-        [arrEmotions removeAllObjects];
-        if (NULL_TO_NIL([responds objectForKey:@"emotions"])) {
-            goals = [responds objectForKey:@"emotions"];
-            if (goals.count) [arrEmotions addObjectsFromArray:goals];
-            if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"currentPage"]))
-                currentPage_Emotions = [[[responds objectForKey:@"header"] objectForKey:@"currentPage"] integerValue];
-            if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"pageCount"]))
-                totalPages_Emotions = [[[responds objectForKey:@"header"] objectForKey:@"pageCount"] integerValue];
-        }
-        
-    }else{
-        eSelectionType = eByGoals;
-        if (NULL_TO_NIL([responds objectForKey:@"goals"])) {
-            goals = [responds objectForKey:@"goals"];
-            [arrGoals removeAllObjects];
-            if (goals.count) [arrGoals addObjectsFromArray:goals];
-            if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"currentPage"]))
-                currentPage_Goals = [[[responds objectForKey:@"header"] objectForKey:@"currentPage"] integerValue];
-            if (NULL_TO_NIL([[responds objectForKey:@"header"] objectForKey:@"pageCount"]))
-                totalPages_Goals = [[[responds objectForKey:@"header"] objectForKey:@"pageCount"] integerValue];
-        }
-        
-    }
-    
-    [self configureDataSource];
-}
-
--(void)configureDataSource{
-    
-    [arrDataSource removeAllObjects];
-    if (eSelectionType == eByEmotion) {
-        eSelectionType = eByEmotion;
-        if (arrEmotions.count > 0) {
-            arrDataSource = [NSMutableArray arrayWithArray:arrEmotions];
-        }
-    }else{
-        
-        eSelectionType = eByGoals;
-        if (arrGoals.count > 0) {
-            arrDataSource = [NSMutableArray arrayWithArray:arrGoals];
-        }
-    }
     isDataAvailable = false;
-    if (arrDataSource.count) isDataAvailable = true;
-    [tableView reloadData];
-    
-}
-
-
-
-
-#pragma mark - UITableViewDataSource Methods
-
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
-    if (!isDataAvailable) {
-        return kDefaultNumberOfCells;
+    if ( NULL_TO_NIL([responseObject objectForKey:@"resultarray"])) {
+        NSArray *results = [responseObject objectForKey:@"resultarray"];
+        for (NSDictionary *dict in results)
+            [arrGems addObject:dict];
+    }else{
+        strNoDataText = [responseObject objectForKey:@"text"];
     }
-    return arrDataSource.count + 1;
-}
-
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSInteger totalCount = 0;
+    if (arrGems.count) isDataAvailable = true;
+    if (NULL_TO_NIL([responseObject objectForKey:@"pageCount"]))
+        totalPages =  [[responseObject objectForKey:@"pageCount"]integerValue];
     
-    if (!isDataAvailable) {
-        return kDefaultNumberOfCells;
-    }
+    if (NULL_TO_NIL([responseObject objectForKey:@"currentPage"]))
+        currentPage =  [[responseObject objectForKey:@"currentPage"]integerValue];
     
-    if (section == 0) {
+    if (NULL_TO_NIL([responseObject objectForKey:@"totalCount"]))
+        totalGems =  [[responseObject objectForKey:@"totalCount"]integerValue];
+    
+    
+    if (!isDataAvailable){
+        [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+    }else{
         
-        //Static image at top
+        UINib *cellNib = [UINib nibWithNibName:@"GemsListCollectionViewCell" bundle:nil];
+        [collectionView registerNib:cellNib forCellWithReuseIdentifier:CollectionViewCellIdentifier];
+        
+    }
+    
+}
+
+
+#pragma mark - UICollectionViewDataSource Methods
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    
+    return 2;
+}
+
+
+
+-(NSInteger)collectionView:(UICollectionView *)_collectionView numberOfItemsInSection:(NSInteger)section
+{
+    if (section == 0) {
         return 1;
     }
-    
-    if (section - 1 < arrDataSource.count) {
-        NSDictionary *details = arrDataSource[section - 1];
-        NSArray *actions;
-        if (NULL_TO_NIL([details objectForKey:@"action"])) {
-            actions = [details objectForKey:@"action"];
-            if (actions.count > 0) {
-                totalCount = 1;
-            }
-            
-            // Only actions so count is One always,since its showing like a table insdie a single cell;
-        }
-        return totalCount;
-    }
-    
-    return totalCount;
-}
-
--(void)checking{
+    if (!isDataAvailable) return kDefaultNumberOfCells;
+    return arrGems.count;
     
 }
 
--(void) tableView:(UITableView *) tableView willDisplayCell:(UITableViewCell *) cell forRowAtIndexPath:(NSIndexPath *)indexPath
+-(UICollectionViewCell *)collectionView:(UICollectionView *)_collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //row number on which you want to animate your view
-    //row number could be either 0 or 1 as you are creating two cells
-    //suppose you want to animate view on cell at 0 index
-    if (indexPath.section == 0 && indexPath.row == 0) { //check for the 0th index cell
-    {
-           }
+    if (indexPath.section == 0) {
         
-}
-
-    
-        // access the view which you want to animate from it's tag
-        
-}
-
--(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell;
-    aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        static NSString *CellIdentifier = @"HeaderImage";
-        UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor clearColor];
-        cell.contentView.backgroundColor = [UIColor clearColor];
+        UICollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"StaticCell" forIndexPath:indexPath];
         if ([[cell contentView]viewWithTag:101]) {
             UIButton *_btnHand = [[cell contentView]viewWithTag:101];
             [_btnHand removeFromSuperview];
         }
         
+        if ([[cell contentView]viewWithTag:102]) {
+            UIView *viewInspire = [[cell contentView]viewWithTag:102];
+            if ([viewInspire viewWithTag:103]) {
+                UIImageView *imgView = (UIImageView*) [[cell contentView]viewWithTag:103];
+                [imgView sd_setImageWithURL:[NSURL URLWithString:[User sharedManager].profileurl]
+                                    placeholderImage:[UIImage imageNamed:@"Menu_Profile"]
+                                           completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                               
+                                           }];
+            }
+
+        }
+        
         UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        doneBtn.frame = CGRectMake(aTableView.frame.size.width / 2.0 - 15, 155, 20, 20);
+        doneBtn.frame = CGRectMake(_collectionView.frame.size.width / 2.0 - 15, 150, 20, 20);
         [doneBtn setImage:[UIImage imageNamed:@"hand"] forState:UIControlStateNormal];
         doneBtn.tag = 101;
         [cell.contentView addSubview:doneBtn];
@@ -371,242 +291,88 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
             [doneBtn setTransform:CGAffineTransformMakeScale(1.5, 1.5)];
             doneBtn.alpha = 0.2;
         }  completion:nil];
-        
+
         
         return cell;
     }
-    
-    cell = [self configureCellForIndexPath:indexPath];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
-}
--(UITableViewCell*)configureCellForIndexPath:(NSIndexPath*)indexPath{
-    
-    static NSString *MyIdentifier = @"MyIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
-    if (cell == nil)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:MyIdentifier];
-    
-        // For emotions
+    if (!isDataAvailable) {
         
-        if (indexPath.section - 1 < arrDataSource.count) {
-            BOOL isActionAvailable = false;
-            NSDictionary *details = arrDataSource[indexPath.section - 1];
-            NSArray *actions;
-            if (NULL_TO_NIL([details objectForKey:@"action"])) {
-                actions = [details objectForKey:@"action"];
-                if (actions.count > 0) {
-                    isActionAvailable = true;
-                    NSArray *actions;
-                    if (NULL_TO_NIL([details objectForKey:@"action"])) {
-                        actions = [details objectForKey:@"action"];
-                        if (actions.count > 0) {
-                            static NSString *CellIdentifier = @"CustomCellWithTable";
-                            CustomCellWithTable *cell = (CustomCellWithTable *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                            cell.accessoryType = UITableViewCellAccessoryNone;
-                            cell.backgroundColor = [UIColor clearColor];
-                            cell.delegate = self;
-                            cell.isTabEmotion = true;
-                            cell.contentView.backgroundColor = [UIColor clearColor];
-                            cell.topConstarintForTable.constant = 0;
-                            cell.placeHolderText = [NSString stringWithFormat:@" %@ ",[details objectForKey:@"title"]];
-                            cell.deviceWidth = tableView.frame.size.width;
-                            [cell setUpActionsWithDataSource:actions];
-                            [cell setUpParentSection:indexPath.section - 1];
-                            return cell;
-                        }
-                    }
-                    
-                }
-            }
-            // Check if reached Action Cell
+        UICollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+        if ([cell.contentView viewWithTag:1]) {
+            UILabel *lblNoData =  [cell.contentView viewWithTag:1];
+            lblNoData.text = strNoDataText;
         }
+        return cell;
         
+    }
+    GemsListCollectionViewCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
+    cell.delegate = self;
+    [self resetCellVariables:cell];
+    [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
+    
+    if (indexPath.row < arrGems.count) {
         
-    
-    return cell;
-    
-}
-
--(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        return 180;
+        NSDictionary *details = arrGems[indexPath.row];
+        [self configureFollowButtonWithDetails:details cell:cell];
+        [self configureTextVariables:details cell:cell indexPath:indexPath];
     }
     
-        // By Emotions
-        
-        BOOL isActionAvailable = false;
-        if (indexPath.section  -1 < arrDataSource.count) {
-            NSDictionary *details = arrDataSource[indexPath.section  -1];
-            NSArray *actions;
-            if (NULL_TO_NIL([details objectForKey:@"action"])) {
-                actions = [details objectForKey:@"action"];
-                if (actions.count > 0) {
-                    isActionAvailable = true;;
-                }
+    cell.imgProfile.tag = indexPath.row;
+    cell.imgProfile.userInteractionEnabled = true;
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showUserProfilePage:)];
+    [cell.imgProfile addGestureRecognizer:gestureRecognizer];
+    gestureRecognizer.cancelsTouchesInView = NO;
+    return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)_collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.section == 0) {
+        return CGSizeMake(_collectionView.bounds.size.width, 250);
+    }
+    float padding = 10;
+    float defaultHeight = 185;
+    float width = _collectionView.bounds.size.width;
+    float finalHeight = 0;
+    float imageHeight = 0;
+    if (indexPath.row < arrGems.count) {
+        NSDictionary *details = arrGems[indexPath.row];
+        if (NULL_TO_NIL([details objectForKey:@"gem_details"])){
+            float lblHeight = [Utility getSizeOfLabelWithText:[details objectForKey:@"gem_details"] width:self.view.frame.size.width - padding font:[UIFont fontWithName:CommonFont size:14]];
+            if (lblHeight > 30) {
+                lblHeight = 30;
             }
-            // Check if reached Action Cell
-            NSInteger height = 0;
-            if (isActionAvailable) {
-                
-                for (NSDictionary *dict in actions) {
-                    if (NULL_TO_NIL([dict objectForKey:@"action_media"])) {
-                        NSArray *actionMedias = [dict objectForKey:@"action_media"];
-                        float finalImgHeight = 0;
-                        float padding = 15;
-                        for (NSDictionary *dict in actionMedias) {
-                            float _width = [[dict objectForKey:@"image_width"] floatValue];
-                            float _height = [[dict objectForKey:@"image_height"] floatValue];
-                            float ratio = _width / _height;
-                            float deviceWidth = _tableView.frame.size.width;
-                            float imageHeight = (deviceWidth - padding) / ratio;
-                            finalImgHeight += imageHeight;
-                        }
-                        height += finalImgHeight;
-                    }
-                    if (NULL_TO_NIL([dict objectForKey:@"action_details"])) {
-                        NSString *strDetails = [dict objectForKey:@"action_details"];
-                        if (strDetails.length) {
-                            height += [self getLabelHeightForActionDescription:[dict objectForKey:@"action_details"] withFont:[UIFont fontWithName:CommonFont size:14] withPadding:15]; // Description height
-                            CGFloat padding = 20;
-                            height +=  padding;
-                        }
-                        
-                    }
-                    
-                    float padding = 0;
-                    if (NULL_TO_NIL([dict objectForKey:@"contact_name"])) {
-                        height += [self getLabelHeightForOtherInfo:[dict objectForKey:@"contact_name"] withFont:[UIFont fontWithName:CommonFont size:12] withPadding:30];
-                        padding = 10;
-                    }
-                    
-                    if (NULL_TO_NIL([dict objectForKey:@"location_name"])) {
-                        height += [self getLabelHeightForOtherInfo:[dict objectForKey:@"location_name"] withFont:[UIFont fontWithName:CommonFontBold size:12] withPadding:30];
-                        padding = 10;
-                    }
-                    height +=  padding;
-                    
-                    if (NULL_TO_NIL([dict objectForKey:@"action_title"])) {
-                        CGFloat _height = [self getHeaderHeight:[dict objectForKey:@"action_title"] withPadding:15];
-                        height += _height;
-                        
-                    }
-                }
-                return height;
-                
+            finalHeight = defaultHeight + lblHeight;
+            if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
             }else{
-                //Action Not available
-                return kHeightForCell;
+                float width = [[details objectForKey:@"image_width"] floatValue];
+                float height = [[details objectForKey:@"image_height"] floatValue];
+                float ratio = width / height;
+                imageHeight = (collectionView.frame.size.width - padding) / ratio;
+                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+                
             }
+            finalHeight += imageHeight;
+            return CGSizeMake(width, finalHeight);
+            
         }
-    
-    
-    CGFloat height = kHeightForCell;
-    return height;
-    
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (indexPath.section == 0 && indexPath.row == 0) {
         
-        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        [app showEmotionalAwarenessPageIsFromVisualization:YES];
+        
         
     }
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-   
-    /**! Pagination call !**/
     
+    return CGSizeMake(width, 400);
 }
 
 
-- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    
-    if (!isDataAvailable) return Nil;
-    UIView *vwHeader = [UIView new];
-    UIView *vwBG = [UIView new];
-    [vwHeader addSubview:vwBG];
-    vwBG.translatesAutoresizingMaskIntoConstraints = NO;
-    [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwBG]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBG)]];
-    [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwBG]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwBG)]];
-    vwBG.backgroundColor =  arrGoalColors[section % 3];
-    if (eSelectionType == eByEmotion) {
-        vwBG.backgroundColor =  arrEmotionColors[section % 3];
-    }
-    
-    UILabel *_lblTitle = [UILabel new];
-    _lblTitle.numberOfLines = 0;
-    _lblTitle.translatesAutoresizingMaskIntoConstraints = NO;
-    [vwBG addSubview:_lblTitle];
-    
-    
-    
-    if (eSelectionType == eByGoals)
-        [vwBG addConstraint:[NSLayoutConstraint constraintWithItem:_lblTitle
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:vwBG
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0
-                                                          constant:-8.0]];
-    else
-        [vwBG addConstraint:[NSLayoutConstraint constraintWithItem:_lblTitle
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:vwBG
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0
-                                                          constant:0.0]];
-    
-    [vwBG addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_lblTitle]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_lblTitle)]];
-    _lblTitle.font = [UIFont fontWithName:CommonFontBold size:15];
-    _lblTitle.textColor = [UIColor whiteColor];
-    if (section - 1 < arrDataSource.count) {
-        NSDictionary *details = arrDataSource[section - 1];
-        if (NULL_TO_NIL([details objectForKey:@"title"])) {
-            _lblTitle.text = [details objectForKey:@"title"];
-        }
-    }
-    
-    if (eSelectionType == eByGoals) {
-        
-        UILabel *lblDate= [UILabel new];
-        lblDate.numberOfLines = 1;
-        lblDate.translatesAutoresizingMaskIntoConstraints = NO;
-        [vwBG addSubview:lblDate];
-        
-        [vwBG addConstraint:[NSLayoutConstraint constraintWithItem:lblDate
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:_lblTitle
-                                                         attribute:NSLayoutAttributeBottom
-                                                        multiplier:1.0
-                                                          constant:8.0]];
-        
-        
-        [vwBG addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[lblDate]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lblDate)]];
-        lblDate.font = [UIFont fontWithName:CommonFont size:11];
-        lblDate.textColor = [UIColor whiteColor];
-        if (section < arrDataSource.count) {
-            NSDictionary *details = arrDataSource[section];
-            lblDate.text = [NSString stringWithFormat:@"%@ - %@ | %@",[Utility getDateStringFromSecondsWith:[[details objectForKey:@"goal_startdate"] doubleValue] withFormat:@"d MMM,yyyy"],[Utility getDateStringFromSecondsWith:[[details objectForKey:@"goal_enddate"] doubleValue] withFormat:@"d MMM,yyyy"],@"Active"]  ;
-        }
-    }
-    
-    return vwHeader;
-    
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    
-    if (!isDataAvailable || section == 0) return 0.01;
-    return kHeightForHeader;
-    
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    return UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -617,14 +383,12 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         
         if(isPageRefresing == NO){ // no need to worry about threads because this is always on main thread.
             
-            NSInteger nextPage = currentPage_Emotions;
-            NSInteger totalPages = totalPages_Emotions;
+            NSInteger nextPage = currentPage ;
             nextPage += 1;
             if (nextPage  <= totalPages) {
                 isPageRefresing = YES;
                 [self showPaginationPopUp];
-                [self loadAllEmotionsByPagination:YES withPageNumber:nextPage];
-                
+                [self getAllProductsByPagination:YES withPageNumber:nextPage];
             }
             
         }
@@ -632,164 +396,670 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
     
 }
 
--(void)mediaCellClickedWithSection:(NSInteger)section andIndex:(NSInteger)index{
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (section < arrDataSource.count) {
-        NSDictionary *details = arrDataSource[section];
-        if (NULL_TO_NIL([details objectForKey:@"gem_media"])) {
-            NSArray *medias = [details objectForKey:@"gem_media"];
-            if (index - 1 < medias.count) {
-                NSDictionary *mediaItem = medias[index - 1];
-                if (NULL_TO_NIL([mediaItem objectForKey:@"media_type"])) {
-                    NSString *mediaType = [mediaItem objectForKey:@"media_type"];
-                    if ([mediaType isEqualToString:@"video"]) {
-                        [self playVideoWithURL:[mediaItem objectForKey:@"gem_media"]];
-                    }
-                    else if ([mediaType isEqualToString:@"audio"]) {
-                        
-                        NSURL  *audioURL = [NSURL URLWithString:[mediaItem objectForKey:@"gem_media"]];
-                        [self showAudioPlayerWithURL:audioURL];
-                    }
-                    else if ([mediaType isEqualToString:@"image"]){
-                        NSMutableArray *arrImages = [NSMutableArray new];
-                        [arrImages addObject:[NSURL URLWithString:[mediaItem objectForKey:@"gem_media"]]];
-                        for (NSDictionary *dict in medias) {
-                            NSString *mediaType = [dict objectForKey:@"media_type"];
-                            if ([mediaType isEqualToString:@"image"]) {
-                                if (![arrImages containsObject:[NSURL URLWithString:[dict objectForKey:@"gem_media"]]]) {
-                                    [arrImages addObject:[NSURL URLWithString:[dict objectForKey:@"gem_media"]]];
-                                }
-                                
-                            }
-                            
-                        }
-                        if (arrImages.count) [self presentGalleryWithImages:arrImages];
-                        
-                    }
-                    
-                }
-            }
+    
+}
+
+#pragma mark - Customise Cells Method
+
+-(void)resetCellVariables:(GemsListCollectionViewCell*)cell{
+    
+    cell.vwBg.layer.borderColor = [UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:1].CGColor;
+    cell.vwBg.layer.borderWidth = 1.0;
+    
+    cell.imgProfile.layer.cornerRadius = 25.f;
+    cell.imgProfile.clipsToBounds = YES;
+    [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
+    [cell.activityIndicator stopAnimating];
+    
+    
+    cell.btnDelete.hidden = true;
+    cell.btnFollow.hidden = true;
+    // cell.btnHide.hidden = true;
+    
+}
+
+-(void)configureFollowButtonWithDetails:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell{
+    
+    BOOL canFollow = true;
+    if (NULL_TO_NIL([details objectForKey:@"can_follow"]))
+        canFollow = [[details objectForKey:@"can_follow"] boolValue];
+    if ([[User sharedManager].userId isEqualToString:[details objectForKey:@"user_id"]]) {
+        canFollow = false;
+    }
+    cell.btnFollow.hidden = (canFollow) ? false : true;
+    // cell.btnHide.hidden = [[details objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId] ? false : true;
+    
+    cell.btnFollow.layer.borderWidth = 1.f;
+    cell.btnFollow.layer.borderColor = [UIColor getThemeColor].CGColor;
+    cell.btnFollow.layer.cornerRadius = 5.f;
+    
+    if (NULL_TO_NIL([details objectForKey:@"follow_status"]))
+        followStatus =  [[details objectForKey:@"follow_status"] intValue];
+    
+    if (NULL_TO_NIL([details objectForKey:@"user_id"])) {
+        NSString *followerID = [details objectForKey:@"user_id"];
+        if (NULL_TO_NIL([dictFollowers objectForKey:followerID])){
+            int follow = (int)[[dictFollowers objectForKey:followerID] integerValue];
+            followStatus = follow;
         }
+    }
+    
+    switch (followStatus) {
+        case eFollowed:
+            [cell.btnFollow setEnabled:true];
+            [cell.btnFollow setTitle:@"UnFollow" forState:UIControlStateNormal];
+            [cell.btnFollow setBackgroundColor:[UIColor clearColor]];
+            [cell.btnFollow setTitleColor:[UIColor getThemeColor] forState:UIControlStateNormal];
+            break;
+            
+        case eFollowPending:
+            [cell.btnFollow setEnabled:false];
+            [cell.btnFollow setTitle:@"Follow" forState:UIControlStateDisabled];
+            [cell.btnFollow setBackgroundColor:[UIColor lightGrayColor]];
+            [cell.btnFollow setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            cell.btnFollow.layer.borderColor = [UIColor clearColor].CGColor;
+            break;
+            
+        case eFollow:
+            [cell.btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
+            [cell.btnFollow setBackgroundColor:[UIColor clearColor]];
+            [cell.btnFollow setEnabled:true];
+            [cell.btnFollow setTitleColor:[UIColor getThemeColor] forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
     }
 }
 
--(void)mediaCellClickedWithSection:(NSInteger)section andIndex:(NSInteger)index parentSection:(NSInteger)parentSection{
+-(void)configureTextVariables:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell indexPath:(NSIndexPath*)indexPath{
     
-    if (parentSection < arrDataSource.count) {
-        NSDictionary *details = arrDataSource[parentSection];
-        if (NULL_TO_NIL([details objectForKey:@"action"])) {
-            NSArray *actions = [details objectForKey:@"action"];
-            if (section < actions.count) {
-                NSDictionary *mediaInfo = actions[section];
-                if ([mediaInfo objectForKey:@"action_media"]) {
-                    NSArray *medias = [mediaInfo objectForKey:@"action_media"];
-                    if (index - 1 < medias.count) {
-                        NSDictionary *mediaItem = medias[index - 1];
+    cell.lblName.text = [details objectForKey:@"firstname"];
+    cell.lblTime.text = [Utility getDaysBetweenTwoDatesWith:[[details objectForKey:@"gem_datetime"] doubleValue]];
+    if (NULL_TO_NIL([details objectForKey:@"gem_title"]))
+        cell.lblTitle.text = [details objectForKey:@"gem_title"];
+    
+    if ([[details objectForKey:@"gem_type"] isEqualToString:@"action"]) {
+        [cell.btnBanner setTitle:@"ACTION" forState:UIControlStateNormal];;
+    }
+    else if ([[details objectForKey:@"gem_type"] isEqualToString:@"goal"]) {
+        [cell.btnBanner setTitle:@"GOAL" forState:UIControlStateNormal];;
+    }
+    else if ([[details objectForKey:@"gem_type"] isEqualToString:@"event"]) {
+        [cell.btnBanner setTitle:@"MOMENT" forState:UIControlStateNormal];;
+    }
+    else if ([[details objectForKey:@"gem_type"] isEqualToString:@"community"]) {
+        [cell.btnBanner setTitle:@"COMMUNITY" forState:UIControlStateNormal];;
+    }
+    
+    if (NULL_TO_NIL([details objectForKey:@"gem_details"]))
+        cell.lblDescription.text = [details objectForKey:@"gem_details"];
+    
+    [cell.btnLike setImage:[UIImage imageNamed:@"Like_Buton"] forState:UIControlStateNormal];
+    if ([[details objectForKey:@"like_status"] boolValue])
+        [cell.btnLike setImage:[UIImage imageNamed:@"Like_Active"] forState:UIControlStateNormal];
+    
+    NSInteger count = [[details objectForKey:@"likecount"] integerValue];
+    if (count >= OneK) cell.lblLikeCnt.text = [NSString stringWithFormat:@"%@",[self getCountInTermsOfThousand:count]];
+    else cell.lblLikeCnt.text = [NSString stringWithFormat:@"%d",[[details objectForKey:@"likecount"] integerValue]];
+    
+    count =  [[details objectForKey:@"comment_count"] integerValue];
+    if (count >= OneK) cell.lblCmntCount.text = [NSString stringWithFormat:@"%@",[self getCountInTermsOfThousand:count]];
+    else cell.lblCmntCount.text = [NSString stringWithFormat:@"%d",[[details objectForKey:@"comment_count"] integerValue]];
+    
+    cell.btnMore.hidden = false;
+    if ([[details objectForKey:@"type"] isEqualToString:@"purposecolor"]) cell.btnMore.hidden = true;
+    
+    cell.bnExpandGallery.hidden = TRUE;
+    cell.lblMediaCount.hidden = TRUE;
+    if (NULL_TO_NIL([details objectForKey:@"gem_media"])){
+        NSArray *gallery =  [details objectForKey:@"gem_media"];
+        if (gallery.count > 1) {
+            cell.bnExpandGallery.hidden = FALSE;
+            cell.lblMediaCount.hidden = FALSE;
+            cell.lblMediaCount.text = [NSString stringWithFormat:@"+%02lu",(unsigned long)(gallery.count) - 1];
+            
+        }
+    }
+    
+    if (NULL_TO_NIL ([details objectForKey:@"profileimg"]) && [[details objectForKey:@"profileimg"] length]){
+        [cell.imgProfile sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"profileimg"]]
+                           placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                  }];
+    }
+    cell.imgGemMedia.hidden = false;
+    cell.imgTransparentVideo.hidden = true;
+    if ([[details objectForKey:@"display_type"] isEqualToString:@"video"])cell.imgTransparentVideo.hidden = false;
+    if ([[details objectForKey:@"display_image"] isEqualToString:@"No"]) cell.imgGemMedia.hidden = true;
+    [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
+    if (NULL_TO_NIL([details objectForKey:@"display_image"])){
+        NSString *url = [details objectForKey:@"display_image"];
+        float imageHeight = 0;
+        if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
+            cell.constraintForHeight.constant = imageHeight;
+        }
+        if (url.length) {
+            [cell.activityIndicator startAnimating];
+            [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:url]
+                                placeholderImage:[UIImage imageNamed:@""]
+                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                           
+                                           [cell.activityIndicator stopAnimating];
+                                       }];
+        }
+    }
+    
+    
+}
+
+
+#pragma mark - Custom Cell Delegate For More Action Method
+
+-(void)moreButtonClickedWithIndex:(NSInteger)index view:(UIView*)sender{
+    
+    if (index < arrGems.count) {
+        NSDictionary *details = arrGems[index];
+        BOOL isOthers = [[details objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId] ? false : true;
+        UIAlertController * alert=  [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction* hide;
+        if (isOthers) {
+            hide = [UIAlertAction actionWithTitle:@"Report Abuse" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+                
+                [alert dismissViewControllerAnimated:YES completion:nil];
+                [self reportAbuseWithIndex:index];
+                
+            }];
+            
+        }else{
+            hide = [UIAlertAction actionWithTitle:@"Hide" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+                
+                [alert dismissViewControllerAnimated:YES completion:nil];
+                [self hideAGemWithIndex:index];
+                
+            }];
+        }
+        
+        
+        UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action)
+                                 {
+                                     
+                                 }];
+        [alert addAction:hide];
+        [alert addAction:cancel];
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+        
+        
+    }
+    
+    
+    
+}
+
+#pragma mark - Custom Cell Delegate For Repoer Abuse Gem Method
+
+-(void)reportAbuseWithIndex:(NSInteger)index{
+    
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemDetails = arrGems[index];
+        NSString *gemID;
+        NSString *gemType;
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_id"]))
+            gemID = [gemDetails objectForKey:@"gem_id"];
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_type"]))
+            gemType = [gemDetails objectForKey:@"gem_type"];
+        
+        AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        ReportAbuseViewController *reportAbuseVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForReportAbuse];
+        reportAbuseVC.gemDetails = gemDetails;
+        if (!deleagte.navGeneral) {
+            
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            app.navGeneral = [[UINavigationController alloc] initWithRootViewController:reportAbuseVC];
+            app.navGeneral.navigationBarHidden = true;
+            [UIView transitionWithView:app.window
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{  app.window.rootViewController = app.navGeneral; }
+                            completion:nil];
+            
+        }else{
+            [deleagte.navGeneral pushViewController:reportAbuseVC animated:YES];
+        }
+    }
+    
+}
+
+#pragma mark - Custom Cell Delegate For Hide A Gem Method
+
+-(void)hideAGemWithIndex:(NSInteger)index{
+    
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemDetails = arrGems[index];
+        NSString *gemID;
+        NSString *gemType;
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_id"]))
+            gemID = [gemDetails objectForKey:@"gem_id"];
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_type"]))
+            gemType = [gemDetails objectForKey:@"gem_type"];
+        
+        [self updateGEMWithVisibilityStatus:index];
+        
+        if (gemID && gemType) {
+            [APIMapper hideAGEMWith:[User sharedManager].userId gemID:gemID gemType:gemType success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                
+            } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                
+            }];
+        }
+        
+    }
+    
+}
+
+-(void)updateGEMWithVisibilityStatus:(NSInteger)index{
+    
+    if (index < arrGems.count)
+        [arrGems removeObjectAtIndex:index];
+    totalGems -= 1;
+    [heightsCache removeAllObjects];
+    [collectionView reloadData];
+}
+
+#pragma mark - Custom Cell Delegate For Follow Method
+
+
+-(void)followButtonClickedWith:(NSInteger)index{
+    
+    if (index < arrGems.count) {
+        NSDictionary *details = arrGems[index];
+        if (NULL_TO_NIL([details objectForKey:@"user_id"])) {
+            NSString *followerID = [details objectForKey:@"user_id"];
+            [self showLoadingScreen];
+            [APIMapper sendFollowRequestWithUserID:[User sharedManager].userId followerID:followerID success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                [self hideLoadingScreen];
+                if ([[responseObject objectForKey:@"code"] integerValue] == 401) {
+                    UIAlertController * alert=  [UIAlertController alertControllerWithTitle:@"Follow" message:[responseObject objectForKey:@"text"] preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction* copy = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
                         
-                        if (NULL_TO_NIL([mediaItem objectForKey:@"media_type"])) {
-                            NSString *mediaType = [mediaItem objectForKey:@"media_type"];
-                            if ([mediaType isEqualToString:@"video"]) {
-                                [self playVideoWithURL:[mediaItem objectForKey:@"gem_media"]];
-                            }
-                            else if ([mediaType isEqualToString:@"audio"]) {
-                                
-                                NSURL  *audioURL = [NSURL URLWithString:[mediaItem objectForKey:@"gem_media"]];
-                                [self showAudioPlayerWithURL:audioURL];
-                            }
-                            else if ([mediaType isEqualToString:@"image"]){
-                                NSMutableArray *arrImages = [NSMutableArray new];
-                                [arrImages addObject:[NSURL URLWithString:[mediaItem objectForKey:@"gem_media"]]];
-                                for (NSDictionary *dict in medias) {
-                                    NSString *mediaType = [dict objectForKey:@"media_type"];
-                                    if ([mediaType isEqualToString:@"image"]) {
-                                        if (![arrImages containsObject:[NSURL URLWithString:[dict objectForKey:@"gem_media"]]]) {
-                                            [arrImages addObject:[NSURL URLWithString:[dict objectForKey:@"gem_media"]]];
-                                        }
-                                        
-                                    }
-                                    
-                                }
-                                if (arrImages.count) [self presentGalleryWithImages:arrImages];
-                                
-                            }
-                            
-                        }
-                        
-                    }
+                        [alert dismissViewControllerAnimated:YES completion:nil];
+                    }];
+                    
+                    [alert addAction:copy];
+                    [self.navigationController presentViewController:alert animated:YES completion:nil];
+                    [self updateGemsWithFollowStatusWithIndex:index latestFollowStatus:false];
+                }else{
+                    [self updateGemsWithFollowStatusWithIndex:index latestFollowStatus:true];
+                }
+                
+            } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                [self hideLoadingScreen];
+            }];
+        }
+    }
+    
+}
+
+-(void)updateGemsWithFollowStatusWithIndex:(NSInteger)index latestFollowStatus:(BOOL)latestFollowStatus{
+    
+    if (index < arrGems.count) {
+        NSMutableDictionary *gemsInfo = [NSMutableDictionary dictionaryWithDictionary:arrGems[index]];
+        if (NULL_TO_NIL([gemsInfo objectForKey:@"user_id"])) {
+            NSString *followerID = [gemsInfo objectForKey:@"user_id"];
+            if ([gemsInfo objectForKey:@"follow_status"]) {
+                if (!latestFollowStatus) {
+                    [gemsInfo setValue:[NSNumber numberWithBool:false] forKey:@"can_follow"];
+                    [arrGems replaceObjectAtIndex:index withObject:gemsInfo];
+                }else{
+                    int status = (int)[[gemsInfo objectForKey:@"follow_status"] integerValue];
+                    if (NULL_TO_NIL([dictFollowers objectForKey:followerID]))
+                        status = (int) [[dictFollowers objectForKey:followerID] integerValue];
+                    status += 1;
+                    if (status + 1 > eFollowed)
+                        status = eFollow;
+                    [dictFollowers setObject:[NSNumber numberWithInteger:status] forKey:followerID];
                 }
                 
             }
         }
+        [collectionView reloadData];
     }
 }
--(void)playSelectedMediaWithIndex:(NSDictionary*)item {
+
+
+#pragma mark - Custom Cell Delegate For Like Method
+
+-(void)likeGemsClicked:(NSInteger)index{
     
-    NSString *mediaURL;
-    NSString *mediaType;
-    if (NULL_TO_NIL([item objectForKey:@"gem_media"])) {
-        mediaURL = [item objectForKey:@"gem_media"];
-    }
+    /*! Like Button Action!*/
     
-    if (NULL_TO_NIL([item objectForKey:@"media_type"])) {
-        mediaType = [item objectForKey:@"media_type"];
-    }
-    if ([mediaType isEqualToString:@"video"]) {
+    if (index < arrGems.count) {
         
-        NSError* error;
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
-        [[AVAudioSession sharedInstance] setActive:NO error:&error];
-        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-        playerViewController.player = [AVPlayer playerWithURL:[NSURL URLWithString:mediaURL]];
-        [playerViewController.player play];
-        [self presentViewController:playerViewController animated:YES completion:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(videoDidFinish:)
-                                                     name:AVPlayerItemDidPlayToEndTimeNotification
-                                                   object:[playerViewController.player currentItem]];
-    }
-    else if ([mediaType isEqualToString:@"audio"]) {
+        NSDictionary *gemDetails = arrGems[index];
+        NSString *gemID;
+        NSString *gemType;
         
-        NSURL  *audioURL = [NSURL URLWithString:mediaURL];
-        [self showAudioPlayerWithURL:audioURL];
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_id"]))
+            gemID = [gemDetails objectForKey:@"gem_id"];
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_type"]))
+            gemType = [gemDetails objectForKey:@"gem_type"];
+        
+        [self updateGEMWithLikeStatus:index];
+        
+        if (gemID && gemType) {
+            [APIMapper likeAGEMWith:[User sharedManager].userId gemID:gemID gemType:gemType success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                
+            } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                
+            }];
+        }
+        
+        
     }
-    
     
 }
 
--(void)playVideoWithURL:(NSString*)mediaURL{
+-(void)updateGEMWithLikeStatus:(NSInteger)index{
     
-    NSError* error;
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
-    [[AVAudioSession sharedInstance] setActive:NO error:&error];
-    AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-    playerViewController.player = [AVPlayer playerWithURL:[NSURL URLWithString:mediaURL]];
-    [playerViewController.player play];
-    [self presentViewController:playerViewController animated:YES completion:nil];
+    if (index < arrGems.count) {
+        NSDictionary *gemsInfo = arrGems[index];
+        NSString *gemID;
+        NSInteger count = 0;
+        BOOL isAlreadyLiked = 0;
+        
+        if (NULL_TO_NIL([gemsInfo objectForKey:@"gem_id"]))
+            gemID = [gemsInfo objectForKey:@"gem_id"];
+        if (NULL_TO_NIL([gemsInfo objectForKey:@"likecount"]))
+            count = [[gemsInfo objectForKey:@"likecount"] integerValue];
+        if ([[gemsInfo objectForKey:@"like_status"] boolValue])
+            isAlreadyLiked = [[gemsInfo objectForKey:@"like_status"] boolValue];
+        NSMutableDictionary *gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemsInfo];
+        if (isAlreadyLiked) {
+            count --;
+            if (count < 0)count = 0;
+            [gemDetails setValue:[NSNumber numberWithBool:0] forKey:@"like_status"];
+        }
+        else{
+            count ++;
+            [gemDetails setValue:[NSNumber numberWithBool:1] forKey:@"like_status"];
+        }
+        [gemDetails setValue:[NSNumber numberWithInteger:count] forKey:@"likecount"];
+        [arrGems replaceObjectAtIndex:index withObject:gemDetails];
+    }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(videoDidFinish:)
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:[playerViewController.player currentItem]];
+    [collectionView reloadData];
 }
 
-- (void)videoDidFinish:(id)notification
+
+#pragma mark - Custom Cell Delegate For Favourite Method
+
+
+-(void)favouriteButtonApplied:(NSInteger)index{
+    
+    /*! Favourite Button Action!*/
+    
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemDetails = arrGems[index];
+        NSString *gemID;
+        NSString *gemType;
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_id"]))
+            gemID = [gemDetails objectForKey:@"gem_id"];
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_type"]))
+            gemType = [gemDetails objectForKey:@"gem_type"];
+        
+        [self updateGEMWithFavouriteStatus:index];
+        
+        if (gemID && gemType) {
+            [APIMapper addGemToFavouritesWith:[User sharedManager].userId gemID:gemID gemType:gemType success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+                
+            } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                
+            }];
+        }
+        
+        
+    }
+    
+}
+
+-(void)updateGEMWithFavouriteStatus:(NSInteger)index{
+    
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemsInfo = arrGems[index];
+        NSString *gemID;
+        BOOL isAlreadyLiked = 0;
+        
+        if (NULL_TO_NIL([gemsInfo objectForKey:@"gem_id"]))
+            gemID = [gemsInfo objectForKey:@"gem_id"];
+        if ([[gemsInfo objectForKey:@"favourite_status"] boolValue])
+            isAlreadyLiked = [[gemsInfo objectForKey:@"favourite_status"] boolValue];
+        NSMutableDictionary *gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemsInfo];
+        [gemDetails setValue:[NSNumber numberWithBool:1] forKey:@"favourite_status"];
+        [arrGems replaceObjectAtIndex:index withObject:gemDetails];
+        
+    }
+    
+    [collectionView reloadData];
+}
+
+#pragma mark - Custom Cell Delegate For Share Method
+
+-(void)shareButtonClickedWithIndex:(NSInteger)index button:(UIButton*)button{
+    
+    /*
+     
+     UIAlertController * alert=  [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+     UIAlertAction* copy = [UIAlertAction actionWithTitle:@"Copy GEM" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+     if (index < arrGems.count) {
+     NSDictionary *gemDetails = arrGems[index];
+     [self showLoadingScreen];
+     [APIMapper copyAGEMToNewGEMWithGEMID:[gemDetails objectForKey:@"gem_id"] userID:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject){
+     if ([[responseObject objectForKey:@"code"] integerValue] == kSuccessCode) {
+     if ([responseObject objectForKey:@"resultarray"]) {
+     [arrGems insertObject:[responseObject objectForKey:@"resultarray"] atIndex:0];
+     }
+     }
+     [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+     [self hideLoadingScreen];
+     
+     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+     if (error && error.localizedDescription) [ALToastView toastInView:self.view withText:NETWORK_ERROR_MESSAGE];
+     [self hideLoadingScreen];
+     }];
+     }
+     [alert dismissViewControllerAnimated:YES completion:nil];
+     }];
+     
+     UIAlertAction* share = [UIAlertAction actionWithTitle:@"Share GEM" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+     [alert dismissViewControllerAnimated:YES completion:nil];
+     //! Share Button Action!*
+     NSMutableString *shareText = [NSMutableString new];
+     if (index < arrGems.count) {
+     NSDictionary *gemDetails = arrGems[index];
+     if (NULL_TO_NIL([gemDetails objectForKey:@"gem_title"]))
+     [shareText appendString:[NSString stringWithFormat:@"%@",[gemDetails objectForKey:@"gem_title"]]];
+     if (NULL_TO_NIL([gemDetails objectForKey:@"gem_details"]))
+     [shareText appendString:[NSString stringWithFormat:@"\n %@",[gemDetails objectForKey:@"gem_details"]]];
+     [self shareGEMToPublicWith:shareText items:[gemDetails objectForKey:@"gem_media"]];
+     
+     }
+     [alert dismissViewControllerAnimated:YES completion:nil];
+     }];
+     
+     UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action)
+     {
+     
+     }];
+     [alert addAction:copy];
+     [alert addAction:share];
+     [alert addAction:cancel];
+     [self.navigationController presentViewController:alert animated:YES completion:nil];
+     
+     */
+    
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemDetails = arrGems[index];
+        NSString *gemID;
+        NSString *gemType;
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_id"]))
+            gemID = [gemDetails objectForKey:@"gem_id"];
+        
+        if (NULL_TO_NIL([gemDetails objectForKey:@"gem_type"]))
+            gemType = [gemDetails objectForKey:@"gem_type"];
+        
+        CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
+        detailPage.actionType = eActionTypeShare;
+        if ([gemDetails objectForKey:@"gem_type"]) {
+            detailPage.strTitle =[[NSString stringWithFormat:@"SAVE AS %@",[gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
+        }
+        [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:gemID GEMType:gemType];
+        
+        AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        if (!deleagte.navGeneral) {
+            
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+            app.navGeneral.navigationBarHidden = true;
+            [UIView transitionWithView:app.window
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{
+                                app.window.rootViewController = app.navGeneral;
+                            }
+                            completion:nil];
+            deleagte.navGeneral = app.navGeneral;
+            
+        }else{
+            [deleagte.navGeneral pushViewController:detailPage animated:YES];
+        }
+    }
+}
+
+
+#pragma mark - Custom Cell Delegate For Get Liked and Commented Users
+
+-(void)showAllLikedUsers:(NSInteger)index{
+    
+    if (index < arrGems.count) {
+        NSDictionary *gemDetails = arrGems[index];
+        if ([[gemDetails objectForKey:@"likecount"]integerValue ] > 0) {
+            AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
+            [userListings loadUserListingsForType:@"like" gemID:[gemDetails objectForKey:@"gem_id"]];
+            if (!deleagte.navGeneral) {
+                
+                AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+                deleagte.navGeneral = app.navGeneral;
+                
+            }else{
+                [deleagte.navGeneral pushViewController:userListings animated:YES];
+            }
+            
+        }
+        
+    }
+    
+}
+
+
+-(void)showAllCommentedUsers:(NSInteger)index{
+    
+    
+    if (index < arrGems.count) {
+        NSDictionary *gemDetails = arrGems[index];
+        if ([[gemDetails objectForKey:@"comment_count"]integerValue ] > 0) {
+            
+            AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
+            [userListings loadUserListingsForType:@"comment" gemID:[gemDetails objectForKey:@"gem_id"]];
+            if (!deleagte.navGeneral) {
+                
+                AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+                
+            }else{
+                [deleagte.navGeneral pushViewController:userListings animated:YES];
+            }
+        }
+    }
+    
+}
+
+
+
+
+#pragma mark - Custom Cell Delegate For Generic Method
+
+
+-(void)moreGalleryPageClicked:(NSInteger)index {
+    
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemDetails = arrGems[index];
+        GEMDetailViewController *gemDetailVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMDetailPage];
+        gemDetailVC.gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemDetails];
+        gemDetailVC.delegate = self;
+        gemDetailVC.clickedIndex = index;
+        gemDetailVC.canSave = YES;
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemDetailVC];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+        
+        
+    }
+    
+}
+
+#pragma mark - Share Medias & Deleagtes
+
+
+- (void)shareGEMToPublicWith:(NSString *)text items:(NSArray*)items
 {
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    //fade out / remove subview
-}
-
--(void)showAudioPlayerWithURL:(NSURL*)url{
-    
-    if (!vwAudioPlayer) {
-        vwAudioPlayer = [[[NSBundle mainBundle] loadNibNamed:@"CustomAudioPlayerView" owner:self options:nil] objectAtIndex:0];
-        vwAudioPlayer.delegate = self;
+    if (items.count <= 0)return;
+    if (!shareMediaView) {
+        shareMediaView = [[[NSBundle mainBundle] loadNibNamed:@"shareMedias" owner:self options:nil] objectAtIndex:0];
+        shareMediaView.delegate = self;
     }
-    
     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    UIView *vwPopUP = vwAudioPlayer;
+    UIView *vwPopUP = shareMediaView;
     [app.window.rootViewController.view addSubview:vwPopUP];
     vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
     [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
@@ -801,35 +1071,39 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         vwPopUP.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished){
         // if you want to do something once the animation finishes, put it here
-        [vwAudioPlayer setupAVPlayerForURL:url];
+        [shareMediaView setUpWithShareItems:items text:text];
     }];
     
+    
 }
-
--(void)closeAudioPlayerView{
+-(void)closeShareMediasView{
+    
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         // animate it to the identity transform (100% scale)
-        vwAudioPlayer.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        shareMediaView.transform = CGAffineTransformMakeScale(0.01, 0.01);
     } completion:^(BOOL finished){
         // if you want to do something once the animation finishes, put it here
-        [vwAudioPlayer removeFromSuperview];
-        vwAudioPlayer = nil;
-        NSError* error;
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
-        [[AVAudioSession sharedInstance] setActive:NO error:&error];
+        [shareMediaView removeFromSuperview];
+        shareMediaView = nil;
     }];
-    
-    
 }
-- (void)presentGalleryWithImages:(NSArray*)images
-{
-    [self.view endEditing:YES];
-    if (!photoBrowser) {
-        photoBrowser = [[[NSBundle mainBundle] loadNibNamed:@"PhotoBrowser" owner:self options:nil] objectAtIndex:0];
-        photoBrowser.delegate = self;
+#pragma mark - Comment Showing and its Delegate
+
+-(void)commentComposeViewClickedBy:(NSInteger)index{
+    
+    if (!composeComment) {
+        composeComment =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCommentCompose];
+        composeComment.delegate = self;
     }
+    if (index < arrGems.count) {
+        NSDictionary *gemDetails = arrGems[index];
+        composeComment.dictGemDetails = gemDetails;
+        composeComment.selectedIndex = index;
+    }
+    composeComment.isFromCommunityGem = true;
     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    UIView *vwPopUP = photoBrowser;
+    [app.window.rootViewController addChildViewController:composeComment];
+    UIView *vwPopUP = composeComment.view;
     [app.window.rootViewController.view addSubview:vwPopUP];
     vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
     [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
@@ -841,23 +1115,193 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         vwPopUP.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished){
         // if you want to do something once the animation finishes, put it here
-        [photoBrowser setUpWithImages:images];
     }];
     
 }
 
--(void)closePhotoBrowserView{
+-(void)commentPopUpCloseAppplied{
     
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         // animate it to the identity transform (100% scale)
-        photoBrowser.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        composeComment.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
     } completion:^(BOOL finished){
         // if you want to do something once the animation finishes, put it here
-        [photoBrowser removeFromSuperview];
-        photoBrowser = nil;
+        [composeComment.view removeFromSuperview];
+        [composeComment removeFromParentViewController];
+        composeComment = nil;
+        
     }];
+    
 }
 
+-(void)commentPostedSuccessfullyWithGemID:(NSString*)gemID commentCount:(NSInteger)count index:(NSInteger)index isAddComment:(BOOL)isAddComment{
+    
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemsInfo = arrGems[index];
+        NSMutableDictionary *gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemsInfo];
+        if (isAddComment) {
+            [gemDetails setValue:[NSNumber numberWithInteger:count] forKey:@"comment_count"];
+            [arrGems replaceObjectAtIndex:index withObject:gemDetails];
+        }
+        else{
+            if (NULL_TO_NIL([gemDetails objectForKey:@"comment_count"])) {
+                NSInteger count = [[gemDetails objectForKey:@"comment_count"] integerValue];
+                count --;
+                if (count  < 0)
+                    count = 0;
+                [gemDetails setValue:[NSNumber numberWithInteger:count] forKey:@"comment_count"];
+                [arrGems replaceObjectAtIndex:index withObject:gemDetails];
+            }
+            
+        }
+    }
+    
+    [collectionView reloadData];
+    
+}
+
+#pragma mark - Media Listing Page Delegates Like / Share / Comment
+
+
+/*!
+ *This method is invoked when user Clicks "FAVOURITE" Button
+ */
+-(void)favouriteButtonAppliedFromMediaPage:(NSInteger)index{
+    
+    [self favouriteButtonApplied:index];
+    
+}
+
+
+/*!
+ *This method is invoked when user Clicks "LIKE" Button
+ */
+-(void)likeAppliedFromMediaPage:(NSInteger)index{
+    
+    [self likeGemsClicked:index];
+    
+}
+
+/*!
+ *This method is invoked when user Clicks "COMMENT" Button
+ */
+-(void)commentAppliedFromMediaPage:(NSInteger)index{
+    
+    [self commentComposeViewClickedBy:index];
+}
+
+/*!
+ *This method is invoked when user Clicks "SHARE" Button
+ */
+-(void)shareAppliedFromMediaPage:(NSInteger)index{
+    
+    [self shareButtonClickedWithIndex:index button:nil];
+}
+
+
+#pragma mark - Generic Methods
+
+-(IBAction)showAwarenessPage:(id)sender{
+    
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [app showEmotionalAwarenessPageIsFromVisualization:YES];
+}
+
+-(IBAction)showCommunityGems:(id)sender{
+    
+    CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+    detailPage.strTitle = @"POST TO COMMUNITY";
+    detailPage.actionType = eActionTypeCommunity;
+    detailPage.delegate = self;
+    detailPage.shouldShowReminder = YES;
+}
+
+-(void)newPostCreatedWithPostTitle:(NSString*)title postID:(NSInteger)postID{
+    
+    [self refreshData];
+}
+
+-(IBAction)showUserProfilePage:(UITapGestureRecognizer*)gesture{
+    
+    NSInteger tag = gesture.view.tag;
+    if (tag < arrGems.count) {
+        NSDictionary *details = arrGems[tag];
+        if (NULL_TO_NIL([details objectForKey:@"user_id"])) {
+            ProfilePageViewController *profilePage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForProfilePage];
+            
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            if (!app.navGeneral) {
+                app.navGeneral = [[UINavigationController alloc] initWithRootViewController:profilePage];
+                app.navGeneral.navigationBarHidden = true;
+                [UIView transitionWithView:app.window
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionCrossDissolve
+                                animations:^{  app.window.rootViewController = app.navGeneral; }
+                                completion:nil];
+            }else{
+                [app.navGeneral pushViewController:profilePage animated:YES];
+            }
+            
+            
+            
+            profilePage.canEdit = false;
+            if ([[details objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) {
+                profilePage.canEdit = true;
+            }
+            [profilePage loadUserProfileWithUserID:[details objectForKey:@"user_id"]showBackButton:YES];
+            
+        }
+    }
+}
+
+-(IBAction)showChatUser:(id)sender{
+    
+    ChatUserListingViewController *chatUser =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForChatUserListings];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:chatUser];
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
+    app.navGeneral.navigationBarHidden = true;
+    
+}
+
+-(NSString*)getCountInTermsOfThousand:(NSInteger)_count{
+    NSString *countText;
+    NSInteger count = _count / OneK;
+    NSInteger reminder = _count % OneK;
+    countText = [NSString stringWithFormat:@"%ldK",(long)count];
+    if (reminder > 0) {
+        countText = [NSString stringWithFormat:@"%ldK+",(long)count];
+    }
+    return countText;
+}
+
+
+-(void)showLoadingScreen{
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.dimBackground = YES;
+    hud.detailsLabelText = @"loading...";
+    hud.removeFromSuperViewOnHide = YES;
+    
+}
+-(void)hideLoadingScreen{
+    
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+}
 
 -(void)showPaginationPopUp{
     
@@ -876,227 +1320,39 @@ static NSString *CollectionViewCellIdentifier = @"GEMSListings";
         [self.view layoutIfNeeded];
     }];
 }
--(void)showLoadingScreen{
+
+-(IBAction)showMyGemsApplied:(id)sender{
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.dimBackground = YES;
-    hud.detailsLabelText = @"loading...";
-    hud.removeFromSuperViewOnHide = YES;
+    MyGEMListingViewController *gemListingVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForMyGEMS];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemListingVC];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
     
 }
--(void)hideLoadingScreen{
-    
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-    
-}
+
 
 -(IBAction)goBack:(id)sender{
     
-    [[self navigationController] popViewControllerAnimated:YES];
+    [[self navigationController]popViewControllerAnimated:YES];
 }
 
-
-
-
-
-
-- (CGFloat)getLabelHeightForDescription:(NSString*)description withFont:(UIFont*)font
-{
-    CGFloat height = 0;
-    float widthPadding = 15;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 1.2f;
-    CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName:font,
-                                                             NSParagraphStyleAttributeName:paragraphStyle}
-                                                   context:context].size;
-    size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-    height = size.height;
+-(void)dealloc{
     
-    return height;
-    
+    collectionView = nil;
 }
-
-- (CGFloat)getLabelHeightForActionDescription:(NSString*)description withFont:(UIFont*)font withPadding:(float)padding
-{
-    CGFloat height = 10;
-    float widthPadding = padding;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 1.2f;
-    CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName:font,
-                                                             NSParagraphStyleAttributeName:paragraphStyle}
-                                                   context:context].size;
-    size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-    height = size.height;
-    
-    return height;
-    
-}
-
-- (CGFloat)getHeaderHeight:(NSString*)description withPadding:(float)widthPadding
-{
-    float heightPadding = 50;
-    CGFloat height = 0;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    
-    if (description) {
-        constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-        CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                       options:NSStringDrawingUsesLineFragmentOrigin
-                                                    attributes:@{NSFontAttributeName:[UIFont fontWithName:CommonFont size:14],
-                                                                 }
-                                                       context:context].size;
-        
-        size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-        height = size.height + heightPadding;
-    }
-    
-    
-    return height;
-    
-}
-
-- (CGFloat)getGEMSHeaderHeight:(NSString*)description withPadding:(float)widthPadding
-{
-    float heightPadding = 0;
-    CGFloat height = 0;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    
-    if (description) {
-        constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-        CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                       options:NSStringDrawingUsesLineFragmentOrigin
-                                                    attributes:@{NSFontAttributeName:[UIFont fontWithName:CommonFont size:14],
-                                                                 }
-                                                       context:context].size;
-        
-        size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-        height = size.height + heightPadding;
-    }
-    
-    
-    return height;
-    
-}
-
-- (CGFloat)getLabelHeightForOtherInfo:(NSString*)description withFont:(UIFont*)font withPadding:(float)padding
-{
-    CGFloat height = 0;
-    float widthPadding = padding;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName:font
-                                                             }
-                                                   context:context].size;
-    size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-    height = size.height;
-    //    if (height < 15) {
-    //        height = 15;
-    //    }
-    
-    return height;
-    
-}
-
-
-- (void)attemptOpenURL:(NSURL *)url
-{
-    
-    
-    BOOL safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
-    if (!safariCompatible) {
-        
-        NSString *urlString = url.absoluteString;
-        urlString = [NSString stringWithFormat:@"http://%@",url.absoluteString];
-        url = [NSURL URLWithString:urlString];
-        
-    }
-    safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
-    if (safariCompatible && [[UIApplication sharedApplication] canOpenURL:url])
-    {
-        [[UIApplication sharedApplication] openURL:url];
-    }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
-                                                        message:@"The selected link cannot be opened."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Dismiss"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
-- (CGFloat)getLabelHeightForOtherInfo:(NSString*)description withFont:(UIFont*)font
-{
-    CGFloat height = 0;
-    float widthPadding = 30;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName:font
-                                                             }
-                                                   context:context].size;
-    size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-    height = size.height;
-    //    if (height < 15) {
-    //        height = 15;
-    //    }
-    
-    return height;
-    
-}
-
-- (CGFloat)getLabelHeightForActionDescription:(NSString*)description withFont:(UIFont*)font
-{
-    CGFloat height = 10;
-    float widthPadding = 15;
-    CGSize constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    CGSize size;
-    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
-    constraint = CGSizeMake(tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 1.2f;
-    CGSize boundingBox = [description boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName:font,
-                                                             NSParagraphStyleAttributeName:paragraphStyle}
-                                                   context:context].size;
-    size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
-    height = size.height;
-    
-    return height;
-    
-}
-
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
+
 
 /*
  #pragma mark - Navigation

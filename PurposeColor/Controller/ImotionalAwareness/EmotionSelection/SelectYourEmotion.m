@@ -32,7 +32,7 @@ typedef enum{
     
     IBOutlet NSLayoutConstraint *rightConstraint;
     IBOutlet UITableView *tableView;
-    UISearchBar *searchBar;
+    
     IBOutlet UIButton *btnSearch;
     BOOL isDataAvailable;
     UIView *containerView;
@@ -45,6 +45,9 @@ typedef enum{
     NSInteger selectedEmotionID;
     NSInteger objectIndex;
     
+    IBOutlet UIView *vwHeader;
+    IBOutlet UIButton *btnAddEvent;
+    IBOutlet UISearchBar *searchBar;
 }
 
 @end
@@ -60,14 +63,11 @@ typedef enum{
 
 -(void)setUp{
     
-    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, delegate.window.frame.size.width, 44)];
-    [searchBar setShowsCancelButton:YES];
-    searchBar.delegate = self;
+    btnAddEvent.layer.cornerRadius = 5;
+    btnAddEvent.layer.borderWidth = 1.f;
+    btnAddEvent.layer.borderColor = [UIColor clearColor].CGColor;
+    vwHeader.alpha = 0;
     
-    UIView *headerView = [[UIView alloc] initWithFrame:searchBar.frame];
-    [headerView addSubview:searchBar];
-    tableView.tableHeaderView = headerView;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopUp)];
     [tapGesture setNumberOfTapsRequired:1];
     tapGesture.delegate = self;
@@ -125,6 +125,7 @@ typedef enum{
     rightConstraint.constant = 0;
     [UIView animateWithDuration:.8
                      animations:^{
+                         vwHeader.alpha = 1;
                          [self layoutIfNeeded]; // Called on parent view
                      }];
     

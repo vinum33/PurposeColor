@@ -77,15 +77,71 @@
                                 <constraint firstItem="F0u-CV-62z" firstAttribute="leading" secondItem="Gyw-PF-Jmj" secondAttribute="trailing" id="i69-HK-jrM"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wNa-q4-9UX" userLabel="SKIP Seperator">
-                            <rect key="frame" x="0.0" y="67" width="375" height="1"/>
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="0.29891988255033558" colorSpace="calibratedWhite"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bRk-jJ-4SM" userLabel="Skip Bar">
+                            <rect key="frame" x="0.0" y="40" width="375" height="40"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SKA-fB-4Ta" userLabel="Add Event view">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UFa-v6-9vE" userLabel="Seperator">
+                                            <rect key="frame" x="0.0" y="19.5" width="375" height="1"/>
+                                            <color key="backgroundColor" white="0.66666666669999997" alpha="0.30020448830000002" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="gE2-6y-Yma"/>
+                                            </constraints>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LFq-MX-znD" userLabel="ADD GOAL">
+                                            <rect key="frame" x="255" y="5" width="110" height="30"/>
+                                            <color key="backgroundColor" red="0.1215686275" green="0.50588235290000005" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="110" id="0md-NH-Lmq"/>
+                                                <constraint firstAttribute="height" constant="30" id="rHC-JO-x7Q"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="13"/>
+                                            <state key="normal" title="CREATE GOAL"/>
+                                            <connections>
+                                                <action selector="showComposeView:" destination="iN0-l3-epB" eventType="touchUpInside" id="ocY-GE-vc3"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vFV-pQ-Kow" userLabel="SKIP">
+                                            <rect key="frame" x="175" y="5" width="70" height="30"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="70" id="IWF-oB-SxR"/>
+                                                <constraint firstAttribute="height" constant="30" id="KsC-WV-m3H"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="13"/>
+                                            <state key="normal" title="SKIP">
+                                                <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="skip:" destination="iN0-l3-epB" eventType="touchUpInside" id="JcS-4f-YSk"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="LFq-MX-znD" secondAttribute="trailing" constant="10" id="71V-HY-mtN"/>
+                                        <constraint firstItem="LFq-MX-znD" firstAttribute="centerY" secondItem="SKA-fB-4Ta" secondAttribute="centerY" id="AEZ-Ic-asS"/>
+                                        <constraint firstItem="LFq-MX-znD" firstAttribute="leading" secondItem="vFV-pQ-Kow" secondAttribute="trailing" constant="10" id="XFe-Jy-zY6"/>
+                                        <constraint firstAttribute="height" constant="40" id="YSc-AZ-DML"/>
+                                        <constraint firstAttribute="trailing" secondItem="UFa-v6-9vE" secondAttribute="trailing" id="Ywd-lY-2JG"/>
+                                        <constraint firstItem="vFV-pQ-Kow" firstAttribute="centerY" secondItem="SKA-fB-4Ta" secondAttribute="centerY" id="aI7-OP-RFt"/>
+                                        <constraint firstItem="UFa-v6-9vE" firstAttribute="leading" secondItem="SKA-fB-4Ta" secondAttribute="leading" id="aXz-Lh-9SL"/>
+                                        <constraint firstItem="UFa-v6-9vE" firstAttribute="centerY" secondItem="SKA-fB-4Ta" secondAttribute="centerY" id="fBz-Qy-JfS"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" red="0.1215686275" green="0.50588235290000005" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="HmF-Ze-mLY"/>
+                                <constraint firstAttribute="trailing" secondItem="SKA-fB-4Ta" secondAttribute="trailing" id="05o-vG-Wi5"/>
+                                <constraint firstAttribute="bottom" secondItem="SKA-fB-4Ta" secondAttribute="bottom" id="IdH-4G-wvk"/>
+                                <constraint firstAttribute="height" constant="40" id="Lw4-0q-MNB"/>
+                                <constraint firstItem="SKA-fB-4Ta" firstAttribute="leading" secondItem="bRk-jJ-4SM" secondAttribute="leading" id="jgH-X9-BUd"/>
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WZm-2Z-2z7">
-                            <rect key="frame" x="0.0" y="90" width="375" height="577"/>
+                            <rect key="frame" x="0.0" y="80" width="375" height="587"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="separatorColor" red="0.81176470588235294" green="0.81568627450980391" blue="0.82352941176470584" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -94,36 +150,19 @@
                                 <outlet property="delegate" destination="iN0-l3-epB" id="uAH-9B-8ey"/>
                             </connections>
                         </tableView>
-                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGU-lW-yO7">
-                            <rect key="frame" x="285" y="50" width="80" height="35"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="80" id="ZjF-M0-aa8"/>
-                                <constraint firstAttribute="height" constant="35" id="dHo-tN-KkD"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="13"/>
-                            <state key="normal" title="SKIP">
-                                <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.77175964765100669" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="skip:" destination="iN0-l3-epB" eventType="touchUpInside" id="1Hf-cq-MLs"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="WZm-2Z-2z7" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" constant="90" id="16L-Zn-qmj"/>
-                        <constraint firstAttribute="trailing" secondItem="wNa-q4-9UX" secondAttribute="trailing" id="2va-EN-62e"/>
-                        <constraint firstItem="VGU-lW-yO7" firstAttribute="top" secondItem="Rzq-rL-1eF" secondAttribute="bottom" constant="10" id="5eX-gJ-JBw"/>
-                        <constraint firstAttribute="trailing" secondItem="VGU-lW-yO7" secondAttribute="trailing" constant="10" id="K6S-PY-u9A"/>
+                        <constraint firstItem="bRk-jJ-4SM" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="6lb-nl-Rjz"/>
+                        <constraint firstItem="WZm-2Z-2z7" firstAttribute="top" secondItem="bRk-jJ-4SM" secondAttribute="bottom" id="7EY-BJ-OQT"/>
                         <constraint firstAttribute="bottom" secondItem="WZm-2Z-2z7" secondAttribute="bottom" id="QuL-Gg-g5Y"/>
                         <constraint firstAttribute="trailing" secondItem="WZm-2Z-2z7" secondAttribute="trailing" id="S1r-Di-rL7"/>
-                        <constraint firstItem="wNa-q4-9UX" firstAttribute="top" secondItem="VGU-lW-yO7" secondAttribute="top" constant="17" id="bD5-PC-xpk"/>
+                        <constraint firstItem="bRk-jJ-4SM" firstAttribute="top" secondItem="Rzq-rL-1eF" secondAttribute="bottom" id="Wbi-1G-bkb"/>
                         <constraint firstAttribute="trailing" secondItem="Rzq-rL-1eF" secondAttribute="trailing" id="f7f-0s-rT3"/>
+                        <constraint firstAttribute="trailing" secondItem="bRk-jJ-4SM" secondAttribute="trailing" id="hWT-6C-ObG"/>
                         <constraint firstItem="Rzq-rL-1eF" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" id="m13-FQ-Rje"/>
                         <constraint firstItem="WZm-2Z-2z7" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="q0K-eV-KcX"/>
                         <constraint firstItem="Rzq-rL-1eF" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="u8h-Zw-sgg"/>
-                        <constraint firstItem="wNa-q4-9UX" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="yg5-Jb-c3z"/>
                     </constraints>
                 </view>
             </subviews>
@@ -135,7 +174,8 @@
                 <constraint firstItem="4nn-AR-uOq" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="svy-DX-Wkx"/>
             </constraints>
             <connections>
-                <outlet property="btnSkip" destination="VGU-lW-yO7" id="MZZ-OJ-g3h"/>
+                <outlet property="btnAddGoal" destination="LFq-MX-znD" id="c9d-Hw-kyb"/>
+                <outlet property="btnSkip" destination="vFV-pQ-Kow" id="mHR-dd-hgX"/>
                 <outlet property="rightConstraint" destination="8mQ-wx-Qll" id="KaL-wn-bhY"/>
                 <outlet property="tableView" destination="WZm-2Z-2z7" id="BUb-nF-KsH"/>
             </connections>
