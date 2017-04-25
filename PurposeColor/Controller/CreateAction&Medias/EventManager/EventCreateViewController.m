@@ -22,7 +22,7 @@ typedef enum{
     
 } PickerMode;
 
-#define kCellHeight             390
+#define kCellHeight             510
 #define kHeightForHeader        0
 #define kHeightForFooter        .001
 #define kNumberOfSections       1
@@ -60,10 +60,16 @@ typedef enum{
     NSDate   *startTime;
     NSDate   *endTime;
     NSInteger reminderTime;
+    NSInteger reminderInHour;
+    NSInteger reminderInMinuts;
+    NSInteger reminderInDay;
+    
     NSString *repeatValue;
     
     PickerMode pickerMode;
     NSMutableArray *reminderPickerValues;
+    NSMutableArray *reminderHourValues;
+    NSMutableArray *reminderDayValues;
     NSArray *repeaterPickerValues;
 }
 
@@ -90,11 +96,24 @@ typedef enum{
 -(void)setUp{
     
     reminderPickerValues = [NSMutableArray new];
-    for (int i = 0; i <= 60; i ++) {
+    reminderHourValues = [NSMutableArray new];
+    reminderDayValues =  [NSMutableArray new];
+    for (int i = 0; i <= 59; i ++) {
         [reminderPickerValues addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInteger:i]]];
     }
+    for (int i = 0; i <= 23; i ++) {
+        [reminderHourValues addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInteger:i]]];
+    }
+    for (int i = 0; i <= 31; i ++) {
+        [reminderDayValues addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInteger:i]]];
+    }
+
+    
+    
     //reminderPickerValues = [NSArray arrayWithObjects:@"0",@"15",@"30",@"45",@"60", nil];
     repeaterPickerValues = [NSArray arrayWithObjects:@"Never",@"Daily",@"Weekly",@"Monthly",@"Yearly", nil];
+    reminderInHour = 0;
+    reminderInMinuts = 0;
     reminderTime = _reminderTime;
     repeatValue = _strRepeatValue;
     strTitle = _strGoalTitle;
@@ -330,9 +349,21 @@ typedef enum{
 -(void)configureCellWith:(CreateEventCustomCell*)cell{
     
     [cell.btnStatDate addTarget:self action:@selector(showStartDatePicker) forControlEvents:UIControlEventTouchUpInside];
+    cell.btnStatDate.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    cell.btnStatDate.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+
     [cell.btnEndDate addTarget:self action:@selector(showEndDatePicker) forControlEvents:UIControlEventTouchUpInside];
+    cell.btnEndDate.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    cell.btnEndDate.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    
     [cell.btnStartTime addTarget:self action:@selector(showStartTimePicker) forControlEvents:UIControlEventTouchUpInside];
+    cell.btnStartTime.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    cell.btnStartTime.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    
     [cell.btnEndTime addTarget:self action:@selector(showEndTimePicker) forControlEvents:UIControlEventTouchUpInside];
+    cell.btnEndTime.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    cell.btnEndTime.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    
     [cell.btnReminderTime addTarget:self action:@selector(showReminderPicker) forControlEvents:UIControlEventTouchUpInside];
     [cell.btnRepeater addTarget:self action:@selector(showRepeatingMode) forControlEvents:UIControlEventTouchUpInside];
     cell.txtTitle.text = _strGoalTitle;
@@ -383,17 +414,19 @@ typedef enum{
     
     if (repeatValue.length){
         [cell.btnRepeater setSelected:false];
-        [cell.btnRepeater setTitle:[NSString stringWithFormat:@"%@",repeatValue] forState: UIControlStateNormal];
+        [cell.btnRepeater setTitle:[NSString stringWithFormat:@"Repeat %@",repeatValue] forState: UIControlStateNormal];
     }
     
     [cell.btnReminderTime setSelected:false];
-    if (reminderTime == 60)
-        [cell.btnReminderTime setTitle:[NSString stringWithFormat:@"Remind Before 1 Hour"] forState: UIControlStateNormal];
-    else if (reminderTime > 0){
-        NSString *title = [NSString stringWithFormat:@"Remind Before %ld Minutes",(long)reminderTime];
+     if (reminderTime > 0){
+        NSMutableString *strTime = [NSMutableString new];
+        if (reminderInDay > 0) [strTime appendString:[NSString stringWithFormat:@" %02d Days", reminderInDay]];
+        if (reminderInHour > 0) [strTime appendString:[NSString stringWithFormat:@" %02d Hours", reminderInHour]];
+        if (reminderInMinuts > 0) [strTime appendString:[NSString stringWithFormat:@" %02d Minutes", reminderInMinuts]];
+        NSString *title = [NSString stringWithFormat:@"Remind before %@", strTime];
         [cell.btnReminderTime setTitle:title forState: UIControlStateNormal];
     }else{
-        NSString *title = [NSString stringWithFormat:@"On Time"];
+        NSString *title = [NSString stringWithFormat:@"Remind before 0 Minutes"];
         [cell.btnReminderTime setTitle:title forState: UIControlStateNormal];
     }
    
@@ -454,6 +487,9 @@ typedef enum{
      reminderValuePicker.hidden = false;
      datePicker.hidden = true;
      repeatValuePicker.hidden = true;
+     [reminderValuePicker selectRow:reminderInMinuts inComponent:2 animated:YES];
+     [reminderValuePicker selectRow:reminderInHour inComponent:1 animated:YES];
+     [reminderValuePicker selectRow:reminderInDay inComponent:0 animated:YES];
      [self showPickerWithAnimationWantsToShow:YES];
 }
 
@@ -525,7 +561,7 @@ typedef enum{
         [ALToastView toastInView:self.view withText:@"Please fill all the Fields"];
         return;
     }
-    
+    NSLog(@" time %d",reminderTime);
     NSDate * refDate = [NSDate dateWithTimeIntervalSince1970:_achievementDate];
     
     
@@ -547,8 +583,8 @@ typedef enum{
     
     if ([startDate compare:endDate] == NSOrderedDescending) {
         // NSLog(@"date1 is later than date2");
-       // [ALToastView toastInView:self.view withText:@"Action Start Date should be less Action End Date"];
-       // return;
+        [ALToastView toastInView:self.view withText:@"Action Start Date should be less Action End Date"];
+        return;
         
     }
     
@@ -675,7 +711,7 @@ typedef enum{
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     
     if (pickerView == reminderValuePicker){
-        return 2;
+        return 3;
     }
     return kPickerSections;
 }
@@ -687,7 +723,10 @@ typedef enum{
         if (component == 0) {
             return  reminderPickerValues.count;
         }
-        return 1;
+        if (component == 1) {
+            return  reminderHourValues.count;
+        }
+        return reminderDayValues.count;
     }
     return kPickerRows;
 }
@@ -696,13 +735,21 @@ typedef enum{
    
     NSString *title;
     
-    if (component == 1) {
-        return @"Minutes before";
-    }
-    
     if (pickerView == reminderValuePicker) {
-        if (row < reminderPickerValues.count) {
-            title = [reminderPickerValues objectAtIndex:row];
+        if (component == 2) {
+            if (row < reminderPickerValues.count) {
+                title =  [NSString stringWithFormat:@"%d Minutes",[[reminderPickerValues objectAtIndex:row] integerValue]];
+            }
+        }
+        if (component == 1) {
+            if (row < reminderHourValues.count) {
+                title =  [NSString stringWithFormat:@"%d Hour",[[reminderHourValues objectAtIndex:row] integerValue]];
+            }
+        }
+        if (component == 0) {
+            if (row < reminderDayValues.count) {
+                title =  [NSString stringWithFormat:@"%d Day",[[reminderDayValues objectAtIndex:row] integerValue]];
+            }
         }
     }else{
         
@@ -719,12 +766,23 @@ typedef enum{
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     
     if (pickerView == reminderValuePicker) {
-        if (component == 1) {
-            return;
+        if (component == 2) {
+            if (row < reminderPickerValues.count) {
+                reminderInMinuts = [[reminderPickerValues objectAtIndex:row] integerValue];
+            }
         }
-        if (row < reminderPickerValues.count) {
-            reminderTime = [[reminderPickerValues objectAtIndex:row] integerValue];
+        else if (component == 1) {
+            if (row < reminderHourValues.count) {
+                reminderInHour = [[reminderHourValues objectAtIndex:row] integerValue];
+            }
+            
         }
+        else if (component == 0) {
+            if (row < reminderDayValues.count) {
+                reminderInDay = [[reminderDayValues objectAtIndex:row] integerValue];
+            }
+        }
+        reminderTime =  (reminderInDay*60*24) + (reminderInHour*60) + reminderInMinuts;
     }else{
         
         if (row < repeaterPickerValues.count) {
@@ -739,10 +797,10 @@ typedef enum{
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component ;{
     
     if (pickerView == reminderValuePicker){
-        if (component == 0) {
-            return 100;
+        if (component == 2) {
+            return 140;
         }
-        return 200;
+         return (pickerView.frame.size.width - 140)/2.0;
     }
     else if (pickerView == repeatValuePicker){
          return 200;

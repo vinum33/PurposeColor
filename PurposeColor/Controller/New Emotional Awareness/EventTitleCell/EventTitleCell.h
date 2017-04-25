@@ -11,5 +11,6 @@
 @interface EventTitleCell : UITableViewCell
 
 @property (nonatomic,weak) IBOutlet UILabel *lblTitle;
+@property (nonatomic,weak) IBOutlet UIView *vwBg;
 
 @end

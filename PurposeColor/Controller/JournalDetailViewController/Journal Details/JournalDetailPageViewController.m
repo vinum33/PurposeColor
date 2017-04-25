@@ -85,12 +85,9 @@
         cell.lblContact.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblContact.frame);
         cell.lblEmotion.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblEmotion.frame);
         cell.lblGoal.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblGoal.frame);
-       
         cell.lblDate.text = [Utility getDateStringFromSecondsWith:[[_journalDetails objectForKey:@"journal_datetime"] doubleValue] withFormat:@"d MMM,yyyy h:mm a "];
-  
         NSMutableAttributedString *strContactInfo = [[NSMutableAttributedString alloc] init];
-       
-       BOOL isLocPresent = false;
+        BOOL isLocPresent = false;
        
         if ([_journalDetails objectForKey:@"location_name"]) {
             isLocPresent = true;
@@ -134,18 +131,18 @@
             
             myString = [[NSMutableAttributedString alloc] init];
             NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-            UIImage *icon = [UIImage imageNamed:@"Strongly_Agree_Blue_Small"];
+            UIImage *icon = [UIImage imageNamed:@"5_Star_Filled"];
             
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 2)
-                icon = [UIImage imageNamed:@"Strongly_Agree_Blue_Small"];
+                icon = [UIImage imageNamed:@"5_Star_Filled"];
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 1)
-                icon = [UIImage imageNamed:@"Agree_Blue_Small"];
+                icon = [UIImage imageNamed:@"4_Star_Filled"];
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == 0)
-                icon = [UIImage imageNamed:@"Neutral_Blue_Small"];
+                icon = [UIImage imageNamed:@"3_Star_Filled"];
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == -1)
-                icon = [UIImage imageNamed:@"Disagree_Blue_Small"];
+                icon = [UIImage imageNamed:@"2_Star_Filled"];
             if ([[_journalDetails objectForKey:@"emotion_value"] integerValue] == -2)
-                icon = [UIImage imageNamed:@"Strongly_DisAgree_Blue_Small"];
+                icon = [UIImage imageNamed:@"1_Star_Filled"];
 
             attachment.image = icon;
             attachment.bounds = CGRectMake(0, -(icon.size.height / 2) -  cell.lblEmotion.font.descender, icon.size.width, icon.size.height);
@@ -155,45 +152,45 @@
             NSMutableAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" Feeling %@",[_journalDetails objectForKey:@"emotion_title"]]];
             [strFeel appendAttributedString:myText];
             [myString appendAttributedString:strFeel];
-            [myString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0,9)];
+            [myString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithWhite:1 alpha:0.8] range:NSMakeRange(0,9)];
              cell.lblEmotion.attributedText = myString;
         }
        
             NSMutableAttributedString *driveString = [[NSMutableAttributedString alloc] init];
             NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-            UIImage *icon = [UIImage imageNamed:@"5_Star_Small"];
+            UIImage *icon = [UIImage imageNamed:@"Strongly_Agree"];
        
-            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 2)
-                icon = [UIImage imageNamed:@"5_Star_Filled"];
-            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 1)
-                icon = [UIImage imageNamed:@"4_Star_Filled"];
-            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 0)
-                icon = [UIImage imageNamed:@"3_Star_Filled"];
-            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == -1)
-                icon = [UIImage imageNamed:@"2_Star_Filled"];
-            if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == -2)
-                icon = [UIImage imageNamed:@"1_Star_Filled"];
-            
+       
+       if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 2)
+           icon = [UIImage imageNamed:@"Strongly_Agree"];
+       if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 1)
+           icon = [UIImage imageNamed:@"Agree"];
+       if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == 0)
+           icon = [UIImage imageNamed:@"Neutral"];
+       if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == -1)
+           icon = [UIImage imageNamed:@"Disagree"];
+       if ([[_journalDetails objectForKey:@"drive_value"] integerValue] == -2)
+           icon = [UIImage imageNamed:@"Strongly_Disagree"];
+       
             attachment.image = icon;
-            attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblGoal.font.descender), icon.size.width, icon.size.height);
-            
+            attachment.bounds = CGRectMake(0, (-(20) -  cell.lblGoal.font.descender), 40,40);
             NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
             NSMutableAttributedString *strFeel = [[NSMutableAttributedString alloc] initWithAttributedString:attachmentString];
             [driveString appendAttributedString:strFeel];
-            [myString appendAttributedString:driveString];
             cell.lblEmotion.attributedText = myString;
-            
+       
+            NSMutableAttributedString *title = [NSMutableAttributedString new];
+            [title appendAttributedString:driveString];
             if ([_journalDetails objectForKey:@"goal_title"]) {
-                NSString *strText = [NSString stringWithFormat:@"Reaction affecting goal : %@",[_journalDetails objectForKey:@"goal_title"]] ;
-                NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:strText];
+               
+                NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" Reaction : %@",[_journalDetails objectForKey:@"goal_title"]]];
+                [title appendAttributedString:newAttString];
                 [title addAttribute:NSForegroundColorAttributeName
-                              value:[UIColor colorWithWhite:1 alpha:0.5]
-                              range:NSMakeRange(0, 26)];
-                cell.lblGoal.attributedText = title;
-            }
-       
-       
+                              value:[UIColor colorWithWhite:1 alpha:0.8]
+                              range:NSMakeRange(1, 11)];
             
+            }
+       cell.lblGoal.attributedText = title;
         return cell;
 
     }

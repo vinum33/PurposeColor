@@ -170,8 +170,17 @@
             
         }else{
             float imgPadding = 20;
-            float width = [[memoryInfo objectForKey:@"image_width"] floatValue];
-            float height = [[memoryInfo objectForKey:@"image_height"] floatValue];
+            float width = 500;
+            float height = 333;
+            if (NULL_TO_NIL([memoryInfo objectForKey:@"gem_media"])) {
+                if ([memoryInfo objectForKey:@"image_width"]) {
+                    width = [[memoryInfo objectForKey:@"image_width"] floatValue];
+                }
+                if ([memoryInfo objectForKey:@"image_height"]) {
+                    height = [[memoryInfo objectForKey:@"image_height"] floatValue];
+                }
+
+            }
             float ratio = width / height;
             height = ((_tableView.frame.size.width - imgPadding) / ratio) + 0;
             [heightsCache setObject:[NSNumber numberWithInt:height] forKey:indexPath];
@@ -222,20 +231,20 @@
     if (NULL_TO_NIL([memoryInfo objectForKey:@"gem_date"])) {
         cell.lblTitleDate.text = [Utility getDaysBetweenTwoDatesWith:[[memoryInfo objectForKey:@"gem_date"] doubleValue]] ;
     }
-       
+    [cell.imgHeader setImage:[UIImage imageNamed:@"NoImage"]];
+    float imageHeight = 0;
     if (NULL_TO_NIL([memoryInfo objectForKey:@"gem_media"])) {
     [cell.activityIndicator startAnimating];
-        float imageHeight = 0;
-        if ([heightsCache objectForKey:indexPath]) {
-            imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
-            cell.constraintForHeight.constant = imageHeight;
-        }
         NSString *mediaURL = [memoryInfo objectForKey:@"gem_media"];
         [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:mediaURL]
                               placeholderImage:[UIImage imageNamed:@""]
                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                          [cell.activityIndicator stopAnimating];
                                      }];
+    }
+    if ([heightsCache objectForKey:indexPath]) {
+        imageHeight = [[heightsCache objectForKey:indexPath] integerValue];
+        cell.constraintForHeight.constant = imageHeight;
     }
     return cell;
     

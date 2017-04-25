@@ -188,16 +188,16 @@
                 NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
                 UIImage *icon ;
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == 2)
-                    icon = [UIImage imageNamed:@"Strongly_Agree_Blue_Small"];
+                    icon = [UIImage imageNamed:@"5_Star_Small"];
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == 1)
-                    icon = [UIImage imageNamed:@"Agree_Blue_Small"];
+                    icon = [UIImage imageNamed:@"4_Star_Small"];
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == 0)
-                    icon = [UIImage imageNamed:@"Neutral_Blue_Small"];
+                    icon = [UIImage imageNamed:@"3_Star_Small"];
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == -1)
-                    icon = [UIImage imageNamed:@"Disagree_Blue_Small"];
+                    icon = [UIImage imageNamed:@"2_Star_Small"];
                 if ([[journal objectForKey:@"emotion_value"] integerValue] == -2)
-                    icon = [UIImage imageNamed:@"Strongly_DisAgree_Blue_Small"];
-
+                    icon = [UIImage imageNamed:@"1_Star_Small"];
+                
                 attachment.image = icon;
                 attachment.bounds = CGRectMake(0, -(icon.size.height / 2) -  cell.lblLocAndContact.font.descender, icon.size.width, icon.size.height);
                 NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
@@ -210,24 +210,29 @@
             }
                 NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
                 UIImage *icon ;
-                if ([[journal objectForKey:@"drive_value"] integerValue] == 2)
-                   icon = [UIImage imageNamed:@"5_Star_Small"];
-                if ([[journal objectForKey:@"drive_value"] integerValue] == 1)
-                    icon = [UIImage imageNamed:@"4_Star_Small"];
-                if ([[journal objectForKey:@"drive_value"] integerValue] == 0)
-                    icon = [UIImage imageNamed:@"3_Star_Small"];
-                if ([[journal objectForKey:@"drive_value"] integerValue] == -1)
-                    icon = [UIImage imageNamed:@"2_Star_Small"];
-                if ([[journal objectForKey:@"drive_value"] integerValue] == -2)
-                    icon = [UIImage imageNamed:@"1_Star_Small"];
+            
+            if ([[journal objectForKey:@"drive_value"] integerValue] == 2)
+                icon = [UIImage imageNamed:@"Strongly_Agree_Blue_Small"];
+            if ([[journal objectForKey:@"drive_value"] integerValue] == 1)
+                icon = [UIImage imageNamed:@"Agree_Blue_Small"];
+            if ([[journal objectForKey:@"drive_value"] integerValue] == 0)
+                icon = [UIImage imageNamed:@"Neutral_Blue_Small"];
+            if ([[journal objectForKey:@"drive_value"] integerValue] == -1)
+                icon = [UIImage imageNamed:@"Disagree_Blue_Small"];
+            if ([[journal objectForKey:@"drive_value"] integerValue] == -2)
+                icon = [UIImage imageNamed:@"Strongly_DisAgree_Blue_Small"];
+            
+            
                 attachment.image = icon;
                 attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblLocAndContact.font.descender), icon.size.width, icon.size.height);
                 NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
                 NSMutableAttributedString *strFeel = [[NSMutableAttributedString alloc] initWithAttributedString:attachmentString];
+                cell.btnGoal.hidden = true;
                 if ([journal objectForKey:@"goal_title"]) {
                     NSMutableAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[journal objectForKey:@"goal_title"]]];
                     [myText addAttribute:NSForegroundColorAttributeName value:[UIColor getThemeColor] range:NSMakeRange(0,myText.length)];
                     [strFeel appendAttributedString:myText];
+                    cell.btnGoal.hidden = false;
                 }
                 cell.lblGoal.attributedText = strFeel;
             

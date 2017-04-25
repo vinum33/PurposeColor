@@ -468,7 +468,7 @@ typedef enum{
 -(IBAction)tapToLogin:(id)sender{
   
  [self bypassLogin];
-  return;
+ return;
     
     [self checkAllFieldsAreValid:^{
         [self showLoadingScreen];

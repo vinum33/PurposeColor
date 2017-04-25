@@ -877,7 +877,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
-    [params setObject:title forKey:@"title"];
+    if (title.length > 0) [params setObject:title forKey:@"title"];
     [params setObject:descritption forKey:@"details"];
     [params setObject:gemType forKey:@"gem_type"];
     if (locName.length){

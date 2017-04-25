@@ -12,6 +12,6 @@
 
 @property (nonatomic,weak) IBOutlet UILabel *lblEmotin;
 @property (nonatomic,weak) IBOutlet UIImageView *imgFeel;
-@property (nonatomic,weak) IBOutlet UIImageView *imgDrive;
+
 
 @end

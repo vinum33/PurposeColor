@@ -692,7 +692,7 @@
 
 -(void)resetCellVariables:(GemDetailsCustomTableViewCell*)cell{
     
-    cell.vwBg.layer.borderColor = [UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:1].CGColor;
+    cell.vwBg.layer.borderColor =[UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:0.5].CGColor;
     cell.vwBg.layer.borderWidth = 1.0;
     [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
     [cell.activityIndicator stopAnimating];

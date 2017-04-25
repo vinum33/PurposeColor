@@ -64,5 +64,6 @@
 -(void)showGEMSListingsPage;
 -(void)emotionalIntelligencePage;
 -(void)logoutSinceUnAuthorized;
+-(void)showGoalsAndDreams;
 @end
 

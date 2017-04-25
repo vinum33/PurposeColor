@@ -11,5 +11,6 @@
 @interface SelectedValue_2 : UITableViewCell
 
 @property (nonatomic,weak) IBOutlet UILabel *lblGoalsActions;
+@property (nonatomic,weak) IBOutlet UIImageView *imgDrive;
 
 @end

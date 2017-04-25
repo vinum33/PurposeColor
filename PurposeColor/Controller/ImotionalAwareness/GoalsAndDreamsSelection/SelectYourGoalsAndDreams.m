@@ -150,11 +150,14 @@
             cell.imgRadio.image = [UIImage imageNamed:@"Purposecolor_Image"];
            // cell.lblTitle.text = [NSString stringWithFormat:@"eg : %@",[details objectForKey:@"title"]];
         }else{
-            [cell.imgRadio sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
-                                placeholderImage:[UIImage imageNamed:@"Purposecolor_Image"]
-                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                           
-                                       }];
+            if (NULL_TO_NIL([details objectForKey:@"display_image"])) {
+                [cell.imgRadio sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
+                                 placeholderImage:[UIImage imageNamed:@"Purposecolor_Image"]
+                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                            
+                                        }];
+            }
+            
 
         }
         

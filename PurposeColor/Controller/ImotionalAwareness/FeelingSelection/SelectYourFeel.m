@@ -90,26 +90,29 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.userInteractionEnabled = true;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"Strongly Agree";
-        cell.imageView.image = [UIImage imageNamed:@"Strongly_Agree"];
+
+    if (indexPath.row == 4) {
+        cell.textLabel.text = @"Strongly Disagree";
+        cell.imageView.image = [UIImage imageNamed:@"1_Star"];
+    }
+    else if (indexPath.row == 3) {
+        cell.textLabel.text = @"Dis Agree";
+        cell.imageView.image = [UIImage imageNamed:@"2_Star"];
+    }else if (indexPath.row == 2) {
+        cell.textLabel.text = @"Neutral";
+        cell.imageView.image = [UIImage imageNamed:@"3_Star"];
     }
     else if (indexPath.row == 1) {
         cell.textLabel.text = @"Agree";
-        cell.imageView.image = [UIImage imageNamed:@"Agree"];
-    }else if (indexPath.row == 2) {
-        cell.textLabel.text = @"Neutral";
-        cell.imageView.image = [UIImage imageNamed:@"Neutral"];
+        cell.imageView.image = [UIImage imageNamed:@"4_Star"];
     }
-    else if (indexPath.row == 3) {
-        cell.textLabel.text = @"Disagree";
-        cell.imageView.image = [UIImage imageNamed:@"Disagree"];
+    else if (indexPath.row == 0) {
+        cell.textLabel.text = @"Strongly Agree";
+        cell.imageView.image = [UIImage imageNamed:@"5_Star"];
     }
-    else if (indexPath.row == 4) {
-        cell.textLabel.text = @"Strongly Disagree";
-        cell.imageView.image = [UIImage imageNamed:@"Strongly_Disagree"];
-    }
-        
+
+    
+    
     return cell;
 }
 

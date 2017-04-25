@@ -35,6 +35,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 #import "MenuViewController.h"
 #import "FTPopOverMenu.h"
 #import "ReportAbuseViewController.h"
+#import "ArcCollectionViewCell.h"
 
 @interface GEMSWithHeaderListingsViewController ()<GemListingsDelegate,CommentActionDelegate,MediaListingPageDelegate,shareMediasDelegate,SWRevealViewControllerDelegate,CreateMediaInfoDelegate>{
     
@@ -47,6 +48,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     
     NSMutableArray *arrGems;
     NSMutableDictionary *heightsCache;
+    NSDictionary *dictMedias;
     NSInteger totalPages;
     NSInteger currentPage;
     NSMutableDictionary *dictFollowers;
@@ -226,6 +228,8 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     
     if (NULL_TO_NIL([responseObject objectForKey:@"totalCount"]))
         totalGems =  [[responseObject objectForKey:@"totalCount"]integerValue];
+    if (NULL_TO_NIL([responseObject objectForKey:@"mediaArray"]))
+        dictMedias =  [responseObject objectForKey:@"mediaArray"];
     
     
     if (!isDataAvailable){
@@ -262,7 +266,35 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 {
     if (indexPath.section == 0) {
         
-        UICollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"StaticCell" forIndexPath:indexPath];
+        ArcCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"StaticCell" forIndexPath:indexPath];
+        UIImage *image = [UIImage imageNamed:@"NoImage_TopText"];
+        if (dictMedias && [dictMedias objectForKey:@"media_image"]) {
+            
+            [cell.imgGallery sd_setImageWithURL:[NSURL URLWithString:[dictMedias objectForKey:@"media_image"]]
+                       placeholderImage:[UIImage imageNamed:@"NoImage_TopText"]
+                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                  
+                              }];
+            float _width = [[dictMedias objectForKey:@"image_width"] floatValue];
+            float _height =[[dictMedias objectForKey:@"image_height"] floatValue];
+            float ratio = _width / _height;
+            float deviceWidth = _collectionView.frame.size.width;
+            float imageHeight = (deviceWidth - 0) / ratio;
+            float finalImgHeight = imageHeight;
+            cell.imgHeight.constant = finalImgHeight;
+
+            
+        }else{
+            cell.imgGallery.image = image;
+            float _width = image.size.width;
+            float _height = image.size.height;
+            float ratio = _width / _height;
+            float deviceWidth = _collectionView.frame.size.width;
+            float imageHeight = (deviceWidth - 0) / ratio;
+            float finalImgHeight = imageHeight;
+            cell.imgHeight.constant = finalImgHeight;
+        }
+       
         if ([[cell contentView]viewWithTag:101]) {
             UIButton *_btnHand = [[cell contentView]viewWithTag:101];
             [_btnHand removeFromSuperview];
@@ -281,9 +313,32 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
         }
         
+        if ([[cell contentView]viewWithTag:105]) {
+            UIView *viewInspire = [[cell contentView]viewWithTag:105];
+            if ([viewInspire viewWithTag:106]) {
+                UIButton *btnHaeding = (UIButton*) [[cell contentView]viewWithTag:106];
+                btnHaeding.layer.borderColor = [UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:0.5].CGColor;
+                btnHaeding.layer.borderWidth = 1.0;
+                btnHaeding.layer.cornerRadius = 5.f;
+            }
+            
+        }
+        
+        if ([[cell contentView]viewWithTag:107]) {
+            UIView *viewInspire = [[cell contentView]viewWithTag:107];
+            if ([viewInspire viewWithTag:108]) {
+                UIButton *btnHaeding = (UIButton*) [[cell contentView]viewWithTag:108];
+                btnHaeding.layer.borderColor = [UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:0.5].CGColor;
+                btnHaeding.layer.borderWidth = 1.0;
+                btnHaeding.layer.cornerRadius = 5.f;
+            }
+            
+        }
+
         UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        doneBtn.frame = CGRectMake(_collectionView.frame.size.width / 2.0 - 15, 150, 20, 20);
+        doneBtn.frame = CGRectMake(_collectionView.frame.size.width / 2.0 - 15, 155, 20, 20);
         [doneBtn setImage:[UIImage imageNamed:@"hand"] forState:UIControlStateNormal];
+        [doneBtn addTarget:self action:@selector(showAwarenessPage:) forControlEvents:UIControlEventTouchUpInside];
         doneBtn.tag = 101;
         [cell.contentView addSubview:doneBtn];
         
@@ -328,15 +383,18 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 - (CGSize)collectionView:(UICollectionView *)_collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.section == 0) {
-        return CGSizeMake(_collectionView.bounds.size.width, 250);
+        return CGSizeMake(_collectionView.bounds.size.width, 400);
     }
-    float padding = 10;
-    float defaultHeight = 185;
-    float width = _collectionView.bounds.size.width;
+    float padding = 20;
+    float defaultHeight = 165;
+    float width = _collectionView.bounds.size.width - 10;
     float finalHeight = 0;
     float imageHeight = 0;
     if (indexPath.row < arrGems.count) {
         NSDictionary *details = arrGems[indexPath.row];
+        if (NULL_TO_NIL([details objectForKey:@"gem_title"])){
+            defaultHeight = 185;
+        }
         if (NULL_TO_NIL([details objectForKey:@"gem_details"])){
             float lblHeight = [Utility getSizeOfLabelWithText:[details objectForKey:@"gem_details"] width:self.view.frame.size.width - padding font:[UIFont fontWithName:CommonFont size:14]];
             if (lblHeight > 30) {
@@ -346,12 +404,16 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
                 imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
             }else{
-                float width = [[details objectForKey:@"image_width"] floatValue];
-                float height = [[details objectForKey:@"image_height"] floatValue];
-                float ratio = width / height;
-                imageHeight = (collectionView.frame.size.width - padding) / ratio;
-                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+                if ([details objectForKey:@"display_image"]) {
+                    float width = [[details objectForKey:@"image_width"] floatValue];
+                    float height = [[details objectForKey:@"image_height"] floatValue];
+                    if ((width && height) > 0) {
+                        float ratio = width / height;
+                        imageHeight = (collectionView.frame.size.width - padding) / ratio;
+                    }
+                }
                 
+                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
             }
             finalHeight += imageHeight;
             return CGSizeMake(width, finalHeight);
@@ -372,7 +434,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    return UIEdgeInsetsMake(0, 0, 0, 0);
+    if (section == 0) {
+        return UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+   return UIEdgeInsetsMake(0, 5, 0, 5);
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -398,19 +463,37 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    
+    if (indexPath.row < arrGems.count) {
+        
+        NSDictionary *gemDetails = arrGems[indexPath.row];
+        GEMDetailViewController *gemDetailVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMDetailPage];
+        gemDetailVC.gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemDetails];
+        gemDetailVC.delegate = self;
+        gemDetailVC.clickedIndex = indexPath.row;
+        gemDetailVC.canSave = YES;
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemDetailVC];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+        
+        
+    }
+
 }
 
 #pragma mark - Customise Cells Method
 
 -(void)resetCellVariables:(GemsListCollectionViewCell*)cell{
     
-    cell.vwBg.layer.borderColor = [UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:1].CGColor;
+    cell.vwBg.layer.borderColor = [UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:0.5].CGColor;
     cell.vwBg.layer.borderWidth = 1.0;
     
     cell.imgProfile.layer.cornerRadius = 25.f;
     cell.imgProfile.clipsToBounds = YES;
-    [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
     [cell.activityIndicator stopAnimating];
     
     
@@ -478,9 +561,14 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     
     cell.lblName.text = [details objectForKey:@"firstname"];
     cell.lblTime.text = [Utility getDaysBetweenTwoDatesWith:[[details objectForKey:@"gem_datetime"] doubleValue]];
-    if (NULL_TO_NIL([details objectForKey:@"gem_title"]))
+    cell.constraintDescTopOne.priority = 998;
+    cell.constraintDescTopTwo.priority = 999;
+    cell.lblTitle.text = @"";
+    if (NULL_TO_NIL([details objectForKey:@"gem_title"])){
+        cell.constraintDescTopOne.priority = 999;
+        cell.constraintDescTopTwo.priority = 998;
         cell.lblTitle.text = [details objectForKey:@"gem_title"];
-    
+    }
     if ([[details objectForKey:@"gem_type"] isEqualToString:@"action"]) {
         [cell.btnBanner setTitle:@"ACTION" forState:UIControlStateNormal];;
     }
@@ -523,7 +611,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             
         }
     }
-    
     if (NULL_TO_NIL ([details objectForKey:@"profileimg"]) && [[details objectForKey:@"profileimg"] length]){
         [cell.imgProfile sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"profileimg"]]
                            placeholderImage:[UIImage imageNamed:@"NoImage.png"]
@@ -534,13 +621,12 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     cell.imgTransparentVideo.hidden = true;
     if ([[details objectForKey:@"display_type"] isEqualToString:@"video"])cell.imgTransparentVideo.hidden = false;
     if ([[details objectForKey:@"display_image"] isEqualToString:@"No"]) cell.imgGemMedia.hidden = true;
-    [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
+    cell.imgGemMedia.image = nil;
+    float imageHeight = 0;
     if (NULL_TO_NIL([details objectForKey:@"display_image"])){
         NSString *url = [details objectForKey:@"display_image"];
-        float imageHeight = 0;
         if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
             imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
-            cell.constraintForHeight.constant = imageHeight;
         }
         if (url.length) {
             [cell.activityIndicator startAnimating];
@@ -552,6 +638,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
                                        }];
         }
     }
+    cell.constraintForHeight.constant = imageHeight;
     
     
 }
@@ -1000,7 +1087,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
             [userListings loadUserListingsForType:@"comment" gemID:[gemDetails objectForKey:@"gem_id"]];
             if (!deleagte.navGeneral) {
-                
                 AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
                 app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
                 app.navGeneral.navigationBarHidden = true;
@@ -1157,6 +1243,14 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         }
     }
     
+    // This is to certify that the house construction(Maintainance work) of Mr.Balagopalan.M residing at ManhaVeedu,Anikkadi,Kodakkad in Re.Sy no 38/2 & 44/1 of kodakkad village has completed the work of extra room on terrace.The work of flooring is under progress.
+    // The total amount expected is Rs. 362000/-
+    //The work is under progress and it is as per the plan and estimate.
+    //This certificate is issued to Vijaya Bank Kalichamaram.
+        // Place        Sign
+                       // Seal
+    //Date
+    
     [collectionView reloadData];
     
 }
@@ -1201,6 +1295,18 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 
 #pragma mark - Generic Methods
+
+-(IBAction)showGoalsAndDreams:(id)sender{
+    
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [app showGoalsAndDreams];
+}
+
+-(IBAction)showEmotionalIntelligence:(id)sender{
+    
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [app emotionalIntelligencePage];
+}
 
 -(IBAction)showAwarenessPage:(id)sender{
     

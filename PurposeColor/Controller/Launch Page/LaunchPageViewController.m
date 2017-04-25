@@ -175,9 +175,6 @@
         popTip = [AMPopTip popTip];
         [popTip showText:@"Emotional Intelligence" direction:AMPopTipDirectionDown maxWidth:200 inView:self.view fromFrame:CGRectMake(p.x , p.y, 50, 50) duration:2];
     }
-       
-    
-    
     
 }
 

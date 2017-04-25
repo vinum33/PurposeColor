@@ -215,12 +215,15 @@ typedef enum{
 - (CGSize)collectionView:(UICollectionView *)_collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     float padding = 10;
-    float defaultHeight = 185;
+    float defaultHeight = 165;
     float finalHeight = 0;
     float imageHeight = 0;
     float width = _collectionView.bounds.size.width;
     if (indexPath.row < arrGems.count) {
         NSDictionary *details = arrGems[indexPath.row];
+        if (NULL_TO_NIL([details objectForKey:@"gem_title"])){
+            defaultHeight = 185;
+        }
         if (NULL_TO_NIL([details objectForKey:@"gem_details"])){
             float lblHeight = [Utility getSizeOfLabelWithText:[details objectForKey:@"gem_details"] width:self.view.frame.size.width - padding font:[UIFont fontWithName:CommonFont size:14]];
             if (lblHeight > 30) {
@@ -231,10 +234,15 @@ typedef enum{
             if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
                 imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
             }else{
-                float width = [[details objectForKey:@"image_width"] floatValue];
-                float height = [[details objectForKey:@"image_height"] floatValue];
-                float ratio = width / height;
-                imageHeight = (collectionView.frame.size.width - padding) / ratio;
+                if (NULL_TO_NIL([details objectForKey:@"display_image"])) {
+                    float width = [[details objectForKey:@"image_width"] floatValue];
+                    float height = [[details objectForKey:@"image_height"] floatValue];
+                    if ((width && height) > 0) {
+                        float ratio = width / height;
+                        imageHeight = (collectionView.frame.size.width - padding) / ratio;
+                    }
+                }
+                
                 [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
                 
             }
@@ -300,14 +308,27 @@ typedef enum{
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    
+    NSInteger index = indexPath.row;
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemDetails = arrGems[index];
+        GEMDetailViewController *gemDetailVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMDetailPage];
+        gemDetailVC.gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemDetails];
+        gemDetailVC.delegate = self;
+        gemDetailVC.clickedIndex = index;
+        gemDetailVC.canSave = false;
+        gemDetailVC.isFromGEM = true;
+        [[self navigationController]pushViewController:gemDetailVC animated:YES];
+        
+    }
+
 }
 
 #pragma mark - Customise Cells Method
 
 -(void)resetCellVariables:(GemsListCollectionViewCell*)cell{
     
-    cell.vwBg.layer.borderColor = [UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:1].CGColor;
+    cell.vwBg.layer.borderColor = [UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:0.5].CGColor;
     cell.vwBg.layer.borderWidth = 1.0;
     
     cell.imgProfile.layer.cornerRadius = 25.f;
@@ -327,8 +348,12 @@ typedef enum{
     cell.lblName.text = [details objectForKey:@"firstname"];
     cell.lblTime.text = [Utility getDaysBetweenTwoDatesWith:[[details objectForKey:@"gem_datetime"] doubleValue]];
     
-    if (NULL_TO_NIL([details objectForKey:@"gem_title"]))
+    cell.lblTitle.text = @"";
+    if (NULL_TO_NIL([details objectForKey:@"gem_title"])){
+        cell.constraintDescTopOne.priority = 999;
+        cell.constraintDescTopTwo.priority = 998;
         cell.lblTitle.text = [details objectForKey:@"gem_title"];
+    }
     
     if ([[details objectForKey:@"gem_type"] isEqualToString:@"action"]) {
         [cell.btnBanner setTitle:@"ACTION" forState:UIControlStateNormal];;
@@ -382,29 +407,29 @@ typedef enum{
     cell.imgGemMedia.hidden = false;
     cell.imgTransparentVideo.hidden = true;
     if ([[details objectForKey:@"display_type"] isEqualToString:@"video"])cell.imgTransparentVideo.hidden = false;
-    if ([[details objectForKey:@"display_image"] isEqualToString:@"No"]) cell.imgGemMedia.hidden = true;
     if (NULL_TO_NIL([details objectForKey:@"display_image"])){
-        float imageHeight = 0;
+        if ([[details objectForKey:@"display_image"] isEqualToString:@"No"]) cell.imgGemMedia.hidden = true;
+    }
+    
+    cell.imgGemMedia.image = nil;
+    float imageHeight = 0;
+    if (NULL_TO_NIL([details objectForKey:@"display_image"])){
+        NSString *url = [details objectForKey:@"display_image"];
         if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
             imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
-            cell.constraintForHeight.constant = imageHeight;
         }
-        NSString *url = [details objectForKey:@"display_image"];
         if (url.length) {
             [cell.activityIndicator startAnimating];
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:url]
-                                placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                placeholderImage:[UIImage imageNamed:@""]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                           [UIView transitionWithView:cell.imgGemMedia
-                                                             duration:.5f
-                                                              options:UIViewAnimationOptionTransitionCrossDissolve
-                                                           animations:^{
-                                                               cell.imgGemMedia.image = image;
-                                                           } completion:nil];
+                                           
                                            [cell.activityIndicator stopAnimating];
                                        }];
         }
     }
+    cell.constraintForHeight.constant = imageHeight;
+
     
     
 }
@@ -825,7 +850,6 @@ typedef enum{
 
 -(void)showAllCommentedUsers:(NSInteger)index{
     
-    
     if (index < arrGems.count) {
         NSDictionary *gemDetails = arrGems[index];
         if ([[gemDetails objectForKey:@"comment_count"]integerValue ] > 0) {
@@ -834,7 +858,6 @@ typedef enum{
             LikedAndCommentedUserListings *userListings =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForLikedAndCommentedUsers];
             [userListings loadUserListingsForType:@"comment" gemID:[gemDetails objectForKey:@"gem_id"]];
             if (!deleagte.navGeneral) {
-                
                 AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
                 app.navGeneral = [[UINavigationController alloc] initWithRootViewController:userListings];
                 app.navGeneral.navigationBarHidden = true;

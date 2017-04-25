@@ -126,6 +126,10 @@
 @property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForTitleTop;
 @property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
 
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintDateTop;
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintDescTopOne;
+@property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintDescTopTwo;
+
 
 @property (nonatomic,strong) MPMoviePlayerController *moviePlayer;
 @property (nonatomic,strong) NSString *strURL;

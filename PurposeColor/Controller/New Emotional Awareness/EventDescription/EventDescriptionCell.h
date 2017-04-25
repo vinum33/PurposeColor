@@ -11,5 +11,6 @@
 @interface EventDescriptionCell : UITableViewCell
 
 @property (nonatomic,weak) IBOutlet UITextView *txtVwDescription;
+@property (nonatomic,weak) IBOutlet UIView *vwBg;
 
 @end

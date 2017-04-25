@@ -224,6 +224,12 @@ typedef enum{
     
     CGFloat cellHeight = kDefaultCellHeight;
     if (indexPath.section == eSectionOne) {
+        if (_actionType == eActionTypeCommunity) {
+            
+            if (indexPath.row == 0) {
+                return 0;
+            }
+        }
         
         if (_actionType == eActionTypeGoalsAndDreams) {
             
@@ -490,6 +496,8 @@ typedef enum{
         if (_actionType == eActionTypeGoalsAndDreams) {
             cell.txtDecsription.placeholder = @"Reason why";
         }
+        if (_actionType == eActionTypeCommunity)  cell.txtDecsription.placeholder = @"Inspire and be inspired";
+
         cell.txtTitle.keyboardType=UIKeyboardTypeASCIICapable;
         cell.txtDecsription.keyboardType=UIKeyboardTypeASCIICapable;
         UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
@@ -1123,8 +1131,10 @@ typedef enum{
         UIImageView *btnAudio = [UIImageView new];
         btnAudio.translatesAutoresizingMaskIntoConstraints = NO;
         [vwFooter addSubview:btnAudio];
+       
+        
         btnAudio.contentMode = UIViewContentModeScaleAspectFit;
-        [btnAudio setImage:[UIImage imageNamed:@"Audio_Recorder_Button.png"]];
+        [btnAudio setImage:[UIImage imageNamed:@"Media_Audio.png"]];
         btnAudio.userInteractionEnabled = true;
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]
                                                    initWithTarget:self action:@selector(recordAudio:)];
@@ -1138,28 +1148,33 @@ typedef enum{
         
         UIButton *btnGallery = [UIButton buttonWithType:UIButtonTypeCustom];
         btnGallery.translatesAutoresizingMaskIntoConstraints = NO;
-        [btnGallery setImage:[UIImage imageNamed:@"Gallery_Button.png"] forState:UIControlStateNormal];
+        [btnGallery setImage:[UIImage imageNamed:@"Media_Gallery.png"] forState:UIControlStateNormal];
         [btnGallery addTarget:self action:@selector(showGallery:) forControlEvents:UIControlEventTouchUpInside];
         [vwFooter addSubview:btnGallery];
+        btnGallery.imageView.contentMode = UIViewContentModeScaleAspectFit;
         
         UIButton *btnCamera = [UIButton buttonWithType:UIButtonTypeCustom];
         btnCamera.translatesAutoresizingMaskIntoConstraints = NO;
-        [btnCamera setImage:[UIImage imageNamed:@"Camera_Button.png"] forState:UIControlStateNormal];
+        [btnCamera setImage:[UIImage imageNamed:@"Media_Camera.png"] forState:UIControlStateNormal];
         [btnCamera addTarget:self action:@selector(showCamera:) forControlEvents:UIControlEventTouchUpInside];
         [vwFooter addSubview:btnCamera];
+        btnCamera.imageView.contentMode = UIViewContentModeScaleAspectFit;
         
         UIButton *btnLoc = [UIButton buttonWithType:UIButtonTypeCustom];
         btnLoc.translatesAutoresizingMaskIntoConstraints = NO;
-        [btnLoc setImage:[UIImage imageNamed:@"Location_Button.png"] forState:UIControlStateNormal];
+        [btnLoc setImage:[UIImage imageNamed:@"Media_Location.png"] forState:UIControlStateNormal];
         [btnLoc addTarget:self action:@selector(showLocation:) forControlEvents:UIControlEventTouchUpInside];
         [vwFooter addSubview:btnLoc];
+        btnLoc.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
         
         UIButton *btnContact = [UIButton buttonWithType:UIButtonTypeCustom];
         btnContact.translatesAutoresizingMaskIntoConstraints = NO;
-        [btnContact setImage:[UIImage imageNamed:@"Contact_Button.png"] forState:UIControlStateNormal];
+        [btnContact setImage:[UIImage imageNamed:@"Media_Contact.png"] forState:UIControlStateNormal];
         [btnContact addTarget:self action:@selector(showContacts:) forControlEvents:UIControlEventTouchUpInside];
         [vwFooter addSubview:btnContact];
-        
+        btnContact.imageView.contentMode = UIViewContentModeScaleAspectFit;
+
         [btnAudio addConstraint:[NSLayoutConstraint constraintWithItem:btnAudio
                                                              attribute:NSLayoutAttributeHeight
                                                              relatedBy:NSLayoutRelationEqual
@@ -1203,6 +1218,7 @@ typedef enum{
         [vwFooter addConstraint:[NSLayoutConstraint constraintWithItem:btnAudio attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:vwFooter attribute:NSLayoutAttributeBottom multiplier:1 constant:-5]];
         NSDictionary *views = NSDictionaryOfVariableBindings(btnAudio, btnGallery, btnCamera, btnLoc, btnContact);
         [vwFooter addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[btnAudio][btnGallery(==btnAudio)][btnCamera(==btnAudio)][btnLoc(==btnAudio)][btnContact(==btnAudio)]|" options:NSLayoutFormatAlignAllBottom metrics:nil views:views]];
+        
         
     }
     
@@ -2008,19 +2024,31 @@ typedef enum{
     
     BOOL isValid = false;
     NSString *errorMsg;
-    if (([strTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length) && ([strDescription stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length) > 0) {
-        isValid = true;
-        if (_actionType == eActionTypeGoalsAndDreams) {
-             isValid = false;
-            if (([strAchievementDate stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length) && ([strStatus stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length)){
-                isValid = true;
-            }
+    if (_actionType == eActionTypeCommunity) {
+        
+        if (([strDescription stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length) > 0) {
+            isValid = true;
+        }else{
+            
+            isValid = false;
         }
-       
     }else{
         
-        isValid = false;
+        if (([strTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length) && ([strDescription stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length) > 0) {
+            isValid = true;
+            if (_actionType == eActionTypeGoalsAndDreams) {
+                isValid = false;
+                if (([strAchievementDate stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length) && ([strStatus stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length)){
+                    isValid = true;
+                }
+            }
+            
+        }else{
+            
+            isValid = false;
+        }
     }
+   
     if (isValid)success();
     else failure(errorMsg);
     

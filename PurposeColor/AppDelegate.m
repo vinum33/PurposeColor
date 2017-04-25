@@ -33,6 +33,7 @@
 #import "ReminderListingViewController.h"
 #import "LaunchPageViewController.h"
 #import "JournalListViewController.h"
+#import "ExampleViewController.h"
 
 #define NOTIFICATION_TYPE_FOLLOW        @"follow"
 #define NOTIFICATION_TYPE_CHAT          @"chat"
@@ -44,6 +45,7 @@
     UITabBarController *tabBarController;
     LaunchPageViewController *launchPage;
     SWRevealViewController *revealController;
+    BOOL isAlertInProgress;
 }
 
 @end
@@ -59,6 +61,11 @@
                                              selector : @selector(logoutSinceUnAuthorized:)
                                                  name : @"UNAUTHORIZED"
                                                object : nil];
+    [[NSNotificationCenter defaultCenter] addObserver : self
+                                             selector : @selector(skipToHomepage)
+                                                 name : @"IntroCompleted"
+                                               object : nil];
+    
     
     [Fabric with:@[[Crashlytics class]]];
     [Utility setUpGoogleMapConfiguration];
@@ -86,9 +93,10 @@
 
 -(void)logoutSinceUnAuthorized:(NSNotification*)notification{
     NSLog(@"LOGOUT");
+    if(isAlertInProgress) return;
     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
     if (!userExists) return;
-    
+    isAlertInProgress = true;
     NSString *text = @"Invalid authentication token!";
     if (notification.userInfo) {
         NSDictionary *dict  = notification.userInfo;
@@ -97,9 +105,10 @@
     [self clearUserSessions];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Logout"
                                                     message:text
-                                                   delegate:nil
+                                                   delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
+    alert.tag = 111;
     [alert show];
 }
 
@@ -166,6 +175,10 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
+    if (alertView.tag == 111){
+        isAlertInProgress = false;
+        return;
+    }
     if (alertView.tag == 2) {
         
     }else{
@@ -517,7 +530,6 @@
                  [self configureMemmoryUserInfo:userInfo isFromBackGround:NO];
             }
             else if ([notification_type isEqualToString:NOTIFICATION_TYPE_FOLLOW]){
-                
                 [self configureFollowRequestWithUserInfo:userInfo];
             }else{
                 [self handleOtherNotificationTypes:userInfo];
@@ -791,30 +803,69 @@
 
 - (void)showLauchPage {
     
-     // Show home screen once login is successful.
-   
-    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    if (!launchPage){
+    BOOL isFirstTime = true;
+    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"IS_FIRST_TIME_USER"])
+         isFirstTime = [[[NSUserDefaults standardUserDefaults] objectForKey:@"IS_FIRST_TIME_USER"] boolValue];
+    
+    if (isFirstTime) {
+        [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"IS_FIRST_TIME_USER"];
+        self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        self.window.backgroundColor = [UIColor whiteColor];
+        self.window.rootViewController = [[ExampleViewController alloc] init];
         
-        launchPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForLaunchPage];
-       
-        // GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
-        UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:launchPage];
-        MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
-        UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
-        navMenu.navigationBarHidden = true;
-        revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
-        revealController.rightViewController = navMenu;
-        navHome.navigationBarHidden = true;
+        [self.window makeKeyAndVisible];
+    }else{
+        
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        if (!launchPage){
+            
+            launchPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForLaunchPage];
+            
+            // GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
+            UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:launchPage];
+            MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
+            UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
+            navMenu.navigationBarHidden = true;
+            revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
+            revealController.rightViewController = navMenu;
+            navHome.navigationBarHidden = true;
+        }
+        
+        [UIView transitionWithView:app.window
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{ app.window.rootViewController = revealController; }
+                        completion:nil];
+
     }
+ 
+}
+-(void)skipToHomepage{
     
-    
-    [UIView transitionWithView:app.window
-                      duration:0.5
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{ app.window.rootViewController = revealController; }
-                    completion:nil];
-    
+     // Show home screen once Intro screen is successful.
+     
+     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+     if (!launchPage){
+     
+     launchPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForLaunchPage];
+     
+     // GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
+     UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:launchPage];
+     MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
+     UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
+     navMenu.navigationBarHidden = true;
+     revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
+     revealController.rightViewController = navMenu;
+     navHome.navigationBarHidden = true;
+     }
+     
+     
+     [UIView transitionWithView:app.window
+     duration:0.5
+     options:UIViewAnimationOptionTransitionCrossDissolve
+     animations:^{ app.window.rootViewController = revealController; }
+     completion:nil];
 }
 
 #pragma mark - Dynamic Menu Selection
@@ -832,7 +883,7 @@
             break;
             
         case eMenu_GEMS:
-            [self showGEMSListingsPage];
+            //[self showGEMSListingsPage];
             break;
             
         case eMenu_Goals_Dreams:
@@ -885,6 +936,7 @@
             
         case eMenu_Share:
             [self shareApp];
+            break;
             
         case eMenu_Journal:
             [self showJournalListView];

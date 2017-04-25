@@ -95,6 +95,10 @@ typedef enum{
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     heightsCache =  [NSMutableDictionary new];
 
+    btnCreateAction.layer.cornerRadius = 5.f;
+    btnCreateAction.layer.borderColor = [UIColor clearColor].CGColor;
+    btnCreateAction.layer.borderWidth = 1.f;
+    
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

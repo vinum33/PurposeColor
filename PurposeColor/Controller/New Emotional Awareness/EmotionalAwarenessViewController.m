@@ -68,11 +68,9 @@ typedef enum{
     IBOutlet UIButton *btnAudioRecorder;
     IBOutlet UIButton *btnPost;
     IBOutlet UILabel *lblMenuName;
-    IBOutlet UIButton *btnHand;
 
     UIView *inputAccView;
     
-    BOOL isJournalSet;
     BOOL shouldHideMenus;
     BOOL isCycleCompleted;
     NSInteger menuCount;
@@ -153,13 +151,15 @@ typedef enum{
     return UIStatusBarStyleLightContent;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+   
+    [tableView reloadData];
+}
+
+
 
 -(void)setUp{
     
-    [UIView animateWithDuration:0.5 delay:0 options:(UIViewAnimationCurveLinear | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat) animations:^{
-        [btnHand setTransform:CGAffineTransformMakeScale(1.5, 1.5)];
-        btnHand.alpha = 0.2;
-    }  completion:nil];
     
     nextActiveMenu = -1;
     menuCount = 4;
@@ -173,7 +173,6 @@ typedef enum{
     isCycleCompleted = false;
     dictSelectedSteps = [NSMutableDictionary new];
     dictSuccessSteps = [NSMutableDictionary new];
-    isJournalSet = false;
     tableView.estimatedRowHeight = 100;
     shouldHideMenus = false;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -181,7 +180,7 @@ typedef enum{
     arrDeletedIDs = [NSMutableArray new];
     arrFeelImages = [[NSMutableArray alloc] initWithObjects:@"Strongly_Agree_Blue",@"Agree_Blue",@"Neutral_Blue",@"Disagree_Blue",@"Strongly_DisAgree_Blue", nil];
     arrDriveImages = [[NSMutableArray alloc] initWithObjects:@"5_Star_Filled",@"4_Star_Filled",@"3_Star_Filled",@"2_Star_Filled",@"1_Star_Filled", nil];
-    requiredCellCount = 1;
+    requiredCellCount = 4;
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(recordMediaByView:)];
     longPress.minimumPressDuration = .5;
     [btnAudioRecorder addGestureRecognizer:longPress];
@@ -239,18 +238,15 @@ typedef enum{
     }
     
     if (section == 0) {
-        if (!isJournalSet) {
-            return 1;
-        }
         return requiredCellCount;
     }
     if (section == 1) {
         NSInteger count = 0;
-        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]] || [dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]] || [dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]) {
+        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]]  || [dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]) {
             count += 1;
             
         }
-        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]] || [dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeAction]]) {
+        if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]] ||  [dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]] ||[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeAction]]) {
             count += 1;
         }
         return count;
@@ -393,90 +389,106 @@ typedef enum{
     }else{
         
         if (indexPath.section == 0) {
-            if (!isJournalSet) {
-                static NSString *CellIdentifier = @"SectionOnePlaceHolder";
-                UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (indexPath.row == 0) {
+                
+                static NSString *CellIdentifier = @"EventTitleCell";
+                EventTitleCell *cell = (EventTitleCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
                 cell.backgroundColor = [UIColor clearColor];
+                cell.lblTitle.text = eventTitle;
+                cell.lblTitle.textColor = [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:1.0];
+                if (!eventTitle) {
+                    cell.lblTitle.text = @"What's the event,situation or thought?";
+                    cell.lblTitle.textColor = [UIColor lightGrayColor];
+                }
+                cell.vwBg.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+                cell.vwBg.layer.borderWidth = 1.f;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                if ([[cell contentView]viewWithTag:101]) {
+                    UIButton *_btnHand = [[cell contentView]viewWithTag:101];
+                    [_btnHand removeFromSuperview];
+                }
+                if (![dictSelectedSteps objectForKey:[NSNumber numberWithInt:eTypeEvent]]) {
+                    UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                    doneBtn.frame = CGRectMake(tableView.frame.size.width / 2.0 - 15, 25, 20, 20);
+                    [doneBtn setImage:[UIImage imageNamed:@"hand"] forState:UIControlStateNormal];
+                    doneBtn.tag = 101;
+                    [cell.contentView addSubview:doneBtn];
+                    
+                    [UIView animateWithDuration:0.5 delay:0 options:(UIViewAnimationCurveLinear | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat) animations:^{
+                        [doneBtn setTransform:CGAffineTransformMakeScale(1.5, 1.5)];
+                        doneBtn.alpha = 0.2;
+                    }  completion:nil];
+                }
+               
+                
+                return cell;
+            }
+            else if (indexPath.row == 1) {
+                
+                static NSString *CellIdentifier = @"EventDescription";
+                EventDescriptionCell *cell = (EventDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                cell.txtVwDescription.text = strDescription;
+                cell.txtVwDescription.delegate = self;
+                cell.vwBg.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+                cell.vwBg.layer.borderWidth = 1.f;
+                
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 return cell;
-                
-            }else{
-                
-                if (indexPath.row == 0) {
-                    
-                    static NSString *CellIdentifier = @"EventTitleCell";
-                    EventTitleCell *cell = (EventTitleCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                    cell.backgroundColor = [UIColor clearColor];
-                    cell.lblTitle.text = eventTitle;
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    return cell;
-                }
-                else if (indexPath.row == 1) {
-                    
-                    static NSString *CellIdentifier = @"EventDescription";
-                    EventDescriptionCell *cell = (EventDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                    cell.txtVwDescription.text = strDescription;
-                    cell.txtVwDescription.delegate = self;
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    return cell;
-                }
-                else if (indexPath.row == 2) {
-                    
-                    static NSString *CellIdentifier = @"LocationCell";
-                    UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                    if ([[cell contentView] viewWithTag:1]) {
-                        UILabel *lblInfo = [[cell contentView] viewWithTag:1];
-                        if (strLocationName.length) {
-                            NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"At %@",strLocationName]];
-                            [mutableAttString addAttribute:NSForegroundColorAttributeName
-                                                     value:[UIColor getThemeColor]
-                                                     range:NSMakeRange(3, strLocationName.length)];
-                            lblInfo.attributedText = mutableAttString;
-                            
-                            
-                        }
-                        
-                    }
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    return cell;
-                }
-                else if (indexPath.row == 3) {
-                    
-                    static NSString *CellIdentifier = @"ContactCell";
-                    UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                    if ([[cell contentView] viewWithTag:1]) {
-                        UILabel *lblInfo = [[cell contentView] viewWithTag:1];
-                        NSMutableAttributedString *myString= [NSMutableAttributedString new];
-                        NSInteger nextIndex = 0;
-                        
-                        if (strContactName.length) {
-                            NSArray *names = [strContactName componentsSeparatedByString:@","];
-                            NSInteger nextLength = strContactName.length;
-                            NSString *strCntact = strContactName;
-                            if (names.count > 1) {
-                                NSString *firstName = [names firstObject];
-                                nextLength = firstName.length;
-                                strCntact = [NSString stringWithFormat:@"With %@ and %d other(s)",firstName,names.count - 1];
-                            }else{
-                                strCntact = [NSString stringWithFormat:@"With %@",strCntact];
-                            }
-                            NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",strCntact]];
-                            [myString appendAttributedString:mutableAttString];
-                            [myString addAttribute:NSForegroundColorAttributeName
-                                             value:[UIColor getThemeColor]
-                                             range:NSMakeRange(nextIndex + 5, nextLength)];
-                        }
-                        lblInfo.attributedText = myString;
-                        
-                        
-                    }
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    return cell;
-                }
-                
-                
             }
-            
+            else if (indexPath.row == 2) {
+                
+                static NSString *CellIdentifier = @"LocationCell";
+                UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                if ([[cell contentView] viewWithTag:1]) {
+                    UILabel *lblInfo = [[cell contentView] viewWithTag:1];
+                    if (strLocationName.length) {
+                        NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"At %@",strLocationName]];
+                        [mutableAttString addAttribute:NSForegroundColorAttributeName
+                                                 value:[UIColor getThemeColor]
+                                                 range:NSMakeRange(3, strLocationName.length)];
+                        lblInfo.attributedText = mutableAttString;
+                        
+                        
+                    }
+                    
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+            }
+            else if (indexPath.row == 3) {
+                
+                static NSString *CellIdentifier = @"ContactCell";
+                UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                if ([[cell contentView] viewWithTag:1]) {
+                    UILabel *lblInfo = [[cell contentView] viewWithTag:1];
+                    NSMutableAttributedString *myString= [NSMutableAttributedString new];
+                    NSInteger nextIndex = 0;
+                    
+                    if (strContactName.length) {
+                        NSArray *names = [strContactName componentsSeparatedByString:@","];
+                        NSInteger nextLength = strContactName.length;
+                        NSString *strCntact = strContactName;
+                        if (names.count > 1) {
+                            NSString *firstName = [names firstObject];
+                            nextLength = firstName.length;
+                            strCntact = [NSString stringWithFormat:@"With %@ and %d other(s)",firstName,names.count - 1];
+                        }else{
+                            strCntact = [NSString stringWithFormat:@"With %@",strCntact];
+                        }
+                        NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",strCntact]];
+                        [myString appendAttributedString:mutableAttString];
+                        [myString addAttribute:NSForegroundColorAttributeName
+                                         value:[UIColor getThemeColor]
+                                         range:NSMakeRange(nextIndex + 5, nextLength)];
+                    }
+                    lblInfo.attributedText = myString;
+                    
+                    
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+            }
         }
         if (indexPath.section == 1) {
             // Selected values
@@ -485,7 +497,7 @@ typedef enum{
                 SelectedValue_1 *cell = (SelectedValue_1*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
                 if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]]){
                     NSInteger index = [[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeFeel]] integerValue];
-                    cell.imgFeel.image = [UIImage imageNamed:[arrFeelImages objectAtIndex:index]];
+                    cell.imgFeel.image = [UIImage imageNamed:[arrDriveImages objectAtIndex:index]];
                 }
                 if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeEmotion]]){
                     NSString *strText = [NSString stringWithFormat:@"Feeling %@",selectedEmotionTitle] ;
@@ -496,17 +508,23 @@ typedef enum{
                     cell.lblEmotin.attributedText = title;
                     
                 }
-                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]]){
-                    NSInteger index = [[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]] integerValue];
-                    cell.imgDrive.image = [UIImage imageNamed:[arrDriveImages objectAtIndex:index]];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+               cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 return cell;
             }
             if (indexPath.row == 1) {
                 static NSString *CellIdentifier = @"GoalsCell";
                 SelectedValue_2 *cell = (SelectedValue_2*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
                 NSMutableString *strTtile;
+                NSAttributedString *driveAtachment;
+                if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]]){
+                    NSInteger index = [[dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeDrive]] integerValue];
+                    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+                    UIImage *icon = [UIImage imageNamed:[arrFeelImages objectAtIndex:index]];
+                    attachment.image = icon;
+                    attachment.bounds = CGRectMake(0, -(20) -  cell.lblGoalsActions.font.descender, 40, 40);
+                    driveAtachment = [NSAttributedString attributedStringWithAttachment:attachment];
+                }
+
                 if ([dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeGoalsAndDreams]]){
                     strTtile = [NSMutableString stringWithString:selectedGoalsTitle];
                 }
@@ -522,13 +540,18 @@ typedef enum{
                         }
                     }
                     
+                }else{
+                    NSMutableString *strOthers = [NSMutableString stringWithFormat:@"\n No Action"] ;
+                    [strTtile appendString:strOthers];
                 }
+                NSMutableAttributedString *check = [NSMutableAttributedString new];
+                [check appendAttributedString:driveAtachment];
                 if (strTtile) {
-                    NSString *strText = [NSString stringWithFormat:@"Reaction affecting goal:%@",strTtile] ;
+                    NSString *strText = [NSString stringWithFormat:@"Reaction:%@",strTtile] ;
                     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:strText];
                     [title addAttribute:NSForegroundColorAttributeName
                                   value:[UIColor colorWithRed:0.30 green:0.33 blue:0.38 alpha:.5]
-                                  range:NSMakeRange(0, 24)];
+                                  range:NSMakeRange(0, 9)];
                     
                     NSRange range = [strText rangeOfString:@"&"];
                     if (range.location == NSNotFound) {
@@ -540,9 +563,17 @@ typedef enum{
                                       range:NSMakeRange(range.location + 1, more.length)];
                     }
                     
-                    cell.lblGoalsActions.attributedText = title;
+                    if (![dictSelectedSteps objectForKey:[NSNumber numberWithInteger:eTypeAction]]){
+                        [title addAttribute:NSForegroundColorAttributeName
+                                      value:[UIColor lightGrayColor]
+                                      range:NSMakeRange(title.length - 9, 9)];
+                        [title addAttribute:NSFontAttributeName value:[UIFont italicSystemFontOfSize:13] range:NSMakeRange(title.length - 9, 9)];
+                       
+                    }
+                    [check appendAttributedString:title];
+                  
                 }
-               
+                cell.lblGoalsActions.attributedText = check;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                  return cell;
             }
@@ -563,9 +594,12 @@ typedef enum{
         return 40;
     }
     if (indexPath.section == 0) {
-        if (isJournalSet) {
+        if (indexPath.row == 0) {
+            return 50;
+            // Textview height
+        }
             if (indexPath.row == 1) {
-                 return 30;
+                 return 100;
                 // Textview height
             }
             else if (indexPath.row == 2) {
@@ -586,10 +620,7 @@ typedef enum{
                 return UITableViewAutomaticDimension;
             }
              return UITableViewAutomaticDimension;
-        }else{
-           
-            return 50;
-        }
+        
     }
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
@@ -1586,7 +1617,7 @@ typedef enum{
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView {
     
     [textView setInputAccessoryView:inputAccView];
-    CGPoint pointInTable = [textView.superview convertPoint:textView.frame.origin toView:tableView];
+    CGPoint pointInTable = [textView.superview.superview convertPoint:textView.frame.origin toView:tableView];
     CGPoint contentOffset = tableView.contentOffset;
     NSIndexPath *indexPath;
     CGPoint buttonPosition = [textView convertPoint:CGPointZero toView: tableView];
@@ -1598,7 +1629,7 @@ typedef enum{
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
-    CGPoint pointInTable = [textView.superview convertPoint:textView.frame.origin toView:tableView];
+    CGPoint pointInTable = [textView.superview.superview convertPoint:textView.frame.origin toView:tableView];
     CGPoint contentOffset = tableView.contentOffset;
     contentOffset.y = (pointInTable.y - textView.inputAccessoryView.frame.size.height);
     [tableView setContentOffset:contentOffset animated:YES];
@@ -1617,7 +1648,7 @@ typedef enum{
     [textView resignFirstResponder];
     CGPoint buttonPosition = [textView convertPoint:CGPointZero toView: tableView];
     NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:buttonPosition];
-    EventDescriptionCell *cell = (EventDescriptionCell*)textView.superview.superview;
+    EventDescriptionCell *cell = (EventDescriptionCell*)textView.superview.superview.superview;
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:TRUE];
     [self getTextFromField:cell.txtVwDescription.tag data:textView.text];
     return YES;
@@ -1678,8 +1709,6 @@ typedef enum{
     eventValue = eventID;
     selectedEventValue = eventID;
     eventTitle = _eventTitle;
-    [btnHand.layer removeAllAnimations];
-    [btnHand removeFromSuperview];
     [dictSelectedSteps setObject:[NSNumber numberWithInteger:eventID] forKey:[NSNumber numberWithInteger:eTypeEvent]];
     [self collapseAllSectionMenus];
     [tableView_Menu reloadData];
@@ -1714,7 +1743,7 @@ typedef enum{
 
 -(void)feelingsSelectedWithEmotionType:(NSInteger)emotionType{
     
-    selectedEmotionValue = emotionType;
+    selectedFeelValue = emotionType;
     [dictSelectedSteps setObject:[NSNumber numberWithInteger:emotionType] forKey:[NSNumber numberWithInteger:eTypeFeel]];
     [self collapseAllSectionMenus];
     if (menuCount > 1) {
@@ -2081,10 +2110,8 @@ typedef enum{
 -(void)collapseAllSectionMenus{
     
     shouldHideMenus = true;
-    isJournalSet = false;
      requiredCellCount = 1;
     if ([dictSelectedSteps objectForKey:[NSNumber numberWithInt:eTypeEvent]]) {
-        isJournalSet = true;
          requiredCellCount = 4;
     }
     tableHeight.constant = 170;

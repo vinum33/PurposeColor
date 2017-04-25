@@ -38,7 +38,7 @@ typedef enum{
     IBOutlet UIView *vwSegmentSelection;
     IBOutlet UIButton *btnPending;
     IBOutlet UIButton *btnCompleted;
-
+    IBOutlet UIButton *btnCreate;
     
     UIRefreshControl *refreshControl;
     BOOL isDataAvailable;
@@ -99,12 +99,16 @@ typedef enum{
     isDataAvailable = false;
     tableView.hidden = true;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
+    [tableView setContentInset:UIEdgeInsetsMake(0,0,50,0)];
+
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.tintColor = [UIColor grayColor];
     [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:refreshControl];
     heightsCache =  [NSMutableDictionary new];
+    btnCreate.layer.cornerRadius = 5.f;
+    btnCreate.layer.borderColor = [UIColor clearColor].CGColor;
+    btnCreate.layer.borderWidth = 1.f;
     
 }
 
@@ -121,6 +125,7 @@ typedef enum{
             [self loadAllGoalsAndDreamsByPagination:NO withPageNumber:currentPage_pending];
            
         }
+        
          [self changeAnimatedSelectionToCompleted:NO];
     }else{
         
@@ -338,12 +343,22 @@ typedef enum{
         if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
             imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
         }else{
-            float width = [[goalInfo objectForKey:@"image_width"] floatValue];
-            float height = [[goalInfo objectForKey:@"image_height"] floatValue];
-            float ratio = width / height;
-            imageHeight = (_tableView.frame.size.width - padding) / ratio;
+            if (NULL_TO_NIL([goalInfo objectForKey:@"goal_media"])) {
+                float width = [[goalInfo objectForKey:@"image_width"] floatValue];
+                float height = [[goalInfo objectForKey:@"image_height"] floatValue];
+                if ((width && height) > 0) {
+                    float ratio = width / height;
+                   imageHeight = (_tableView.frame.size.width - padding) / ratio;
+                }
+            }else{
+                float width = 500;
+                float height = 333;
+                if ((width && height) > 0) {
+                    float ratio = width / height;
+                    imageHeight = (_tableView.frame.size.width - padding) / ratio;
+                }
+            }
             [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
-            
         }
 
         finalHeight += imageHeight;
@@ -399,19 +414,21 @@ typedef enum{
             NSString *url = [goalsDetails objectForKey:@"goal_media"];
             if (url.length) {
                 [cell.activityIndicator startAnimating];
-                float imageHeight = 0;
-                if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
-                    imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
-                    cell.constraintForHeight.constant = imageHeight;
-                }
-                [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:url]
+                                [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:url]
                                     placeholderImage:[UIImage imageNamed:@""]
                                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                [cell.activityIndicator stopAnimating];
                                            }];
             }
+        }else{
+            [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage"]];
         }
-        
+        float imageHeight = 0;
+        if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
+            
+        }
+        cell.constraintForHeight.constant = imageHeight;
         if ([[[cell contentView] viewWithTag:3] isKindOfClass:[UIView class]]){
             UIView *vwBg = [[cell contentView] viewWithTag:3];
             vwBg.hidden = true;

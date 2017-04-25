@@ -214,11 +214,14 @@
                     
                 }
             }
-            [cell.imgRadio sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
-                             placeholderImage:[UIImage imageNamed:@"Purposecolor_Image"]
-                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                        
-                                    }];
+            if (NULL_TO_NIL([details objectForKey:@"display_image"])) {
+                [cell.imgRadio sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
+                                 placeholderImage:[UIImage imageNamed:@"Purposecolor_Image"]
+                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                            
+                                        }];
+            }
+            
 
             
         }
