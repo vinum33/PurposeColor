@@ -85,7 +85,6 @@ typedef enum{
     IBOutlet UIView *vwPickerOverLay;
     IBOutlet UIDatePicker *datePicker;
     IBOutlet UILabel *lblTitle;
-    IBOutlet UIButton *btnUpload;
     IBOutlet UIButton *btnPost;
     CustomAudioPlayerView *vwAudioPlayer;
     NSMutableArray *arrDeletedIDs;
@@ -144,14 +143,9 @@ typedef enum{
     btnPost.layer.cornerRadius = 5;
     btnPost.layer.borderWidth = 1.f;
     btnPost.layer.borderColor = [UIColor whiteColor].CGColor;
+    [btnPost setTitle:@"SAVE" forState:UIControlStateNormal];
+    if (_actionType == eActionTypeCommunity)[btnPost setTitle:@"POST" forState:UIControlStateNormal];
     
-    btnPost.hidden = true;
-    btnUpload.hidden = true;
-    if (_actionType == eActionTypeCommunity) {
-        btnPost.hidden = false;
-    }else{
-        btnUpload.hidden = false;
-    }
     
 }
 

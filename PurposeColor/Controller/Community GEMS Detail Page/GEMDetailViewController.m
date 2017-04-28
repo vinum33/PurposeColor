@@ -973,6 +973,9 @@
     if (_isFromGEM) detailPage.delegate = self;
     if ([gemType isEqualToString:@"event"]) detailPage.actionType = eActionTypeEvent;
     detailPage.strTitle = [[NSString stringWithFormat:@"EDIT AS %@",[_gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
+    if ([[_gemDetails objectForKey:@"gem_type"] isEqualToString:@"community"]) {
+        detailPage.strTitle = @"SAVE GEM";
+    }
     [[self navigationController]pushViewController:detailPage animated:YES];
     [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:gemID GEMType:gemType];
     

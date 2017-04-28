@@ -408,7 +408,7 @@ typedef enum{
         if (NULL_TO_NIL([goalsDetails objectForKey:@"goal_details"]))
             cell.lblDescription.text = [goalsDetails objectForKey:@"goal_details"];
         if (NULL_TO_NIL([goalsDetails objectForKey:@"goal_details"])){
-            cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@ | %@",[Utility getDateStringFromSecondsWith:[[goalsDetails objectForKey:@"goal_startdate"] doubleValue] withFormat:@"dd-MM-yyyy"],[Utility getDateStringFromSecondsWith:[[goalsDetails objectForKey:@"goal_enddate"] doubleValue] withFormat:@"dd-MM-yyyy"],status]  ;
+            cell.lblDate.text = [NSString stringWithFormat:@"%@ - %@ | %@",[Utility getDateStringFromSecondsWith:[[goalsDetails objectForKey:@"goal_startdate"] doubleValue] withFormat:@"MM-dd-yyyy"],[Utility getDateStringFromSecondsWith:[[goalsDetails objectForKey:@"goal_enddate"] doubleValue] withFormat:@"MM-dd-yyyy"],status]  ;
         }
         if (NULL_TO_NIL([goalsDetails objectForKey:@"goal_media"])){
             NSString *url = [goalsDetails objectForKey:@"goal_media"];

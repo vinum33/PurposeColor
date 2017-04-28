@@ -2323,7 +2323,6 @@ typedef enum{
         default:
             break;
     }
-
     
     [params setObject:[NSNumber numberWithInteger:feelValue] forKey:@"emotion_value"];
     [params setObject:[NSNumber numberWithInteger:selectedEmotionValue] forKey:@"emotion_id"];

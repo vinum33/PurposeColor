@@ -1018,6 +1018,9 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         detailPage.actionType = eActionTypeShare;
         if ([gemDetails objectForKey:@"gem_type"]) {
             detailPage.strTitle =[[NSString stringWithFormat:@"SAVE AS %@",[gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
+            if ([[gemDetails objectForKey:@"gem_type"] isEqualToString:@"community"]) {
+                detailPage.strTitle = @"SAVE GEM";
+            }
         }
         [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:gemID GEMType:gemType];
         

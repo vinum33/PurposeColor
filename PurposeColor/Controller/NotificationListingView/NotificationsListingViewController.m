@@ -49,6 +49,8 @@
 
 -(void)setUp{
     
+    tableView.rowHeight = UITableViewAutomaticDimension;
+    tableView.estimatedRowHeight = 200;
     currentPage = 1;
     totalPages = 0;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -145,13 +147,6 @@
     return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (!isDataAvailable) return kDefaultCellHeight;
-    CGFloat height = [self getDynamicHeightForDecsriptionWith:indexPath.row];
-    return height;
-}
-
 
 -(UITableViewCell*)configureCellForIndexPath:(NSIndexPath*)indexPath{
     
@@ -186,11 +181,14 @@
     if (indexPath.row < arrNotifications.count) {
         NSDictionary *productInfo = arrNotifications[[indexPath row]];
          NSString *message = [productInfo objectForKey:@"message"];
-        
+        cell.bottomToBtn.priority = 998;
+        cell.bottomToSupervW.priority = 999;
         if ([[productInfo objectForKey:@"type"] isEqualToString:@"follow"]) {
             if ([[productInfo objectForKey:@"follow_status"] integerValue] == 1){
                 cell.btnReject.hidden = false;
                 cell.btnAccept.hidden = false;
+                cell.bottomToBtn.priority = 999;
+                cell.bottomToSupervW.priority = 998;
                 
             }
         }
@@ -199,17 +197,8 @@
             cell.lblDate.text = [Utility getDaysBetweenTwoDatesWith:[[productInfo objectForKey:@"datetime"] doubleValue]];
             
         }
-        
-        UIFont *font = [UIFont fontWithName:CommonFont size:14];
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineHeightMultiple = 1.2f;
-        NSDictionary *attributes = @{NSFontAttributeName:font,
-                                     NSParagraphStyleAttributeName:paragraphStyle,
-                                     };
-        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:message attributes:attributes];
-        cell.lblDescription.attributedText = attributedText;
+        cell.lblDescription.text = message;
         NSString *urlImage;
-        
         if (NULL_TO_NIL([productInfo objectForKey:@"profileimage"]))
             urlImage = [NSString stringWithFormat:@"%@",[productInfo objectForKey:@"profileimage"]];
         [cell.indicator stopAnimating];
@@ -259,7 +248,6 @@
         NSString *message = [productInfo objectForKey:@"message"];
         if (message.length) {
             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-            paragraphStyle.lineHeightMultiple = 1.2f;
             size = [message boundingRectWithSize:CGSizeMake(tableView.frame.size.width - kWidthPadding, MAXFLOAT)
                                          options:NSStringDrawingUsesLineFragmentOrigin
                                       attributes:@{

@@ -45,6 +45,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
              UIRefreshControl *refreshControl;
     IBOutlet UIButton *btnSlideMenu;
     IBOutlet UIView *vwOverLay;
+    IBOutlet UIButton *btnMyGem;
     
     NSMutableArray *arrGems;
     NSMutableDictionary *heightsCache;
@@ -101,6 +102,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     collectionView.alwaysBounceVertical = YES;
     collectionView.hidden = true;
     isDataAvailable = false;
+    
+    btnMyGem.layer.cornerRadius = 5.f;
+    btnMyGem.layer.borderWidth = 1.f;
+    btnMyGem.layer.borderColor = [UIColor getThemeColor].CGColor;
    
    
 }
@@ -935,6 +940,10 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         detailPage.actionType = eActionTypeShare;
         if ([gemDetails objectForKey:@"gem_type"]) {
             detailPage.strTitle =[[NSString stringWithFormat:@"SAVE AS %@",[gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
+            if ([[gemDetails objectForKey:@"gem_type"] isEqualToString:@"community"]) {
+                detailPage.strTitle = @"SAVE GEM";
+            }
+            
         }
         [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:gemID GEMType:gemType];
         

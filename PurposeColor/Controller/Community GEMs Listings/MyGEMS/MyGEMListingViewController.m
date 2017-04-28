@@ -339,7 +339,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     if (NULL_TO_NIL([details objectForKey:@"gem_datetime"]))
         cell.lblTime.text = [Utility getDaysBetweenTwoDatesWith:[[details objectForKey:@"gem_datetime"] doubleValue]];
     cell.lblTitle.text = @"";
-    cell.constraintDateTop.constant = 20;
+    cell.constraintDateTop.constant = 10;
     if (NULL_TO_NIL([details objectForKey:@"gem_title"])){
         cell.constraintDescTopOne.priority = 999;
         cell.constraintDescTopTwo.priority = 998;
@@ -813,6 +813,9 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         detailPage.actionType = eActionTypeShare;
         if ([gemDetails objectForKey:@"gem_type"]) {
             detailPage.strTitle =[[NSString stringWithFormat:@"SAVE AS %@",[gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
+            if ([[gemDetails objectForKey:@"gem_type"] isEqualToString:@"community"]) {
+                detailPage.strTitle = @"SAVE GEM";
+            }
         }
         AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
         if (!deleagte.navGeneral) {

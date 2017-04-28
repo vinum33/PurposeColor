@@ -1284,12 +1284,12 @@
     [params setObject:[User sharedManager].userId forKey:@"user_id"];
     if (descritption.length)[params setObject:descritption forKey:@"journal_desc"];
     if (locName.length){
-        NSMutableDictionary *location = [NSMutableDictionary new];
-        [location setObject:locName forKey:@"location_name"];
-        if (locAddress.length)[location setObject:locAddress forKey:@"location_address"];
-        [location setObject:[NSNumber numberWithDouble:latitude] forKey:@"location_latitude"];
-        [location setObject:[NSNumber numberWithDouble:longitude] forKey:@"location_longitude"];
-        [params setObject:location forKey:@"location"];
+        //NSMutableDictionary *location = [NSMutableDictionary new];
+        [params setObject:locName forKey:@"location_name"];
+        if (locAddress.length)[params setObject:locAddress forKey:@"location_address"];
+        [params setObject:[NSNumber numberWithDouble:latitude] forKey:@"location_latitude"];
+        [params setObject:[NSNumber numberWithDouble:longitude] forKey:@"location_longitude"];
+        //[params setObject:location forKey:@"location"];
         
     }
     
@@ -2031,6 +2031,75 @@
     
 }
 
++ (void)getAllCommentsForAJournalWithJournalID:(NSString*)journalID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=listjournalcomment",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    NSDictionary *params = @{@"journal_id": journalID,
+                             @"user_id": [User sharedManager].userId,
+                             };
+    
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+    
+}
 
++ (void)postJournalCommentWithUserID:(NSString*)userID journalID:(NSString*)journalID editID:(NSString*)editID comment:(NSString*)comment success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=addjournalcomment",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];
+    
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    if (editID.length)[params setObject:editID forKey:@"journalcomment_id"];
+    [params setObject:userID forKey:@"user_id"];
+    [params setObject:journalID forKey:@"journal_id"];
+    [params setObject:comment forKey:@"comment_txt"];
+    
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+    
+}
+
++ (void)removeJournalCommentWithCommentID:(NSString*)commentID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=removejournalcomment",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    NSDictionary *params = @{@"journalcomment_id": commentID,
+                             @"user_id": [User sharedManager].userId,
+                             };
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+    
+}
 
 @end

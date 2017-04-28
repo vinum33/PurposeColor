@@ -40,6 +40,10 @@
 @property (nonatomic,weak) IBOutlet UIActivityIndicatorView *indicator;
 @property (nonatomic,weak) IBOutlet UIButton *btnAccept;
 @property (nonatomic,weak) IBOutlet UIButton *btnReject;
+
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint *bottomToBtn;
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint *bottomToSupervW;
+
 @property (nonatomic,weak)  id<NotificationListingCellDelegate>delegate;
 
 

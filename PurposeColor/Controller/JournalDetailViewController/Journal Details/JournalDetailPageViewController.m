@@ -10,13 +10,15 @@
 #import "JournalImageCell.h"
 #import "JournalNoImageCell.h"
 #import "JournalDateInfo.h"
-#import "JournalDescription.h"
 #import "Constants.h"
 #import "JournalGalleryViewController.h"
+#import "Journal_CommentViewController.h"
 
-@interface JournalDetailPageViewController (){
+@interface JournalDetailPageViewController () <Journal_CommentActionDelegate>{
     
     IBOutlet UITableView *tableView;
+    IBOutlet UIButton *btnNotes;
+    Journal_CommentViewController *composeComment;
 }
 
 @end
@@ -29,6 +31,9 @@
     [super viewDidLoad];
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight = 10;
+    btnNotes.layer.cornerRadius = 5.f;
+    btnNotes.layer.borderWidth = 1.f;
+    btnNotes.layer.borderColor = [UIColor whiteColor].CGColor;
     // Do any additional setup after loading the view.
 }
 
@@ -53,7 +58,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return 3;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -69,6 +74,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor clearColor];
         cell.lblTitle.text = [_journalDetails objectForKey:@"event_title"];
+         if ([_journalDetails objectForKey:@"journal_desc"]) cell.lbDescription.text = [_journalDetails objectForKey:@"journal_desc"];
         return cell;
         
     }
@@ -99,7 +105,7 @@
             
             NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
             [myString appendAttributedString:attachmentString];
-            NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[_journalDetails objectForKey:@"location_name"]]];
+            NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[_journalDetails objectForKey:@"location_name"]]];
             [myString appendAttributedString:myText];
              [strContactInfo appendAttributedString:myString];
         }
@@ -119,7 +125,7 @@
             [strContactInfo appendAttributedString:space];
             NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
             [strContactInfo appendAttributedString:attachmentString];
-            NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[_journalDetails objectForKey:@"contact_name"]]];
+            NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[_journalDetails objectForKey:@"contact_name"]]];
             [myString appendAttributedString:myText];
             [strContactInfo appendAttributedString:myString];
         }
@@ -220,14 +226,6 @@
 
     }
     
-    else if (indexPath.row == 3){
-        
-        JournalDescription *cell = (JournalDescription *)[aTableView dequeueReusableCellWithIdentifier:@"JournalDescription"];
-        if ([_journalDetails objectForKey:@"journal_desc"]) cell.lbDescription.text = [_journalDetails objectForKey:@"journal_desc"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor clearColor];
-        return cell;
-    }
     
     return cell;
 }
@@ -239,6 +237,72 @@
         [self showGallery:nil];
     }
 }
+
+
+-(IBAction)showJournalCommentView{
+    
+    composeComment =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalCommentView];
+    composeComment.dictJournal = _journalDetails;
+    composeComment.delegate = self;
+    float strtPoint = 50;
+    
+    [self addChildViewController:composeComment];
+    UIView *vwPopUP = composeComment.view;
+    [self.view addSubview:vwPopUP];
+    vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
+    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:vwPopUP
+                                                           attribute:NSLayoutAttributeTop
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:self.view
+                                                           attribute:NSLayoutAttributeTop
+                                                          multiplier:1.0
+                                                            constant:strtPoint];
+    [self.view addConstraint:top];
+    NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:vwPopUP
+                                                              attribute:NSLayoutAttributeHeight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:nil
+                                                              attribute:NSLayoutAttributeHeight
+                                                             multiplier:1.0
+                                                               constant:100];
+    [vwPopUP addConstraint:height];
+    [self.view layoutIfNeeded];
+    top.constant = 0;
+    height.constant = self.view.frame.size.height;
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [self.view layoutIfNeeded]; // Called on parent view
+                     }completion:^(BOOL finished) {
+                         [composeComment showNavBar];
+                     }];
+
+    
+}
+
+
+-(void)closeJournalCommentPopUpClicked{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        composeComment.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [composeComment.view removeFromSuperview];
+        [composeComment removeFromParentViewController];
+        composeComment = nil;
+        
+    }];
+    
+}
+
+-(void)notesUpdatedByNewNoteCount:(NSInteger)noteCount{
+    
+    if ([self.delegate respondsToSelector:@selector(notesUpdatedByNewNoteCountFromDetailView:)])
+        [self.delegate notesUpdatedByNewNoteCountFromDetailView:noteCount];
+    
+}
+
 
 -(IBAction)showGallery:(id)sender{
     

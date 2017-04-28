@@ -73,3 +73,5 @@ extern NSString * const StoryBoardIdentifierForJournalDetailPage;
 extern NSString * const StoryBoardIdentifierForJournalGallery;
 extern NSString * const StoryBoardIdentifierForContactsPickerVC;
 extern NSString * const StoryBoardIdentifierForImotionalAwarenessMedia;
+extern NSString * const StoryBoardIdentifierForJournalCommentView;
+

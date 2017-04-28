@@ -139,4 +139,10 @@
 + (void)getVersionStatusOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)getUserInfoOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)getAllCommentsForAJournalWithJournalID:(NSString*)journalID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)postJournalCommentWithUserID:(NSString*)userID journalID:(NSString*)journalID editID:(NSString*)editID comment:(NSString*)comment  success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)removeJournalCommentWithCommentID:(NSString*)commentID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 @end

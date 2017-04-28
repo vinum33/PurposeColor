@@ -19,8 +19,9 @@
 #import "Constants.h"
 #import "GoalDetailViewController.h"
 #import "JournalGalleryViewController.h"
+#import "Journal_CommentViewController.h"
 
-@interface JournalListViewController () <UIGestureRecognizerDelegate> {
+@interface JournalListViewController () <UIGestureRecognizerDelegate,Journal_CommentActionDelegate,Journal_DetailViewDelegate> {
     
     IBOutlet UITableView *tableView;
     IBOutlet UILabel *lblJournal;
@@ -28,7 +29,9 @@
     BOOL isDataAvailable;
     NSInteger totalPages;
     NSInteger currentPage;
+    NSInteger clickedIndex;
     BOOL isPageRefresing;
+    Journal_CommentViewController *composeComment;
 }
 
 @end
@@ -56,7 +59,7 @@
     }
     
     tableView.rowHeight = UITableViewAutomaticDimension;
-    tableView.estimatedRowHeight = 200;
+    tableView.estimatedRowHeight = 50;
     currentPage = 1;
     totalPages = 0;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -139,50 +142,62 @@
         cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
     }else{
-         NSMutableAttributedString *myString;
-         JournalListCustomCell * cell = (JournalListCustomCell *)[aTableView dequeueReusableCellWithIdentifier:@"JournalListCustomCell"];
+        JournalListCustomCell * cell = (JournalListCustomCell *)[aTableView dequeueReusableCellWithIdentifier:@"JournalListCustomCell"];
         cell.btnGoal.tag = indexPath.row;
         cell.btnGallery.tag = indexPath.row;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor clearColor];
+        cell.btnComent.tag = indexPath.row;
         if (indexPath.row < arrJournal.count) {
             NSDictionary *journal = arrJournal[indexPath.row];
             cell.lblTitle.text = @"";
-            cell.lblLocAndContact.text = @"";
             cell.lblFeel.text = @"";
             cell.lblGoal.text = @"";
+            cell.lblDate.text = @"";
+            cell.lblLoc.text = @"";
+            cell.lblContact.text = @"";
+            
+            NSMutableAttributedString *noteCount = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"SELF NOTES (%ld)",[[journal objectForKey:@"note_count"] integerValue]]];
+            [noteCount addAttribute:NSForegroundColorAttributeName value:[UIColor getThemeColor] range:NSMakeRange(11,noteCount.length - 11)];
+            cell.lblNoteCount.attributedText = noteCount;
+            
             if ([journal objectForKey:@"event_title"]) cell.lblTitle.text = [journal objectForKey:@"event_title"];
             if ([journal objectForKey:@"journal_datetime"]){
-                 myString = [[NSMutableAttributedString alloc] initWithString:[Utility getDateStringFromSecondsWith:[[journal objectForKey:@"journal_datetime"] doubleValue] withFormat:@"d MMM,yyyy h:mm a"]];
+                 NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] initWithString:[Utility getDateStringFromSecondsWith:[[journal objectForKey:@"journal_datetime"] doubleValue] withFormat:@"d MMM,yyyy h:mm a"]];
                 [myString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0,myString.length)];
+                cell.lblDate.attributedText = myString;
+                
             }
-            if ([journal objectForKey:@"location_name"]){
+            cell.topForLocation.constant = 0;
+            if ([journal objectForKey:@"location_name"]) {
+                cell.topForLocation.constant = 5;
+                NSMutableAttributedString *myString = [NSMutableAttributedString new];
                 NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-                UIImage *icon = [UIImage imageNamed:@"Loc_Small.png"];
+                UIImage *icon = [UIImage imageNamed:@"Loc_Small"];
                 attachment.image = icon;
-                attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblLocAndContact.font.descender), icon.size.width, icon.size.height);
+                attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblLoc.font.descender + 2), icon.size.width, icon.size.height);
                 
                 NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
                 [myString appendAttributedString:attachmentString];
-                NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[journal objectForKey:@"location_name"]];
+                NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[journal objectForKey:@"location_name"]]];
                 [myString appendAttributedString:myText];
-
+                cell.lblLoc.attributedText = myString;
             }
-            if ([journal objectForKey:@"contact_name"]){
+             cell.topForContact.constant = 0;
+            if ([journal objectForKey:@"contact_name"]) {
+                cell.topForContact.constant = 5;
+                NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] init];
                 NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-                UIImage *icon = [UIImage imageNamed:@"contact_icon.png"];
+                UIImage *icon = [UIImage imageNamed:@"contact_icon"];
                 attachment.image = icon;
-                attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblLocAndContact.font.descender), icon.size.width, icon.size.height);
+                attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblContact.font.descender) + 2, icon.size.width, icon.size.height);
                 NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
                 [myString appendAttributedString:attachmentString];
-                NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[journal objectForKey:@"contact_name"]];
+                NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[journal objectForKey:@"contact_name"]]];
                 [myString appendAttributedString:myText];
-
-                
+                 cell.lblContact.attributedText = myString;
             }
-            cell.lblLocAndContact.attributedText = myString;
-            
-            
+           
             if ([journal objectForKey:@"emotion_title"]){
                 
                 NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
@@ -199,7 +214,7 @@
                     icon = [UIImage imageNamed:@"1_Star_Small"];
                 
                 attachment.image = icon;
-                attachment.bounds = CGRectMake(0, -(icon.size.height / 2) -  cell.lblLocAndContact.font.descender, icon.size.width, icon.size.height);
+                attachment.bounds = CGRectMake(0, -(icon.size.height / 2) -  cell.lblFeel.font.descender + 2, icon.size.width, icon.size.height);
                 NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
                 NSMutableAttributedString *strFeel = [[NSMutableAttributedString alloc] initWithAttributedString:attachmentString];
                 NSMutableAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" Feeling %@",[journal objectForKey:@"emotion_title"]]];
@@ -222,9 +237,8 @@
             if ([[journal objectForKey:@"drive_value"] integerValue] == -2)
                 icon = [UIImage imageNamed:@"Strongly_DisAgree_Blue_Small"];
             
-            
                 attachment.image = icon;
-                attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblLocAndContact.font.descender), icon.size.width, icon.size.height);
+                attachment.bounds = CGRectMake(0, (-(20 / 2) - cell.lblGoal.font.descender) + 2, 20, 20);
                 NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
                 NSMutableAttributedString *strFeel = [[NSMutableAttributedString alloc] initWithAttributedString:attachmentString];
                 cell.btnGoal.hidden = true;
@@ -260,12 +274,12 @@
         cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), 99999);
         cell.contentView.bounds = cell.bounds;
         [cell layoutIfNeeded];
-        cell.lblLocAndContact.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblLocAndContact.frame);
         cell.lblFeel.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblFeel.frame);
         cell.lblGoal.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblGoal.frame);
         cell.lblTitle.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblTitle.frame);
-        cell.lblDescription.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblDescription.frame);
-      
+        cell.lblDate.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblDate.frame);
+        cell.lblLoc.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblLoc.frame);
+        cell.lblContact.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblContact.frame);
         
         return cell;
     }
@@ -277,8 +291,9 @@
     
     if (indexPath.row < arrJournal.count) {
         NSDictionary *joiurnal = arrJournal[indexPath.row];
+        clickedIndex  = indexPath.row;
          JournalDetailPageViewController *journalVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalDetailPage];
-        
+        journalVC.delegate = self;
         journalVC.journalDetails = joiurnal;
          [self.navigationController pushViewController:journalVC animated:YES];
     }
@@ -376,6 +391,101 @@
        
     }
 }
+
+-(IBAction)showJournalCommentView:(UIButton*)btn{
+    
+    if (btn.tag < arrJournal.count) {
+        NSDictionary *journal = arrJournal[btn.tag];
+        clickedIndex = btn.tag;
+        composeComment =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForJournalCommentView];
+        composeComment.dictJournal = journal;
+        composeComment.delegate = self;
+        CGPoint p = [btn.superview convertPoint:btn.center toView:self.view];
+        float strtPoint = p.y - 40;
+        
+        [self addChildViewController:composeComment];
+        UIView *vwPopUP = composeComment.view;
+        [self.view addSubview:vwPopUP];
+        vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:vwPopUP
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:self.view
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1.0
+                                                                constant:strtPoint];
+        [self.view addConstraint:top];
+        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:vwPopUP
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                 multiplier:1.0
+                                                                   constant:50];
+        [vwPopUP addConstraint:height];
+        [self.view layoutIfNeeded];
+        top.constant = 0;
+        height.constant = self.view.frame.size.height;
+        [UIView animateWithDuration:0.5
+                         animations:^{
+                             [self.view layoutIfNeeded]; // Called on parent view
+                         }completion:^(BOOL finished) {
+                             [composeComment showNavBar];
+                         }];
+        
+        
+        
+        
+    }
+    
+    
+}
+
+-(void)closeJournalCommentPopUpClicked{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        composeComment.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [composeComment.view removeFromSuperview];
+        [composeComment removeFromParentViewController];
+        composeComment = nil;
+        
+    }];
+    
+}
+
+-(void)notesUpdatedByNewNoteCount:(NSInteger)noteCount{
+    
+    // Directly from jouranl comment list
+    
+    if (clickedIndex < arrJournal.count) {
+        NSDictionary *journal = arrJournal[clickedIndex];
+        NSMutableDictionary *dictUpdated = [NSMutableDictionary dictionaryWithDictionary:journal];
+        [dictUpdated setObject:[NSNumber numberWithInteger:noteCount] forKey:@"note_count"];
+        [arrJournal replaceObjectAtIndex:clickedIndex withObject:dictUpdated];
+        [tableView reloadData];
+        
+    }
+
+}
+
+-(void)notesUpdatedByNewNoteCountFromDetailView:(NSInteger)noteCount;{
+    
+    //From detail page
+    
+    if (clickedIndex < arrJournal.count) {
+        NSDictionary *journal = arrJournal[clickedIndex];
+        NSMutableDictionary *dictUpdated = [NSMutableDictionary dictionaryWithDictionary:journal];
+        [dictUpdated setObject:[NSNumber numberWithInteger:noteCount] forKey:@"note_count"];
+        [arrJournal replaceObjectAtIndex:clickedIndex withObject:dictUpdated];
+        [tableView reloadData];
+        
+    }
+}
+
 
 -(IBAction)showGoalDetails:(UIButton*)sender{
     

@@ -80,11 +80,12 @@
 		E56E341B1E79069100B4C96B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56E34171E79069100B4C96B /* Bolts.framework */; };
 		E56E341C1E79069100B4C96B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56E34181E79069100B4C96B /* FBSDKCoreKit.framework */; };
 		E56E341E1E79069100B4C96B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56E341A1E79069100B4C96B /* FBSDKShareKit.framework */; };
+		E56F69021EB05DA5004D858A /* Journal_CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E56F69011EB05DA5004D858A /* Journal_CommentViewController.m */; };
+		E56F69061EB066B7004D858A /* JournalCommentListCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E56F69051EB066B7004D858A /* JournalCommentListCustomCell.m */; };
 		E57017CE1EA743A400BFE3BA /* ArcCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57017CD1EA743A400BFE3BA /* ArcCollectionViewCell.m */; };
 		E573C22D1E5D62F10070DF7E /* JournalImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2201E5D62F10070DF7E /* JournalImageCell.m */; };
 		E573C22E1E5D62F10070DF7E /* JournalNoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2241E5D62F10070DF7E /* JournalNoImageCell.m */; };
 		E573C22F1E5D62F10070DF7E /* JournalDateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2261E5D62F10070DF7E /* JournalDateInfo.m */; };
-		E573C2301E5D62F10070DF7E /* JournalDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2291E5D62F10070DF7E /* JournalDescription.m */; };
 		E573C2311E5D62F10070DF7E /* JournalDetailPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C22B1E5D62F10070DF7E /* JournalDetailPageViewController.m */; };
 		E573C2341E5D6EA50070DF7E /* JournalGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2331E5D6EA50070DF7E /* JournalGalleryViewController.m */; };
 		E573C2381E5D71350070DF7E /* JournalGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E573C2371E5D71350070DF7E /* JournalGalleryCell.m */; };
@@ -408,6 +409,10 @@
 		E56E34171E79069100B4C96B /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../Users/purposecode/Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
 		E56E34181E79069100B4C96B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Users/purposecode/Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		E56E341A1E79069100B4C96B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../Users/purposecode/Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		E56F69001EB05DA5004D858A /* Journal_CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Journal_CommentViewController.h; sourceTree = "<group>"; };
+		E56F69011EB05DA5004D858A /* Journal_CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Journal_CommentViewController.m; sourceTree = "<group>"; };
+		E56F69041EB066B7004D858A /* JournalCommentListCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalCommentListCustomCell.h; sourceTree = "<group>"; };
+		E56F69051EB066B7004D858A /* JournalCommentListCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalCommentListCustomCell.m; sourceTree = "<group>"; };
 		E57017CC1EA743A400BFE3BA /* ArcCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcCollectionViewCell.h; sourceTree = "<group>"; };
 		E57017CD1EA743A400BFE3BA /* ArcCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArcCollectionViewCell.m; sourceTree = "<group>"; };
 		E573C21F1E5D62F10070DF7E /* JournalImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalImageCell.h; sourceTree = "<group>"; };
@@ -416,8 +421,6 @@
 		E573C2241E5D62F10070DF7E /* JournalNoImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalNoImageCell.m; sourceTree = "<group>"; };
 		E573C2251E5D62F10070DF7E /* JournalDateInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalDateInfo.h; sourceTree = "<group>"; };
 		E573C2261E5D62F10070DF7E /* JournalDateInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalDateInfo.m; sourceTree = "<group>"; };
-		E573C2281E5D62F10070DF7E /* JournalDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalDescription.h; sourceTree = "<group>"; };
-		E573C2291E5D62F10070DF7E /* JournalDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalDescription.m; sourceTree = "<group>"; };
 		E573C22A1E5D62F10070DF7E /* JournalDetailPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalDetailPageViewController.h; sourceTree = "<group>"; };
 		E573C22B1E5D62F10070DF7E /* JournalDetailPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalDetailPageViewController.m; sourceTree = "<group>"; };
 		E573C2321E5D6EA50070DF7E /* JournalGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalGalleryViewController.h; sourceTree = "<group>"; };
@@ -836,6 +839,7 @@
 		E506802C1D30F1490041B077 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E56F68FF1EB05DA5004D858A /* Journal_Comment */,
 				E586A71D1E7F9E0B000F0A37 /* New Emotional Awareness1 */,
 				E573C21C1E5D62F10070DF7E /* JournalDetailViewController */,
 				E59D746C1E5AF26A005844D5 /* JournalListView */,
@@ -1334,6 +1338,25 @@
 			path = ASJTagsView;
 			sourceTree = "<group>";
 		};
+		E56F68FF1EB05DA5004D858A /* Journal_Comment */ = {
+			isa = PBXGroup;
+			children = (
+				E56F69031EB066B7004D858A /* CustomCell */,
+				E56F69001EB05DA5004D858A /* Journal_CommentViewController.h */,
+				E56F69011EB05DA5004D858A /* Journal_CommentViewController.m */,
+			);
+			path = Journal_Comment;
+			sourceTree = "<group>";
+		};
+		E56F69031EB066B7004D858A /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				E56F69041EB066B7004D858A /* JournalCommentListCustomCell.h */,
+				E56F69051EB066B7004D858A /* JournalCommentListCustomCell.m */,
+			);
+			path = CustomCell;
+			sourceTree = "<group>";
+		};
 		E573C21C1E5D62F10070DF7E /* JournalDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1349,7 +1372,6 @@
 				E573C2221E5D62F10070DF7E /* HeaderNoImageCell */,
 				E573C21E1E5D62F10070DF7E /* HeaderImageCell */,
 				E573C2211E5D62F10070DF7E /* HournalDateAndothers */,
-				E573C2271E5D62F10070DF7E /* JournalDescrption */,
 				E573C22A1E5D62F10070DF7E /* JournalDetailPageViewController.h */,
 				E573C22B1E5D62F10070DF7E /* JournalDetailPageViewController.m */,
 			);
@@ -1382,15 +1404,6 @@
 			);
 			name = HeaderNoImageCell;
 			path = HournalDateAndothers/HeaderNoImageCell;
-			sourceTree = "<group>";
-		};
-		E573C2271E5D62F10070DF7E /* JournalDescrption */ = {
-			isa = PBXGroup;
-			children = (
-				E573C2281E5D62F10070DF7E /* JournalDescription.h */,
-				E573C2291E5D62F10070DF7E /* JournalDescription.m */,
-			);
-			path = JournalDescrption;
 			sourceTree = "<group>";
 		};
 		E573C22C1E5D62F10070DF7E /* Journal Gallery */ = {
@@ -2737,6 +2750,7 @@
 				E5ED1FCF1DC1BC4F003C38D3 /* SettingsViewController.m in Sources */,
 				E5DA555D1D339970006BF80E /* CommentCustomCell.m in Sources */,
 				E5F75E3C1D6EA87D009EF545 /* CustomAudioPlayerView.m in Sources */,
+				E56F69021EB05DA5004D858A /* Journal_CommentViewController.m in Sources */,
 				E5F75E431D6EA919009EF545 /* UIImage+animatedGIF.m in Sources */,
 				E50680BB1D30F1490041B077 /* UIColor+Color.m in Sources */,
 				E5DA55591D3397B4006BF80E /* CommentComposeViewController.m in Sources */,
@@ -2831,9 +2845,9 @@
 				E5F9FE571D49C29400F22169 /* GEMSListingHeaderView.m in Sources */,
 				E5FE41341D51ECA600BEFBF0 /* JCNotificationBannerPresenterIOSStyle.m in Sources */,
 				E52DFB211DE7FB8D0033310F /* ReportAbuseViewController.m in Sources */,
-				E573C2301E5D62F10070DF7E /* JournalDescription.m in Sources */,
 				E5F5FCED1D45C9BE002658B0 /* CreateActionInfoViewController.m in Sources */,
 				E50680BD1D30F1490041B077 /* NSString+String.m in Sources */,
+				E56F69061EB066B7004D858A /* JournalCommentListCustomCell.m in Sources */,
 				E57AD6B71D40E7390042A8C4 /* GoalsAndDreamsListingViewController.m in Sources */,
 				E50680B31D30F1490041B077 /* ForgotPasswordPopUp.m in Sources */,
 				E5F5FCF91D45EB99002658B0 /* ActionMediaListCell.m in Sources */,

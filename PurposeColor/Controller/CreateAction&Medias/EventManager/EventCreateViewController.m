@@ -113,8 +113,9 @@ typedef enum{
     //reminderPickerValues = [NSArray arrayWithObjects:@"0",@"15",@"30",@"45",@"60", nil];
     repeaterPickerValues = [NSArray arrayWithObjects:@"Never",@"Daily",@"Weekly",@"Monthly",@"Yearly", nil];
     reminderInHour = 0;
-    reminderInMinuts = 0;
+    reminderInMinuts = 5;
     reminderTime = _reminderTime;
+    reminderTime =  (reminderInDay*60*24) + (reminderInHour*60) + reminderInMinuts;
     repeatValue = _strRepeatValue;
     strTitle = _strGoalTitle;
     strDescription = _strGoalDescription;
@@ -398,8 +399,8 @@ typedef enum{
     
     if (startDate){
         
-         NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        [df setDateFormat:@"dd-MM-yyyy"];
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"MM-dd-yyyy"];
         [cell.btnStatDate setSelected:false];
         [cell.btnStatDate setTitle:[df stringFromDate:startDate] forState: UIControlStateNormal];
     }
@@ -407,7 +408,7 @@ typedef enum{
     if (endDate){
         
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        [df setDateFormat:@"dd-MM-yyyy"];
+        [df setDateFormat:@"MM-dd-yyyy"];
         [cell.btnEndDate setSelected:false];
         [cell.btnEndDate setTitle:[df stringFromDate:endDate] forState: UIControlStateNormal];
     }

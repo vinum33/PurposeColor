@@ -8,8 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol Journal_DetailViewDelegate <NSObject>
+
+
+@optional
+
+/*!
+ *This method is invoked when user Clicks "POST COMMENT" Button
+ */
+
+-(void)notesUpdatedByNewNoteCountFromDetailView:(NSInteger)noteCount;
+
+
+@end
+
+
 @interface JournalDetailPageViewController : UIViewController
 
 @property (nonatomic,strong) NSDictionary *journalDetails;
+@property (nonatomic,weak)  id<Journal_DetailViewDelegate>delegate;
 
 @end

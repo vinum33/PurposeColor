@@ -65,4 +65,4 @@ NSString * const StoryBoardIdentifierForJournalListVC = @"JournalListVC";
 NSString * const StoryBoardIdentifierForJournalDetailPage = @"JournalDetailPage";
 NSString * const StoryBoardIdentifierForJournalGallery = @"JournalGallery";
 NSString * const StoryBoardIdentifierForContactsPickerVC = @"ContactsPickerVC";
-
+NSString * const StoryBoardIdentifierForJournalCommentView = @"Journal_Comment_View";

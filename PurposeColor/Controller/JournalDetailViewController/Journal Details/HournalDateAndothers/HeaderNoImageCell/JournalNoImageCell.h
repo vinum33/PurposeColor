@@ -11,5 +11,6 @@
 @interface JournalNoImageCell : UITableViewCell
 
 @property (nonatomic,weak) IBOutlet UILabel *lblTitle;
+@property (nonatomic,weak) IBOutlet UILabel *lbDescription;
 
 @end

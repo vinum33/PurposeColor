@@ -108,7 +108,7 @@ typedef enum{
 -(IBAction)getSelectedDate{
     
     NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
-    [dateformater setDateFormat:@"yyyy-MM-dd"];
+    [dateformater setDateFormat:@"MM-dd-yyyy"];
     if (isFromDate) {
         dateFrom = datePicker.date;
         lblDateFrom.text = [dateformater stringFromDate:datePicker.date];

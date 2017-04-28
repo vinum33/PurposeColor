@@ -52,6 +52,7 @@ typedef enum{
     NSInteger currentPage;
     NSMutableDictionary *dictFollowers;
     eFollowStatus followStatus;
+    NSString *strNoDataText;
     
     BOOL isPageRefresing;
     BOOL isDataAvailable;
@@ -160,6 +161,8 @@ typedef enum{
         NSArray *results = [responseObject objectForKey:@"resultarray"];
         for (NSDictionary *dict in results)
             [arrGems addObject:dict];
+    }else{
+        strNoDataText = [responseObject objectForKey:@"text"];
     }
     if (arrGems.count) isDataAvailable = true;
     if (NULL_TO_NIL([responseObject objectForKey:@"pageCount"]))
@@ -196,8 +199,14 @@ typedef enum{
 -(UICollectionViewCell *)collectionView:(UICollectionView *)_collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isDataAvailable) {
+        
         UICollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+        if ([cell.contentView viewWithTag:1]) {
+            UILabel *lblNoData =  [cell.contentView viewWithTag:1];
+            lblNoData.text = strNoDataText;
+        }
         return cell;
+        
     }
     GemsListCollectionViewCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
     cell.delegate = self;
@@ -732,6 +741,9 @@ typedef enum{
             detailPage.actionType = eActionTypeShare;
             if ([gemDetails objectForKey:@"gem_type"]) {
                 detailPage.strTitle =[[NSString stringWithFormat:@"SAVE AS %@",[gemDetails objectForKey:@"gem_type"]] uppercaseString] ;
+                if ([[gemDetails objectForKey:@"gem_type"] isEqualToString:@"community"]) {
+                    detailPage.strTitle = @"SAVE GEM";
+                }
             }
            
             [detailPage getMediaDetailsForGemsToBeEditedWithGEMID:gemID GEMType:gemType];

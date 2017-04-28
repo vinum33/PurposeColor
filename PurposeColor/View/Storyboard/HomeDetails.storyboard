@@ -32,7 +32,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NavigationControllerMap" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="fWZ-H6-3Jr" sceneMemberID="viewController">
                     <nil key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Xkz-rr-sTC">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Xkz-rr-sTC">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                 </navigationController>
@@ -115,8 +115,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HgB-Lj-KPF">
-                                <rect key="frame" x="0.0" y="70" width="600" height="530"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HgB-Lj-KPF">
+                                <rect key="frame" x="0.0" y="70" width="375" height="597"/>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xW8-xx-MoQ" userLabel="Tab View">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
@@ -188,9 +188,8 @@
                                     <constraint firstItem="8bh-zB-vyU" firstAttribute="top" secondItem="xW8-xx-MoQ" secondAttribute="top" constant="20" id="wPY-bg-bHN"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kJ7-Lr-EYX">
-                                <rect key="frame" x="0.0" y="70" width="600" height="530"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kJ7-Lr-EYX">
+                                <rect key="frame" x="0.0" y="70" width="375" height="597"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.39000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="kLk-S2-jeQ" appends="YES" id="qDm-ev-FMd"/>
@@ -201,7 +200,11 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="xW8-xx-MoQ" secondAttribute="trailing" id="6dO-0Q-J83"/>
                             <constraint firstItem="HgB-Lj-KPF" firstAttribute="leading" secondItem="gdb-wl-fNC" secondAttribute="leading" id="AyZ-aH-dka"/>
+                            <constraint firstItem="kJ7-Lr-EYX" firstAttribute="top" secondItem="xW8-xx-MoQ" secondAttribute="bottom" id="Cbr-Y6-f3t"/>
+                            <constraint firstItem="pQB-lb-e2N" firstAttribute="top" secondItem="kJ7-Lr-EYX" secondAttribute="bottom" id="DSW-VH-dcO"/>
                             <constraint firstAttribute="bottom" secondItem="HgB-Lj-KPF" secondAttribute="bottom" id="JFY-d1-edU"/>
+                            <constraint firstItem="kJ7-Lr-EYX" firstAttribute="leading" secondItem="gdb-wl-fNC" secondAttribute="leading" id="NBJ-CV-SGj"/>
+                            <constraint firstAttribute="trailing" secondItem="kJ7-Lr-EYX" secondAttribute="trailing" id="Xtz-GJ-AsS"/>
                             <constraint firstItem="HgB-Lj-KPF" firstAttribute="top" secondItem="xW8-xx-MoQ" secondAttribute="bottom" id="eNy-m7-orY"/>
                             <constraint firstItem="xW8-xx-MoQ" firstAttribute="leading" secondItem="gdb-wl-fNC" secondAttribute="leading" id="ph0-7h-l6L"/>
                             <constraint firstAttribute="trailing" secondItem="HgB-Lj-KPF" secondAttribute="trailing" id="pxY-GU-fwm"/>
@@ -225,7 +228,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1196" y="114"/>
+            <point key="canvasLocation" x="1196" y="113.79310344827587"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="7zl-Nv-7uy">
