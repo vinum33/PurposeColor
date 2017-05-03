@@ -37,6 +37,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 #import "ReportAbuseViewController.h"
 #import "ArcCollectionViewCell.h"
 
+
 @interface GEMSWithHeaderListingsViewController ()<GemListingsDelegate,CommentActionDelegate,MediaListingPageDelegate,shareMediasDelegate,SWRevealViewControllerDelegate,CreateMediaInfoDelegate>{
     
     IBOutlet UICollectionView *collectionView;
@@ -73,6 +74,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     [self setUp];
     [self checkUserViewStatus];
     [self getAllProductsByPagination:NO withPageNumber:currentPage];
+   
     // Do any additional setup after loading the view.
 }
 

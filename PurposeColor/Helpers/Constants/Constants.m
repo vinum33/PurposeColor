@@ -24,7 +24,7 @@ NSString * const BaseURLString = @"http://purposecodes.com/purposetest/api.php?"
 NSString * const ExternalWebURL = @"http://purposecodes.com/purposetest/";
 NSString * const AppStoreURL = @"https://itunes.apple.com/us/app/purpose-color-life-success/id1186639523?ls=1&mt=8";
 
-NSString * const GoogleMapAPIKey = @"AIzaSyDLo-Q_ozqGPPl3UZKbyTK_FNfe-GFj7jg";
+NSString * const GoogleMapAPIKey = @"AIzaSyDwcah6ptF0g4YVJObxiKzTNUPfbl1nUYE";
 
 NSString * const StoryBoardIdentifierForLoginPage = @"LoginPage";
 NSString * const StoryBoardIdentifierForMenuPage = @"MenuPage";
@@ -66,3 +66,4 @@ NSString * const StoryBoardIdentifierForJournalDetailPage = @"JournalDetailPage"
 NSString * const StoryBoardIdentifierForJournalGallery = @"JournalGallery";
 NSString * const StoryBoardIdentifierForContactsPickerVC = @"ContactsPickerVC";
 NSString * const StoryBoardIdentifierForJournalCommentView = @"Journal_Comment_View";
+NSString * const StoryBoardIdentifierForIntroScreen = @"IntroScreen";

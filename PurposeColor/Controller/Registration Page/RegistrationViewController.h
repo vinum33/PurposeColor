@@ -11,4 +11,6 @@
 
 @interface RegistrationViewController : UIViewController<CountrySelectionDelegate>
 
+@property (nonatomic,assign) BOOL isFromIntroPage;
+
 @end

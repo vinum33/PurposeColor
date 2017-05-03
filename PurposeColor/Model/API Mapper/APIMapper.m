@@ -2102,4 +2102,28 @@
     
 }
 
++ (void)socialMediaRegistrationnWithFirstName:(NSString*)firstName profileImage:(NSString*)profileImg fbID:(NSString*)fbID googleID:(NSString*)googleID email:(NSString*)email success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                                      failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=socialmedialogin",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    if (email.length)[params setObject:email forKey:@"email"];
+    if (profileImg.length)[params setObject:profileImg forKey:@"profileimg"];
+    if (firstName.length)[params setObject:firstName forKey:@"firstname"];
+    if (fbID.length)[params setObject:fbID forKey:@"fbid"];
+    if (googleID.length)[params setObject:googleID forKey:@"googleid"];
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        failure (operation,error);
+    }];
+
+    
+}
+
 @end

@@ -36,10 +36,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "LoginViewController.h"
 #import "User.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,LoginDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

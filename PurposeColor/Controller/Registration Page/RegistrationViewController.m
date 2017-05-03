@@ -12,6 +12,7 @@
 #import "RegistrationPageCustomTableViewCell.h"
 #import "Constants.h"
 #import "WebBrowserViewController.h"
+#import "LoginViewController.h"
 
 typedef enum{
     
@@ -492,7 +493,11 @@ typedef enum{
 }
 
 -(void)gotoLoginPage{
-    [[self navigationController]popViewControllerAnimated:YES];
+    if (_isFromIntroPage) {
+        LoginViewController *loginPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForLogin Identifier:StoryBoardIdentifierForLoginPage];
+        [[self navigationController]pushViewController:loginPage animated:YES];
+    }else
+        [[self navigationController]popViewControllerAnimated:YES];
     [self.view endEditing:YES];
 }
 

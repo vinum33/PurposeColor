@@ -28,6 +28,22 @@
 				<string>fb976918209110946</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.673180298568-smeo7t4jhi7medrk51gul57ghjdvjtj8</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.purposecodes.purposecolor</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>4</string>
@@ -49,6 +65,13 @@
 	<string>976918209110946</string>
 	<key>FacebookDisplayName</key>
 	<string>Purpose Color-Life Success App</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -61,21 +84,20 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>App would like to access your calendar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App would like to access your Camera</string>
 	<key>NSContactsUsageDescription</key>
 	<string>App would like to access your contacts</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Location is required to find out where you are</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location is required to find out where you are</string>
-    <key>NSCalendarsUsageDescription</key>
-    <string>App would like to access your calendar</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>App would like to access your Photos</string>
-    <key>NSCameraUsageDescription</key>
-    <string>App would like to access your Camera</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>App would like to access your MicroPhone</string>
-    
+	<key>NSMicrophoneUsageDescription</key>
+	<string>App would like to access your MicroPhone</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App would like to access your Photos</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ArialBlack.ttf</string>
@@ -100,8 +122,8 @@
 		<string>HelveticaNeueLTStd-Lt.otf</string>
 		<string>Advertising Script Bold Trial.ttf</string>
 		<string>Sweet Sensations Personal Use.ttf</string>
-        <string>DroidSans-Bold.ttf</string>
-        <string>DroidSans.ttf</string>
+		<string>DroidSans-Bold.ttf</string>
+		<string>DroidSans.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

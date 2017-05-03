@@ -6,7 +6,13 @@
 //  Copyright © 2016 Purpose Code. All rights reserved.
 //
 
+#define INSTAGRAM_SCHEME @"ig12345678910"
+#define FACEBOOK_SCHEME  @"fb976918209110946"
+
+
+
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import "AppDelegate.h"
@@ -33,7 +39,8 @@
 #import "ReminderListingViewController.h"
 #import "LaunchPageViewController.h"
 #import "JournalListViewController.h"
-#import "ExampleViewController.h"
+#import "IntroScreenViewController.h"
+#import <Google/SignIn.h>
 
 #define NOTIFICATION_TYPE_FOLLOW        @"follow"
 #define NOTIFICATION_TYPE_CHAT          @"chat"
@@ -61,12 +68,9 @@
                                              selector : @selector(logoutSinceUnAuthorized:)
                                                  name : @"UNAUTHORIZED"
                                                object : nil];
-    [[NSNotificationCenter defaultCenter] addObserver : self
-                                             selector : @selector(skipToHomepage)
-                                                 name : @"IntroCompleted"
-                                               object : nil];
+  
     
-    
+    [self configureGoogleLoginIn];
     [Fabric with:@[[Crashlytics class]]];
     [Utility setUpGoogleMapConfiguration];
     [self getVersionStatus];
@@ -81,18 +85,38 @@
     return YES;
 }
 
+#pragma mark - Login with FB and Google configurations
+
+
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                          openURL:url
-                                                sourceApplication:sourceApplication
-                                                       annotation:annotation];
+    
+    
+        if ([[url scheme] isEqualToString:FACEBOOK_SCHEME]){
+            return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                  openURL:url
+                                                        sourceApplication:sourceApplication
+                                                               annotation:annotation];
+        }else
+            return [[GIDSignIn sharedInstance] handleURL:url
+                                       sourceApplication:sourceApplication
+                                              annotation:annotation];
+   
 }
 
+-(void)configureGoogleLoginIn{
+    
+    NSError* configureError;
+    [[GGLContext sharedInstance] configureWithError: &configureError];
+    NSAssert(!configureError, @"Error configuring Google services: %@", configureError);
+    
+}
+
+
+
 -(void)logoutSinceUnAuthorized:(NSNotification*)notification{
-    NSLog(@"LOGOUT");
     if(isAlertInProgress) return;
     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
     if (!userExists) return;
@@ -305,7 +329,7 @@
 }
 
 -(void)updateTokenToWebServerWithToken:(NSString*)token{
-    NSLog(@"PUSH");
+    
     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
     if (!userExists) return;
     if ((token.length) && [User sharedManager].userId.length)
@@ -734,7 +758,7 @@
     if ([User sharedManager]) self.currentUser = (User*)[User sharedManager];
     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
     if (userExists) [self showLauchPage];
-    else            [self showLoginScreen];
+    else            [self showIntroLoginPage];
 
 }
 
@@ -776,19 +800,15 @@
     
 }
 
--(void)showLoginScreen{
+
+-(void)showIntroLoginPage{
     
-    // Show login page for a  user.
-    
-    LoginViewController *loginPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForLogin Identifier:StoryBoardIdentifierForLoginPage];
-    loginPage.delegate = self;
-    UINavigationController *logginVC = [[UINavigationController alloc] initWithRootViewController:loginPage];
+    IntroScreenViewController *introScreen =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForIntroScreen];
+    UINavigationController *logginVC = [[UINavigationController alloc] initWithRootViewController:introScreen];
     logginVC.navigationBarHidden = true;
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     self.window.rootViewController = logginVC;
     [self.window makeKeyAndVisible];
-    
-    
 }
 
 // Success call back from login after successful attempt
@@ -803,69 +823,25 @@
 
 - (void)showLauchPage {
     
-    BOOL isFirstTime = true;
-    
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"IS_FIRST_TIME_USER"])
-         isFirstTime = [[[NSUserDefaults standardUserDefaults] objectForKey:@"IS_FIRST_TIME_USER"] boolValue];
-    
-    if (isFirstTime) {
-        [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"IS_FIRST_TIME_USER"];
-        self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        self.window.backgroundColor = [UIColor whiteColor];
-        self.window.rootViewController = [[ExampleViewController alloc] init];
-        
-        [self.window makeKeyAndVisible];
-    }else{
-        
-        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        if (!launchPage){
-            
-            launchPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForLaunchPage];
-            
-            // GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
-            UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:launchPage];
-            MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
-            UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
-            navMenu.navigationBarHidden = true;
-            revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
-            revealController.rightViewController = navMenu;
-            navHome.navigationBarHidden = true;
-        }
-        
-        [UIView transitionWithView:app.window
-                          duration:0.5
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{ app.window.rootViewController = revealController; }
-                        completion:nil];
-
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if (!launchPage){
+        launchPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForLaunchPage];
+        // GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
+        UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:launchPage];
+        MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
+        UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
+        navMenu.navigationBarHidden = true;
+        revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
+        revealController.rightViewController = navMenu;
+        navHome.navigationBarHidden = true;
     }
- 
-}
--(void)skipToHomepage{
     
-     // Show home screen once Intro screen is successful.
-     
-     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-     if (!launchPage){
-     
-     launchPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForLaunchPage];
-     
-     // GEMSWithHeaderListingsViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMWithHeaderListings];
-     UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:launchPage];
-     MenuViewController *menuVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:HomeDetailsStoryBoard Identifier:StoryBoardIdentifierForMenuPage];
-     UINavigationController *navMenu = [[UINavigationController alloc] initWithRootViewController:menuVC];
-     navMenu.navigationBarHidden = true;
-     revealController = [[SWRevealViewController alloc] initWithRearViewController:navMenu frontViewController:navHome];
-     revealController.rightViewController = navMenu;
-     navHome.navigationBarHidden = true;
-     }
-     
-     
-     [UIView transitionWithView:app.window
-     duration:0.5
-     options:UIViewAnimationOptionTransitionCrossDissolve
-     animations:^{ app.window.rootViewController = revealController; }
-     completion:nil];
+    [UIView transitionWithView:app.window
+                      duration:0.5
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{ app.window.rootViewController = revealController; }
+                    completion:nil];
+ 
 }
 
 #pragma mark - Dynamic Menu Selection
@@ -1211,6 +1187,8 @@
     [self showLoadingScreen];
     [APIMapper logoutFromAccount:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        [FBSDKAccessToken setCurrentAccessToken:nil];
+        [[GIDSignIn sharedInstance] signOut];
         [[UIApplication sharedApplication] unregisterForRemoteNotifications];
         AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

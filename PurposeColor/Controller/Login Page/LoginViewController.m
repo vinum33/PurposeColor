@@ -18,7 +18,7 @@ typedef enum{
 #define StatusSucess            200
 
 #define kCellHeight             75;
-#define kHeightForHeader        150;
+#define kHeightForHeader        100;
 #define kHeightForFooter        125;
 #define kMaxReviewLength        150
 #define kMaxReviewTitleLength   50
@@ -29,8 +29,11 @@ typedef enum{
 #import "ForgotPasswordPopUp.h"
 #import "Constants.h"
 #import "CustomCellForLogin.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <Google/SignIn.h>
 
-@interface LoginViewController (){
+@interface LoginViewController () <FBSDKLoginButtonDelegate,GIDSignInDelegate,GIDSignInUIDelegate>{
     
     IBOutlet UITableView *tableView;
     
@@ -42,7 +45,7 @@ typedef enum{
     
     ForgotPasswordPopUp *forgotPwdPopUp;
     StateListViewPopUp  *stateListingPopUp;
-   
+   FBSDKLoginButton *btnFBSignin;
 }
 
 @end
@@ -52,8 +55,9 @@ typedef enum{
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
+    [self enableGoogleAndFBSignIn];
    
-    
+   
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -70,8 +74,18 @@ typedef enum{
     tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     tableView.allowsSelection = NO;
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+
 }
+
+-(void)enableGoogleAndFBSignIn{
+    
+    [GIDSignIn sharedInstance].uiDelegate = self;
+    [GIDSignIn sharedInstance].delegate = self;
+    btnFBSignin = [[FBSDKLoginButton alloc] init];
+    btnFBSignin.delegate = self;
+    btnFBSignin.hidden = true;
+}
+
 
 #pragma mark - TableView Delegates
 
@@ -181,6 +195,9 @@ typedef enum{
     btnLogin.titleLabel.font = [UIFont fontWithName:CommonFont size:14];
     [btnLogin addTarget:self action:@selector(tapToLogin:) forControlEvents:UIControlEventTouchUpInside];
     [vwFooter addSubview:btnLogin];
+    btnLogin.layer.cornerRadius = 5.f;
+    btnLogin.layer.borderWidth = 1.f;
+    btnLogin.layer.borderColor = [UIColor clearColor].CGColor;
     
     [btnLogin addConstraint:[NSLayoutConstraint constraintWithItem:btnLogin
                                                         attribute:NSLayoutAttributeHeight
@@ -248,9 +265,12 @@ typedef enum{
     UIButton* btnRegister = [UIButton new];
     btnRegister.backgroundColor = [UIColor clearColor];
     btnRegister.translatesAutoresizingMaskIntoConstraints = NO;
-    [btnRegister setTitle:@"Sign Up" forState:UIControlStateNormal];
-    [btnRegister setTitleColor:[UIColor getThemeColor] forState:UIControlStateNormal];
-    btnRegister.titleLabel.font = [UIFont fontWithName:CommonFontBold size:14];
+    btnRegister.titleLabel.font = [UIFont fontWithName:CommonFont_New size:13];
+    NSMutableAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:@"New visitor? Sign Up"];
+    [myText addAttribute:NSForegroundColorAttributeName value:[UIColor getThemeColor] range:NSMakeRange(0,myText.length)];
+    [myText addAttribute:NSForegroundColorAttributeName value:[UIColor getThemeColor] range:NSMakeRange(0,myText.length)];
+    [myText addAttribute:NSFontAttributeName value:[UIFont fontWithName:CommonFontBold_New size:14] range:NSMakeRange(myText.length - 7,7)];
+    [btnRegister setAttributedTitle:myText forState:UIControlStateNormal];
     [btnRegister addTarget:self action:@selector(tappedRegisterAccount:) forControlEvents:UIControlEventTouchUpInside];
     [vwFooter addSubview:btnRegister];
     [btnRegister setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -5)];//set ur title insects
@@ -268,7 +288,7 @@ typedef enum{
                                                                 toItem:nil
                                                              attribute:NSLayoutAttributeWidth
                                                             multiplier:1.0
-                                                              constant:60]];
+                                                              constant:130]];
     
     [vwFooter addConstraint:[NSLayoutConstraint constraintWithItem:btnRegister
                                                          attribute:NSLayoutAttributeTop
@@ -479,7 +499,8 @@ typedef enum{
                                         NSInteger statusCode = [[responds objectForKey:@"code"] integerValue];
                                         if (statusCode == StatusSucess) {
                                             [self createUserWithInfo:responseObject];
-                                            [[self delegate]goToHomeAfterLogin];
+                                            AppDelegate *appdelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                                            [appdelegate goToHomeAfterLogin];
                                         }
                                         else{
                                             if ( NULL_TO_NIL( [responds  objectForKey:@"text"]))
@@ -515,7 +536,8 @@ typedef enum{
                                      NSInteger statusCode = [[responds objectForKey:@"code"] integerValue];
                                      if (statusCode == StatusSucess) {
                                          [self createUserWithInfo:responseObject];
-                                         [[self delegate]goToHomeAfterLogin];
+                                         AppDelegate *appdelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                                         [appdelegate goToHomeAfterLogin];
                                      }
                                      else{
                                          if ( NULL_TO_NIL( [responds  objectForKey:@"text"]))
@@ -532,6 +554,121 @@ typedef enum{
                              }];
     
    
+}
+
+
+
+
+
+#pragma mark - FB Signin Process
+
+-(IBAction)doFBSignIn:(id)sender{
+    
+    [btnFBSignin sendActionsForControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)  loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error;{
+    
+    [self getFacebookData];
+}
+
+- (void)getFacebookData{
+    if ([FBSDKAccessToken currentAccessToken]) {
+        [self showLoadingScreen];
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields": @"first_name, last_name, picture.type(large), email, name, id, gender"}]
+         startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+             [self hideLoadingScreen];
+             if (!error) {
+                 NSString *email;
+                 NSString *fname;
+                 NSString *fbID;
+                 NSString *googleID;
+                 NSString *profileImg;
+                 
+                 if (NULL_TO_NIL([result objectForKey:@"email"])) {
+                     email = [result objectForKey:@"email"];
+                 }
+                 if (NULL_TO_NIL([result objectForKey:@"first_name"])) {
+                     fname = [result objectForKey:@"first_name"];
+                 }
+                 if (NULL_TO_NIL([result objectForKey:@"id"])) {
+                     fbID = [result objectForKey:@"id"];
+                 }
+                 [self showLoadingScreen];
+                 
+                 [APIMapper socialMediaRegistrationnWithFirstName:fname profileImage:profileImg fbID:fbID googleID:googleID email:email success:^(AFHTTPRequestOperation *operation, id responds) {
+                     if ( NULL_TO_NIL([responds objectForKey:@"code"])) {
+                         NSInteger statusCode = [[responds objectForKey:@"code"] integerValue];
+                         if (statusCode == StatusSucess) {
+                             [self createUserWithInfo:responds];
+                             AppDelegate *appdelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                             [appdelegate goToHomeAfterLogin];
+                         }
+                         else{
+                             if ( NULL_TO_NIL( [responds  objectForKey:@"text"]))
+                                 [self showAlertWithMessage:[responds objectForKey:@"text"] title:@"Login"];
+                         }
+                     }
+                     [self hideLoadingScreen];
+                     
+                 } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                     
+                     [self hideLoadingScreen];
+                 }];
+             }
+         }];
+    }
+}
+/**
+ Sent to the delegate when the button was used to logout.
+ - Parameter loginButton: The button that was clicked.
+ */
+- (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton;{
+    
+}
+
+#pragma mark - Google Signin Process
+
+-(IBAction)doGoogleSignIn:(id)sender{
+  
+    [[GIDSignIn sharedInstance] signIn];
+}
+
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    // Perform any operations on signed in user here.
+    if (error) return;
+    NSString *userId = user.userID;                  // For client-side use only!
+    NSString *name = user.profile.name;
+    NSString *email = user.profile.email;
+    NSURL *profileurl;
+    if ([user.profile hasImage]) profileurl = [user.profile imageURLWithDimension:200];
+    
+    [self showLoadingScreen];
+    
+    [APIMapper socialMediaRegistrationnWithFirstName:name profileImage:[profileurl absoluteString] fbID:nil googleID:userId email:email success:^(AFHTTPRequestOperation *operation, id responds) {
+        if ( NULL_TO_NIL([responds objectForKey:@"code"])) {
+            NSInteger statusCode = [[responds objectForKey:@"code"] integerValue];
+            if (statusCode == StatusSucess) {
+                [self createUserWithInfo:responds];
+                AppDelegate *appdelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                [appdelegate goToHomeAfterLogin];
+            }
+            else{
+                if ( NULL_TO_NIL( [responds  objectForKey:@"text"]))
+                    [self showAlertWithMessage:[responds objectForKey:@"text"] title:@"Login"];
+            }
+        }
+        
+        [self hideLoadingScreen];
+        
+    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+        
+        [self hideLoadingScreen];
+    }];
+    
+    
+    
+    // ...
 }
 
 -(void)checkAllFieldsAreValid:(void (^)())success failure:(void (^)(NSString *errorMsg))failure{
