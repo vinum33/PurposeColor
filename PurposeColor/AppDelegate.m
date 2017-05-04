@@ -64,10 +64,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // Override point for customization after application launch.
-    [[NSNotificationCenter defaultCenter] addObserver : self
-                                             selector : @selector(logoutSinceUnAuthorized:)
-                                                 name : @"UNAUTHORIZED"
-                                               object : nil];
+    
   
     
     [self configureGoogleLoginIn];
@@ -116,14 +113,14 @@
 
 
 
--(void)logoutSinceUnAuthorized:(NSNotification*)notification{
+-(void)logoutSinceUnAuthorized:(NSDictionary*)notification{
     if(isAlertInProgress) return;
     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
     if (!userExists) return;
     isAlertInProgress = true;
     NSString *text = @"Invalid authentication token!";
-    if (notification.userInfo) {
-        NSDictionary *dict  = notification.userInfo;
+    if (notification) {
+        NSDictionary *dict  = notification;
         text = [dict objectForKey:@"text"];
     }
     [self clearUserSessions];
@@ -1187,8 +1184,8 @@
     [self showLoadingScreen];
     [APIMapper logoutFromAccount:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        [FBSDKAccessToken setCurrentAccessToken:nil];
         [[GIDSignIn sharedInstance] signOut];
+        
         [[UIApplication sharedApplication] unregisterForRemoteNotifications];
         AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

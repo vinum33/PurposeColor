@@ -64,5 +64,7 @@
 -(void)emotionalIntelligencePage;
 -(void)logoutSinceUnAuthorized;
 -(void)showGoalsAndDreams;
+-(void)logoutSinceUnAuthorized:(NSDictionary*)notification;
+
 @end
 

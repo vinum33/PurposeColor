@@ -25,7 +25,7 @@
     NSMutableArray *arrNotifications;
     NSInteger selectedIndex;
     NSString *strOtherReason;
-    
+     NSString *strNoDataText;
 }
 
 @end
@@ -55,6 +55,7 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     arrNotifications = [NSMutableArray new];
     isDataAvailable = false;
+    tableView.hidden = true;
     
 }
 
@@ -71,7 +72,10 @@
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
-        if (error && error.localizedDescription) [ALToastView toastInView:self.view withText:NETWORK_ERROR_MESSAGE];
+        if (error && error.localizedDescription){
+            strNoDataText = error.localizedDescription;
+        }
+        [ALToastView toastInView:self.view withText:NETWORK_ERROR_MESSAGE];
         [self hideLoadingScreen];
         [tableView reloadData];
         [tableView setHidden:false];
@@ -86,7 +90,10 @@
     isDataAvailable = false;
     if (NULL_TO_NIL([responseObject objectForKey:@"question"])){
         arrNotifications = [responseObject objectForKey:@"question"];
+    }else{
+        strNoDataText = [responseObject objectForKey:@"text"];
     }
+
     if (arrNotifications.count)isDataAvailable = true;
     [tableView setHidden:false];
     [tableView reloadData];
@@ -136,7 +143,7 @@
         
         /*****! No listing found , default cell !**************/
         
-        UITableViewCell *cell = [Utility getNoDataCustomCellWith:tableView withTitle:@"No Listing found"];
+        UITableViewCell *cell = [Utility getNoDataCustomCellWith:tableView withTitle:strNoDataText];
         return cell;
         
     }

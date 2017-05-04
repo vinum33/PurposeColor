@@ -40,19 +40,16 @@
     
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
 
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"We don't post anything to Facebook.\nBy signing in you agree with our terms of service and privacy policy" attributes:nil];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"We don't post anything to Facebook and Google.By signing in you agree with our terms of service and privacy policy" attributes:nil];
     NSRange linkRangeOne = NSMakeRange(attributedString.length - 14, 14); // for the word "link" in the string above
     NSRange linkRangeTwo = NSMakeRange(attributedString.length - 35, 16);
-   
     [attributedString addAttribute: NSLinkAttributeName value:[NSString stringWithFormat:@"%@terms.php",ExternalWebURL] range: linkRangeTwo];
     [attributedString addAttribute: NSLinkAttributeName value:[NSString stringWithFormat:@"%@privacy_policy.php",ExternalWebURL] range:linkRangeOne];
-    txtView.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor], NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle]};
-
+    txtView.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithRed:0.67 green:0.68 blue:0.68 alpha:1.0], NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle]};
     txtView.attributedText = attributedString;
     txtView.textAlignment = NSTextAlignmentCenter;
-    txtView.font = [UIFont fontWithName:CommonFont_New size:10];
-    txtView.textColor = [UIColor whiteColor];
-
+    txtView.font = [UIFont fontWithName:CommonFont_New size:11];
+    txtView.textColor = [UIColor colorWithRed:0.67 green:0.68 blue:0.68 alpha:1.0];
    
 }
 
@@ -175,7 +172,23 @@
 
 -(IBAction)doFBSignIn:(id)sender{
     
-    [btnFBSignin sendActionsForControlEvents:UIControlEventTouchUpInside];
+    if ([FBSDKAccessToken currentAccessToken]) {
+    
+        [self getFacebookData];
+        
+    }else{
+        
+        FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+        login.loginBehavior = FBSDKLoginBehaviorBrowser;
+        [login logInWithReadPermissions:@[@"public_profile"] fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            
+            if (!error)[self getFacebookData];
+            
+        }];
+        
+       // [btnFBSignin sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }
+    
 }
 
 -(IBAction)doGoogleSignIn:(id)sender{
@@ -219,8 +232,8 @@
                  if (NULL_TO_NIL([result objectForKey:@"email"])) {
                      email = [result objectForKey:@"email"];
                  }
-                 if (NULL_TO_NIL([result objectForKey:@"first_name"])) {
-                     fname = [result objectForKey:@"first_name"];
+                 if (NULL_TO_NIL([result objectForKey:@"name"])) {
+                     fname = [result objectForKey:@"name"];
                  }
                  if (NULL_TO_NIL([result objectForKey:@"id"])) {
                      fbID = [result objectForKey:@"id"];

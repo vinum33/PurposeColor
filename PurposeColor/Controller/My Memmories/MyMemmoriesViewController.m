@@ -36,6 +36,7 @@
     NSMutableDictionary *dictMeomories;
     NSMutableArray *arrAllKeys;
     NSMutableDictionary *heightsCache;
+     NSString *strNoDataText;
 }
 
 @end
@@ -101,6 +102,9 @@
             }
         }
     }
+    else{
+        strNoDataText = [responds objectForKey:@"text"];
+    }
     tableView.hidden = false;
     if (arrAllKeys.count){
         if ( arrAllKeys.count) {
@@ -140,7 +144,7 @@
     UITableViewCell *cell;
     aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (!isDataAvailable) {
-        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Moments Available."];
+        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strNoDataText];
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor =  [UIColor clearColor];
         return cell;

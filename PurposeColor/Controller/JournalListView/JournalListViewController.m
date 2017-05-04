@@ -32,6 +32,7 @@
     NSInteger clickedIndex;
     BOOL isPageRefresing;
     Journal_CommentViewController *composeComment;
+    NSString *strNoDataText;
 }
 
 @end
@@ -106,6 +107,10 @@
         for (NSDictionary *dict in results)
             [arrJournal addObject:dict];
     }
+    else{
+        if (NULL_TO_NIL([[responseObject objectForKey:@"header"] objectForKey:@"text"]))
+            strNoDataText = [[responseObject objectForKey:@"header"] objectForKey:@"text"];
+    }
     if (arrJournal.count) isDataAvailable = true;
     if (NULL_TO_NIL([[responseObject objectForKey:@"header"] objectForKey:@"pageCount"]))
         totalPages =  [[[responseObject objectForKey:@"header"] objectForKey:@"pageCount"]integerValue];
@@ -137,7 +142,7 @@
 {
     UITableViewCell *cell;
     if (!isDataAvailable) {
-        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Journals Available."];
+        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strNoDataText];
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;

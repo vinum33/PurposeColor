@@ -73,6 +73,7 @@
     cell.textLabel.font = [UIFont fontWithName:CommonFont_New size:17];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:1.0];;
+    cell.textLabel.numberOfLines = 0;
     cell.backgroundColor = [UIColor getBackgroundOffWhiteColor];
     return cell;
 }

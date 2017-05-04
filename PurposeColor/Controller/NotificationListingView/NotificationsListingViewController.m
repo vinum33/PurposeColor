@@ -29,6 +29,7 @@
     NSInteger currentPage;
     BOOL isPageRefresing;
     NSMutableArray *arrNotifications;
+    NSString *strNoDataText;
 }
 
 @end
@@ -102,6 +103,8 @@
     if (NULL_TO_NIL([responseObject objectForKey:@"resultarray"])){
         NSArray *notifications = [responseObject objectForKey:@"resultarray"];
         [arrNotifications addObjectsFromArray:notifications];
+    }else{
+         strNoDataText = [responseObject objectForKey:@"text"];
     }
     
     if (NULL_TO_NIL([[responseObject objectForKey:@"header"] objectForKey:@"pageCount"]))
@@ -138,7 +141,7 @@
     UITableViewCell *cell;
     aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (!isDataAvailable) {
-        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:@"No Notifications Available."];
+        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strNoDataText];
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
@@ -155,7 +158,7 @@
         
         /*****! No listing found , default cell !**************/
         
-        UITableViewCell *cell = [Utility getNoDataCustomCellWith:tableView withTitle:@"No Listing found"];
+        UITableViewCell *cell = [Utility getNoDataCustomCellWith:tableView withTitle:strNoDataText];
         return cell;
         
     }

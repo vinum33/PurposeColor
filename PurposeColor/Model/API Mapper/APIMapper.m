@@ -6,6 +6,8 @@
 //  Copyright © 2016 Purpose Code. All rights reserved.
 //
 
+#define kUnAuthorized           403
+
 #import "APIMapper.h"
 #import "Constants.h"
 
@@ -26,7 +28,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -49,7 +54,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -71,7 +79,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -98,7 +109,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -122,7 +136,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -146,7 +163,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -173,7 +193,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -199,7 +222,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -220,7 +246,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -243,7 +272,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -266,7 +298,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -290,7 +325,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -314,7 +352,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -338,7 +379,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -362,7 +406,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -388,7 +435,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -413,7 +463,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -459,7 +512,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
         
     }];
@@ -497,7 +553,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -521,7 +580,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -544,7 +606,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -569,7 +634,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -594,7 +662,10 @@
             success(operation,responseObject);
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+            if ([operation.response statusCode] == kUnAuthorized) {
+                AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                [app logoutSinceUnAuthorized:operation.responseObject];
+            }
             failure (operation,error);
         }];
     }
@@ -621,7 +692,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -644,7 +718,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -667,7 +744,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -690,7 +770,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -714,7 +797,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -738,7 +824,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -760,7 +849,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -783,7 +875,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -809,7 +904,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -834,7 +932,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -859,7 +960,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -982,7 +1086,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
         
     }];
@@ -1125,7 +1232,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
         
     }];
@@ -1257,7 +1367,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
         
     }];
@@ -1347,7 +1460,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
         
     }];
@@ -1404,7 +1520,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
         
     }];
@@ -1448,7 +1567,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1478,7 +1600,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1509,7 +1634,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1532,7 +1660,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1557,7 +1688,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1580,7 +1714,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1602,7 +1739,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1625,7 +1765,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1654,7 +1797,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
         
     }];
@@ -1689,7 +1835,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 }
@@ -1712,7 +1861,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1735,7 +1887,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1758,7 +1913,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1781,7 +1939,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1804,7 +1965,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1828,7 +1992,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1850,7 +2017,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1868,7 +2038,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1894,7 +2067,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1917,7 +2093,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1939,7 +2118,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -1961,7 +2143,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -1985,7 +2170,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 
@@ -2005,7 +2193,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -2025,7 +2216,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -2048,7 +2242,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -2074,7 +2271,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -2096,7 +2296,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
     
@@ -2119,7 +2322,10 @@
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
         failure (operation,error);
     }];
 

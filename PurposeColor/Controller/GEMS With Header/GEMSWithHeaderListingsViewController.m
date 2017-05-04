@@ -273,7 +273,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         if (dictMedias && [dictMedias objectForKey:@"media_image"]) {
             
             [cell.imgGallery sd_setImageWithURL:[NSURL URLWithString:[dictMedias objectForKey:@"media_image"]]
-                       placeholderImage:[UIImage imageNamed:@"NoImage_TopText"]
+                       placeholderImage:[UIImage imageNamed:@"Home_Placeholder"]
                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                   
                               }];

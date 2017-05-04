@@ -487,8 +487,8 @@ typedef enum{
 
 -(IBAction)tapToLogin:(id)sender{
   
- [self bypassLogin];
- return;
+ //[self bypassLogin];
+ //return;
     
     [self checkAllFieldsAreValid:^{
         [self showLoadingScreen];
@@ -564,7 +564,22 @@ typedef enum{
 
 -(IBAction)doFBSignIn:(id)sender{
     
-    [btnFBSignin sendActionsForControlEvents:UIControlEventTouchUpInside];
+    if ([FBSDKAccessToken currentAccessToken]) {
+       
+        [self getFacebookData];
+        
+    }else{
+        
+        FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+        login.loginBehavior = FBSDKLoginBehaviorBrowser;
+        [login logInWithReadPermissions:@[@"public_profile"] fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            
+            if (!error) [self getFacebookData];
+        }];
+
+        //[btnFBSignin sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }
+    
 }
 
 - (void)  loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error;{
@@ -588,8 +603,8 @@ typedef enum{
                  if (NULL_TO_NIL([result objectForKey:@"email"])) {
                      email = [result objectForKey:@"email"];
                  }
-                 if (NULL_TO_NIL([result objectForKey:@"first_name"])) {
-                     fname = [result objectForKey:@"first_name"];
+                 if (NULL_TO_NIL([result objectForKey:@"name"])) {
+                     fname = [result objectForKey:@"name"];
                  }
                  if (NULL_TO_NIL([result objectForKey:@"id"])) {
                      fbID = [result objectForKey:@"id"];

@@ -332,7 +332,7 @@
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{  app.window.rootViewController = app.navGeneral; }
                     completion:nil];
-    detailPage.strTitle = @"ADD ACTION";
+    detailPage.strTitle = @"CREATE ACTION";
     detailPage.actionType = eActionTypeActions;
     detailPage.delegate = self;
     detailPage.shouldShowReminder = YES;

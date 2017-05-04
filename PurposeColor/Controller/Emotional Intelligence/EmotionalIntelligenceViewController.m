@@ -48,6 +48,8 @@ typedef enum{
     IBOutlet UIButton *btnSlideMenu;
     IBOutlet UIView *vwOverLay;
     
+    
+    
     VBPieChart *pieChart;
     NSMutableArray *_chartValues;
     NSInteger selectedSection;
@@ -178,6 +180,7 @@ typedef enum{
                 
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
+        
         if (error && error.localizedDescription) [ALToastView toastInView:self.view withText:NETWORK_ERROR_MESSAGE];
         isDataAvailable = false;
         tableView.hidden = false;
@@ -209,7 +212,7 @@ typedef enum{
                 float value  = [[chartPercentage objectForKey:@"optimal_percent"] floatValue];
                 detailedValue = [NSString stringWithFormat:@"%.02f", value];
             }
-            [pieChart setHoleRadiusPrecent:0.4]; /* hole inside of chart */
+            [pieChart setHoleRadiusPrecent:0.35]; /* hole inside of chart */
             _chartValues = [NSMutableArray new];
             
             if ([assertValue integerValue] > 0)

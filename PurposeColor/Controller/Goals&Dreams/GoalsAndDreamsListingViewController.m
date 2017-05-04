@@ -578,7 +578,7 @@ typedef enum{
 -(IBAction)composeNewActionAndMedias:(id)sender{
     
     CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
-    detailPage.strTitle = @"ADD GOAL";
+    detailPage.strTitle = @"CREATE GOAL";
     detailPage.delegate = self;
     detailPage.actionType = eActionTypeGoalsAndDreams;
     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
