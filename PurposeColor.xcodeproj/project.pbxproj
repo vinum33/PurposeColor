@@ -31,7 +31,6 @@
 		E50680C11D30F1490041B077 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = E506806E1D30F1490041B077 /* Utility.m */; };
 		E50680C21D30F1490041B077 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E506806F1D30F1490041B077 /* Info.plist */; };
 		E50680C31D30F1490041B077 /* ALToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = E50680731D30F1490041B077 /* ALToastView.m */; };
-		E50680C41D30F1490041B077 /* EDStarRating.m in Sources */ = {isa = PBXBuildFile; fileRef = E50680761D30F1490041B077 /* EDStarRating.m */; };
 		E50680C51D30F1490041B077 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E50680791D30F1490041B077 /* MBProgressHUD.m */; };
 		E50680C61D30F1490041B077 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E506807C1D30F1490041B077 /* SWRevealViewController.m */; };
 		E50680C71D30F1490041B077 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E506807D1D30F1490041B077 /* main.m */; };
@@ -344,8 +343,6 @@
 		E506806F1D30F1490041B077 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PurposeColor/Info.plist; sourceTree = "<group>"; };
 		E50680721D30F1490041B077 /* ALToastView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALToastView.h; sourceTree = "<group>"; };
 		E50680731D30F1490041B077 /* ALToastView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALToastView.m; sourceTree = "<group>"; };
-		E50680751D30F1490041B077 /* EDStarRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDStarRating.h; sourceTree = "<group>"; };
-		E50680761D30F1490041B077 /* EDStarRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EDStarRating.m; sourceTree = "<group>"; };
 		E50680781D30F1490041B077 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		E50680791D30F1490041B077 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		E506807B1D30F1490041B077 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -1066,7 +1063,6 @@
 				E5F612BA1D4887A2002B7CB5 /* PhotoGallery */,
 				E5A9472D1D33B057008BBC7F /* HPGrowingTextView */,
 				E50680711D30F1490041B077 /* ALToastView */,
-				E50680741D30F1490041B077 /* EDStarRating */,
 				E50680771D30F1490041B077 /* MBProgressHUD */,
 				E506807A1D30F1490041B077 /* SlideIn - SlideOut Library */,
 			);
@@ -1080,15 +1076,6 @@
 				E50680731D30F1490041B077 /* ALToastView.m */,
 			);
 			path = ALToastView;
-			sourceTree = "<group>";
-		};
-		E50680741D30F1490041B077 /* EDStarRating */ = {
-			isa = PBXGroup;
-			children = (
-				E50680751D30F1490041B077 /* EDStarRating.h */,
-				E50680761D30F1490041B077 /* EDStarRating.m */,
-			);
-			path = EDStarRating;
 			sourceTree = "<group>";
 		};
 		E50680771D30F1490041B077 /* MBProgressHUD */ = {
@@ -2823,7 +2810,6 @@
 				E5EC866E1D7042B500537A90 /* MemmoriesDisplayCell.m in Sources */,
 				E5ED83DA1D9B83E000266CD5 /* ACRObservingPlayerItem.m in Sources */,
 				E5EFC2F21D74394500844ED3 /* ProfilePageViewController.m in Sources */,
-				E50680C41D30F1490041B077 /* EDStarRating.m in Sources */,
 				E5F555D71D8BD1F200B739AC /* ButtonWithID.m in Sources */,
 				E50680B81D30F1490041B077 /* RegistrationPageCustomTableViewCell.m in Sources */,
 				E57AD6C01D40E7610042A8C4 /* ActionDetailPageViewController.m in Sources */,
