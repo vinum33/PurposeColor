@@ -756,7 +756,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/GEMS%20Listings/CellWithTable/CustomCellWithTable.m"
-                  timestampString = "515596986.977594"
+                  timestampString = "515651846.387049"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "501"
@@ -771,7 +771,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/GEMS%20Listings/CellWithTable/CustomCellWithTable.m"
-                  timestampString = "515596986.97939"
+                  timestampString = "515651846.388443"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "501"
@@ -1188,11 +1188,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/JournalDetailViewController/Journal Details/JournalDetailPageViewController.m"
-            timestampString = "514966303.835432"
+            timestampString = "515652443.587012"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "-closeJournalCommentPopUpClicked"
             landmarkType = "7">
          </BreakpointContent>
@@ -1348,7 +1348,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/CreateAction&amp;Medias/Contacts%20Picker%20View%20Controller/ContactsPickerViewController.m"
-                  timestampString = "515596987.229603"
+                  timestampString = "515651846.470046"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "290"
@@ -1363,7 +1363,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/CreateAction&amp;Medias/Contacts%20Picker%20View%20Controller/ContactsPickerViewController.m"
-                  timestampString = "515596987.231083"
+                  timestampString = "515651846.471437"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "290"
@@ -1378,7 +1378,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/CreateAction&amp;Medias/Contacts%20Picker%20View%20Controller/ContactsPickerViewController.m"
-                  timestampString = "515596987.232609"
+                  timestampString = "515651846.472816"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "290"
@@ -1731,7 +1731,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/New%20Emotional%20Awareness/EmotionalAwarenessViewController.m"
-                  timestampString = "515596987.333968"
+                  timestampString = "515651846.527187"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "2340"
@@ -1746,7 +1746,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/New%20Emotional%20Awareness/EmotionalAwarenessViewController.m"
-                  timestampString = "515596987.336326"
+                  timestampString = "515651846.528641"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "2340"
@@ -2026,6 +2026,38 @@
             endingLineNumber = "294"
             landmarkName = "-signIn:didSignInForUser:withError:"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__63-[IntroScreenViewController signIn:didSignInForUser:withError:]_block_invoke"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/IntroScreenWithLogin/IntroScreenViewController.m"
+                  timestampString = "515651846.572943"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "294"
+                  endingLineNumber = "294"
+                  offsetFromSymbolStart = "604">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__63-[IntroScreenViewController signIn:didSignInForUser:withError:]_block_invoke"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/IntroScreenWithLogin/IntroScreenViewController.m"
+                  timestampString = "515651846.574361"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "294"
+                  endingLineNumber = "294"
+                  offsetFromSymbolStart = "616">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2042,6 +2074,38 @@
             endingLineNumber = "286"
             landmarkName = "-signIn:didSignInForUser:withError:"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[IntroScreenViewController signIn:didSignInForUser:withError:]"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/IntroScreenWithLogin/IntroScreenViewController.m"
+                  timestampString = "515651846.577138"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "287"
+                  endingLineNumber = "287"
+                  offsetFromSymbolStart = "564">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__63-[IntroScreenViewController signIn:didSignInForUser:withError:]_block_invoke"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/IntroScreenWithLogin/IntroScreenViewController.m"
+                  timestampString = "515651846.578599"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "288"
+                  endingLineNumber = "288"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -12,5 +12,6 @@
 
 @property (nonatomic,weak) IBOutlet UILabel *lblTitle;
 @property (nonatomic,weak) IBOutlet UILabel *lbDescription;
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint *titleBottom;
 
 @end

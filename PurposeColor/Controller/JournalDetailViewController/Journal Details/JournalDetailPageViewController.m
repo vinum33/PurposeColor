@@ -74,7 +74,11 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor clearColor];
         cell.lblTitle.text = [_journalDetails objectForKey:@"event_title"];
-         if ([_journalDetails objectForKey:@"journal_desc"]) cell.lbDescription.text = [_journalDetails objectForKey:@"journal_desc"];
+        cell.titleBottom.constant = 0;
+        if ([_journalDetails objectForKey:@"journal_desc"]){
+            cell.titleBottom.constant = 5;
+            cell.lbDescription.text = [_journalDetails objectForKey:@"journal_desc"];
+        }
         return cell;
         
     }

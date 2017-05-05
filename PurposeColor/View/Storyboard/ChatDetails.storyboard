@@ -13,7 +13,7 @@
         <array key="DroidSans-Bold.ttf">
             <string>DroidSans-Bold</string>
         </array>
-        <array key="DroidSansMerged-Regular.ttf">
+        <array key="DroidSans.ttf">
             <string>DroidSans</string>
         </array>
         <array key="HelveticaNeueLTStd-Bd.otf">
@@ -1596,7 +1596,7 @@ without media?</string>
                                                     <state key="normal" image="CheckBox_Goals"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1l3-cg-1R2">
-                                                    <rect key="frame" x="40" y="58.5" width="330" height="14"/>
+                                                    <rect key="frame" x="40" y="58" width="330" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeueLTStd-Lt" family="Helvetica Neue LT Std" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -3302,13 +3302,13 @@ without media?</string>
                                                             <color key="backgroundColor" red="0.027450980392156862" green="0.40000000000000002" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Labell" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOM-6v-DBY">
-                                                            <rect key="frame" x="10" y="10" width="580" height="80"/>
-                                                            <fontDescription key="fontDescription" name="DroidSans-Bold" family="Droid Sans" pointSize="14"/>
+                                                            <rect key="frame" x="10" y="10" width="580" height="75"/>
+                                                            <fontDescription key="fontDescription" name="DroidSans-Bold" family="Droid Sans" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="253" verticalCompressionResistancePriority="751" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kis-sQ-wR9" userLabel="Descrption">
-                                                            <rect key="frame" x="15" y="95" width="575" height="0.0"/>
+                                                            <rect key="frame" x="10" y="90" width="580" height="0.0"/>
                                                             <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -3317,10 +3317,10 @@ without media?</string>
                                                     <color key="backgroundColor" red="0.027450980392156862" green="0.40000000000000002" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="Kis-sQ-wR9" secondAttribute="trailing" constant="10" id="71u-G7-wEU"/>
-                                                        <constraint firstItem="Kis-sQ-wR9" firstAttribute="leading" secondItem="Xps-9n-uU3" secondAttribute="leading" constant="15" id="EKa-4T-BX5"/>
+                                                        <constraint firstItem="Kis-sQ-wR9" firstAttribute="leading" secondItem="Xps-9n-uU3" secondAttribute="leading" constant="10" id="EKa-4T-BX5"/>
                                                         <constraint firstAttribute="trailing" secondItem="DkF-gs-its" secondAttribute="trailing" id="IZI-kD-sJM"/>
                                                         <constraint firstItem="Kis-sQ-wR9" firstAttribute="top" secondItem="uOM-6v-DBY" secondAttribute="bottom" constant="5" id="Iqb-Vh-OnB"/>
-                                                        <constraint firstAttribute="bottom" secondItem="Kis-sQ-wR9" secondAttribute="bottom" constant="5" id="JDK-SF-EG8"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Kis-sQ-wR9" secondAttribute="bottom" constant="10" id="JDK-SF-EG8"/>
                                                         <constraint firstItem="DkF-gs-its" firstAttribute="top" secondItem="Xps-9n-uU3" secondAttribute="top" id="YSc-r0-9E9"/>
                                                         <constraint firstAttribute="bottom" secondItem="DkF-gs-its" secondAttribute="bottom" id="eNv-OA-arg"/>
                                                         <constraint firstItem="uOM-6v-DBY" firstAttribute="leading" secondItem="Xps-9n-uU3" secondAttribute="leading" constant="10" id="eeP-HQ-5ao"/>
@@ -3340,6 +3340,7 @@ without media?</string>
                                         <connections>
                                             <outlet property="lbDescription" destination="Kis-sQ-wR9" id="kBt-jV-XH4"/>
                                             <outlet property="lblTitle" destination="uOM-6v-DBY" id="zI5-ux-9vn"/>
+                                            <outlet property="titleBottom" destination="Iqb-Vh-OnB" id="41R-3s-9ku"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="JournalDateInfo" id="hvV-MA-Nr0" userLabel="JournalDateInfo" customClass="JournalDateInfo">
@@ -3359,8 +3360,8 @@ without media?</string>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1zO-bq-7zJ" userLabel="date">
                                                     <rect key="frame" x="10" y="10" width="580" height="0.0"/>
-                                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
-                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="13"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="748" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QL7-q5-cdu" userLabel="Location">
@@ -3495,7 +3496,7 @@ without media?</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CONTACTS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohI-Re-5eL">
-                                        <rect key="frame" x="147" y="35" width="83" height="16"/>
+                                        <rect key="frame" x="146" y="35" width="83" height="16"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeueLTStd-Lt" family="Helvetica Neue LT Std" pointSize="16"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
