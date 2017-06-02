@@ -13,6 +13,7 @@
 
 #import "WebBrowserViewController.h"
 #import "MenuViewController.h"
+#import "Constants.h"
 
 @interface WebBrowserViewController () <SWRevealViewControllerDelegate>{
     
@@ -33,7 +34,9 @@
     lblTitle.text = _strTitle;
     
     if ([_strTitle isEqualToString:kHelp]) {
-        [self loadContentWithType:@"Help"];
+        
+        [self showLoadingScreen];
+        [self loadHelpPage];
     }
     else if ([_strTitle isEqualToString:kPrivacyPolicy]) {
         [self loadContentWithType:@"Privacy"];
@@ -121,10 +124,11 @@
         [self hideLoadingScreen];
     }];
     
+}
+
+-(void)loadHelpPage{
     
-    
-    
-    
+    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@help.php",ExternalWebURL]]]];
 }
 
 -(void)saveDetailsToFlder:(NSString*)content type:(NSString*)type{

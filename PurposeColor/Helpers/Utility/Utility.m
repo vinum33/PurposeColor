@@ -298,5 +298,49 @@
     return newImage;
 }
 
++(BOOL)isStringContainsURLInString:(NSString*)string
+{
+    NSError *error = nil;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                               error:&error];
+    NSArray *matches = [detector matchesInString:string
+                                         options:0
+                                           range:NSMakeRange(0, [string length])];
+    if (matches.count > 0) {
+        return true;
+    }
+    return false;
+}
+
++ (BOOL)isEquivalentURLOne:(NSURL *)urlOne URLTwo:(NSURL *)URLTwo {
+    
+    if (urlOne && URLTwo) {
+        
+        if ([urlOne isEqual:URLTwo]) return YES;
+        if ([[urlOne scheme] caseInsensitiveCompare:[URLTwo scheme]] != NSOrderedSame) return NO;
+        if ([[urlOne host] caseInsensitiveCompare:[URLTwo host]] != NSOrderedSame) return NO;
+        
+        // NSURL path is smart about trimming trailing slashes
+        // note case-sensitivty here
+        if ([[urlOne path] compare:[URLTwo path]] != NSOrderedSame) return NO;
+        
+        // at this point, we've established that the urls are equivalent according to the rfc
+        // insofar as scheme, host, and paths match
+        
+        // according to rfc2616, port's can weakly match if one is missing and the
+        // other is default for the scheme, but for now, let's insist on an explicit match
+        if ([urlOne port] || [URLTwo port]) {
+            if (![[urlOne port] isEqual:[URLTwo port]]) return NO;
+            if (![[urlOne query] isEqual:[URLTwo query]]) return NO;
+        }
+        return YES;
+    }
+    return NO;
+   
+    // for things like user/pw, fragment, etc., seems sensible to be
+    // permissive about these.
+    
+}
+
 
 @end

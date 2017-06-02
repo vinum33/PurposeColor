@@ -30,8 +30,9 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
 #import "Constants.h"
 #import "NFXIntroViewController.h"
 #import "ProfilePageViewController.h"
+#import "DeleteAccntPopUp.h"
 
-@interface SettingsViewController () <SWRevealViewControllerDelegate>{
+@interface SettingsViewController () <SWRevealViewControllerDelegate,DeleteAccntPopUpDelegate>{
     
     IBOutlet UIView *vwOverLay;
     IBOutlet UIButton *btnSlideMenu;
@@ -50,6 +51,7 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
     BOOL canFollow;
     BOOL canSendDailyNotifications;
     NSMutableDictionary *dictAdminSettings;
+    DeleteAccntPopUp *vwDeleteAccnt;
 }
 
 @end
@@ -111,7 +113,7 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -125,10 +127,8 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
     else if (section == 2) {
         return 1;
     }
-    else if (section == 3) {
-        return 3;
-    }
-    return 3;
+    
+    return 0;
     
 }
 
@@ -370,7 +370,7 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
     
     if (indexPath.section == 1) {
         if (indexPath.row == 1) {
-            [self showHelpScreen];
+            [self showDeleteAccountPopUp];
         }
     }
     
@@ -430,7 +430,7 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
             case eFieldTwo:
                 if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
                     UILabel *lblTitle = [[cell contentView]viewWithTag:1];
-                    lblTitle.text = @"Help";
+                    lblTitle.text = @"Delete Account";
                     break;
                 }
                 
@@ -571,6 +571,7 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
     btnSubmit.hidden = false;
 }
 
+
 -(IBAction)submitDetails:(UIButton*)sender{
     [self showLoadingScreen];
     [APIMapper updateUserSettingsWithUserID:[User sharedManager].userId canFollow:canFollow dailyNotification:canSendDailyNotifications adminListSuggestions:dictAdminSettings success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -633,6 +634,51 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
   
     
 }
+
+#pragma mark - Forgot Password Methods and Delegates
+
+
+-(IBAction)showDeleteAccountPopUp{
+    
+    if (!vwDeleteAccnt) {
+        
+        vwDeleteAccnt = [DeleteAccntPopUp new];
+        [self.view addSubview:vwDeleteAccnt];
+        vwDeleteAccnt.delegate = self;
+        vwDeleteAccnt.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwDeleteAccnt]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwDeleteAccnt)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwDeleteAccnt]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwDeleteAccnt)]];
+        vwDeleteAccnt.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            // animate it to the identity transform (100% scale)
+            vwDeleteAccnt.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished){
+            // if you want to do something once the animation finishes, put it here
+        }];
+        
+        
+    }
+    
+    [self.view endEditing:YES];
+    [vwDeleteAccnt setUp];
+}
+
+
+
+-(void)closeForgotPwdPopUp{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        vwDeleteAccnt.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [vwDeleteAccnt removeFromSuperview];
+        vwDeleteAccnt = nil;
+    }];
+}
+
+
+
 
 -(void)showToast{
     

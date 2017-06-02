@@ -1932,7 +1932,7 @@ typedef enum{
                                                                   style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                       
                                                                      AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-                                                                      [delegate changeHomePageDynamicallyWithType:eMenu_GEMS];
+                                                                     // [delegate changeHomePageDynamicallyWithType:eMenu_GEMS];
                                                                   }];
             
             [alert addAction:firstAction];

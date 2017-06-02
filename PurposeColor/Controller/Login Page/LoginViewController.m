@@ -487,8 +487,8 @@ typedef enum{
 
 -(IBAction)tapToLogin:(id)sender{
   
- //[self bypassLogin];
- //return;
+ [self bypassLogin];
+ return;
     
     [self checkAllFieldsAreValid:^{
         [self showLoadingScreen];
@@ -565,19 +565,16 @@ typedef enum{
 -(IBAction)doFBSignIn:(id)sender{
     
     if ([FBSDKAccessToken currentAccessToken]) {
-       
         [self getFacebookData];
-        
     }else{
-        
+        [self showLoadingScreen];
         FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-        login.loginBehavior = FBSDKLoginBehaviorBrowser;
-        [login logInWithReadPermissions:@[@"public_profile"] fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-            
+        login.loginBehavior = FBSDKLoginBehaviorSystemAccount;
+        [login logInWithReadPermissions:@[@"public_profile",@"email"] fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+             [self hideLoadingScreen];
             if (!error) [self getFacebookData];
         }];
 
-        //[btnFBSignin sendActionsForControlEvents:UIControlEventTouchUpInside];
     }
     
 }
@@ -789,6 +786,8 @@ typedef enum{
         if ([userDetails objectForKey:@"token_id"]) {
             [User sharedManager].token  = [userDetails objectForKey:@"token_id"];
         }
+        [[NSUserDefaults standardUserDefaults] setBool:[[userDetails objectForKey:@"account_enabled"] boolValue] forKey:@"ACCOUNT_ENABLED"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         
         /*!............ Saving user to NSUserDefaults.............!*/
         

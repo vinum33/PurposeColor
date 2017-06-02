@@ -7,11 +7,21 @@
 		<key>PurposeColor.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>0</integer>
+		</dict>
+		<key>Share.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>E5656F491EC5963700FC3085</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>E5F293371CE072F7002B375A</key>
 		<dict>
 			<key>primary</key>

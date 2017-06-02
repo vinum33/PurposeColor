@@ -25,4 +25,8 @@
 +(float)getSizeOfLabelWithText:(NSString*)text width:(float)width font:(UIFont*)font;
 + (NSDate *)combineDate:(NSDate *)date withTime:(NSDate *)time;
 +(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToWidth: (float) i_width;
++(BOOL)isStringContainsURLInString:(NSString*)string;
++(BOOL)isEquivalentURLOne:(NSURL *)urlOne URLTwo:(NSURL *)URLTwo;
+
+
 @end

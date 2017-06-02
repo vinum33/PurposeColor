@@ -47,6 +47,16 @@
 @property (nonatomic,weak) IBOutlet UILabel *lblLocDetails;
 @property (nonatomic,weak) IBOutlet UILabel *lblContactDetails;
 
+@property (nonatomic, weak) IBOutlet UIView *vwURLPreview;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewTitle;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewDescription;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewDomain;
+@property (nonatomic, weak) IBOutlet UIImageView *imgPreview;
+@property (nonatomic,weak) IBOutlet UIActivityIndicatorView *previewIndicator;
+@property (nonatomic, weak) IBOutlet UIButton *btnShowPreviewURL;
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint* bottomForDescription;
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint* bottomForStatus;
+
 @property (nonatomic,weak)  id<ActionDetailsCustomCellDelegate>delegate;
 
 -(void)setUp;

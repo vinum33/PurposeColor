@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "firstime-user-screens3.png",
+      "filename" : "intelligenehelpscreenios3.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "intelligenehelpscreenios3-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "intelligenehelpscreenios3-2.png",
       "scale" : "3x"
     }
   ],

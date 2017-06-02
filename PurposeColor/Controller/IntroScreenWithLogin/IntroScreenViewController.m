@@ -126,19 +126,19 @@
         bg.image = [UIImage imageNamed:@"Intro_Theme_1"];
         innerImg.image = [UIImage imageNamed:@"Intro_Image_1"];
         lblHeading.text = @"INSPERATIONAL NETWORKING";
-        lblText.text = @"Inspire and be inspired\nConnect share and learn with others";
+        lblText.text = @"Inspire and be inspired.\nConnect,share and learn with others.";
     }
     if (indexPath.row == 1) {
         bg.image = [UIImage imageNamed:@"Intro_Theme_2"];
         innerImg.image = [UIImage imageNamed:@"Intro_Image_2"];
         lblHeading.text = @"GOALS & DREAMS";
-        lblText.text = @"Know your destination\nIf it important to you make it a GOAL";
+        lblText.text = @"Know your destination.\nIf it important to you,make it a GOAL.";
     }
     if (indexPath.row == 2) {
         bg.image = [UIImage imageNamed:@"Intro_Theme_3"];
         innerImg.image = [UIImage imageNamed:@"Intro_Image_3"];
         lblHeading.text = @"SMART JOURNAL";
-        lblText.text = @"Capture and gain powerful insight into\nwhat drives you and what makes you happy";
+        lblText.text = @"Capture and gain powerful insight into\nwhat drives you and what makes you happy.";
     }
     return cell;
 }
@@ -177,16 +177,15 @@
         [self getFacebookData];
         
     }else{
-        
+        [self showLoadingScreen];
         FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-        login.loginBehavior = FBSDKLoginBehaviorBrowser;
-        [login logInWithReadPermissions:@[@"public_profile"] fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-            
+        login.loginBehavior = FBSDKLoginBehaviorSystemAccount;
+        [login logInWithReadPermissions:@[@"public_profile",@"email"] fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+             [self hideLoadingScreen];
             if (!error)[self getFacebookData];
             
         }];
         
-       // [btnFBSignin sendActionsForControlEvents:UIControlEventTouchUpInside];
     }
     
 }
@@ -228,7 +227,6 @@
                  NSString *fbID;
                  NSString *googleID;
                  NSString *profileImg;
-                 
                  if (NULL_TO_NIL([result objectForKey:@"email"])) {
                      email = [result objectForKey:@"email"];
                  }
@@ -359,6 +357,8 @@
         if ([userDetails objectForKey:@"token_id"]) {
             [User sharedManager].token  = [userDetails objectForKey:@"token_id"];
         }
+        [[NSUserDefaults standardUserDefaults] setBool:[[userDetails objectForKey:@"account_enabled"] boolValue] forKey:@"ACCOUNT_ENABLED"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         
         /*!............ Saving user to NSUserDefaults.............!*/
         

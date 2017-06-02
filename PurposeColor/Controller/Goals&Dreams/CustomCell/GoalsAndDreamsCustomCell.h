@@ -55,6 +55,15 @@
 @property (nonatomic,assign) NSInteger section;
 @property (nonatomic,assign) NSInteger row;
 
+@property (nonatomic, weak) IBOutlet UIView *vwURLPreview;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewTitle;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewDescription;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewDomain;
+@property (nonatomic, weak) IBOutlet UIImageView *imgPreview;
+@property (nonatomic,weak) IBOutlet UIActivityIndicatorView *previewIndicator;
+@property (nonatomic, weak) IBOutlet UIButton *btnShowPreviewURL;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottmForDescription;
+
 @property (nonatomic,weak) IBOutlet  NSLayoutConstraint *constraintForHeight;
 @property (nonatomic,weak)  id<GoalsAndDreamsCustomCellDelegate>delegate;
 

@@ -87,6 +87,9 @@
     isDataAvailable = false;
     if (NULL_TO_NIL([responds objectForKey:@"resultarray"]))
         arrChatUser = [NSMutableArray arrayWithArray:[responds objectForKey:@"resultarray"]];
+    else{
+        strNoDataText = [responds objectForKey:@"text"];
+    }
     if (arrChatUser.count)
         isDataAvailable = true;
     

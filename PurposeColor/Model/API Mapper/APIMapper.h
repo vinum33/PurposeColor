@@ -149,4 +149,8 @@
 + (void)socialMediaRegistrationnWithFirstName:(NSString*)firstName profileImage:(NSString*)profileImg fbID:(NSString*)fbID googleID:(NSString*)googleID email:(NSString*)email success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                      failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
++ (void)deleteOrHideMyAccountWithType:(NSString*)type success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)enableUserAccountOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
 @end

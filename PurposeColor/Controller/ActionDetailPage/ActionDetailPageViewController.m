@@ -32,6 +32,12 @@ typedef enum{
 #import "CreateActionInfoViewController.h"
 #import "CommentComposeViewController.h"
 #import "PhotoBrowser.h"
+#import "MTDURLPreview.h"
+#import "ActionDetailsCustomCellTitle.h"
+#import "GemDetailsCustomCellLocation.h"
+#import "GemDetailsCustomCellContact.h"
+#import "GemDetailsCustomCellDescription.h"
+#import "GemDetailsCustomCellPreview.h"
 
 @interface ActionDetailPageViewController ()<GemDetailPageCellDelegate,ActionDetailsCustomCellDelegate,CustomAudioPlayerDelegate,CommentActionDelegate,PhotoBrowserDelegate,CreateMediaInfoDelegate>{
     
@@ -77,6 +83,9 @@ typedef enum{
 }
 
 -(void)setUp{
+    
+    tableView.rowHeight = UITableViewAutomaticDimension;
+    tableView.estimatedRowHeight = 50;
     
     arrDataSource = [NSMutableArray new];
     tableView.hidden = true;
@@ -152,8 +161,22 @@ typedef enum{
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (!isDataAvailable) return kMinimumCellCount;
-    if (section == eSectionInfo)
-        return kMinimumCellCount;
+    if (section == eSectionInfo){
+        NSInteger rows = 5;
+        if (NULL_TO_NIL([actionDetails objectForKey:@"gem_details"])){
+            NSString *string = [actionDetails objectForKey:@"gem_details"];
+            NSError *error = nil;
+            NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                       error:&error];
+            NSArray *matches = [detector matchesInString:string
+                                                 options:0
+                                                   range:NSMakeRange(0, [string length])];
+            if (matches.count > 0) {
+                rows = 6;
+            }
+        }
+        return rows;
+    }
     else
         return arrDataSource.count;
 }
@@ -168,8 +191,86 @@ typedef enum{
         return cell;
     }
     
-    if (indexPath.section == eSectionInfo)
-        cell = [self configureActionDetailsInfoCell:indexPath];
+    if (indexPath.section == eSectionInfo){
+        
+        if (indexPath.row == 0) {
+            
+            ActionDetailsCustomCellTitle *cell = (ActionDetailsCustomCellTitle *)[tableView dequeueReusableCellWithIdentifier:@"ActionDetailsCustomCellTitle"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.lbltTitle.text = [actionDetails objectForKey:@"gem_title"];
+            cell.lblDate.text = [Utility getDaysBetweenTwoDatesWith:[[actionDetails objectForKey:@"gem_datetime"] doubleValue]];
+            return cell;
+            
+        }
+        
+        if (indexPath.row == 1) {
+            GemDetailsCustomCellLocation *cell = (GemDetailsCustomCellLocation *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellLocation"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            if (NULL_TO_NIL([actionDetails objectForKey:@"location_name"])){
+                cell.lblLocation.text = [actionDetails objectForKey:@"location_name"];
+            }
+            return cell;
+        }
+        
+        if (indexPath.row == 2) {
+            GemDetailsCustomCellContact *cell = (GemDetailsCustomCellContact *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellContact"];
+            if (NULL_TO_NIL([actionDetails objectForKey:@"contact_name"])){
+                cell.lblContact.text = [actionDetails objectForKey:@"contact_name"];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+        
+        if (indexPath.row == 3) {
+            GemDetailsCustomCellDescription *cell = (GemDetailsCustomCellDescription *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellDescription"];
+            NSDictionary *attributes = @{NSFontAttributeName:[UIFont fontWithName:CommonFont_New size:14],
+                                         };
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[actionDetails objectForKey:@"gem_details"] attributes:attributes];
+            cell.lbltDescription.attributedText = attributedText;
+            cell.lbltDescription.systemURLStyle = YES;
+            cell.lbltDescription.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
+                // Open URLs
+                [self attemptOpenURL:[NSURL URLWithString:string]];
+            };
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+        if (indexPath.row == 4) {
+            cell = [self configureActionDetailsInfoCell:indexPath];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+        if (indexPath.row == 5) {
+            GemDetailsCustomCellPreview *cell = (GemDetailsCustomCellPreview *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellPreview"];
+            if (NULL_TO_NIL([actionDetails objectForKey:@"gem_details"])){
+                NSString *string = [actionDetails objectForKey:@"gem_details"];
+                NSError *error = nil;
+                NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                           error:&error];
+                NSArray *matches = [detector matchesInString:string
+                                                     options:0
+                                                       range:NSMakeRange(0, [string length])];
+                if (matches.count > 0) {
+                    NSTextCheckingResult *match = [matches firstObject];
+                    [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+                        [cell.indicator stopAnimating];
+                        cell.lblTitle.text = preview.title;
+                        cell.lblDescription.text = preview.content;
+                        cell.lblDomain.text = preview.domain;
+                        [cell.imgPreview sd_setImageWithURL:preview.imageURL
+                                           placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                                  }];
+                        
+                    }];
+                }
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+        
+    }
+    
     else{
         static NSString *CellIdentifier = @"mediaListingCell";
         GemDetailsCustomTableViewCell *cell = (GemDetailsCustomTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -190,15 +291,29 @@ typedef enum{
 -(CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == eSectionInfo) {
-        CGFloat height = [self getLabelHeight:indexPath.row];
-        if (NULL_TO_NIL([actionDetails objectForKey:@"location_name"])){
-            height += 10;
+        
+        if (indexPath.row == 1) {
+            if (NULL_TO_NIL([actionDetails objectForKey:@"location_name"]))
+                return UITableViewAutomaticDimension;
+            else
+                return 0;
         }
-        if (NULL_TO_NIL([actionDetails objectForKey:@"contact_name"])){
-            height += 15;
+        else if (indexPath.row == 2) {
+            if (NULL_TO_NIL([actionDetails objectForKey:@"contact_name"]))
+                return UITableViewAutomaticDimension;
+            else
+                return 0;
         }
-        return height;
-    }else{
+        else if (indexPath.row == 3) {
+            if (NULL_TO_NIL([actionDetails objectForKey:@"gem_details"]))
+                return UITableViewAutomaticDimension;
+            else
+                return 0;
+        }
+        
+        return UITableViewAutomaticDimension;
+    }
+    else{
         if (indexPath.row < arrDataSource.count) {
             NSDictionary *details = arrDataSource[indexPath.row];
             float imageHeight = 0;
@@ -229,43 +344,49 @@ typedef enum{
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *mediaType ;
-    NSMutableArray *images = [NSMutableArray new];
-    if (indexPath.section == eSectionMedia){
-        if (indexPath.row < arrDataSource.count) {
-            NSDictionary *mediaInfo = arrDataSource[indexPath.row];
-           
-            if (NULL_TO_NIL([mediaInfo objectForKey:@"media_type"])) {
-                mediaType = [mediaInfo objectForKey:@"media_type"];
-            }
-            if (mediaType) {
-                if ([mediaType isEqualToString:@"image"]) {
-                    NSURL *url =  [NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]];
-                    [images addObject:url];
-                    
-                    for (NSDictionary *details in arrDataSource) {
-                        if (NULL_TO_NIL([details objectForKey:@"media_type"])) {
-                            mediaType = [details objectForKey:@"media_type"];
-                        }
-                        if (mediaType) {
-                            if ([mediaType isEqualToString:@"image"]) {
-                                NSURL *url =  [NSURL URLWithString:[details objectForKey:@"gem_media"]];
-                                if (![images containsObject:url]) {
-                                    [images addObject:url];
+    if (indexPath.section == 0 && indexPath.row == 5) {
+        [self openPreviewURL];
+        
+    }else{
+        NSString *mediaType ;
+        NSMutableArray *images = [NSMutableArray new];
+        if (indexPath.section == eSectionMedia){
+            if (indexPath.row < arrDataSource.count) {
+                NSDictionary *mediaInfo = arrDataSource[indexPath.row];
+                
+                if (NULL_TO_NIL([mediaInfo objectForKey:@"media_type"])) {
+                    mediaType = [mediaInfo objectForKey:@"media_type"];
+                }
+                if (mediaType) {
+                    if ([mediaType isEqualToString:@"image"]) {
+                        NSURL *url =  [NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]];
+                        [images addObject:url];
+                        
+                        for (NSDictionary *details in arrDataSource) {
+                            if (NULL_TO_NIL([details objectForKey:@"media_type"])) {
+                                mediaType = [details objectForKey:@"media_type"];
+                            }
+                            if (mediaType) {
+                                if ([mediaType isEqualToString:@"image"]) {
+                                    NSURL *url =  [NSURL URLWithString:[details objectForKey:@"gem_media"]];
+                                    if (![images containsObject:url]) {
+                                        [images addObject:url];
+                                    }
+                                    
                                 }
                                 
                             }
-                            
+                        }
+                        if (images.count) {
+                            [self presentGalleryWithImages:images];
                         }
                     }
-                    if (images.count) {
-                        [self presentGalleryWithImages:images];
-                    }
+                    
                 }
-                
             }
         }
     }
+    
     
 }
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -289,7 +410,8 @@ typedef enum{
     
     static NSString *CellIdentifier = @"infoCustomCell";
     ActionDetailsCustomCell *cell = (ActionDetailsCustomCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+    cell.bottomForStatus.constant = 20;
+    cell.vwURLPreview.hidden = true;
     if (NULL_TO_NIL([actionDetails objectForKey:@"gem_title"])){
         cell.lblTitle.text = [actionDetails objectForKey:@"gem_title"];
         strTitle = [actionDetails objectForKey:@"gem_title"];
@@ -322,6 +444,33 @@ typedef enum{
     if (NULL_TO_NIL([actionDetails objectForKey:@"action_status"])){
         cell.isStatusPending = ![[actionDetails objectForKey:@"action_status"] boolValue];
     }
+    if (strDescription) {
+        NSString *string = strDescription;
+        NSError *error = nil;
+        NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                   error:&error];
+        NSArray *matches = [detector matchesInString:string
+                                             options:0
+                                               range:NSMakeRange(0, [string length])];
+        if (matches.count > 0){
+            cell.vwURLPreview.hidden = false;
+            cell.bottomForStatus.constant = 110;
+            NSTextCheckingResult *match = [matches firstObject];
+            [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+                [cell.previewIndicator stopAnimating];
+                cell.lblPreviewTitle.text = preview.title;
+                cell.lblPreviewDescription.text = preview.content;
+                cell.lblPreviewTitle.text = preview.title;
+                cell.lblPreviewDomain.text = preview.domain;
+                [cell.imgPreview sd_setImageWithURL:preview.imageURL
+                                   placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                          }];
+            }];
+            
+        }
+    }
+    
     cell.delegate = self;
     [cell setUp];
     return cell;
@@ -350,13 +499,6 @@ typedef enum{
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]]
                                 placeholderImage:[UIImage imageNamed:@""]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                           [UIView transitionWithView:cell.imgGemMedia
-                                                             duration:.5f
-                                                              options:UIViewAnimationOptionTransitionCrossDissolve
-                                                           animations:^{
-                                                               cell.imgGemMedia.image = image;
-                                                           } completion:nil];
-                                           
                                            [cell.activityIndicator stopAnimating];
                                        }];
         }
@@ -395,13 +537,7 @@ typedef enum{
                                         placeholderImage:[UIImage imageNamed:@""]
                                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                    [cell.activityIndicator stopAnimating];
-                                                   [UIView transitionWithView:cell.imgGemMedia
-                                                                     duration:.5f
-                                                                      options:UIViewAnimationOptionTransitionCrossDissolve
-                                                                   animations:^{
-                                                                       cell.imgGemMedia.image = image;
-                                                                   } completion:nil];
-                                               }];
+                                                }];
                 }
                 
             }
@@ -502,7 +638,7 @@ typedef enum{
     
 }
 
--(void)editButtonClicked{
+-(IBAction)editButtonClicked{
     
       if ([lblShare.text isEqualToString:@"Shared"]) {
           
@@ -565,6 +701,73 @@ typedef enum{
 }
 
 #pragma mark - Generic Methods
+
+- (void)openPreviewURL
+{
+    if (NULL_TO_NIL([actionDetails objectForKey:@"gem_details"])){
+        NSString *string = [actionDetails objectForKey:@"gem_details"];
+        NSError *error = nil;
+        NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                   error:&error];
+        NSArray *matches = [detector matchesInString:string
+                                             options:0
+                                               range:NSMakeRange(0, [string length])];
+        if (matches.count > 0) {
+            NSTextCheckingResult *match = [matches firstObject];
+            [[UIApplication sharedApplication] openURL:[match URL]];
+        }
+        
+    }
+    
+}
+
+
+- (void)attemptOpenURL:(NSURL *)url
+{
+    
+    BOOL safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (!safariCompatible) {
+        
+        NSString *urlString = url.absoluteString;
+        urlString = [NSString stringWithFormat:@"http://%@",url.absoluteString];
+        url = [NSURL URLWithString:urlString];
+        
+    }
+    safariCompatible = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    if (safariCompatible && [[UIApplication sharedApplication] canOpenURL:url])
+    {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                        message:@"The selected link cannot be opened."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Dismiss"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+
+-(IBAction)previewClickedWithGesture:(UIButton*)btn{
+    
+    if (strDescription){
+        
+        NSString *string = strDescription;
+        NSError *error = nil;
+        NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                   error:&error];
+        NSArray *matches = [detector matchesInString:string
+                                             options:0
+                                               range:NSMakeRange(0, [string length])];
+        if (matches.count > 0) {
+            NSTextCheckingResult *match = [matches firstObject];
+            [[UIApplication sharedApplication] openURL:[match URL]];
+            
+        }
+    }
+}
 
 
 -(void)showAudioPlayerWithURL:(NSURL*)url{

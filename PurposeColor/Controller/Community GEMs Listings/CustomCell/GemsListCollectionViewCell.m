@@ -26,6 +26,16 @@
         // Open URLs
         [self attemptOpenURL:[NSURL URLWithString:string]];
     };
+    
+    _lblDescription.allOtherClicks = ^(KILabel *label, NSString *string, NSRange range) {
+        // Open URLs
+        if ([self.delegate respondsToSelector:@selector(showDetailPageWithIndex:)]) {
+            [self.delegate showDetailPageWithIndex:self.row];
+        }
+        
+    };
+    
+    
 
 }
 

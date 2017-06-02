@@ -61,18 +61,18 @@
 
 -(void)loadAllCategories{
     
-    [arrCategories addObject:@"Emotional Awareness"];
+    [arrCategories addObject:@"Smart Journal"];
     [arrCategories addObject:@"Emotional Intelligence"];
     [arrCategories addObject:@"Goals & Dreams"];
-    [arrCategories addObject:@"Visualization"];
     [arrCategories addObject:@"Inspiring GEMs"];
-    [arrCategories addObject:@"Reminders"];
     
     [arrCategories addObject:@"My Journal"];
     [arrCategories addObject:@"Saved GEMs"];
     [arrCategories addObject:@"Notifications"];
+    [arrCategories addObject:@"Reminders"];
     [arrCategories addObject:@"Privacy Policy"];
     [arrCategories addObject:@"Terms of Service"];
+    [arrCategories addObject:@"Help"];
     [arrCategories addObject:@"App Share"];
     [arrCategories addObject:@"Logout"];
    
@@ -90,9 +90,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0)
-        return 6;
+        return 4;
     else
-        return 7;
+        return 9;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -109,7 +109,6 @@
         if (indexPath.row < arrCategories.count) {
             title = arrCategories [indexPath.row];
         }
-        
         if (indexPath.row == 0) {
             cell.imageView.image = [UIImage imageNamed:@"Menu_Emotion.png"];
         }
@@ -120,20 +119,14 @@
             cell.imageView.image = [UIImage imageNamed:@"Menu_Goal.png"];
         }
         else if (indexPath.row == 3) {
-            cell.imageView.image = [UIImage imageNamed:@"Menu_Gem.png"];
-        }
-        
-        else if (indexPath.row == 4) {
             cell.imageView.image = [UIImage imageNamed:@"Menu_CommunityGem.png"];
         }
         
-        else if (indexPath.row == 5) {
-            cell.imageView.image = [UIImage imageNamed:@"Reminder_Icon.png"];
-        }
+        
         
     }else{
         if (indexPath.row < arrCategories.count) {
-            title = arrCategories [indexPath.row + 6];
+            title = arrCategories [indexPath.row + 4];
         }
         
         if (indexPath.row == 0) {
@@ -146,15 +139,22 @@
             cell.imageView.image = [UIImage imageNamed:@"Menu_Notifications.png"];
         }
         else if (indexPath.row == 3) {
+            cell.imageView.image = [UIImage imageNamed:@"Reminder_Icon.png"];
+        }
+        
+        else if (indexPath.row == 4) {
             cell.imageView.image = [UIImage imageNamed:@"Menu_Privacy.png"];
         }
-        else if (indexPath.row == 4) {
+        else if (indexPath.row == 5) {
             cell.imageView.image = [UIImage imageNamed:@"Menu_Terms.png"];
         }
-        else if (indexPath.row == 5) {
+        else if (indexPath.row == 6) {
+            cell.imageView.image = [UIImage imageNamed:@"Menu_Help.png"];
+        }
+        else if (indexPath.row == 7) {
             cell.imageView.image = [UIImage imageNamed:@"Menu_Share.png"];
         }
-        else if (indexPath.row == 6) {
+        else if (indexPath.row == 8) {
             cell.imageView.image = [UIImage imageNamed:@"LogoutIcon.png"];
         }
        
@@ -451,7 +451,7 @@
     
     NSInteger index = indexPath.row;
     if (indexPath.section == 1) {
-        index = indexPath.row + 6;
+        index = indexPath.row + 4;
     }
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate changeHomePageDynamicallyWithType:index];

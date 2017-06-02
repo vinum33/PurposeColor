@@ -94,6 +94,7 @@ typedef void (^KILinkTapHandler)(KILabel *label, NSString *string, NSRange range
 extern NSString * const KILabelLinkTypeKey;
 extern NSString * const KILabelRangeKey;
 extern NSString * const KILabelLinkKey;
+extern NSString * const clciks;
 
 /**
  * A UILabel subclass that highlights links, hashtags and usernames and enables response to user
@@ -175,6 +176,8 @@ IB_DESIGNABLE
  * Callback block for KILinkTypeURL link tap.
  */
 @property (nullable, nonatomic, copy) KILinkTapHandler urlLinkTapHandler;
+
+@property (nullable, nonatomic, copy) KILinkTapHandler allOtherClicks;
 
 /** ****************************************************************************************** **
  * @name Geometry

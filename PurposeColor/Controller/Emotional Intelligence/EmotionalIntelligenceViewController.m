@@ -41,8 +41,9 @@ typedef enum{
 #import "ButtonWithID.h"
 #import "NFXIntroViewController.h"
 #import "JournalListViewController.h"
+#import "EmotionalIntelligenceHelpView.h"
 
-@interface EmotionalIntelligenceViewController () <SWRevealViewControllerDelegate,SessionPopUpDelegate,PieChartClickDelegate>{
+@interface EmotionalIntelligenceViewController () <SWRevealViewControllerDelegate,SessionPopUpDelegate,PieChartClickDelegate,IntelligenceHelpDelegate>{
     
     IBOutlet UITableView *tableView;
     IBOutlet UIButton *btnSlideMenu;
@@ -77,6 +78,7 @@ typedef enum{
     BOOL firstTime;
     EmotionSessionLists *sessionListPopUp;
     AMPopTip *popTip;
+    EmotionalIntelligenceHelpView *vwIntelligenceHelp;
 
 }
 
@@ -280,7 +282,7 @@ typedef enum{
     
     tableView.hidden = false;
     [tableView reloadData];
-    [self performSelector:@selector(checkUserViewStatus) withObject:self afterDelay:.5];
+    [self performSelector:@selector(checkUserViewStatus) withObject:self afterDelay:.6];
     
 }
 
@@ -866,31 +868,37 @@ typedef enum{
 #pragma mark - Generic Methods
 
 -(void)showHelpScreen{
-    
-    UIImage*i1 = [UIImage imageNamed:@"Intelligence_Intro_1.png"];
-    UIImage*i2 = [UIImage imageNamed:@"Intelligence_Intro_2.png"];
-    UIImage*i3 = [UIImage imageNamed:@"Intelligence_Intro_3.png"];
-    
-    NFXIntroViewController*vc = [[NFXIntroViewController alloc] initWithViews:@[i1,i2,i3]];
-    
-    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    if (!app.navGeneral) {
-        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:vc];
-        app.navGeneral.navigationBarHidden = true;
-        [UIView transitionWithView:app.window
-                          duration:0.3
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{  app.window.rootViewController = app.navGeneral; }
-                        completion:nil];
-    }
-    else{
-        [app.navGeneral pushViewController:vc animated:YES];
-    }
-    
 
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    vwIntelligenceHelp = [[[NSBundle mainBundle] loadNibNamed:@"EmotionalIntelligenceHelpView" owner:self options:nil] objectAtIndex:0];
+    [app.window.rootViewController.view addSubview:vwIntelligenceHelp];
+    vwIntelligenceHelp.delegate = self;
+    vwIntelligenceHelp.translatesAutoresizingMaskIntoConstraints = NO;
+    [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[vwIntelligenceHelp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwIntelligenceHelp)]];
+    [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwIntelligenceHelp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwIntelligenceHelp)]];
+    vwIntelligenceHelp.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        vwIntelligenceHelp.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished){
+        
+        [vwIntelligenceHelp setUp];
+        // if you want to do something once the animation finishes, put it here
+    }];
     
 }
 
+-(void)intelligenceHelpPopUpCloseAppplied{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        vwIntelligenceHelp.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [vwIntelligenceHelp removeFromSuperview];
+        vwIntelligenceHelp = nil;
+    }];
+}
 
 
 -(void)showLoadingScreen{

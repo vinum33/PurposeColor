@@ -77,7 +77,6 @@
     [self resetBadgeCount];
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
-    [self checkBuildForSignOut];
    
     return YES;
 }
@@ -215,28 +214,6 @@
     
    exit(0);
    
-}
-
-
-
--(void)checkBuildForSignOut{
-    
-    NSString * currentBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
-    
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Build_No"])
-    {
-        NSString *lstBuild = [[NSUserDefaults standardUserDefaults] objectForKey:@"Build_No"];
-        if ([lstBuild integerValue] < [currentBuild integerValue]) {
-            [self clearUserSessions];
-        }
-         [[NSUserDefaults standardUserDefaults] setObject:currentBuild forKey:@"Build_No"];
-        
-    }else{
-        [[NSUserDefaults standardUserDefaults] setObject:currentBuild forKey:@"Build_No"];
-       [self clearUserSessions];
-    }
-
-
 }
 
 #pragma mark - Reachability
@@ -794,6 +771,9 @@
     [User sharedManager].follow_status = user.follow_status;
     [User sharedManager].daily_notify  = user.daily_notify;
     [User sharedManager].token  = user.token;
+   
+    
+    
     
 }
 
@@ -855,9 +835,6 @@
              [self showEmotionalAwarenessPageIsFromVisualization:NO];
             break;
             
-        case eMenu_GEMS:
-            //[self showGEMSListingsPage];
-            break;
             
         case eMenu_Goals_Dreams:
             [self showGoalsAndDreams];
@@ -873,6 +850,10 @@
             
         case eMenu_Notifications:
             [self showNotificationListings];
+            break;
+            
+        case eMenu_Help:
+            [self showHelpPage];
             break;
             
         case eMenu_SavedGEMs:
@@ -1024,16 +1005,17 @@
 
 -(void)showHelpPage{
     
-   WebBrowserViewController *browser = [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForWebBrowser];
-    UINavigationController *navHome = [[UINavigationController alloc] initWithRootViewController:browser];
-    if ([self.window.rootViewController isKindOfClass:[SWRevealViewController class]]) {
-        SWRevealViewController *root = (SWRevealViewController*)self.window.rootViewController;
-        root.frontViewController = navHome;
-    }
-    _navGeneral = navHome;
+    WebBrowserViewController *browser = [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:ChatDetailsStoryBoard Identifier:StoryBoardIdentifierForWebBrowser];
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:browser];
+    app.navGeneral.navigationBarHidden = true;
+    [UIView transitionWithView:app.window
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{  app.window.rootViewController = app.navGeneral; }
+                    completion:nil];
     _navGeneral.navigationBarHidden = true;
     browser.strTitle = @"HELP";
-    browser.strURL =[NSString stringWithFormat:@"%@help.php",ExternalWebPageURL];
 }
 
 -(void)showPrivacyPolicy{
@@ -1185,6 +1167,8 @@
     [APIMapper logoutFromAccount:[User sharedManager].userId success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         [[GIDSignIn sharedInstance] signOut];
+        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+        [loginManager logOut];
         
         [[UIApplication sharedApplication] unregisterForRemoteNotifications];
         AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;

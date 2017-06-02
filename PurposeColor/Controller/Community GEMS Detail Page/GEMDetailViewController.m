@@ -9,7 +9,7 @@
 #define kCellHeight             300;
 #define kHeightForHeader        100;
 #define kHeightForFooter        .001;
-#define kNumberOfSections       1;
+#define kNumberOfSections       2;
 #define kHeightPercentage       80;
 #define OneK                    1000
 
@@ -24,6 +24,12 @@
 #import "CreateActionInfoViewController.h"
 #import "ACRObservingPlayerItem.h"
 #import "KILabel.h"
+#import "MTDURLPreview.h"
+#import "GemDetailsCustomCellTitle.h"
+#import "GemDetailsCustomCellDescription.h"
+#import "GemDetailsCustomCellLocation.h"
+#import "GemDetailsCustomCellContact.h"
+#import "GemDetailsCustomCellPreview.h"
 
 @interface GEMDetailViewController ()<GemDetailPageCellDelegate,CommentActionDelegate,CustomAudioPlayerDelegate,PhotoBrowserDelegate,ACRObservingPlayerItemDelegate,CreateMediaInfoDelegate>{
     
@@ -67,6 +73,8 @@
 
 -(void)setUp{
     
+    tableView.rowHeight = UITableViewAutomaticDimension;
+    tableView.estimatedRowHeight = 50;
     playingIndex = -1;
     arrGemMedias = [NSArray new];
     if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_media"]))
@@ -99,6 +107,22 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
+    if (section == 0) {
+        NSInteger rows = 4;
+        if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_details"])){
+            NSString *string = [_gemDetails objectForKey:@"gem_details"];
+            NSError *error = nil;
+            NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                       error:&error];
+            NSArray *matches = [detector matchesInString:string
+                                                 options:0
+                                                   range:NSMakeRange(0, [string length])];
+            if (matches.count > 0) {
+                rows = 5;
+            }
+        }
+        return rows;
+    }
     return arrGemMedias.count;
 }
 
@@ -106,40 +130,163 @@
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"reuseIdentifier";
-    GemDetailsCustomTableViewCell *cell = (GemDetailsCustomTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.delegate = self;
-    [self resetCellVariables:cell];
-    [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
-    if (indexPath.row < arrGemMedias.count)
-        [self showMediaDetailsWithCell:cell andDetails:arrGemMedias[indexPath.row] index:indexPath.row];
+    UITableViewCell *cell;
+    
+    if (indexPath.section == 0) {
+        
+        if (indexPath.row == 0) {
+            GemDetailsCustomCellTitle *cell = (GemDetailsCustomCellTitle *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellTitle"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.lbltTitle.text = [_gemDetails objectForKey:@"gem_title"];
+            cell.btnEdit.hidden = true;
+            cell.btnDelete.hidden = true;
+            if (_canDelete){
+                cell.titleRightConstraint.constant = 40;
+                cell.btnDelete.hidden = false;
+            }
+            if (_isFromGEM) {
+                cell.titleRightConstraint.constant = 40;
+                cell.btnEdit.hidden = false;
+            }
+            cell.lblDate.text = [Utility getDaysBetweenTwoDatesWith:[[_gemDetails objectForKey:@"gem_datetime"] doubleValue]];
+            return cell;
+        }
+        
+        if (indexPath.row == 1) {
+            GemDetailsCustomCellLocation *cell = (GemDetailsCustomCellLocation *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellLocation"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            if (NULL_TO_NIL([_gemDetails objectForKey:@"location_name"])){
+                cell.lblLocation.text = [_gemDetails objectForKey:@"location_name"];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+        
+        if (indexPath.row == 2) {
+            GemDetailsCustomCellContact *cell = (GemDetailsCustomCellContact *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellContact"];
+            if (NULL_TO_NIL([_gemDetails objectForKey:@"contact_name"])){
+                cell.lblContact.text = [_gemDetails objectForKey:@"contact_name"];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+
+        if (indexPath.row == 3) {
+            GemDetailsCustomCellDescription *cell = (GemDetailsCustomCellDescription *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellDescription"];
+            NSDictionary *attributes = @{NSFontAttributeName:[UIFont fontWithName:CommonFont_New size:14],
+                                         };
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[_gemDetails objectForKey:@"gem_details"] attributes:attributes];
+            cell.lbltDescription.attributedText = attributedText;
+            cell.lbltDescription.systemURLStyle = YES;
+            cell.lbltDescription.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
+                // Open URLs
+                [self attemptOpenURL:[NSURL URLWithString:string]];
+            };
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+        if (indexPath.row == 4) {
+            GemDetailsCustomCellPreview *cell = (GemDetailsCustomCellPreview *)[tableView dequeueReusableCellWithIdentifier:@"GemDetailsCustomCellPreview"];
+            if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_details"])){
+                NSString *string = [_gemDetails objectForKey:@"gem_details"];
+                NSError *error = nil;
+                NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                           error:&error];
+                NSArray *matches = [detector matchesInString:string
+                                                     options:0
+                                                       range:NSMakeRange(0, [string length])];
+                if (matches.count > 0) {
+                    NSTextCheckingResult *match = [matches firstObject];
+                    [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+                        [cell.indicator stopAnimating];
+                        cell.lblTitle.text = preview.title;
+                        cell.lblDescription.text = preview.content;
+                        cell.lblDomain.text = preview.domain;
+                        [cell.imgPreview sd_setImageWithURL:preview.imageURL
+                                      placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                             }];
+                        
+                    }];
+                }
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+        
+        
+
+       
+    }else{
+        static NSString *CellIdentifier = @"reuseIdentifier";
+        GemDetailsCustomTableViewCell *cell = (GemDetailsCustomTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.delegate = self;
+        [self resetCellVariables:cell];
+        [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
+        if (indexPath.row < arrGemMedias.count)
+            [self showMediaDetailsWithCell:cell andDetails:arrGemMedias[indexPath.row] index:indexPath.row];
+        return cell;
+    }
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)_tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    float imageHeight = 250;
-    float padding = 10;
-    
-    if (indexPath.row < arrGemMedias.count) {
-        NSDictionary *details = arrGemMedias[indexPath.row];
-        if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
-            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
-        }else{
-            float width = [[details objectForKey:@"image_width"] floatValue];
-            float height = [[details objectForKey:@"image_height"] floatValue];
-            float ratio = width / height;
-            imageHeight = (self.view.frame.size.width - padding) / ratio;
-            [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+    if (indexPath.section == 1) {
+        float imageHeight = 250;
+        float padding = 10;
+        
+        if (indexPath.row < arrGemMedias.count) {
+            NSDictionary *details = arrGemMedias[indexPath.row];
+            if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
+            }else{
+                float width = [[details objectForKey:@"image_width"] floatValue];
+                float height = [[details objectForKey:@"image_height"] floatValue];
+                float ratio = width / height;
+                imageHeight = (self.view.frame.size.width - padding) / ratio;
+                [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
+            }
+            
+        }
+        
+        return imageHeight + 5;
+    }
+    else{
+        
+        if (indexPath.row == 1) {
+            if (NULL_TO_NIL([_gemDetails objectForKey:@"location_name"]))
+                return UITableViewAutomaticDimension;
+            else
+                return 0;
+        }
+        else if (indexPath.row == 2) {
+            if (NULL_TO_NIL([_gemDetails objectForKey:@"contact_name"]))
+                return UITableViewAutomaticDimension;
+            else
+                return 0;
+        }
+        else if (indexPath.row == 3) {
+            if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_details"]))
+                return UITableViewAutomaticDimension;
+            else
+                return 0;
+        }
+        else if (indexPath.row == 4) {
+            return 85;
         }
         
     }
     
-    return imageHeight + 5;
+    return UITableViewAutomaticDimension;
+    
 }
 - (CGFloat)tableView:(UITableView *)_tableView heightForHeaderInSection:(NSInteger)section{
+    
+    return 0.1;
+    
     
     if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_details"])){
         
@@ -151,7 +298,7 @@
         
         NSString *message = [_gemDetails objectForKey:@"gem_details"];
         
-        CGSize constraint = CGSizeMake(_tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
+        CGSize constraint = CGSizeMake(self.view.bounds.size.width - widthPadding, CGFLOAT_MAX);
         float height = 0;
         NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
         CGSize boundingBox = [title boundingRectWithSize:constraint
@@ -163,16 +310,14 @@
         height += 15; // Date height
         
         widthPadding = 20;
-        constraint = CGSizeMake(_tableView.bounds.size.width - widthPadding, CGFLOAT_MAX);
+        constraint = CGSizeMake(self.view.bounds.size.width - widthPadding, CGFLOAT_MAX);
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-         paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
-        paragraphStyle.lineHeightMultiple = 1.2f;
         boundingBox = [message boundingRectWithSize:constraint
                                           options:NSStringDrawingUsesLineFragmentOrigin
                                        attributes:@{NSFontAttributeName:[UIFont fontWithName:CommonFont size:14],
                                                     NSParagraphStyleAttributeName:paragraphStyle}
                                           context:context].size;
-        height = height + boundingBox.height + heightPadding;
+        height = height + boundingBox.height;
         
         if (NULL_TO_NIL([_gemDetails objectForKey:@"location_name"])){
             height += 20;
@@ -180,7 +325,11 @@
         if (NULL_TO_NIL([_gemDetails objectForKey:@"contact_name"])){
             height += 20;
         }
-        return height;
+        
+        BOOL checkIsURLAvailable = [Utility isStringContainsURLInString:[_gemDetails objectForKey:@"gem_details"]];
+        float previewHeight = (checkIsURLAvailable) ? 90 : 0;
+        height += previewHeight;
+        return height += heightPadding;
         
     }
     
@@ -192,6 +341,8 @@
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    return nil;
     
     UIFont *font = [UIFont fontWithName:CommonFont size:12];
     
@@ -487,6 +638,7 @@
     
     KILabel *lblDetails = [KILabel new];
     lblDetails.translatesAutoresizingMaskIntoConstraints = NO;
+    lblDetails.backgroundColor = [UIColor clearColor];
     [vwHeader addSubview:lblDetails];
     lblDetails.numberOfLines = 0;
     lblDetails.textColor = [UIColor colorWithRed:0.17 green:0.17 blue:0.17 alpha:1.0];;
@@ -514,6 +666,176 @@
 
         
     }
+    /*
+    
+    /************** URL Preview SetUp *******************/
+    
+    if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_details"])){
+        NSString *string = [_gemDetails objectForKey:@"gem_details"];
+        NSError *error = nil;
+        NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                   error:&error];
+        NSArray *matches = [detector matchesInString:string
+                                             options:0
+                                               range:NSMakeRange(0, [string length])];
+        if (matches.count > 0) {
+            
+            UIView *vwLocPreview = [UIView new];
+            [vwHeader addSubview:vwLocPreview];
+            vwLocPreview.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1.0];
+            vwLocPreview.translatesAutoresizingMaskIntoConstraints = NO;
+            [vwHeader addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[vwLocPreview]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwLocPreview)]];
+            [vwLocPreview addConstraint:[NSLayoutConstraint constraintWithItem:vwLocPreview
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                 multiplier:1.0
+                                                                   constant:80.0]];
+            
+            [vwHeader addConstraint:[NSLayoutConstraint constraintWithItem:vwLocPreview
+                                                                 attribute:NSLayoutAttributeTop
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:lblDetails
+                                                                 attribute:NSLayoutAttributeBottom
+                                                                multiplier:1.0
+                                                                  constant:0]];
+            
+            UITapGestureRecognizer *singleFingerTap =
+            [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                    action:@selector(handleSingleTap:)];
+            [vwLocPreview addGestureRecognizer:singleFingerTap];
+            
+           
+            
+            //Image
+            
+            UIImageView *imgPreview = [UIImageView new];
+            imgPreview.translatesAutoresizingMaskIntoConstraints = NO;
+            imgPreview.backgroundColor = [UIColor clearColor];
+            [vwLocPreview addSubview:imgPreview];
+            [vwLocPreview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[imgPreview]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(imgPreview)]];
+            
+            [imgPreview addConstraint:[NSLayoutConstraint constraintWithItem:imgPreview
+                                                               attribute:NSLayoutAttributeWidth
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:nil
+                                                               attribute:NSLayoutAttributeWidth
+                                                              multiplier:1.0
+                                                                constant:100.0]];
+            
+            [vwLocPreview addConstraint:[NSLayoutConstraint constraintWithItem:imgPreview
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:vwLocPreview
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1.0
+                                                                   constant:0.0]];
+            
+            // Title
+            
+            UILabel *lblpreviewTitle = [UILabel new];
+            lblpreviewTitle.translatesAutoresizingMaskIntoConstraints = NO;
+            [vwLocPreview addSubview:lblpreviewTitle];
+            lblpreviewTitle.numberOfLines = 1;
+            lblpreviewTitle.font = [UIFont fontWithName:CommonFont_New size:15];
+            lblpreviewTitle.textColor = [UIColor colorWithRed:0.39 green:0.44 blue:0.46 alpha:1.0];
+            [vwLocPreview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-105-[lblpreviewTitle]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lblpreviewTitle)]];
+            [vwLocPreview addConstraint:[NSLayoutConstraint constraintWithItem:lblpreviewTitle
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:vwLocPreview
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0
+                                                                      constant:5.0]];
+            
+            // Content
+            
+            UILabel *lblContent = [UILabel new];
+            lblContent.translatesAutoresizingMaskIntoConstraints = NO;
+            [vwLocPreview addSubview:lblContent];
+            lblContent.numberOfLines = 2;
+            lblContent.font = [UIFont fontWithName:CommonFont_New size:14];
+            lblContent.textColor = [UIColor colorWithRed:0.33 green:0.33 blue:0.33 alpha:1.0];
+            [vwLocPreview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-105-[lblContent]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lblContent)]];
+            [vwLocPreview addConstraint:[NSLayoutConstraint constraintWithItem:lblContent
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:lblpreviewTitle
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0
+                                                                      constant:0.0]];
+            
+            // Content
+            
+            UILabel *lbDomain = [UILabel new];
+            lbDomain.translatesAutoresizingMaskIntoConstraints = NO;
+            [vwLocPreview addSubview:lbDomain];
+            lbDomain.numberOfLines = 1;
+            lbDomain.font = [UIFont fontWithName:CommonFont_New size:12];
+            lbDomain.textColor = [UIColor colorWithRed:0.39 green:0.44 blue:0.46 alpha:1.0];
+            [vwLocPreview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-105-[lbDomain]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lbDomain)]];
+            [vwLocPreview addConstraint:[NSLayoutConstraint constraintWithItem:lbDomain
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:lblContent
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0
+                                                                      constant:0.0]];
+            
+            [vwLocPreview addConstraint:[NSLayoutConstraint constraintWithItem:lbDomain
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:vwLocPreview
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0
+                                                                      constant:-5.0]];
+
+            //Indicator
+            
+            UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            // If you need custom color, use color property
+            // activityIndicator.color = yourDesirableColor;
+            [vwLocPreview addSubview:activityIndicator];
+            activityIndicator.hidesWhenStopped = true;
+            activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+            activityIndicator.color = [UIColor blackColor];
+            [activityIndicator startAnimating];
+            [vwLocPreview addConstraint:[NSLayoutConstraint constraintWithItem:activityIndicator
+                                                                     attribute:NSLayoutAttributeCenterX
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:vwLocPreview
+                                                                     attribute:NSLayoutAttributeCenterX
+                                                                    multiplier:1.0
+                                                                      constant:0]];
+            [vwLocPreview addConstraint:[NSLayoutConstraint constraintWithItem:activityIndicator
+                                                                     attribute:NSLayoutAttributeCenterY
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:vwLocPreview
+                                                                     attribute:NSLayoutAttributeCenterY
+                                                                    multiplier:1.0
+                                                                      constant:0]];
+
+            
+            
+            
+            NSTextCheckingResult *match = [matches firstObject];
+            [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+                [activityIndicator stopAnimating];
+                lblpreviewTitle.text = preview.title;
+                lblContent.text = preview.content;
+                lbDomain.text = preview.domain;
+                [imgPreview sd_setImageWithURL:preview.imageURL
+                                   placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                          }];
+                
+            }];
+        }
+        
+
+    }
+    
     
     
     return vwHeader;
@@ -536,14 +858,7 @@
             [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]]
                                 placeholderImage:[UIImage imageNamed:@""]
                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                           [UIView transitionWithView:cell.imgGemMedia
-                                                             duration:.5f
-                                                              options:UIViewAnimationOptionTransitionCrossDissolve
-                                                           animations:^{
-                                                               cell.imgGemMedia.image = image;
-                                                           } completion:nil];
-                                           
-                                           [cell.activityIndicator stopAnimating];
+                                             [cell.activityIndicator stopAnimating];
                                        }];
         }
         
@@ -579,12 +894,6 @@
                                         placeholderImage:[UIImage imageNamed:@""]
                                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                    [cell.activityIndicator stopAnimating];
-                                                   [UIView transitionWithView:cell.imgGemMedia
-                                                                     duration:.5f
-                                                                      options:UIViewAnimationOptionTransitionCrossDissolve
-                                                                   animations:^{
-                                                                       cell.imgGemMedia.image = image;
-                                                                   } completion:nil];
                                                }];
                 }
                 
@@ -621,63 +930,70 @@
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    [tableView reloadData];
-    [videoPlayer pause];
-    videoPlayer = nil;
-    
-    NSMutableArray *images = [NSMutableArray new];
-    NSString *mediaType ;;
-    if (indexPath.row < arrGemMedias.count) {
-        NSDictionary *mediaInfo = arrGemMedias[indexPath.row];
-        if (NULL_TO_NIL([mediaInfo objectForKey:@"media_type"])) {
-            mediaType = [mediaInfo objectForKey:@"media_type"];
-        }
-        if (mediaType) {
-            if ([mediaType isEqualToString:@"image"]) {
-                NSURL *url =  [NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]];
-                [images addObject:url];
-                for (NSDictionary *details in arrGemMedias) {
-                    if (NULL_TO_NIL([details objectForKey:@"media_type"])) {
-                        mediaType = [details objectForKey:@"media_type"];
-                    }
-                    if (mediaType) {
-                        if ([mediaType isEqualToString:@"image"]) {
-                            NSURL *url =  [NSURL URLWithString:[details objectForKey:@"gem_media"]];
-                            if (![images containsObject:url]) {
-                                [images addObject:url];
+    if (indexPath.section == 0 && indexPath.row == 4) {
+        [self openPreviewURL];
+       
+    }else if (indexPath.section == 1){
+        
+        [tableView reloadData];
+        [videoPlayer pause];
+        videoPlayer = nil;
+        
+        NSMutableArray *images = [NSMutableArray new];
+        NSString *mediaType ;;
+        if (indexPath.row < arrGemMedias.count) {
+            NSDictionary *mediaInfo = arrGemMedias[indexPath.row];
+            if (NULL_TO_NIL([mediaInfo objectForKey:@"media_type"])) {
+                mediaType = [mediaInfo objectForKey:@"media_type"];
+            }
+            if (mediaType) {
+                if ([mediaType isEqualToString:@"image"]) {
+                    NSURL *url =  [NSURL URLWithString:[mediaInfo objectForKey:@"gem_media"]];
+                    [images addObject:url];
+                    for (NSDictionary *details in arrGemMedias) {
+                        if (NULL_TO_NIL([details objectForKey:@"media_type"])) {
+                            mediaType = [details objectForKey:@"media_type"];
+                        }
+                        if (mediaType) {
+                            if ([mediaType isEqualToString:@"image"]) {
+                                NSURL *url =  [NSURL URLWithString:[details objectForKey:@"gem_media"]];
+                                if (![images containsObject:url]) {
+                                    [images addObject:url];
+                                }
+                                
                             }
                             
                         }
-                        
+                    }
+                    if (images.count) {
+                        [self presentGalleryWithImages:images];
                     }
                 }
-                if (images.count) {
-                    [self presentGalleryWithImages:images];
-                }
-            }
-            else if ([mediaType isEqualToString:@"video"]){
-                if (NULL_TO_NIL([mediaInfo objectForKey:@"gem_media"])) {
-                    NSString *videoURL = [mediaInfo objectForKey:@"gem_media"];
-                    if (videoURL.length){
-                        NSError* error;
-                        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
-                        [[AVAudioSession sharedInstance] setActive:NO error:&error];
-                        NSURL *movieURL = [NSURL URLWithString:videoURL];
-                        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-                         [playerViewController.player play];
-                        playerViewController.player = [AVPlayer playerWithURL:movieURL];
-                        [self presentViewController:playerViewController animated:YES completion:nil];
-                        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                                 selector:@selector(videoDidFinish:)
-                                                                     name:AVPlayerItemDidPlayToEndTimeNotification
-                                                                   object:[playerViewController.player currentItem]];
-                        
+                else if ([mediaType isEqualToString:@"video"]){
+                    if (NULL_TO_NIL([mediaInfo objectForKey:@"gem_media"])) {
+                        NSString *videoURL = [mediaInfo objectForKey:@"gem_media"];
+                        if (videoURL.length){
+                            NSError* error;
+                            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
+                            [[AVAudioSession sharedInstance] setActive:NO error:&error];
+                            NSURL *movieURL = [NSURL URLWithString:videoURL];
+                            AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+                            [playerViewController.player play];
+                            playerViewController.player = [AVPlayer playerWithURL:movieURL];
+                            [self presentViewController:playerViewController animated:YES completion:nil];
+                            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                                     selector:@selector(videoDidFinish:)
+                                                                         name:AVPlayerItemDidPlayToEndTimeNotification
+                                                                       object:[playerViewController.player currentItem]];
+                            
+                        }
                     }
                 }
+                
             }
-            
         }
     }
+    
     
 }
 
@@ -692,8 +1008,6 @@
 
 -(void)resetCellVariables:(GemDetailsCustomTableViewCell*)cell{
     
-    cell.vwBg.layer.borderColor =[UIColor colorWithRed:193/255.f green:196/255.f blue:199/255.f alpha:0.5].CGColor;
-    cell.vwBg.layer.borderWidth = 1.0;
     [cell.imgGemMedia setImage:[UIImage imageNamed:@"NoImage.png"]];
     [cell.activityIndicator stopAnimating];
     [[cell btnVideoPlay]setHidden:YES];
@@ -1037,6 +1351,8 @@
     
 }
 
+
+
 -(void)showLoadingScreen{
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -1051,6 +1367,24 @@
     
 }
 
+- (void)openPreviewURL
+{
+    if (NULL_TO_NIL([_gemDetails objectForKey:@"gem_details"])){
+        NSString *string = [_gemDetails objectForKey:@"gem_details"];
+        NSError *error = nil;
+        NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                       error:&error];
+            NSArray *matches = [detector matchesInString:string
+                                                 options:0
+                                                   range:NSMakeRange(0, [string length])];
+            if (matches.count > 0) {
+                NSTextCheckingResult *match = [matches firstObject];
+                [[UIApplication sharedApplication] openURL:[match URL]];
+            }
+        
+    }
+
+}
 -(IBAction)goBack:(id)sender{
     
     if (self.navigationController.viewControllers.count == 1) {

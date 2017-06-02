@@ -347,6 +347,9 @@ NSString * const KILabelLinkKey = @"link";
     {
         color = self.highlightedTextColor;
     }
+    if (!color) {
+         color = [UIColor colorWithRed:0.17 green:0.17 blue:0.17 alpha:1.0];
+    }
     
     // Setup paragraph attributes
     NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
@@ -645,6 +648,11 @@ NSString * const KILabelLinkKey = @"link";
     }
     else
     {
+        if (_allOtherClicks)
+        {
+            _allOtherClicks(self, @"",NSMakeRange(0, 0));
+        }
+        
         [super touchesBegan:touches withEvent:event];
     }
 }

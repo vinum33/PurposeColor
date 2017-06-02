@@ -56,6 +56,7 @@ typedef enum{
 #import "ActionMediaForGoalComposeCell.h"
 #import "FTPopOverMenu.h"
 #import "ContactsPickerViewController.h"
+#import "MTDURLPreview.h"
 
 @import GooglePlacePicker;
 
@@ -97,6 +98,18 @@ typedef enum{
     
     CGPoint viewStartLocation;
     
+    IBOutlet UIView *vwURLPreview;
+    IBOutlet UILabel *lblPreviewTitle;
+    IBOutlet UILabel *lblPreviewDescription;
+    IBOutlet UILabel *lblPreviewDomain;
+    IBOutlet UIImageView *imgPreview;
+    IBOutlet UIActivityIndicatorView *previewIndicator;
+    IBOutlet UIButton *btnShowPreviewURL;
+    NSDataDetector *detector;
+    IBOutlet NSLayoutConstraint *bottomForPreview;
+    BOOL showPreview;
+    NSURL *alreadyPreviewdURL;
+    
 }
 
 @property (nonatomic,strong) NSIndexPath *draggingCellIndexPath;
@@ -123,6 +136,15 @@ typedef enum{
 
 -(void)setUp{
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyBoardShown:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    showPreview = true;
     strLocationAddress = [NSString new];
     strLocationName = [NSString new];
     strContactName = [NSMutableString new];
@@ -861,8 +883,8 @@ typedef enum{
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
     
-    [self createInputAccessoryView];
-    [textField setInputAccessoryView:inputAccView];
+    //[self createInputAccessoryView];
+    //[textField setInputAccessoryView:inputAccView];
     CGPoint pointInTable = [textField.superview convertPoint:textField.frame.origin toView:tableView];
     CGPoint contentOffset = tableView.contentOffset;
     contentOffset.y = (pointInTable.y - textField.inputAccessoryView.frame.size.height );
@@ -881,6 +903,7 @@ typedef enum{
 
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    
     
     [self createInputAccessoryView];
     [textView setInputAccessoryView:inputAccView];
@@ -934,6 +957,108 @@ typedef enum{
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    if (!detector) {
+        NSError *error = nil;
+        detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                   error:&error];
+    }
+    /*
+    if ([text isEqualToString:@" "] || [text isEqualToString:@""]) {
+        NSArray *matches = [detector matchesInString:textView.text
+                                             options:0
+                                               range:NSMakeRange(0, [textView.text length])];
+        if (matches.count > 0) {
+            NSTextCheckingResult *match = [matches firstObject];
+            [previewIndicator startAnimating];
+            [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+                if (error) {
+                    vwURLPreview.hidden = true;
+                    [previewIndicator stopAnimating];
+                    lblPreviewTitle.text = @"";
+                    lblPreviewDescription.text = @"";
+                    lblPreviewTitle.text = @"";
+                    lblPreviewDomain.text = @"";
+                    imgPreview.image = nil;
+                }else{
+                    vwURLPreview.hidden = false;
+                    [previewIndicator stopAnimating];
+                    lblPreviewTitle.text = preview.title;
+                    lblPreviewDescription.text = preview.content;
+                    lblPreviewTitle.text = preview.title;
+                    lblPreviewDomain.text = preview.domain;
+                    [imgPreview sd_setImageWithURL:preview.imageURL
+                                  placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                         }];
+                }
+               
+                
+            }];
+        }else{
+            
+            vwURLPreview.hidden = true;
+            [previewIndicator stopAnimating];
+            lblPreviewTitle.text = @"";
+            lblPreviewDescription.text = @"";
+            lblPreviewTitle.text = @"";
+            lblPreviewDomain.text = @"";
+            imgPreview.image = nil;
+        }
+
+    }*/
+    if (textView.text) {
+        
+        NSArray *matches = [detector matchesInString:textView.text
+                                             options:0
+                                               range:NSMakeRange(0, [textView.text length])];
+        if (matches.count > 0) {
+            NSTextCheckingResult *match = [matches firstObject];
+            if (![Utility isEquivalentURLOne:alreadyPreviewdURL URLTwo:[match URL]])showPreview = true;
+            else showPreview = false;
+            if (showPreview) {
+                [previewIndicator startAnimating];
+                [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+                    if (error) {
+                        vwURLPreview.hidden = true;
+                        [previewIndicator stopAnimating];
+                        lblPreviewTitle.text = @"";
+                        lblPreviewDescription.text = @"";
+                        lblPreviewTitle.text = @"";
+                        lblPreviewDomain.text = @"";
+                        imgPreview.image = nil;
+                    }else{
+                        alreadyPreviewdURL = [match URL];
+                        vwURLPreview.hidden = false;
+                        [previewIndicator stopAnimating];
+                        lblPreviewTitle.text = preview.title;
+                        lblPreviewDescription.text = preview.content;
+                        lblPreviewTitle.text = preview.title;
+                        lblPreviewDomain.text = preview.domain;
+                        [imgPreview sd_setImageWithURL:preview.imageURL
+                                      placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                             }];
+                    }
+                    
+                    
+                }];
+                
+            }
+            
+        }else{
+            
+            vwURLPreview.hidden = true;
+            [previewIndicator stopAnimating];
+            lblPreviewTitle.text = @"";
+            lblPreviewDescription.text = @"";
+            lblPreviewDomain.text = @"";
+            imgPreview.image = nil;
+        }
+
+    }
+    
+    
+  
     if([text length] == 0)
     {
         if([textView.text length] != 0)
@@ -947,6 +1072,7 @@ typedef enum{
     }
     return YES;
 }
+
 
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
@@ -971,6 +1097,57 @@ typedef enum{
 }
 
 #pragma mark - Common Methods
+
+-(IBAction)hidePreviewPopUp:(id)sender{
+    
+    showPreview = false;
+    vwURLPreview.hidden = true;
+    [previewIndicator stopAnimating];
+    lblPreviewTitle.text = @"";
+    lblPreviewDescription.text = @"";
+    lblPreviewTitle.text = @"";
+    lblPreviewDomain.text = @"";
+    imgPreview.image = nil;
+}
+
+-(IBAction)showPreviewDetailPage:(id)sender{
+    if (lblPreviewDomain.text) {
+        NSString *myURLString = lblPreviewDomain.text;
+        NSURL *myURL;
+        if ([myURLString.lowercaseString hasPrefix:@"http://"]) {
+            myURL = [NSURL URLWithString:myURLString];
+        } else {
+            myURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@",myURLString]];
+        }
+        
+        [[UIApplication sharedApplication] openURL:myURL];
+    }
+   
+}
+
+- (void)keyBoardShown:(NSNotification*)notification
+{
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    bottomForPreview.constant = keyboardFrameBeginRect.size.height;
+}
+
+- (void)keyboardDidHide:(NSNotification*)notification
+{
+   
+    bottomForPreview.constant = -100;
+    vwURLPreview.hidden = true;
+    [previewIndicator stopAnimating];
+    lblPreviewTitle.text = @"";
+    lblPreviewDescription.text = @"";
+    lblPreviewTitle.text = @"";
+    lblPreviewDomain.text = @"";
+    imgPreview.image = nil;
+}
+
+
+
 
 -(void)dragCell:(UILongPressGestureRecognizer *)panner
 {
@@ -1243,18 +1420,6 @@ typedef enum{
     [inputAccView setBackgroundColor:[UIColor lightGrayColor]];
     [inputAccView setAlpha: 1];
     
-    UIButton *btnPrev = [UIButton buttonWithType: UIButtonTypeCustom];
-    [btnPrev setFrame: CGRectMake(0.0, 0.0, 80.0, 40.0)];
-    [btnPrev setTitle: @"PREVIOUS" forState: UIControlStateNormal];
-    [btnPrev setBackgroundColor: [UIColor getHeaderOffBlackColor]];
-    [btnPrev addTarget: self action: @selector(gotoPrevTextfield) forControlEvents: UIControlEventTouchUpInside];
-    
-    UIButton *btnNext = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnNext setFrame:CGRectMake(85.0f, 0.0f, 80.0f, 40.0f)];
-    [btnNext setTitle:@"NEXT" forState:UIControlStateNormal];
-    [btnNext setBackgroundColor:[UIColor getHeaderOffBlackColor]];
-    [btnNext addTarget:self action:@selector(gotoNextTextfield) forControlEvents:UIControlEventTouchUpInside];
-    
     UIButton *btnDone = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnDone setFrame:CGRectMake(inputAccView.frame.size.width - 85, 1.0f, 80.0f, 38.0f)];
     [btnDone setTitle:@"DONE" forState:UIControlStateNormal];
@@ -1262,12 +1427,7 @@ typedef enum{
      [btnDone setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnDone addTarget:self action:@selector(doneTyping) forControlEvents:UIControlEventTouchUpInside];
     
-    btnPrev.titleLabel.font = [UIFont fontWithName:CommonFont size:14];
-    btnNext.titleLabel.font = [UIFont fontWithName:CommonFont size:14];
     btnDone.titleLabel.font = [UIFont fontWithName:CommonFont size:14];
-    
-    [inputAccView addSubview:btnPrev];
-    [inputAccView addSubview:btnNext];
     [inputAccView addSubview:btnDone];
 }
 
@@ -1710,6 +1870,16 @@ typedef enum{
             if (NULL_TO_NIL([[responds objectForKey:@"resultarray"] objectForKey:@"location_name"])) {
                 strLocationName = [[responds objectForKey:@"resultarray"] objectForKey:@"location_name"];
             }
+            
+            float latitude = 0;
+            float longitude = 0;
+            if (NULL_TO_NIL([[responds objectForKey:@"resultarray"] objectForKey:@"location_latitude"])) {
+                latitude = [[[responds objectForKey:@"resultarray"] objectForKey:@"location_latitude"] floatValue];
+            }
+            if (NULL_TO_NIL([[responds objectForKey:@"resultarray"] objectForKey:@"location_longitude"])) {
+                longitude = [[[responds objectForKey:@"resultarray"] objectForKey:@"location_longitude"] floatValue];
+            }
+            locationCordinates = CLLocationCoordinate2DMake(latitude, longitude);
             
             if (NULL_TO_NIL([[responds objectForKey:@"resultarray"] objectForKey:@"title"])) {
                 strTitle = [[responds objectForKey:@"resultarray"] objectForKey:@"title"];
@@ -2598,7 +2768,7 @@ typedef enum{
     
 }
 -(IBAction)goBack:(id)sender{
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removeAllContentsInMediaFolder];
     if (self.navigationController.viewControllers.count == 1) {
         AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
@@ -2611,6 +2781,11 @@ typedef enum{
          [[self navigationController] popViewControllerAnimated:YES];
     }
    
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 
 - (void)didReceiveMemoryWarning {

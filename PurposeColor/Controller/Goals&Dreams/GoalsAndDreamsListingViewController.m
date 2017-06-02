@@ -27,6 +27,7 @@ typedef enum{
 #import "CreateActionInfoViewController.h"
 #import "GoalDetailViewController.h"
 #import "MenuViewController.h"
+#import "MTDURLPreview.h"
 
 @interface GoalsAndDreamsListingViewController ()<GoalsAndDreamsCustomCellDelegate,GoalDetailViewDelegate,SWRevealViewControllerDelegate,CreateMediaInfoDelegate>{
     
@@ -361,6 +362,9 @@ typedef enum{
             [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
         }
 
+        BOOL checkIsURLAvailable = [Utility isStringContainsURLInString:[goalInfo objectForKey:@"goal_details"]];
+        float previewHeight = (checkIsURLAvailable) ? 90 : 0;
+        finalHeight += previewHeight;
         finalHeight += imageHeight;
         return finalHeight;
 
@@ -379,6 +383,9 @@ typedef enum{
     if (indexPath.row < arrDataSource.count){
         
         NSDictionary *goalsDetails = arrDataSource[indexPath.row];
+        [self setupPreviewVariables:cell tag:indexPath.row];
+        [self getURLGromGemDetails:indexPath cell:cell details:goalsDetails];
+        
         cell.row = indexPath.row;
         cell.vwBg.layer.borderColor = [UIColor getSeperatorColor].CGColor;
         cell.vwBg.layer.cornerRadius = 5.f;
@@ -501,6 +508,74 @@ typedef enum{
     }
     
 }
+
+#pragma mark - URL Preview SetUp
+
+-(void)setupPreviewVariables:(GoalsAndDreamsCustomCell*)cell tag:(NSInteger)tag{
+    
+    cell.lblPreviewDescription.text = @"";
+    cell.lblPreviewTitle.text = @"";
+    cell.lblPreviewDomain.text = @"";
+    cell.vwURLPreview.hidden = true;
+    cell.btnShowPreviewURL.tag = tag;
+    cell.bottmForDescription.constant = 5;
+    [cell.btnShowPreviewURL addTarget:self action:@selector(previewClickedWithGesture:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void)getURLGromGemDetails:(NSIndexPath*)indexPath cell:(GoalsAndDreamsCustomCell*)cell details:(NSDictionary*)details{
+    
+    NSString *string = [details objectForKey:@"goal_details"];
+    NSError *error = nil;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                               error:&error];
+    NSArray *matches = [detector matchesInString:string
+                                         options:0
+                                           range:NSMakeRange(0, [string length])];
+    if (matches.count > 0) {
+        cell.vwURLPreview.hidden = false;
+        cell.bottmForDescription.constant = 90;
+        NSTextCheckingResult *match = [matches firstObject];
+        [cell.previewIndicator startAnimating];
+        [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+            [cell.previewIndicator stopAnimating];
+            cell.lblPreviewTitle.text = preview.title;
+            cell.lblPreviewDescription.text = preview.content;
+            cell.lblPreviewTitle.text = preview.title;
+            cell.lblPreviewDomain.text = preview.domain;
+            [cell.imgPreview sd_setImageWithURL:preview.imageURL
+                               placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                      }];
+            
+        }];
+    }
+}
+
+-(void)previewClickedWithGesture:(UIButton*)btn{
+    
+    if (btn.tag < arrDataSource.count) {
+        
+        NSDictionary *details = arrDataSource[btn.tag];
+        if (NULL_TO_NIL([details objectForKey:@"goal_details"])){
+            
+            NSString *string = [details objectForKey:@"goal_details"];
+            NSError *error = nil;
+            NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                       error:&error];
+            NSArray *matches = [detector matchesInString:string
+                                                 options:0
+                                                   range:NSMakeRange(0, [string length])];
+            if (matches.count > 0) {
+                NSTextCheckingResult *match = [matches firstObject];
+                [[UIApplication sharedApplication] openURL:[match URL]];
+                
+            }
+        }
+        
+    }
+}
+
+
 
 #pragma mark - CustomCell Delegte Methods
 

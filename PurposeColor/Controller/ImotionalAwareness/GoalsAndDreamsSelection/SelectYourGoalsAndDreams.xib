@@ -34,47 +34,34 @@
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gyw-PF-Jmj">
-                                    <rect key="frame" x="0.0" y="0.0" width="30" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="2j2-Ko-lf9"/>
-                                        <constraint firstAttribute="width" constant="30" id="Zff-Dh-YS0"/>
+                                        <constraint firstAttribute="width" constant="40" id="Zff-Dh-YS0"/>
                                     </constraints>
                                     <state key="normal" image="BackArrow"/>
                                     <connections>
                                         <action selector="closePopUp" destination="iN0-l3-epB" eventType="touchUpInside" id="8Xn-Tt-mYq"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Which goal is affected by your reaction?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0u-CV-62z">
-                                    <rect key="frame" x="30" y="13.5" width="214" height="14"/>
-                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="12"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Which goal is affected by your reaction?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0u-CV-62z">
+                                    <rect key="frame" x="40" y="11.5" width="330" height="17.5"/>
+                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="15"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVe-ma-sft">
-                                    <rect key="frame" x="315" y="2.5" width="60" height="35"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="60" id="Wtn-kG-VMa"/>
-                                        <constraint firstAttribute="height" constant="35" id="utI-KV-uN6"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="12"/>
-                                    <state key="normal" title="ADD GOAL"/>
-                                    <connections>
-                                        <action selector="showComposeView:" destination="iN0-l3-epB" eventType="touchUpInside" id="9BR-FX-sFu"/>
-                                    </connections>
-                                </button>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="3RH-GA-5pN" firstAttribute="leading" secondItem="Rzq-rL-1eF" secondAttribute="leading" id="1r6-Ut-zLi"/>
                                 <constraint firstItem="Gyw-PF-Jmj" firstAttribute="top" secondItem="Rzq-rL-1eF" secondAttribute="top" id="48K-9v-xLF"/>
-                                <constraint firstItem="kVe-ma-sft" firstAttribute="centerY" secondItem="Rzq-rL-1eF" secondAttribute="centerY" id="7GW-pI-F7E"/>
-                                <constraint firstAttribute="trailing" secondItem="kVe-ma-sft" secondAttribute="trailing" id="8Uo-Py-NtQ"/>
                                 <constraint firstItem="Gyw-PF-Jmj" firstAttribute="leading" secondItem="Rzq-rL-1eF" secondAttribute="leading" id="Efk-n2-31D"/>
                                 <constraint firstItem="3RH-GA-5pN" firstAttribute="top" secondItem="Rzq-rL-1eF" secondAttribute="top" id="LCL-M0-BR9"/>
                                 <constraint firstAttribute="trailing" secondItem="3RH-GA-5pN" secondAttribute="trailing" id="Z0f-iQ-pWP"/>
                                 <constraint firstAttribute="height" constant="40" id="cxf-zW-HME"/>
                                 <constraint firstItem="F0u-CV-62z" firstAttribute="centerY" secondItem="Rzq-rL-1eF" secondAttribute="centerY" id="dJF-hd-itm"/>
                                 <constraint firstItem="F0u-CV-62z" firstAttribute="leading" secondItem="Gyw-PF-Jmj" secondAttribute="trailing" id="i69-HK-jrM"/>
+                                <constraint firstAttribute="trailing" secondItem="F0u-CV-62z" secondAttribute="trailing" constant="5" id="ncO-NG-Uc7"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bRk-jJ-4SM" userLabel="Skip Bar">

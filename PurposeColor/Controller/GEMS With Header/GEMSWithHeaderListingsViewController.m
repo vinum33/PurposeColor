@@ -36,9 +36,9 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 #import "FTPopOverMenu.h"
 #import "ReportAbuseViewController.h"
 #import "ArcCollectionViewCell.h"
+#import "MTDURLPreview.h"
 
-
-@interface GEMSWithHeaderListingsViewController ()<GemListingsDelegate,CommentActionDelegate,MediaListingPageDelegate,shareMediasDelegate,SWRevealViewControllerDelegate,CreateMediaInfoDelegate>{
+@interface GEMSWithHeaderListingsViewController ()<GemListingsDelegate,CommentActionDelegate,MediaListingPageDelegate,shareMediasDelegate,SWRevealViewControllerDelegate,CreateMediaInfoDelegate,UIGestureRecognizerDelegate>{
     
     IBOutlet UICollectionView *collectionView;
     IBOutlet UIView *vwPaginationPopUp;
@@ -284,7 +284,6 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
             float imageHeight = (deviceWidth - 0) / ratio;
             float finalImgHeight = imageHeight;
             cell.imgHeight.constant = finalImgHeight;
-
             
         }else{
             cell.imgGallery.image = image;
@@ -366,12 +365,19 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     cell.delegate = self;
     [self resetCellVariables:cell];
     [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showDetailPage:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.delegate = self;
+    cell.contentView.tag = indexPath.row;
+    [cell.contentView addGestureRecognizer:singleTap];
     
     if (indexPath.row < arrGems.count) {
         
         NSDictionary *details = arrGems[indexPath.row];
         [self configureFollowButtonWithDetails:details cell:cell];
         [self configureTextVariables:details cell:cell indexPath:indexPath];
+        [self setupPreviewVariables:cell tag:indexPath.row];
+        [self getURLGromGemDetails:indexPath cell:cell details:details];
     }
     
     cell.imgProfile.tag = indexPath.row;
@@ -417,6 +423,9 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
                 
                 [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
             }
+            BOOL checkIsURLAvailable = [Utility isStringContainsURLInString:[details objectForKey:@"gem_details"]];
+            float previewHeight = (checkIsURLAvailable) ? 90 : 0;
+            finalHeight += previewHeight;
             finalHeight += imageHeight;
             return CGSizeMake(width, finalHeight);
             
@@ -464,6 +473,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    /*
     
     if (indexPath.row < arrGems.count) {
         
@@ -484,8 +494,134 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         
         
     }
+     */
 
 }
+
+-(void)showDetailPage:(UITapGestureRecognizer*)gesture{
+    
+    if (gesture.view.tag < arrGems.count) {
+        NSInteger index = gesture.view.tag;
+        NSDictionary *gemDetails = arrGems[index];
+        GEMDetailViewController *gemDetailVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMDetailPage];
+        gemDetailVC.gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemDetails];
+        gemDetailVC.delegate = self;
+        gemDetailVC.clickedIndex = index;
+        gemDetailVC.canSave = YES;
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemDetailVC];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+        
+    }
+    
+}
+-(void)showDetailPageWithIndex:(NSInteger)index{
+    
+    // When clicked from desscrption
+    if (index < arrGems.count) {
+        NSDictionary *gemDetails = arrGems[index];
+        GEMDetailViewController *gemDetailVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMDetailPage];
+        gemDetailVC.gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemDetails];
+        gemDetailVC.delegate = self;
+        gemDetailVC.clickedIndex = index;
+        gemDetailVC.canSave = YES;
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemDetailVC];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+        
+    }
+    
+}
+
+
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    
+    if ([[touch view] isKindOfClass:[KILabel class]]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+
+#pragma mark - URL Preview SetUp
+
+-(void)setupPreviewVariables:(GemsListCollectionViewCell*)cell tag:(NSInteger)tag{
+    
+    cell.lblPreviewDescription.text = @"";
+    cell.lblPreviewTitle.text = @"";
+    cell.lblPreviewDomain.text = @"";
+    cell.vwURLPreview.hidden = true;
+    cell.btnShowPreviewURL.tag = tag;
+    [cell.btnShowPreviewURL addTarget:self action:@selector(previewClickedWithGesture:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void)getURLGromGemDetails:(NSIndexPath*)indexPath cell:(GemsListCollectionViewCell*)cell details:(NSDictionary*)details{
+    
+    NSString *string = [details objectForKey:@"gem_details"];
+    NSError *error = nil;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                               error:&error];
+    NSArray *matches = [detector matchesInString:string
+                                         options:0
+                                           range:NSMakeRange(0, [string length])];
+    if (matches.count > 0) {
+        cell.vwURLPreview.hidden = false;
+        NSTextCheckingResult *match = [matches firstObject];
+        [cell.previewIndicator startAnimating];
+        [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+            [cell.previewIndicator stopAnimating];
+            cell.lblPreviewTitle.text = preview.title;
+            cell.lblPreviewDescription.text = preview.content;
+            cell.lblPreviewTitle.text = preview.title;
+            cell.lblPreviewDomain.text = preview.domain;
+            [cell.imgPreview sd_setImageWithURL:preview.imageURL
+                               placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                      }];
+            
+        }];
+    }
+}
+
+-(void)previewClickedWithGesture:(UIButton*)btn{
+    
+    if (btn.tag < arrGems.count) {
+        
+        NSDictionary *details = arrGems[btn.tag];
+        if (NULL_TO_NIL([details objectForKey:@"gem_details"])){
+            
+            NSString *string = [details objectForKey:@"gem_details"];
+            NSError *error = nil;
+            NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                       error:&error];
+            NSArray *matches = [detector matchesInString:string
+                                                 options:0
+                                                   range:NSMakeRange(0, [string length])];
+            if (matches.count > 0) {
+                NSTextCheckingResult *match = [matches firstObject];
+                [[UIApplication sharedApplication] openURL:[match URL]];
+                
+            }
+        }
+        
+    }
+}
+
+
 
 #pragma mark - Customise Cells Method
 

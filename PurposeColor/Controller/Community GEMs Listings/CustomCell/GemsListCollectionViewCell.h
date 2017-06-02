@@ -76,6 +76,11 @@
  */
 -(void)showAllCommentedUsers:(NSInteger)index;
 
+/*!
+ *This method is invoked when user Clicks "Show Commeneted Users" Button
+ */
+-(void)showDetailPageWithIndex:(NSInteger)index;
+
 
 
 
@@ -117,6 +122,15 @@
 @property (nonatomic, weak) IBOutlet UILabel *lblMediaCount;
 @property (nonatomic, weak) IBOutlet UIButton *bnExpandGallery;
 @property (nonatomic, weak) IBOutlet UIButton *btnShowInCommunity;
+
+@property (nonatomic, weak) IBOutlet UIView *vwURLPreview;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewTitle;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewDescription;
+@property (nonatomic, weak) IBOutlet UILabel *lblPreviewDomain;
+@property (nonatomic, weak) IBOutlet UIImageView *imgPreview;
+@property (nonatomic,weak) IBOutlet UIActivityIndicatorView *previewIndicator;
+@property (nonatomic, weak) IBOutlet UIButton *btnShowPreviewURL;
+
 
 @property (nonatomic,weak) IBOutlet  UIButton *btnVideoPlay;
 @property (nonatomic,weak) IBOutlet  UIButton *btnAudioPlay;

@@ -20,6 +20,7 @@
 #import "GEMSWithHeaderListingsViewController.h"
 #import "AMPopTip.h"
 #import "MyMemmoriesViewController.h"
+#import "HideAccntPopUp.h"
 
 @interface LaunchPageViewController () <SWRevealViewControllerDelegate>{
     
@@ -36,6 +37,7 @@
     IBOutlet UIButton *btnSlideMenu;
     
     AMPopTip *popTip;
+    HideAccntPopUp *hideAccntPopUp;
 }
 
 @end
@@ -46,6 +48,8 @@
     [super viewDidLoad];
     [self customSetup];
     [self launchHomePage];
+    [self checkIsAccountHidden];
+    
     
     // Do any additional setup after loading the view.
 }
@@ -56,6 +60,15 @@
     return UIStatusBarStyleLightContent;
 }
 
+-(void)checkIsAccountHidden{
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"ACCOUNT_ENABLED"]) {
+        BOOL isEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"ACCOUNT_ENABLED"];
+        if (!isEnabled) {
+             [self showHideAccountPopUp];
+        }
+    }
+}
 
 - (void)customSetup
 {
@@ -301,6 +314,48 @@
         
     }
 }
+
+
+#pragma mark - Hide Account PopUp
+
+
+-(IBAction)showHideAccountPopUp{
+    
+    if (!hideAccntPopUp) {
+        
+        hideAccntPopUp = [HideAccntPopUp new];
+        [self.view addSubview:hideAccntPopUp];
+        hideAccntPopUp.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[hideAccntPopUp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(hideAccntPopUp)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[hideAccntPopUp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(hideAccntPopUp)]];
+        hideAccntPopUp.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            // animate it to the identity transform (100% scale)
+            hideAccntPopUp.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished){
+            // if you want to do something once the animation finishes, put it here
+        }];
+        
+        
+    }
+    
+    [hideAccntPopUp setUp];
+}
+
+
+
+-(void)closeForgotPwdPopUp{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        hideAccntPopUp.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [hideAccntPopUp removeFromSuperview];
+        hideAccntPopUp = nil;
+    }];
+}
+
 
 
 #pragma mark state preservation / restoration

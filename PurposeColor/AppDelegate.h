@@ -9,23 +9,21 @@
  enum{
     
     eMenu_EmotionalAwareness = 0,
-    eMenu_GEMS = 3,
-    eMenu_Goals_Dreams = 2,
     eMenu_Emotional_Intelligence = 1,
-    eMenu_Community_GEMS = 4,
-    eMenu_Reminders = 5,
+    eMenu_Goals_Dreams = 2,
+    eMenu_Community_GEMS = 3,
      
-    eMenu_Journal = 6,
-    eMenu_SavedGEMs = 7,
-    eMenu_Notifications = 8,
-    eMenu_Privacy = 9,
-    eMenu_Terms = 10,
+    eMenu_Journal = 4,
+    eMenu_SavedGEMs = 5,
+    eMenu_Notifications = 6,
+    eMenu_Reminders = 7,
+    eMenu_Privacy = 8,
+    eMenu_Terms = 9,
+    eMenu_Help = 10,
     eMenu_Share = 11,
     eMenu_Logout = 12,
     
-     
     eMenu_Memories = 13,
-    eMenu_Help = 14,
     eMenu_Favourites = 15,
     eMenu_Profile = 16,
     eMenu_Settings = 17,

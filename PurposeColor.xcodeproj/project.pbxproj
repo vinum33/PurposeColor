@@ -64,6 +64,13 @@
 		E50680E91D30F5C10041B077 /* GEMDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E50680E81D30F5C10041B077 /* GEMDetails.storyboard */; };
 		E52DFB201DE7FB8D0033310F /* ReportAbuseListingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E52DFB1D1DE7FB8D0033310F /* ReportAbuseListingCell.m */; };
 		E52DFB211DE7FB8D0033310F /* ReportAbuseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E52DFB1F1DE7FB8D0033310F /* ReportAbuseViewController.m */; };
+		E536F4E51ECB37B800B7E396 /* MTDURLPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = E536F4DA1ECB37B800B7E396 /* MTDURLPreview.m */; };
+		E536F4E61ECB37B800B7E396 /* MTDURLPreviewCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E536F4DC1ECB37B800B7E396 /* MTDURLPreviewCache.m */; };
+		E536F4E71ECB37B800B7E396 /* MTDURLPreviewParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E536F4DE1ECB37B800B7E396 /* MTDURLPreviewParser.m */; };
+		E536F4E81ECB37B800B7E396 /* MTDURLPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = E536F4E01ECB37B800B7E396 /* MTDURLPreviewView.m */; };
+		E536F4E91ECB37B800B7E396 /* MTDHTMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E536F4E31ECB37B800B7E396 /* MTDHTMLElement.m */; };
+		E536F4EA1ECB37B800B7E396 /* MTDURLPreview.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E536F4E41ECB37B800B7E396 /* MTDURLPreview.bundle */; };
+		E536F4EC1ECB381C00B7E396 /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E536F4EB1ECB381C00B7E396 /* libxml2.2.tbd */; };
 		E53A91001E85262200AB98A8 /* CellForContactAndLoc.m in Sources */ = {isa = PBXBuildFile; fileRef = E53A90FF1E85262200AB98A8 /* CellForContactAndLoc.m */; };
 		E5469D0A1E7943C9002907B7 /* ContactsPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5469D091E7943C9002907B7 /* ContactsPickerViewController.m */; };
 		E5469D0E1E795187002907B7 /* ContactsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E5469D0D1E795187002907B7 /* ContactsTableViewCell.m */; };
@@ -101,6 +108,14 @@
 		E57AD6B71D40E7390042A8C4 /* GoalsAndDreamsListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6B21D40E7390042A8C4 /* GoalsAndDreamsListingViewController.m */; };
 		E57AD6B81D40E7390042A8C4 /* InnerTableCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6B51D40E7390042A8C4 /* InnerTableCustomCell.m */; };
 		E57AD6C01D40E7610042A8C4 /* ActionDetailPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */; };
+		E580EE1E1EDE983000099C0D /* EmotionalIntelligenceHelpView.m in Sources */ = {isa = PBXBuildFile; fileRef = E580EE1D1EDE983000099C0D /* EmotionalIntelligenceHelpView.m */; };
+		E580EE201EDE983A00099C0D /* EmotionalIntelligenceHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E580EE1F1EDE983A00099C0D /* EmotionalIntelligenceHelpView.xib */; };
+		E580EE221EDE995900099C0D /* ItelligenceCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E580EE211EDE995900099C0D /* ItelligenceCollectionViewCell.xib */; };
+		E580EE261EDED3C100099C0D /* GemDetailsCustomCellTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = E580EE241EDED3C100099C0D /* GemDetailsCustomCellTitle.m */; };
+		E580EE2A1EDEDFAC00099C0D /* GemDetailsCustomCellDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E580EE291EDEDFAC00099C0D /* GemDetailsCustomCellDescription.m */; };
+		E580EE311EDEE36C00099C0D /* GemDetailsCustomCellLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = E580EE2D1EDEE36C00099C0D /* GemDetailsCustomCellLocation.m */; };
+		E580EE321EDEE36C00099C0D /* GemDetailsCustomCellContact.m in Sources */ = {isa = PBXBuildFile; fileRef = E580EE301EDEE36C00099C0D /* GemDetailsCustomCellContact.m */; };
+		E580EE361EDEEA5300099C0D /* GemDetailsCustomCellPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = E580EE351EDEEA5300099C0D /* GemDetailsCustomCellPreview.m */; };
 		E581A4EF1E94E0D90024D052 /* AwarenessMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E581A4EE1E94E0D90024D052 /* AwarenessMediaViewController.m */; };
 		E5824B001DB4AD8700BBA4F4 /* FTPopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E5824AFF1DB4AD8700BBA4F4 /* FTPopOverMenu.m */; };
 		E586A7201E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E586A71F1E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m */; };
@@ -117,6 +132,13 @@
 		E59168D11DE6BD0200A3BDB9 /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E59168D01DE6BD0200A3BDB9 /* KILabel.m */; };
 		E5918E261E92112300E203D3 /* AwarenessHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5918E251E92112300E203D3 /* AwarenessHeader.xib */; };
 		E5918E291E92117000E203D3 /* AwarenessHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = E5918E281E92117000E203D3 /* AwarenessHeader.m */; };
+		E59BC9C51EDFC9A2002A8371 /* GoalDetailLocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E59BC9C31EDFC9A2002A8371 /* GoalDetailLocationCell.m */; };
+		E59BC9C91EDFCF91002A8371 /* GoalDetailLocationContact.m in Sources */ = {isa = PBXBuildFile; fileRef = E59BC9C81EDFCF91002A8371 /* GoalDetailLocationContact.m */; };
+		E59BC9D01EDFD128002A8371 /* GoalDetailsCustomCellDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = E59BC9CC1EDFD128002A8371 /* GoalDetailsCustomCellDescription.m */; };
+		E59BC9D11EDFD128002A8371 /* GalDetailsCustomCellPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = E59BC9CF1EDFD128002A8371 /* GalDetailsCustomCellPreview.m */; };
+		E59BC9D51EDFDAF5002A8371 /* ActionDetailsCustomCellTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = E59BC9D41EDFDAF5002A8371 /* ActionDetailsCustomCellTitle.m */; };
+		E59BC9D91EE0185A002A8371 /* DeleteAccntPopUp.m in Sources */ = {isa = PBXBuildFile; fileRef = E59BC9D81EE0185A002A8371 /* DeleteAccntPopUp.m */; };
+		E59BC9DD1EE02EFF002A8371 /* HideAccntPopUp.m in Sources */ = {isa = PBXBuildFile; fileRef = E59BC9DC1EE02EFE002A8371 /* HideAccntPopUp.m */; };
 		E59D746F1E5AF32B005844D5 /* JournalListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E59D746E1E5AF32B005844D5 /* JournalListViewController.m */; };
 		E59D74731E5AF6F0005844D5 /* JournalListCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E59D74721E5AF6F0005844D5 /* JournalListCustomCell.m */; };
 		E5A947321D33B057008BBC7F /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A9472F1D33B057008BBC7F /* HPGrowingTextView.m */; };
@@ -385,6 +407,18 @@
 		E52DFB1D1DE7FB8D0033310F /* ReportAbuseListingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportAbuseListingCell.m; sourceTree = "<group>"; };
 		E52DFB1E1DE7FB8D0033310F /* ReportAbuseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportAbuseViewController.h; sourceTree = "<group>"; };
 		E52DFB1F1DE7FB8D0033310F /* ReportAbuseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportAbuseViewController.m; sourceTree = "<group>"; };
+		E536F4D91ECB37B800B7E396 /* MTDURLPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTDURLPreview.h; sourceTree = "<group>"; };
+		E536F4DA1ECB37B800B7E396 /* MTDURLPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTDURLPreview.m; sourceTree = "<group>"; };
+		E536F4DB1ECB37B800B7E396 /* MTDURLPreviewCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTDURLPreviewCache.h; sourceTree = "<group>"; };
+		E536F4DC1ECB37B800B7E396 /* MTDURLPreviewCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTDURLPreviewCache.m; sourceTree = "<group>"; };
+		E536F4DD1ECB37B800B7E396 /* MTDURLPreviewParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTDURLPreviewParser.h; sourceTree = "<group>"; };
+		E536F4DE1ECB37B800B7E396 /* MTDURLPreviewParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTDURLPreviewParser.m; sourceTree = "<group>"; };
+		E536F4DF1ECB37B800B7E396 /* MTDURLPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTDURLPreviewView.h; sourceTree = "<group>"; };
+		E536F4E01ECB37B800B7E396 /* MTDURLPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTDURLPreviewView.m; sourceTree = "<group>"; };
+		E536F4E21ECB37B800B7E396 /* MTDHTMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTDHTMLElement.h; sourceTree = "<group>"; };
+		E536F4E31ECB37B800B7E396 /* MTDHTMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTDHTMLElement.m; sourceTree = "<group>"; };
+		E536F4E41ECB37B800B7E396 /* MTDURLPreview.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MTDURLPreview.bundle; sourceTree = "<group>"; };
+		E536F4EB1ECB381C00B7E396 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
 		E53A90FE1E85262200AB98A8 /* CellForContactAndLoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellForContactAndLoc.h; sourceTree = "<group>"; };
 		E53A90FF1E85262200AB98A8 /* CellForContactAndLoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellForContactAndLoc.m; sourceTree = "<group>"; };
 		E5469D081E7943C9002907B7 /* ContactsPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsPickerViewController.h; sourceTree = "<group>"; };
@@ -446,6 +480,20 @@
 		E57AD6B51D40E7390042A8C4 /* InnerTableCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InnerTableCustomCell.m; sourceTree = "<group>"; };
 		E57AD6BE1D40E7610042A8C4 /* ActionDetailPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDetailPageViewController.h; sourceTree = "<group>"; };
 		E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDetailPageViewController.m; sourceTree = "<group>"; };
+		E580EE1C1EDE983000099C0D /* EmotionalIntelligenceHelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmotionalIntelligenceHelpView.h; sourceTree = "<group>"; };
+		E580EE1D1EDE983000099C0D /* EmotionalIntelligenceHelpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmotionalIntelligenceHelpView.m; sourceTree = "<group>"; };
+		E580EE1F1EDE983A00099C0D /* EmotionalIntelligenceHelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmotionalIntelligenceHelpView.xib; sourceTree = "<group>"; };
+		E580EE211EDE995900099C0D /* ItelligenceCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItelligenceCollectionViewCell.xib; sourceTree = "<group>"; };
+		E580EE241EDED3C100099C0D /* GemDetailsCustomCellTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GemDetailsCustomCellTitle.m; sourceTree = "<group>"; };
+		E580EE251EDED3C100099C0D /* GemDetailsCustomCellTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GemDetailsCustomCellTitle.h; sourceTree = "<group>"; };
+		E580EE281EDEDFAC00099C0D /* GemDetailsCustomCellDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GemDetailsCustomCellDescription.h; sourceTree = "<group>"; };
+		E580EE291EDEDFAC00099C0D /* GemDetailsCustomCellDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GemDetailsCustomCellDescription.m; sourceTree = "<group>"; };
+		E580EE2C1EDEE36C00099C0D /* GemDetailsCustomCellLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GemDetailsCustomCellLocation.h; sourceTree = "<group>"; };
+		E580EE2D1EDEE36C00099C0D /* GemDetailsCustomCellLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GemDetailsCustomCellLocation.m; sourceTree = "<group>"; };
+		E580EE2F1EDEE36C00099C0D /* GemDetailsCustomCellContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GemDetailsCustomCellContact.h; sourceTree = "<group>"; };
+		E580EE301EDEE36C00099C0D /* GemDetailsCustomCellContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GemDetailsCustomCellContact.m; sourceTree = "<group>"; };
+		E580EE341EDEEA5300099C0D /* GemDetailsCustomCellPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GemDetailsCustomCellPreview.h; sourceTree = "<group>"; };
+		E580EE351EDEEA5300099C0D /* GemDetailsCustomCellPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GemDetailsCustomCellPreview.m; sourceTree = "<group>"; };
 		E581A4ED1E94E0D90024D052 /* AwarenessMediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwarenessMediaViewController.h; sourceTree = "<group>"; };
 		E581A4EE1E94E0D90024D052 /* AwarenessMediaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwarenessMediaViewController.m; sourceTree = "<group>"; };
 		E5824AFE1DB4AD8700BBA4F4 /* FTPopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPopOverMenu.h; sourceTree = "<group>"; };
@@ -474,6 +522,20 @@
 		E5918E251E92112300E203D3 /* AwarenessHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AwarenessHeader.xib; sourceTree = "<group>"; };
 		E5918E271E92117000E203D3 /* AwarenessHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwarenessHeader.h; sourceTree = "<group>"; };
 		E5918E281E92117000E203D3 /* AwarenessHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwarenessHeader.m; sourceTree = "<group>"; };
+		E59BC9C31EDFC9A2002A8371 /* GoalDetailLocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoalDetailLocationCell.m; sourceTree = "<group>"; };
+		E59BC9C41EDFC9A2002A8371 /* GoalDetailLocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalDetailLocationCell.h; sourceTree = "<group>"; };
+		E59BC9C71EDFCF91002A8371 /* GoalDetailLocationContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalDetailLocationContact.h; sourceTree = "<group>"; };
+		E59BC9C81EDFCF91002A8371 /* GoalDetailLocationContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoalDetailLocationContact.m; sourceTree = "<group>"; };
+		E59BC9CB1EDFD128002A8371 /* GoalDetailsCustomCellDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalDetailsCustomCellDescription.h; sourceTree = "<group>"; };
+		E59BC9CC1EDFD128002A8371 /* GoalDetailsCustomCellDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoalDetailsCustomCellDescription.m; sourceTree = "<group>"; };
+		E59BC9CE1EDFD128002A8371 /* GalDetailsCustomCellPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalDetailsCustomCellPreview.h; sourceTree = "<group>"; };
+		E59BC9CF1EDFD128002A8371 /* GalDetailsCustomCellPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalDetailsCustomCellPreview.m; sourceTree = "<group>"; };
+		E59BC9D31EDFDAF5002A8371 /* ActionDetailsCustomCellTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDetailsCustomCellTitle.h; sourceTree = "<group>"; };
+		E59BC9D41EDFDAF5002A8371 /* ActionDetailsCustomCellTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDetailsCustomCellTitle.m; sourceTree = "<group>"; };
+		E59BC9D71EE0185A002A8371 /* DeleteAccntPopUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteAccntPopUp.h; sourceTree = "<group>"; };
+		E59BC9D81EE0185A002A8371 /* DeleteAccntPopUp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteAccntPopUp.m; sourceTree = "<group>"; };
+		E59BC9DB1EE02EFE002A8371 /* HideAccntPopUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HideAccntPopUp.h; sourceTree = "<group>"; };
+		E59BC9DC1EE02EFE002A8371 /* HideAccntPopUp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HideAccntPopUp.m; sourceTree = "<group>"; };
 		E59D746D1E5AF32B005844D5 /* JournalListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalListViewController.h; sourceTree = "<group>"; };
 		E59D746E1E5AF32B005844D5 /* JournalListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JournalListViewController.m; sourceTree = "<group>"; };
 		E59D74711E5AF6F0005844D5 /* JournalListCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JournalListCustomCell.h; sourceTree = "<group>"; };
@@ -741,6 +803,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E536F4EC1ECB381C00B7E396 /* libxml2.2.tbd in Frameworks */,
 				E5EA21031DCC4C80005B4AEB /* EventKitUI.framework in Frameworks */,
 				E56E341C1E79069100B4C96B /* FBSDKCoreKit.framework in Frameworks */,
 				E5EED6931D6DD2F300D38633 /* AVKit.framework in Frameworks */,
@@ -780,6 +843,7 @@
 		D81A2F17790A832DA7C5A615 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E536F4EB1ECB381C00B7E396 /* libxml2.2.tbd */,
 				E577B4021EB3537E00703B2C /* FBSDKLoginKit.framework */,
 				E56E34171E79069100B4C96B /* Bolts.framework */,
 				E56E34181E79069100B4C96B /* FBSDKCoreKit.framework */,
@@ -1047,6 +1111,7 @@
 		E50680701D30F1490041B077 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				E536F4D71ECB37B700B7E396 /* URL Preview */,
 				E59168CE1DE6BD0200A3BDB9 /* KILabel */,
 				E5824AFD1DB4AD8700BBA4F4 /* FTPopOverMenu */,
 				E5EDF0F11DB21421005D0660 /* ToolTip */,
@@ -1239,6 +1304,40 @@
 				E52DFB1D1DE7FB8D0033310F /* ReportAbuseListingCell.m */,
 			);
 			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		E536F4D71ECB37B700B7E396 /* URL Preview */ = {
+			isa = PBXGroup;
+			children = (
+				E536F4D81ECB37B800B7E396 /* MTDURLPreview */,
+				E536F4E41ECB37B800B7E396 /* MTDURLPreview.bundle */,
+			);
+			path = "URL Preview";
+			sourceTree = "<group>";
+		};
+		E536F4D81ECB37B800B7E396 /* MTDURLPreview */ = {
+			isa = PBXGroup;
+			children = (
+				E536F4D91ECB37B800B7E396 /* MTDURLPreview.h */,
+				E536F4DA1ECB37B800B7E396 /* MTDURLPreview.m */,
+				E536F4DB1ECB37B800B7E396 /* MTDURLPreviewCache.h */,
+				E536F4DC1ECB37B800B7E396 /* MTDURLPreviewCache.m */,
+				E536F4DD1ECB37B800B7E396 /* MTDURLPreviewParser.h */,
+				E536F4DE1ECB37B800B7E396 /* MTDURLPreviewParser.m */,
+				E536F4DF1ECB37B800B7E396 /* MTDURLPreviewView.h */,
+				E536F4E01ECB37B800B7E396 /* MTDURLPreviewView.m */,
+				E536F4E11ECB37B800B7E396 /* Parser */,
+			);
+			path = MTDURLPreview;
+			sourceTree = "<group>";
+		};
+		E536F4E11ECB37B800B7E396 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				E536F4E21ECB37B800B7E396 /* MTDHTMLElement.h */,
+				E536F4E31ECB37B800B7E396 /* MTDHTMLElement.m */,
+			);
+			path = Parser;
 			sourceTree = "<group>";
 		};
 		E53A90FD1E85262200AB98A8 /* CellForLocAndContact */ = {
@@ -1464,12 +1563,69 @@
 		E57AD6BD1D40E7610042A8C4 /* ActionDetailPage */ = {
 			isa = PBXGroup;
 			children = (
+				E59BC9D21EDFDAF5002A8371 /* CustomCell Title */,
 				E50107F61D41D55A00E8EE57 /* CustomCell */,
 				E57AD6BE1D40E7610042A8C4 /* ActionDetailPageViewController.h */,
 				E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */,
 			);
 			name = ActionDetailPage;
 			path = ../ActionDetailPage;
+			sourceTree = "<group>";
+		};
+		E580EE1B1EDE981300099C0D /* Help Screen */ = {
+			isa = PBXGroup;
+			children = (
+				E580EE211EDE995900099C0D /* ItelligenceCollectionViewCell.xib */,
+				E580EE1C1EDE983000099C0D /* EmotionalIntelligenceHelpView.h */,
+				E580EE1D1EDE983000099C0D /* EmotionalIntelligenceHelpView.m */,
+				E580EE1F1EDE983A00099C0D /* EmotionalIntelligenceHelpView.xib */,
+			);
+			path = "Help Screen";
+			sourceTree = "<group>";
+		};
+		E580EE231EDED39700099C0D /* CustomCell Title */ = {
+			isa = PBXGroup;
+			children = (
+				E580EE241EDED3C100099C0D /* GemDetailsCustomCellTitle.m */,
+				E580EE251EDED3C100099C0D /* GemDetailsCustomCellTitle.h */,
+			);
+			path = "CustomCell Title";
+			sourceTree = "<group>";
+		};
+		E580EE271EDEDFAC00099C0D /* CustomCellDescription */ = {
+			isa = PBXGroup;
+			children = (
+				E580EE281EDEDFAC00099C0D /* GemDetailsCustomCellDescription.h */,
+				E580EE291EDEDFAC00099C0D /* GemDetailsCustomCellDescription.m */,
+			);
+			path = CustomCellDescription;
+			sourceTree = "<group>";
+		};
+		E580EE2B1EDEE36C00099C0D /* CustomCell Location */ = {
+			isa = PBXGroup;
+			children = (
+				E580EE2C1EDEE36C00099C0D /* GemDetailsCustomCellLocation.h */,
+				E580EE2D1EDEE36C00099C0D /* GemDetailsCustomCellLocation.m */,
+			);
+			path = "CustomCell Location";
+			sourceTree = "<group>";
+		};
+		E580EE2E1EDEE36C00099C0D /* CustomCell Conatct */ = {
+			isa = PBXGroup;
+			children = (
+				E580EE2F1EDEE36C00099C0D /* GemDetailsCustomCellContact.h */,
+				E580EE301EDEE36C00099C0D /* GemDetailsCustomCellContact.m */,
+			);
+			path = "CustomCell Conatct";
+			sourceTree = "<group>";
+		};
+		E580EE331EDEEA5300099C0D /* CustomCell Preview */ = {
+			isa = PBXGroup;
+			children = (
+				E580EE341EDEEA5300099C0D /* GemDetailsCustomCellPreview.h */,
+				E580EE351EDEEA5300099C0D /* GemDetailsCustomCellPreview.m */,
+			);
+			path = "CustomCell Preview";
 			sourceTree = "<group>";
 		};
 		E581A4EC1E94E0B20024D052 /* Medias */ = {
@@ -1599,6 +1755,69 @@
 				E5918E281E92117000E203D3 /* AwarenessHeader.m */,
 			);
 			path = Header;
+			sourceTree = "<group>";
+		};
+		E59BC9C21EDFC972002A8371 /* CellForLocation */ = {
+			isa = PBXGroup;
+			children = (
+				E59BC9C31EDFC9A2002A8371 /* GoalDetailLocationCell.m */,
+				E59BC9C41EDFC9A2002A8371 /* GoalDetailLocationCell.h */,
+			);
+			path = CellForLocation;
+			sourceTree = "<group>";
+		};
+		E59BC9C61EDFCF91002A8371 /* CustomCell Conatct */ = {
+			isa = PBXGroup;
+			children = (
+				E59BC9C71EDFCF91002A8371 /* GoalDetailLocationContact.h */,
+				E59BC9C81EDFCF91002A8371 /* GoalDetailLocationContact.m */,
+			);
+			path = "CustomCell Conatct";
+			sourceTree = "<group>";
+		};
+		E59BC9CA1EDFD128002A8371 /* CustomCellDescription */ = {
+			isa = PBXGroup;
+			children = (
+				E59BC9CB1EDFD128002A8371 /* GoalDetailsCustomCellDescription.h */,
+				E59BC9CC1EDFD128002A8371 /* GoalDetailsCustomCellDescription.m */,
+			);
+			path = CustomCellDescription;
+			sourceTree = "<group>";
+		};
+		E59BC9CD1EDFD128002A8371 /* CustomCell Preview */ = {
+			isa = PBXGroup;
+			children = (
+				E59BC9CE1EDFD128002A8371 /* GalDetailsCustomCellPreview.h */,
+				E59BC9CF1EDFD128002A8371 /* GalDetailsCustomCellPreview.m */,
+			);
+			path = "CustomCell Preview";
+			sourceTree = "<group>";
+		};
+		E59BC9D21EDFDAF5002A8371 /* CustomCell Title */ = {
+			isa = PBXGroup;
+			children = (
+				E59BC9D31EDFDAF5002A8371 /* ActionDetailsCustomCellTitle.h */,
+				E59BC9D41EDFDAF5002A8371 /* ActionDetailsCustomCellTitle.m */,
+			);
+			path = "CustomCell Title";
+			sourceTree = "<group>";
+		};
+		E59BC9D61EE0185A002A8371 /* Delete Accnt PopUp */ = {
+			isa = PBXGroup;
+			children = (
+				E59BC9D71EE0185A002A8371 /* DeleteAccntPopUp.h */,
+				E59BC9D81EE0185A002A8371 /* DeleteAccntPopUp.m */,
+			);
+			path = "Delete Accnt PopUp";
+			sourceTree = "<group>";
+		};
+		E59BC9DA1EE02EFE002A8371 /* Hide Account PopUp */ = {
+			isa = PBXGroup;
+			children = (
+				E59BC9DB1EE02EFE002A8371 /* HideAccntPopUp.h */,
+				E59BC9DC1EE02EFE002A8371 /* HideAccntPopUp.m */,
+			);
+			path = "Hide Account PopUp";
 			sourceTree = "<group>";
 		};
 		E59D746C1E5AF26A005844D5 /* JournalListView */ = {
@@ -1781,6 +2000,10 @@
 		E5EC86641D7023A700537A90 /* Goal Details */ = {
 			isa = PBXGroup;
 			children = (
+				E59BC9CA1EDFD128002A8371 /* CustomCellDescription */,
+				E59BC9CD1EDFD128002A8371 /* CustomCell Preview */,
+				E59BC9C61EDFCF91002A8371 /* CustomCell Conatct */,
+				E59BC9C21EDFC972002A8371 /* CellForLocation */,
 				E5E075941DA3AED500B2B49F /* ActionCustomCell */,
 				E5EC86681D7023A700537A90 /* GoalDetailViewController.h */,
 				E5EC86691D7023A700537A90 /* GoalDetailViewController.m */,
@@ -1800,6 +2023,8 @@
 		E5ED1FCC1DC1BC33003C38D3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				E59BC9DA1EE02EFE002A8371 /* Hide Account PopUp */,
+				E59BC9D61EE0185A002A8371 /* Delete Accnt PopUp */,
 				E5ED1FCD1DC1BC4F003C38D3 /* SettingsViewController.h */,
 				E5ED1FCE1DC1BC4F003C38D3 /* SettingsViewController.m */,
 			);
@@ -2151,6 +2376,7 @@
 		E5F613101D48C418002B7CB5 /* Emotional Intelligence */ = {
 			isa = PBXGroup;
 			children = (
+				E580EE1B1EDE981300099C0D /* Help Screen */,
 				E5B285FF1DAE0A82006CE3AF /* Session PopUp */,
 				E5F6131F1D48D5CB002B7CB5 /* HeaderView */,
 				E5F613111D48C438002B7CB5 /* EmotionalIntelligenceViewController.h */,
@@ -2290,6 +2516,11 @@
 		E5F9FE3E1D49C29400F22169 /* Community GEMS Detail Page */ = {
 			isa = PBXGroup;
 			children = (
+				E580EE331EDEEA5300099C0D /* CustomCell Preview */,
+				E580EE2B1EDEE36C00099C0D /* CustomCell Location */,
+				E580EE2E1EDEE36C00099C0D /* CustomCell Conatct */,
+				E580EE271EDEDFAC00099C0D /* CustomCellDescription */,
+				E580EE231EDED39700099C0D /* CustomCell Title */,
 				E5F9FE421D49C29400F22169 /* GEMDetailViewController.h */,
 				E5F9FE431D49C29400F22169 /* GEMDetailViewController.m */,
 				E5F9FE3F1D49C29400F22169 /* CustomCell */,
@@ -2492,6 +2723,9 @@
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = WT8KCK2SX3;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -2554,6 +2788,7 @@
 				E5F70EED1D50AE0900BD1A4A /* ChatDetails.storyboard in Resources */,
 				E5A947431D33B0E6008BBC7F /* MessageEntrySendButtonPressed@2x.png in Resources */,
 				E5F612F71D4887D4002B7CB5 /* discard.png in Resources */,
+				E580EE201EDE983A00099C0D /* EmotionalIntelligenceHelpView.xib in Resources */,
 				E5F612F91D4887D4002B7CB5 /* flash-auto.png in Resources */,
 				E5B286041DAE0ABE006CE3AF /* EmotionSessionLists.xib in Resources */,
 				E5ED40141D82BCF000A3F455 /* animation6.png in Resources */,
@@ -2576,6 +2811,7 @@
 				E5ED4EAE1D90FDF90051B177 /* shareMedias.xib in Resources */,
 				E50680DB1D30F1490041B077 /* times.ttf in Resources */,
 				E50680D81D30F1490041B077 /* Nougat-ExtraBlack.ttf in Resources */,
+				E580EE221EDE995900099C0D /* ItelligenceCollectionViewCell.xib in Resources */,
 				E50680D41D30F1490041B077 /* HelveticaNeueLTStd-Lt.otf in Resources */,
 				E5F613011D4887D4002B7CB5 /* front-camera.png in Resources */,
 				E5E333F41D65AEAA00C7CFA6 /* SelectYourGoalsAndDreams.xib in Resources */,
@@ -2606,6 +2842,7 @@
 				E5F613211D48D5E5002B7CB5 /* EmotionalIntelligenceHeader.xib in Resources */,
 				E5F613031D4887D4002B7CB5 /* screenshot.jpg in Resources */,
 				E5ED4EB01D90FDF90051B177 /* shareMediasCell.xib in Resources */,
+				E536F4EA1ECB37B800B7E396 /* MTDURLPreview.bundle in Resources */,
 				E5ED40161D82BCF000A3F455 /* animation8.png in Resources */,
 				E589F2C11EB88E5A003B8B4C /* GoogleService-Info.plist in Resources */,
 				E56AF3AF1DB5E48C00029DA1 /* GoalsCustomCell.xib in Resources */,
@@ -2805,6 +3042,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5F7C5BD1D4761EA00585349 /* CircleProgressBar.m in Sources */,
+				E59BC9D01EDFD128002A8371 /* GoalDetailsCustomCellDescription.m in Sources */,
 				E50680C81D30F1490041B077 /* APIMapper.m in Sources */,
 				E5918E291E92117000E203D3 /* AwarenessHeader.m in Sources */,
 				E5EC866E1D7042B500537A90 /* MemmoriesDisplayCell.m in Sources */,
@@ -2837,8 +3075,10 @@
 				E573C2341E5D6EA50070DF7E /* JournalGalleryViewController.m in Sources */,
 				E56AF3AE1DB5E48C00029DA1 /* GoalsCustomCell.m in Sources */,
 				E5EDF1001DB21421005D0660 /* AMPopTip+Exit.m in Sources */,
+				E580EE311EDEE36C00099C0D /* GemDetailsCustomCellLocation.m in Sources */,
 				E50680B41D30F1490041B077 /* LoginViewController.m in Sources */,
 				E5F3B5721DB0D16100194CDA /* WebBrowserViewController.m in Sources */,
+				E580EE361EDEEA5300099C0D /* GemDetailsCustomCellPreview.m in Sources */,
 				E573C2311E5D62F10070DF7E /* JournalDetailPageViewController.m in Sources */,
 				E50680C51D30F1490041B077 /* MBProgressHUD.m in Sources */,
 				E5ED6C871D643C04009B9B37 /* SelectYourEmotion.m in Sources */,
@@ -2856,19 +3096,23 @@
 				E5FE41391D51ECA600BEFBF0 /* JCNotificationBannerViewIOSStyle.m in Sources */,
 				E5F612DD1D4887A2002B7CB5 /* PhotoPickerCell.m in Sources */,
 				E5EDF0FE1DB21421005D0660 /* AMPopTip+Draw.m in Sources */,
+				E59BC9C51EDFC9A2002A8371 /* GoalDetailLocationCell.m in Sources */,
 				E50680B91D30F1490041B077 /* RegistrationViewController.m in Sources */,
 				E50680B51D30F1490041B077 /* StateListViewPopUp.m in Sources */,
 				E5F5FCF41D45D0B5002658B0 /* ActionMediaComposeCell.m in Sources */,
 				E5F9FE521D49C29400F22169 /* GemDetailsCustomTableViewCell.m in Sources */,
 				E57AD6B81D40E7390042A8C4 /* InnerTableCustomCell.m in Sources */,
+				E580EE1E1EDE983000099C0D /* EmotionalIntelligenceHelpView.m in Sources */,
 				E50680C01D30F1490041B077 /* Constants.m in Sources */,
 				E58F49B21E80024D00994836 /* EventDescriptionCell.m in Sources */,
 				E58D16CF1E93738F0094C48B /* SelectedValue_1.m in Sources */,
+				E580EE261EDED3C100099C0D /* GemDetailsCustomCellTitle.m in Sources */,
 				E5F75E471D6EE96C009EF545 /* MyMemmoriesViewController.m in Sources */,
 				E5F70EF41D50BDD900BD1A4A /* ChatComposeViewController.m in Sources */,
 				E5ED40001D827F6700A3F455 /* UITextView+Placeholder.m in Sources */,
 				E50680B61D30F1490041B077 /* MenuViewController.m in Sources */,
 				E57AD6B61D40E7390042A8C4 /* GoalsAndDreamsCustomCell.m in Sources */,
+				E59BC9C91EDFCF91002A8371 /* GoalDetailLocationContact.m in Sources */,
 				E5F9FE541D49C29400F22169 /* CommunityGEMListingViewController.m in Sources */,
 				E50680BC1D30F1490041B077 /* UIStoryboard+Storyboard.m in Sources */,
 				E56C1D281E83F24700DFFE5B /* ASJTag.m in Sources */,
@@ -2895,10 +3139,12 @@
 				E5EDF0FD1DB21421005D0660 /* AMPopTip+Animation.m in Sources */,
 				E5F612E11D4887A2002B7CB5 /* UIView+RNActivityView.m in Sources */,
 				E586A7201E7F9E4C000F0A37 /* EmotionalAwarenessViewController.m in Sources */,
+				E536F4E81ECB37B800B7E396 /* MTDURLPreviewView.m in Sources */,
 				E50680C91D30F1490041B077 /* User.m in Sources */,
 				E573C2381E5D71350070DF7E /* JournalGalleryCell.m in Sources */,
 				E5FE41361D51ECA600BEFBF0 /* JCNotificationBannerView.m in Sources */,
 				E5A947331D33B057008BBC7F /* HPTextViewInternal.m in Sources */,
+				E536F4E71ECB37B800B7E396 /* MTDURLPreviewParser.m in Sources */,
 				E5E8A3171DD31957006DF12E /* ReminderListingViewController.m in Sources */,
 				E5F9FE531D49C29400F22169 /* GEMDetailViewController.m in Sources */,
 				E59D74731E5AF6F0005844D5 /* JournalListCustomCell.m in Sources */,
@@ -2910,6 +3156,7 @@
 				E5F612D71D4887A2002B7CB5 /* ColorUtil.m in Sources */,
 				E58F49AE1E7FF6B500994836 /* EventTitleCell.m in Sources */,
 				E5E9221A1DDB090C00BE8A1D /* LaunchPageViewController.m in Sources */,
+				E59BC9D11EDFD128002A8371 /* GalDetailsCustomCellPreview.m in Sources */,
 				E5F555D41D8BC1A600B739AC /* LikedAndCommentedUserListings.m in Sources */,
 				E5F9FE571D49C29400F22169 /* GEMSListingHeaderView.m in Sources */,
 				E5FE41341D51ECA600BEFBF0 /* JCNotificationBannerPresenterIOSStyle.m in Sources */,
@@ -2921,14 +3168,17 @@
 				E50680B31D30F1490041B077 /* ForgotPasswordPopUp.m in Sources */,
 				E5F5FCF91D45EB99002658B0 /* ActionMediaListCell.m in Sources */,
 				E5EB735B1DB72B4000169B0E /* QuickGoalViewController.m in Sources */,
+				E580EE321EDEE36C00099C0D /* GemDetailsCustomCellContact.m in Sources */,
 				E50680C31D30F1490041B077 /* ALToastView.m in Sources */,
 				E59D746F1E5AF32B005844D5 /* JournalListViewController.m in Sources */,
+				E59BC9D51EDFDAF5002A8371 /* ActionDetailsCustomCellTitle.m in Sources */,
 				E5F7C5C51D477C9700585349 /* CreateEventCustomCell.m in Sources */,
 				E5F3B5761DB0E55100194CDA /* ChangePasswordPopUp.m in Sources */,
 				E5ED3FFE1D827F6700A3F455 /* PhotoBrowser.m in Sources */,
 				E5F666ED1D4B4169006F0C70 /* NotificationsListingViewController.m in Sources */,
 				E5F666EC1D4B4169006F0C70 /* NotificationListingCell.m in Sources */,
 				E5A947321D33B057008BBC7F /* HPGrowingTextView.m in Sources */,
+				E536F4E61ECB37B800B7E396 /* MTDURLPreviewCache.m in Sources */,
 				E50107F91D41D57600E8EE57 /* ActionDetailsCustomCell.m in Sources */,
 				E56C1D2A1E83F24700DFFE5B /* ASJTagsView.m in Sources */,
 				E5E333F31D65AEAA00C7CFA6 /* SelectYourGoalsAndDreams.m in Sources */,
@@ -2940,22 +3190,27 @@
 				E5469D0A1E7943C9002907B7 /* ContactsPickerViewController.m in Sources */,
 				E5824B001DB4AD8700BBA4F4 /* FTPopOverMenu.m in Sources */,
 				E5ED1FCB1DC1B59B003C38D3 /* NFXIntroViewController.m in Sources */,
+				E536F4E51ECB37B800B7E396 /* MTDURLPreview.m in Sources */,
 				E5FE41351D51ECA600BEFBF0 /* JCNotificationBannerPresenterSmokeStyle.m in Sources */,
 				E53A91001E85262200AB98A8 /* CellForContactAndLoc.m in Sources */,
 				E50680C71D30F1490041B077 /* main.m in Sources */,
 				E5F5FD021D461002002658B0 /* AudioManagerView.m in Sources */,
 				E589F2C51EB893DF003B8B4C /* IntroScreenViewController.m in Sources */,
 				E5F70EF81D50C0D300BD1A4A /* ComposeMessageTableViewCell.m in Sources */,
+				E580EE2A1EDEDFAC00099C0D /* GemDetailsCustomCellDescription.m in Sources */,
 				E50680BA1D30F1490041B077 /* SignSpot.xcdatamodel in Sources */,
 				E5F51DFB1DA63783000E8487 /* CustomCellWithTable.m in Sources */,
 				E578EA111D5DA7FB00CFF086 /* ImotionDisplayCell.m in Sources */,
 				E59168D11DE6BD0200A3BDB9 /* KILabel.m in Sources */,
+				E59BC9DD1EE02EFF002A8371 /* HideAccntPopUp.m in Sources */,
 				E5EC86631D6FEEDA00537A90 /* MemmoriesHeaderDisplayCell.m in Sources */,
 				E52DFB201DE7FB8D0033310F /* ReportAbuseListingCell.m in Sources */,
 				E578EA0D1D5DA2DF00CFF086 /* ImotinalAwarenessViewController.m in Sources */,
+				E536F4E91ECB37B800B7E396 /* MTDHTMLElement.m in Sources */,
 				E5EFA63D1DCAF63A0054559D /* GEMSWithHeaderListingsViewController.m in Sources */,
 				E5ED4EAF1D90FDF90051B177 /* shareMediasCell.m in Sources */,
 				E5FE413B1D51ECA600BEFBF0 /* JCNotificationCenter.m in Sources */,
+				E59BC9D91EE0185A002A8371 /* DeleteAccntPopUp.m in Sources */,
 				E5EC6DEA1DB8D169007A642E /* ActionMediaForGoalComposeCell.m in Sources */,
 				E50680CA1D30F1490041B077 /* MoreOptionsListingView.m in Sources */,
 			);
@@ -3097,12 +3352,37 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PurposeColor/PrefixHeader.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_ROOT}/Google/Headers",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
+					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMOAuth2\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMSessionFetcher\"",
+					"\"${PODS_ROOT}/Headers/Public/Google\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleAppUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleMaps\"",
+					"\"${PODS_ROOT}/Headers/Public/GooglePlacePicker\"",
+					"\"${PODS_ROOT}/Headers/Public/GooglePlaces\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleToolboxForMac\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					/usr/include/libxml2,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/PurposeColor/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
+				PROVISIONING_PROFILE = "e218fca5-23e9-4407-9f9f-60772cc63806";
 				PROVISIONING_PROFILE_SPECIFIER = "PurposeColor Dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -3129,12 +3409,37 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PurposeColor/PrefixHeader.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_ROOT}/Google/Headers",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
+					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMOAuth2\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMSessionFetcher\"",
+					"\"${PODS_ROOT}/Headers/Public/Google\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleAppUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleMaps\"",
+					"\"${PODS_ROOT}/Headers/Public/GooglePlacePicker\"",
+					"\"${PODS_ROOT}/Headers/Public/GooglePlaces\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleToolboxForMac\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					/usr/include/libxml2,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/PurposeColor/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "cf35629e-3aea-4a13-a7cf-f0ba4bcfee54";
+				PROVISIONING_PROFILE = "e218fca5-23e9-4407-9f9f-60772cc63806";
 				PROVISIONING_PROFILE_SPECIFIER = "PurposeColor Dev";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

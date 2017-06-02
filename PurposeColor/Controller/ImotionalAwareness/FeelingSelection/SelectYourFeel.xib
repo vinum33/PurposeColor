@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="DroidSansMerged-Regular.ttf">
+        <array key="DroidSans.ttf">
             <string>DroidSans</string>
         </array>
     </customFonts>
@@ -35,13 +35,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you like how you're feeling now?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1V-Ix-fVn" userLabel="Rate your feeling">
-                            <rect key="frame" x="75" y="10" width="226" height="16.5"/>
-                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                            <rect key="frame" x="40" y="10" width="242" height="17.5"/>
+                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="15"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FVr-h2-W0e">
-                            <rect key="frame" x="0.0" y="36.5" width="375" height="630.5"/>
+                            <rect key="frame" x="0.0" y="37.5" width="375" height="629.5"/>
                             <color key="backgroundColor" red="0.0039215686274509803" green="0.12941176470588234" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="separatorColor" red="0.047058823530000002" green="0.23137254900000001" blue="0.37254901959999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -59,7 +59,7 @@
                         <constraint firstItem="FVr-h2-W0e" firstAttribute="leading" secondItem="4nn-AR-uOq" secondAttribute="leading" id="LA9-KB-XC5"/>
                         <constraint firstItem="aOb-Ft-n5U" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" id="LTe-5U-AqZ"/>
                         <constraint firstItem="K1V-Ix-fVn" firstAttribute="top" secondItem="4nn-AR-uOq" secondAttribute="top" constant="10" id="RBX-W1-483"/>
-                        <constraint firstItem="K1V-Ix-fVn" firstAttribute="centerX" secondItem="4nn-AR-uOq" secondAttribute="centerX" id="ZDx-zL-syf"/>
+                        <constraint firstItem="K1V-Ix-fVn" firstAttribute="leading" secondItem="aOb-Ft-n5U" secondAttribute="trailing" id="UqA-Kr-s3S"/>
                         <constraint firstItem="FVr-h2-W0e" firstAttribute="top" secondItem="K1V-Ix-fVn" secondAttribute="bottom" constant="10" id="krz-li-O5n"/>
                     </constraints>
                 </view>

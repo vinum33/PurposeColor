@@ -2328,7 +2328,51 @@
         }
         failure (operation,error);
     }];
+}
 
++ (void)deleteOrHideMyAccountWithType:(NSString*)type success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=deleteaccount",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    [params setObject:type forKey:@"type"];
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+
+    
+}
+
++ (void)enableUserAccountOnsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@action=enableaccount",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    [manager POST:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
     
 }
 

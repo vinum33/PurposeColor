@@ -36,8 +36,9 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 #import "MenuViewController.h"
 #import "FTPopOverMenu.h"
 #import "ReportAbuseViewController.h"
+#import "MTDURLPreview.h"
 
-@interface CommunityGEMListingViewController ()<GemListingsDelegate,CommentActionDelegate,MediaListingPageDelegate,shareMediasDelegate,SWRevealViewControllerDelegate>{
+@interface CommunityGEMListingViewController ()<GemListingsDelegate,CommentActionDelegate,MediaListingPageDelegate,shareMediasDelegate,SWRevealViewControllerDelegate,UIGestureRecognizerDelegate>{
     
     IBOutlet UICollectionView *collectionView;
     IBOutlet UIView *vwPaginationPopUp;
@@ -264,6 +265,12 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         
     }
     GemsListCollectionViewCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showDetailPage:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.delegate = self;
+    cell.contentView.tag = indexPath.row;
+    [cell.contentView addGestureRecognizer:singleTap];
+    
     cell.delegate = self;
     [self resetCellVariables:cell];
     [cell setUpIndexPathWithRow:indexPath.row section:indexPath.section];
@@ -273,8 +280,36 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         NSDictionary *details = arrGems[indexPath.row];
         [self configureFollowButtonWithDetails:details cell:cell];
         [self configureTextVariables:details cell:cell indexPath:indexPath];
+        [self setupPreviewVariables:cell tag:indexPath.row];
+        if (NULL_TO_NIL([details objectForKey:@"gem_details"])){
+            
+            NSString *string = [details objectForKey:@"gem_details"];
+            NSError *error = nil;
+            NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                       error:&error];
+            NSArray *matches = [detector matchesInString:string
+                                                 options:0
+                                                   range:NSMakeRange(0, [string length])];
+            if (matches.count > 0) {
+                cell.vwURLPreview.hidden = false;
+                NSTextCheckingResult *match = [matches firstObject];
+                [cell.previewIndicator startAnimating];
+                [MTDURLPreview loadPreviewWithURL:[match URL] completion:^(MTDURLPreview *preview, NSError *error) {
+                    [cell.previewIndicator stopAnimating];
+                    cell.lblPreviewTitle.text = preview.title;
+                    cell.lblPreviewDescription.text = preview.content;
+                    cell.lblPreviewTitle.text = preview.title;
+                    cell.lblPreviewDomain.text = preview.domain;
+                    [cell.imgPreview sd_setImageWithURL:preview.imageURL
+                                       placeholderImage:[UIImage imageNamed:@"NoImage.png"]
+                                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                              }];
+                    
+                }];
+            }
+            
+        }
     }
-    
     cell.imgProfile.tag = indexPath.row;
     cell.imgProfile.userInteractionEnabled = true;
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showUserProfilePage:)];
@@ -312,10 +347,12 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
                         imageHeight = (collectionView.frame.size.width - padding) / ratio;
                     }
                 }
-                
                 [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
                 
             }
+            BOOL checkIsURLAvailable = [Utility isStringContainsURLInString:[details objectForKey:@"gem_details"]];
+            float previewHeight = (checkIsURLAvailable) ? 90 : 0;
+            finalHeight += previewHeight;
             finalHeight += imageHeight;
             return CGSizeMake(width, finalHeight);
            
@@ -362,6 +399,7 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 - (UICollectionReusableView *)collectionView:(UICollectionView *)_collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionReusableView *reusableview = nil;
+    return reusableview;
     
     if (kind == UICollectionElementKindSectionHeader) {
         GEMSListingHeaderView *headerView = [_collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"GEMSListingHeaderView" forIndexPath:indexPath];
@@ -372,15 +410,71 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 }
 - (CGSize)collectionView:(UICollectionView *)_collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     
-    if (!isDataAvailable) return CGSizeZero;
-    return CGSizeMake(_collectionView.bounds.size.width, 45);
+    return CGSizeZero;
+   // if (!isDataAvailable) return CGSizeZero;
+  //  return CGSizeMake(_collectionView.bounds.size.width, 45);
     
     
 }
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    /*
     NSInteger index = indexPath.row;
+    if (index < arrGems.count) {
+        
+        NSDictionary *gemDetails = arrGems[index];
+        GEMDetailViewController *gemDetailVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMDetailPage];
+        gemDetailVC.gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemDetails];
+        gemDetailVC.delegate = self;
+        gemDetailVC.clickedIndex = index;
+        gemDetailVC.canSave = YES;
+        AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemDetailVC];
+        app.navGeneral.navigationBarHidden = true;
+        [UIView transitionWithView:app.window
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{  app.window.rootViewController = app.navGeneral; }
+                        completion:nil];
+        
+        
+    }*/
+
+   
+}
+
+-(void)showDetailPage:(UITapGestureRecognizer*)gesture{
+    
+    if (gesture.view.tag < arrGems.count) {
+        NSInteger index = gesture.view.tag;
+        if (index < arrGems.count) {
+            
+            NSDictionary *gemDetails = arrGems[index];
+            GEMDetailViewController *gemDetailVC =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGEMDetailPage];
+            gemDetailVC.gemDetails = [NSMutableDictionary dictionaryWithDictionary:gemDetails];
+            gemDetailVC.delegate = self;
+            gemDetailVC.clickedIndex = index;
+            gemDetailVC.canSave = YES;
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            app.navGeneral = [[UINavigationController alloc] initWithRootViewController:gemDetailVC];
+            app.navGeneral.navigationBarHidden = true;
+            [UIView transitionWithView:app.window
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{  app.window.rootViewController = app.navGeneral; }
+                            completion:nil];
+            
+            
+        }
+
+    }
+    
+}
+
+-(void)showDetailPageWithIndex:(NSInteger)index{
+    
+    // When clicked from desscrption
     if (index < arrGems.count) {
         
         NSDictionary *gemDetails = arrGems[index];
@@ -401,10 +495,56 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
         
     }
 
-   
+    
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    
+    if ([[touch view] isKindOfClass:[KILabel class]]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+
 #pragma mark - Customise Cells Method
+
+-(void)previewClickedWithGesture:(UIButton*)btn{
+    
+    if (btn.tag < arrGems.count) {
+        
+        NSDictionary *details = arrGems[btn.tag];
+        if (NULL_TO_NIL([details objectForKey:@"gem_details"])){
+            
+            NSString *string = [details objectForKey:@"gem_details"];
+            NSError *error = nil;
+            NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                                       error:&error];
+            NSArray *matches = [detector matchesInString:string
+                                                 options:0
+                                                   range:NSMakeRange(0, [string length])];
+            if (matches.count > 0) {
+                NSTextCheckingResult *match = [matches firstObject];
+                [[UIApplication sharedApplication] openURL:[match URL]];
+                
+            }
+        }
+        
+    }
+}
+
+-(void)setupPreviewVariables:(GemsListCollectionViewCell*)cell tag:(NSInteger)tag{
+    
+    cell.lblPreviewDescription.text = @"";
+    cell.lblPreviewTitle.text = @"";
+    cell.lblPreviewDomain.text = @"";
+    cell.vwURLPreview.hidden = true;
+    cell.btnShowPreviewURL.tag = tag;
+    [cell.btnShowPreviewURL addTarget:self action:@selector(previewClickedWithGesture:) forControlEvents:UIControlEventTouchUpInside];
+}
 
 -(void)resetCellVariables:(GemsListCollectionViewCell*)cell{
     
@@ -479,9 +619,11 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
 
 -(void)configureTextVariables:(NSDictionary*)details cell:(GemsListCollectionViewCell*)cell indexPath:(NSIndexPath*)indexPath{
     
+    cell.vwURLPreview.hidden = true;
     cell.lblName.text = [details objectForKey:@"firstname"];
     cell.lblTime.text = [Utility getDaysBetweenTwoDatesWith:[[details objectForKey:@"gem_datetime"] doubleValue]];
     cell.lblTitle.text = @"";
+    cell.lblDescription.text = @"";
     cell.constraintDescTopOne.priority = 998;
     cell.constraintDescTopTwo.priority = 999;
     if (NULL_TO_NIL([details objectForKey:@"gem_title"])){

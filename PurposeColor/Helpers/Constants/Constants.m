@@ -20,8 +20,13 @@ NSString * const CommonFontBold = @"HelveticaNeueLTStd-Bd";
 NSString * const CommonFont_New = @"DroidSans";
 NSString * const CommonFontBold_New = @"DroidSans-Bold";
 
-NSString * const BaseURLString = @"http://purposecodes.com/purposetest/api.php?";
-NSString * const ExternalWebURL = @"http://purposecodes.com/purposetest/";
+
+
+//NSString * const BaseURLString = @"http://purposecodes.com/purposetest/api.php?";
+//NSString * const ExternalWebURL = @"http://purposecodes.com/purposetest/";
+
+NSString * const BaseURLString = @"http://purposecolor.com/production/api.php?";
+NSString * const ExternalWebURL = @"http://purposecolor.com/production/";
 NSString * const AppStoreURL = @"https://itunes.apple.com/us/app/purpose-color-life-success/id1186639523?ls=1&mt=8";
 
 NSString * const GoogleMapAPIKey = @"AIzaSyDwcah6ptF0g4YVJObxiKzTNUPfbl1nUYE";
