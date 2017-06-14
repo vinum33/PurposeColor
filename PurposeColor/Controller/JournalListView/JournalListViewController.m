@@ -262,14 +262,6 @@
                 [cell.imgGemMedia sd_setImageWithURL:[NSURL URLWithString:[journal objectForKey:@"display_image"]]
                                     placeholderImage:[UIImage imageNamed:@"NoImage.png"]
                                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                               [UIView transitionWithView:cell.imgGemMedia
-                                                                 duration:.5f
-                                                                  options:UIViewAnimationOptionTransitionCrossDissolve
-                                                               animations:^{
-                                                                   cell.imgGemMedia.image = image;
-                                                               } completion:nil];
-                                               
-                                               
                                                [cell.activityIndicator stopAnimating];
                                            }];
 

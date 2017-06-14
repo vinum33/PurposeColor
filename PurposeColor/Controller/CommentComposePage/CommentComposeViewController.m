@@ -27,6 +27,7 @@
     HPGrowingTextView *textView;
     BOOL isDataAvailable;
     UIButton *btnDone;
+    NSString *strNoDataText;
     
 }
 
@@ -121,6 +122,12 @@
             
         }
         
+    }else{
+        
+        if ([responds objectForKey:@"text"]) {
+            strNoDataText = [responds objectForKey:@"text"];
+        }
+        
     }
     
     if (arrComments.count) isDataAvailable = true;
@@ -150,7 +157,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     UITableViewCell *_cell;
     if (!isDataAvailable) {
-        _cell = [Utility getNoDataCustomCellWith:_tableView withTitle:@"No comments yet."];
+        _cell = [Utility getNoDataCustomCellWith:_tableView withTitle:strNoDataText];
         _cell.backgroundColor = [UIColor whiteColor];
         _cell.contentView.backgroundColor = [UIColor whiteColor];
         return _cell;

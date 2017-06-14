@@ -130,10 +130,14 @@
         [contactList addObject:dOfPerson];
         
     }
-    isDataAvailable = false;
-    if (contactList.count) isDataAvailable = true;
-    arrFiltered = [NSMutableArray arrayWithArray:contactList];
-    [tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        isDataAvailable = false;
+        if (contactList.count) isDataAvailable = true;
+        arrFiltered = [NSMutableArray arrayWithArray:contactList];
+        [tableView reloadData];
+    });
+    
+   
         
     //NSLog(@"Contacts = %@",contactList);
 }

@@ -10,6 +10,8 @@
 
 @interface AudioManagerView : UIView
 
+@property (nonatomic,assign) BOOL isJournal;
+
 -(void)setUp;
 -(void)startRecording;
 -(void) playAudio;

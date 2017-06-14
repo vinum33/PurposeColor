@@ -13,4 +13,10 @@
 +(void)saveSelectedVideoFileToFolderWithURL:(NSData*)movieData;
 +(void)saveSelectedImageFileToFolderWithImage:(UIImage*)info;
 +(NSString*)getPathWhereVideoNeedsToBeSaved;
+
+
++(NSString*)getPathWhereJournalVideoNeedsToBeSaved;
++(void)saveJournalVideoFileToFolderWithURL:(NSData*)movieData;
++(void)saveJournalImageFileToFolderWithImage:(UIImage*)image;
+
 @end

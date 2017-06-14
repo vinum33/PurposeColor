@@ -325,13 +325,15 @@
     
     CreateActionInfoViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForCreateActionMedias];
     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
-    app.navGeneral.navigationBarHidden = true;
-    [UIView transitionWithView:app.window
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{  app.window.rootViewController = app.navGeneral; }
-                    completion:nil];
+    [app.navGeneral pushViewController:detailPage animated:YES];
+    
+//    app.navGeneral = [[UINavigationController alloc] initWithRootViewController:detailPage];
+//    app.navGeneral.navigationBarHidden = true;
+//    [UIView transitionWithView:app.window
+//                      duration:0.3
+//                       options:UIViewAnimationOptionTransitionCrossDissolve
+//                    animations:^{  app.window.rootViewController = app.navGeneral; }
+//                    completion:nil];
     detailPage.strTitle = @"CREATE ACTION";
     detailPage.actionType = eActionTypeActions;
     detailPage.delegate = self;

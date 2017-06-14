@@ -17,6 +17,7 @@
 +(UITableViewCell *)getNoDataCustomCellWith:(UITableView*)table withTitle:(NSString*)title;
 +(void)removeAViewControllerFromNavStackWithType:(Class)vc from:(NSArray*)array;
 +(NSString*)getMediaSaveFolderPath;
++(NSString*)getJournalMediaSaveFolderPath;
 +(NSString*)convertServerTimeToHours:(double)timeInSeconds;
 +(UIImage*)getThumbNailFromVideoURL:NSStringpartOneUrl;
 +(NSString*)getDaysBetweenTwoDatesWith:(double)timeInSeconds;

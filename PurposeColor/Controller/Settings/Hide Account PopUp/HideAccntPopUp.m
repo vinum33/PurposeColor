@@ -79,7 +79,7 @@
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:MyIdentifier];
-    cell.contentView.backgroundColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1.0];
+    cell.contentView.backgroundColor = [UIColor whiteColor];
     UILabel *lblText;
     if (![[cell contentView] viewWithTag:1]) {
         lblText = [UILabel new];
@@ -102,6 +102,9 @@
         [attString addAttribute:NSFontAttributeName
                           value:[UIFont fontWithName:CommonFont_New size:13.0]
                           range:NSMakeRange(15, attString.length - 15)];
+        [attString addAttribute:NSForegroundColorAttributeName
+                          value:[UIColor getThemeColor]
+                          range:NSMakeRange(0, 14)];
         
         lblText.attributedText = attString;
     }

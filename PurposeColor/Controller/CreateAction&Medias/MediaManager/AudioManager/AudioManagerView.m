@@ -37,6 +37,9 @@
     NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString] ;
     NSString *uniqueFileName = [NSString stringWithFormat:@"%@_%@", prefixString, guid];
     NSURL *outputFileURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.aac",[Utility getMediaSaveFolderPath],uniqueFileName]];
+    if (_isJournal) {
+        outputFileURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.aac",[Utility getJournalMediaSaveFolderPath],uniqueFileName]];
+    }
     // Setup audio session
     AVAudioSession *session = [AVAudioSession sharedInstance];
     [session setCategory:AVAudioSessionCategoryRecord error:nil];
@@ -113,7 +116,6 @@
 
 - (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)avrecorder successfully:(BOOL)flag{
     
-    NSLog(@"Completed");
 }
 
 -(void)updateRecordingTime:(NSTimer*)_timer{

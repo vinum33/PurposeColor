@@ -97,7 +97,7 @@
             NSString *fileName = _arrMedias[indexPath.row];
             if ([[fileName pathExtension] isEqualToString:@"jpeg"]) {
                 //This is Image File with .png Extension , Photos.
-                NSString *filePath = [Utility getMediaSaveFolderPath];
+                NSString *filePath = [Utility getJournalMediaSaveFolderPath];
                 NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
                 if (imagePath.length) {
                     [cell.indicator startAnimating];
@@ -114,7 +114,7 @@
             }
             else if ([[fileName pathExtension] isEqualToString:@"mp4"]) {
                 //This is Image File with .mp4 Extension , Video Files
-                NSString *filePath = [Utility getMediaSaveFolderPath];
+                NSString *filePath = [Utility getJournalMediaSaveFolderPath];
                 NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
                 [[cell btnVideoPlay]setHidden:false];
                 if (imagePath.length){
@@ -162,7 +162,7 @@
         NSString *strURL = (NSString*)_arrMedias[indexPath.row];
         if ([strURL hasPrefix:@"PurposeColorImage"]) {
             if (![images containsObject:strURL]) {
-                [images addObject:strURL];
+               [images addObject:strURL];
             }
         }
     }
@@ -341,7 +341,7 @@
 }
 - (void)removeAMediaFileWithName:(NSString *)filename
 {
-    NSString *dataPath = [Utility getMediaSaveFolderPath];
+    NSString *dataPath = [Utility getJournalMediaSaveFolderPath];
     NSString *filePath = [dataPath stringByAppendingPathComponent:filename];
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -377,7 +377,7 @@
 }
 -(void)getAllMediaFiles{
     
-    NSString *dataPath = [Utility getMediaSaveFolderPath];
+    NSString *dataPath = [Utility getJournalMediaSaveFolderPath];
     NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dataPath error:NULL];
     NSError* error = nil;
     // sort by creation date
@@ -430,7 +430,7 @@
 
 -(void)removeAllContentsInMediaFolder{
     
-    NSString *dataPath = [Utility getMediaSaveFolderPath];
+    NSString *dataPath = [Utility getJournalMediaSaveFolderPath];
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL success = [fileManager removeItemAtPath:dataPath error:&error];
@@ -454,6 +454,7 @@
         photoBrowser = [[[NSBundle mainBundle] loadNibNamed:@"PhotoBrowser" owner:self options:nil] objectAtIndex:0];
         photoBrowser.delegate = self;
     }
+    photoBrowser.isFromAwareness = true;
     AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
     UIView *vwPopUP = photoBrowser;
     [app.window.rootViewController.view addSubview:vwPopUP];
@@ -503,7 +504,7 @@
                 NSError* error;
                 [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
                 [[AVAudioSession sharedInstance] setActive:NO error:&error];
-                NSString *filePath = [Utility getMediaSaveFolderPath];
+                NSString *filePath = [Utility getJournalMediaSaveFolderPath];
                 NSString *path = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
                 NSURL  *videourl =[NSURL fileURLWithPath:path];
                 AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
@@ -519,7 +520,7 @@
             else if ([[fileName pathExtension] isEqualToString:@"aac"]){
                 // Recorded Audio
                 
-                NSString *filePath = [Utility getMediaSaveFolderPath];
+                NSString *filePath = [Utility getJournalMediaSaveFolderPath];
                 NSString *path = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
                 NSURL  *audioURL = [NSURL fileURLWithPath:path];
                 [self showAudioPlayerWithURL:audioURL];

@@ -140,6 +140,7 @@ typedef enum{
 -(void)showGemDetailsWith:(NSDictionary*)details{
     
     isDataAvailable = true;
+    [arrDataSource removeAllObjects];
     if (NULL_TO_NIL([details objectForKey:@"gem_media"]))
         arrDataSource = [NSMutableArray arrayWithArray:[details objectForKey:@"gem_media"]];
     actionDetails = details;
@@ -387,7 +388,7 @@ typedef enum{
                 imageHeight = (_tableView.frame.size.width - padding) / ratio;
                 [heightsCache setObject:[NSNumber numberWithInteger:imageHeight] forKey:[NSNumber numberWithInteger:indexPath.row]];
             }
-            return imageHeight + 10;
+            return imageHeight + 5;
 
         }
         
@@ -416,14 +417,14 @@ typedef enum{
     playingIndex = -1;
     isScrolling = NO;
     isPlaying = FALSE;
-    [tableView reloadData];
+    //[tableView reloadData];
 }
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)aScrollView
 {
     isScrolling = YES;
     isPlaying = FALSE;
-    [tableView reloadData];
+   // [tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -469,18 +470,18 @@ typedef enum{
     }
     else if (indexPath.section == eSectionActions){
         
-        ActionDetailPageViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGoalsDreamsDetailPage];
-         detailPage.delegate = self;
-        [[self navigationController]pushViewController:detailPage animated:YES];
-        
         if (indexPath.row < arrActions.count){
+            ActionDetailPageViewController *detailPage =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForGoalsDreamsDetailPage];
+            detailPage.delegate = self;
+            [[self navigationController]pushViewController:detailPage animated:YES];
             NSDictionary *_actionDetails = arrActions[indexPath.row];
             NSString *actionID = [_actionDetails objectForKey:@"action_id"];
             NSString *goalActionID = [_actionDetails objectForKey:@"goalaction_id"];
             [detailPage getActionDetailsByGoalActionID:goalActionID actionID:actionID goalID:goalID];
-            
+                
         }
-
+        
+       
     }
     
 }
@@ -505,6 +506,7 @@ typedef enum{
         _lblTitle.text = @"ACTIONS";
         _lblTitle.font = [UIFont fontWithName:CommonFont size:14];
         _lblTitle.textColor = [UIColor whiteColor];
+        vwHeader.backgroundColor = [UIColor whiteColor];
         return vwHeader;
     }
     return nil;
@@ -800,7 +802,7 @@ typedef enum{
 -(void)goalsAndDreamsCreatedWithGoalTitle:(NSString*)goalTitle goalID:(NSInteger)_goalID{
     
     [heightsCache removeAllObjects];
-     isUpdated = true;
+    isUpdated = true;
     [self getGoaDetailsByGoalID:goalID];
     
 }

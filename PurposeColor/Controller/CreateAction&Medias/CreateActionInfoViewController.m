@@ -1621,13 +1621,10 @@ typedef enum{
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-    
+     [self.view showActivityView];
     NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.view hideActivityView];
-            [self.view showActivityView];
-        });
+        
         [self compressVideoWithURL:[info objectForKey:UIImagePickerControllerMediaURL] onComplete:^(bool completed) {
             if (completed) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1637,7 +1634,8 @@ typedef enum{
             }
         }];
     }else{
-         UIImage *image =[Utility fixrotation:[info objectForKey:@"UIImagePickerControllerOriginalImage"]];
+        [self.view hideActivityView];
+        UIImage *image =[Utility fixrotation:[info objectForKey:@"UIImagePickerControllerOriginalImage"]];
         [GalleryManager saveSelectedImageFileToFolderWithImage:image];
         [self reloadMediaLibraryTable];
         

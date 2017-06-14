@@ -917,6 +917,7 @@
 				E5F9FE441D49C29400F22169 /* Community GEMs Listings */,
 				E5F613101D48C418002B7CB5 /* Emotional Intelligence */,
 				E5F5FCEA1D45C96C002658B0 /* CreateAction&Medias */,
+				E57AD6BD1D40E7610042A8C4 /* ActionDetailPage */,
 				E5FC7D821D4088DA00AD8560 /* Goals&Dreams */,
 				E5DA55561D33979E006BF80E /* CommentComposePage */,
 				E589F2C21EB893CB003B8B4C /* IntroScreenWithLogin */,
@@ -1568,8 +1569,7 @@
 				E57AD6BE1D40E7610042A8C4 /* ActionDetailPageViewController.h */,
 				E57AD6BF1D40E7610042A8C4 /* ActionDetailPageViewController.m */,
 			);
-			name = ActionDetailPage;
-			path = ../ActionDetailPage;
+			path = ActionDetailPage;
 			sourceTree = "<group>";
 		};
 		E580EE1B1EDE981300099C0D /* Help Screen */ = {
@@ -2592,7 +2592,6 @@
 		E5FC7D821D4088DA00AD8560 /* Goals&Dreams */ = {
 			isa = PBXGroup;
 			children = (
-				E57AD6BD1D40E7610042A8C4 /* ActionDetailPage */,
 				E57AD6B31D40E7390042A8C4 /* InnerTableCustomCell */,
 				E57AD6AE1D40E7390042A8C4 /* CustomCell */,
 				E57AD6B11D40E7390042A8C4 /* GoalsAndDreamsListingViewController.h */,
@@ -3340,8 +3339,8 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "PurposeColor/Purpose Color.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = WT8KCK2SX3;
 				ENABLE_BITCODE = NO;
@@ -3382,8 +3381,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "e218fca5-23e9-4407-9f9f-60772cc63806";
-				PROVISIONING_PROFILE_SPECIFIER = "PurposeColor Dev";
+				PROVISIONING_PROFILE = "27ebe652-6438-45ee-928f-2507c294d1f1";
+				PROVISIONING_PROFILE_SPECIFIER = "PurposeColor Production";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -3397,8 +3396,8 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "PurposeColor/Purpose Color.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sid Mounfik (TYG84AC45M)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Purpose Color LLC (WT8KCK2SX3)";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = WT8KCK2SX3;
 				ENABLE_BITCODE = NO;
@@ -3439,8 +3438,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.purposecodes.purposecolor;
 				PRODUCT_NAME = "Purpose Color";
-				PROVISIONING_PROFILE = "e218fca5-23e9-4407-9f9f-60772cc63806";
-				PROVISIONING_PROFILE_SPECIFIER = "PurposeColor Dev";
+				PROVISIONING_PROFILE = "27ebe652-6438-45ee-928f-2507c294d1f1";
+				PROVISIONING_PROFILE_SPECIFIER = "PurposeColor Production";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

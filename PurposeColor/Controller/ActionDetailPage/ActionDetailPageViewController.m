@@ -131,6 +131,7 @@ typedef enum{
     
     [heightsCache removeAllObjects];
     isDataAvailable = true;
+    [arrDataSource removeAllObjects];
     if (NULL_TO_NIL([details objectForKey:@"gem_media"]))
         arrDataSource = [NSMutableArray arrayWithArray:[details objectForKey:@"gem_media"]];
     actionDetails = [NSMutableDictionary dictionaryWithDictionary:details];
@@ -318,8 +319,8 @@ typedef enum{
             NSDictionary *details = arrDataSource[indexPath.row];
             float imageHeight = 0;
             float padding = 10;
-            if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
-                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] floatValue];
+            if ([heightsCache objectForKey:[NSNumber numberWithInteger:indexPath.row]]) {
+                imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInteger:indexPath.row]] floatValue];
             }else{
                 float width = [[details objectForKey:@"image_width"] floatValue];
                 float height = [[details objectForKey:@"image_height"] floatValue];
@@ -394,14 +395,14 @@ typedef enum{
     playingIndex = -1;
     isScrolling = NO;
     isPlaying = FALSE;
-    [tableView reloadData];
+   // [tableView reloadData];
 }
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)aScrollView
 {
     isScrolling = YES;
     isPlaying = FALSE;
-    [tableView reloadData];
+   // [tableView reloadData];
 }
 
 #pragma mark - Custom Cell Customization Methods

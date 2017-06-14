@@ -70,30 +70,39 @@
   
   ALAssetsLibrary *assetsLibrary = [CustomeImagePicker defaultAssetsLibrary];
   [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-      if (_isPhotos)
-           [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-      else
+      if (_isPhotos){
+          maxPhotos = 10;
+          [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+      }
+      else{
+          maxPhotos = 1;
           [group setAssetsFilter:[ALAssetsFilter allVideos]];
-      
-   
+      }
+    
     [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
       if(result)
       {
           if (!_isPhotos) {
               NSURL* assetURL = [result valueForProperty:ALAssetPropertyAssetURL];
-            //  NSLog(@"Error loading images %@", assetURL);
-              //if ([assetURL.pathExtension isEqualToString:@"mp4"]) {
+              //NSLog(@"Error loading images %@", assetURL.pathExtension);
+              if ([assetURL.pathExtension isEqualToString:@"mp4"] || [assetURL.pathExtension isEqualToString:@"MOV"]) {
                   [tmpAssets addObject:result];
-              //}
+              }
           }else{
               [tmpAssets addObject:result];
           }
           
       }
+        
     }];
+      
+      dispatch_time_t popTime1 = dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC);
+      dispatch_after(popTime1, dispatch_get_main_queue(), ^(void){
+          [self.collectionView reloadData];
+      });
     
   } failureBlock:^(NSError *error) {
-    NSLog(@"Error loading images %@", error);
+   // NSLog(@"Error loading images %@", error);
     if([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized)
     {
       [self displayErrorOnMainQueue:@"Photo Access Disabled" message:@"Please allow Photo Access in System Settings"];

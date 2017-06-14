@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     tableView.rowHeight = UITableViewAutomaticDimension;
-    tableView.estimatedRowHeight = 10;
+    tableView.estimatedRowHeight = 50;
     btnNotes.layer.cornerRadius = 5.f;
     btnNotes.layer.borderWidth = 1.f;
     btnNotes.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -79,6 +79,8 @@
             cell.titleBottom.constant = 5;
             cell.lbDescription.text = [_journalDetails objectForKey:@"journal_desc"];
         }
+        cell.lbDescription.preferredMaxLayoutWidth = CGRectGetWidth(cell.lbDescription.frame);
+        cell.lblTitle.preferredMaxLayoutWidth = CGRectGetWidth(cell.lblTitle.frame);
         return cell;
         
     }

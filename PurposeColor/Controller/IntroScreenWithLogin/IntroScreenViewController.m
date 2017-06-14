@@ -183,11 +183,11 @@
         [login logInWithReadPermissions:@[@"public_profile",@"email"] fromViewController:self handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
              [self hideLoadingScreen];
             if (!error)[self getFacebookData];
-            
+            else if(error.localizedDescription) {
+                 [self showAlertWithMessage:error.localizedDescription title:@"Facebook"];
+            }
         }];
-        
     }
-    
 }
 
 -(IBAction)doGoogleSignIn:(id)sender{

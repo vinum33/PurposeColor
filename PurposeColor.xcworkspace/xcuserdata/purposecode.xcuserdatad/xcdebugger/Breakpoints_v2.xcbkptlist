@@ -202,13 +202,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
-            timestampString = "498467129.931922"
+            timestampString = "518946746.280794"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "444"
-            endingLineNumber = "444"
+            startingLineNumber = "455"
+            endingLineNumber = "455"
             landmarkName = "-doSomeThingWithImage:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -218,13 +218,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
-            timestampString = "498467129.931922"
+            timestampString = "518946746.280794"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "486"
-            endingLineNumber = "486"
+            startingLineNumber = "497"
+            endingLineNumber = "497"
             landmarkName = "-didFinishPickingImage:metadata:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -346,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/CreateAction&amp;Medias/MediaManager/AudioManager/AudioManagerView.m"
-            timestampString = "493807495.942277"
+            timestampString = "518354276.078221"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "-audioRecorderDidFinishRecording:successfully:"
             landmarkType = "7">
          </BreakpointContent>
@@ -385,22 +385,6 @@
             endingLineNumber = "50"
             landmarkName = "-setupAVPlayerForURL:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Controller/Community GEMs Listings/ComminityGEMS/CommunityGEMListingViewController.m"
-            timestampString = "516773270.63529"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "792"
-            endingLineNumber = "792"
-            landmarkName = "-hideAGemWithIndex:"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -554,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/ActionDetailPage/ActionDetailPageViewController.m"
-            timestampString = "517991203.491051"
+            timestampString = "518333741.999832"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "564"
-            endingLineNumber = "564"
+            startingLineNumber = "565"
+            endingLineNumber = "565"
             landmarkName = "-resetPlayerVaiablesForIndex:"
             landmarkType = "7">
          </BreakpointContent>
@@ -740,7 +724,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/GEMS%20Listings/CellWithTable/CustomCellWithTable.m"
-                  timestampString = "518073715.926766"
+                  timestampString = "518946286.74046"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "501"
@@ -755,7 +739,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/GEMS%20Listings/CellWithTable/CustomCellWithTable.m"
-                  timestampString = "518073715.928278"
+                  timestampString = "518946286.741901"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "501"
@@ -788,11 +772,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Settings/SettingsViewController.m"
-            timestampString = "518007915.306302"
+            timestampString = "518080888.865207"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "599"
-            endingLineNumber = "599"
+            startingLineNumber = "624"
+            endingLineNumber = "624"
             landmarkName = "-submitDetails:"
             landmarkType = "7">
          </BreakpointContent>
@@ -900,11 +884,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Model/API Mapper/APIMapper.m"
-            timestampString = "515567937.013448"
+            timestampString = "518333207.470202"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1260"
-            endingLineNumber = "1260"
+            startingLineNumber = "1258"
+            endingLineNumber = "1258"
             landmarkName = "+shareGEMToPurposeColorWith:eventTitle:description:latitude:longitude:locName:address:contactName:gemID:deletedIDs:gemType:OnSuccess:failure:progress:"
             landmarkType = "7">
          </BreakpointContent>
@@ -916,7 +900,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
-            timestampString = "517994924.283286"
+            timestampString = "518415253.954319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1301"
@@ -932,7 +916,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
-            timestampString = "517994924.283286"
+            timestampString = "518415253.954319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1301"
@@ -948,11 +932,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/CreateAction&amp;Medias/CreateActionInfoViewController.m"
-            timestampString = "517992171.861462"
+            timestampString = "518938266.459258"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2520"
-            endingLineNumber = "2520"
+            startingLineNumber = "2518"
+            endingLineNumber = "2518"
             landmarkName = "-createNewActions"
             landmarkType = "7">
          </BreakpointContent>
@@ -980,7 +964,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
-            timestampString = "517994924.283286"
+            timestampString = "518415253.954319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1339"
@@ -996,7 +980,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
-            timestampString = "517994924.283286"
+            timestampString = "518415253.954319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1272"
@@ -1060,11 +1044,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/JournalDetailViewController/Journal Details/JournalDetailPageViewController.m"
-            timestampString = "515652443.587012"
+            timestampString = "518355830.410064"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "-closeJournalCommentPopUpClicked"
             landmarkType = "7">
          </BreakpointContent>
@@ -1076,7 +1060,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
-            timestampString = "517994924.283286"
+            timestampString = "518415253.954319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1326"
@@ -1188,11 +1172,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/CreateAction&amp;Medias/Contacts Picker View Controller/ContactsPickerViewController.m"
-            timestampString = "511795670.27687"
+            timestampString = "518936079.00776"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
             landmarkName = "-searchBarSearchButtonClicked:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1204,11 +1188,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/CreateAction&amp;Medias/Contacts Picker View Controller/ContactsPickerViewController.m"
-            timestampString = "511795670.27687"
+            timestampString = "518936079.00776"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
             landmarkName = "-searchBar:textDidChange:"
             landmarkType = "7">
             <Locations>
@@ -1216,45 +1200,45 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__56-[ContactsPickerViewController searchBar:textDidChange:]_block_invoke.186"
+                  symbolName = "__56-[ContactsPickerViewController searchBar:textDidChange:]_block_invoke.189"
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/CreateAction&amp;Medias/Contacts%20Picker%20View%20Controller/ContactsPickerViewController.m"
-                  timestampString = "518073716.13072"
+                  timestampString = "518946286.845538"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "290"
-                  endingLineNumber = "290"
+                  startingLineNumber = "294"
+                  endingLineNumber = "294"
                   offsetFromSymbolStart = "184">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_.187"
+                  symbolName = "__copy_helper_block_.190"
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/CreateAction&amp;Medias/Contacts%20Picker%20View%20Controller/ContactsPickerViewController.m"
-                  timestampString = "518073716.132271"
+                  timestampString = "518946286.846953"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "290"
-                  endingLineNumber = "290"
+                  startingLineNumber = "294"
+                  endingLineNumber = "294"
                   offsetFromSymbolStart = "64">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.188"
+                  symbolName = "__destroy_helper_block_.191"
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/CreateAction&amp;Medias/Contacts%20Picker%20View%20Controller/ContactsPickerViewController.m"
-                  timestampString = "518073716.133667"
+                  timestampString = "518946286.848319"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "290"
-                  endingLineNumber = "290"
+                  startingLineNumber = "294"
+                  endingLineNumber = "294"
                   offsetFromSymbolStart = "36">
                </Location>
             </Locations>
@@ -1299,11 +1283,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/ImotionalAwareness/SelectActions/SelectActions.m"
-            timestampString = "514461429.260501"
+            timestampString = "518339258.656531"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345"
+            startingLineNumber = "347"
+            endingLineNumber = "347"
             landmarkName = "-newActionCreatedWithActionTitle:actionID:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1363,11 +1347,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/ImotionalAwareness/SelectActions/SelectActions.m"
-            timestampString = "514461429.260501"
+            timestampString = "518339258.656531"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "366"
-            endingLineNumber = "366"
+            startingLineNumber = "368"
+            endingLineNumber = "368"
             landmarkName = "-enableQuickView:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1458,22 +1442,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Controller/UserProfilePage/ProfilePageViewController.m"
-            timestampString = "514182147.69107"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "-loadUserProfileWithUserID:showBackButton:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/CreateAction&amp;Medias/EventManager/EventCreateViewController.m"
             timestampString = "514976103.11978"
             startingColumnNumber = "9223372036854775807"
@@ -1555,11 +1523,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/New Emotional Awareness/EmotionalAwarenessViewController.m"
-            timestampString = "515048208.161755"
+            timestampString = "518938052.825215"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2339"
-            endingLineNumber = "2339"
+            startingLineNumber = "2340"
+            endingLineNumber = "2340"
             landmarkName = "-submitJournals:"
             landmarkType = "7">
             <Locations>
@@ -1571,11 +1539,11 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/New%20Emotional%20Awareness/EmotionalAwarenessViewController.m"
-                  timestampString = "518073716.195659"
+                  timestampString = "518946286.913991"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2340"
-                  endingLineNumber = "2340"
+                  startingLineNumber = "2341"
+                  endingLineNumber = "2341"
                   offsetFromSymbolStart = "2120">
                </Location>
                <Location
@@ -1586,11 +1554,11 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/New%20Emotional%20Awareness/EmotionalAwarenessViewController.m"
-                  timestampString = "518073716.197209"
+                  timestampString = "518946286.915413"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2340"
-                  endingLineNumber = "2340"
+                  startingLineNumber = "2341"
+                  endingLineNumber = "2341"
                   offsetFromSymbolStart = "28">
                </Location>
             </Locations>
@@ -1602,28 +1570,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Controller/New Emotional Awareness/EmotionalAwarenessViewController.m"
-            timestampString = "515048208.161755"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2326"
-            endingLineNumber = "2326"
-            landmarkName = "-submitJournals:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "PurposeColor/Model/API Mapper/APIMapper.m"
-            timestampString = "515567937.013448"
+            timestampString = "518333207.470202"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1390"
-            endingLineNumber = "1390"
+            startingLineNumber = "1388"
+            endingLineNumber = "1388"
             landmarkName = "+createAJournelWith:description:latitude:longitude:locName:address:contactName:emotionAwarenssValues:OnSuccess:failure:progress:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1795,11 +1747,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/JournalListView/JournalListViewController.m"
-            timestampString = "515585660.959347"
+            timestampString = "518354276.078221"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "497"
-            endingLineNumber = "497"
+            startingLineNumber = "489"
+            endingLineNumber = "489"
             landmarkName = "-showGoalDetails:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1827,12 +1779,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Login Page/LoginViewController.m"
-            timestampString = "515677386.771242"
+            timestampString = "518359591.381795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "658"
-            endingLineNumber = "658"
-            landmarkName = "-signIn:didSignInForUser:withError:"
+            startingLineNumber = "661"
+            endingLineNumber = "661"
+            landmarkName = "-checkAllFieldsAreValid:failure:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1907,7 +1859,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
-            timestampString = "517994924.283286"
+            timestampString = "518415253.954319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1372"
@@ -1923,7 +1875,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/Community%20GEMS%20Detail%20Page/GEMDetailViewController.m"
-                  timestampString = "518073716.262987"
+                  timestampString = "518946286.990077"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1372"
@@ -1938,7 +1890,7 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/Community%20GEMS%20Detail%20Page/GEMDetailViewController.m"
-                  timestampString = "518073716.264394"
+                  timestampString = "518946286.991528"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1372"
@@ -2051,7 +2003,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
-            timestampString = "517994924.283286"
+            timestampString = "518415253.954319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1264"
@@ -2067,11 +2019,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/ActionDetailPage/ActionDetailPageViewController.m"
-            timestampString = "517991203.491051"
+            timestampString = "518333741.999832"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "707"
-            endingLineNumber = "707"
+            startingLineNumber = "708"
+            endingLineNumber = "708"
             landmarkName = "-openPreviewURL"
             landmarkType = "7">
             <Locations>
@@ -2083,11 +2035,11 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/ActionDetailPage/ActionDetailPageViewController.m"
-                  timestampString = "518073716.298973"
+                  timestampString = "518946287.026685"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "707"
-                  endingLineNumber = "707"
+                  startingLineNumber = "708"
+                  endingLineNumber = "708"
                   offsetFromSymbolStart = "52">
                </Location>
                <Location
@@ -2098,94 +2050,14 @@
                   moduleName = "Purpose Color"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/ActionDetailPage/ActionDetailPageViewController.m"
-                  timestampString = "518073716.301027"
+                  timestampString = "518946287.028443"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "707"
-                  endingLineNumber = "707"
+                  startingLineNumber = "708"
+                  endingLineNumber = "708"
                   offsetFromSymbolStart = "316">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Controller/CreateAction&amp;Medias/CreateActionInfoViewController.m"
-            timestampString = "517992171.861462"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2493"
-            endingLineNumber = "2493"
-            landmarkName = "-createNewActions"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[CreateActionInfoViewController createNewActions]"
-                  moduleName = "Purpose Color"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/CreateAction&amp;Medias/CreateActionInfoViewController.m"
-                  timestampString = "518073716.306396"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2493"
-                  endingLineNumber = "2493"
-                  offsetFromSymbolStart = "156">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__50-[CreateActionInfoViewController createNewActions]_block_invoke"
-                  moduleName = "Purpose Color"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Controller/CreateAction&amp;Medias/CreateActionInfoViewController.m"
-                  timestampString = "518073716.30869"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2493"
-                  endingLineNumber = "2493"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Model/API Mapper/APIMapper.m"
-            timestampString = "517991518.755008"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1007"
-            endingLineNumber = "1007"
-            landmarkName = "+createOrEditAGemWith:eventTitle:description:latitude:longitude:locName:address:contactName:gemID:goalID:deletedIDs:gemType:OnSuccess:failure:progress:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
-            timestampString = "517994924.283286"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
-            landmarkName = "-tableView:heightForRowAtIndexPath:"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2211,11 +2083,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Settings/Delete Accnt PopUp/DeleteAccntPopUp.m"
-            timestampString = "518072898.737444"
+            timestampString = "518088908.242171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
             landmarkName = "-tableView:viewForFooterInSection:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2227,27 +2099,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Controller/Settings/Delete Accnt PopUp/DeleteAccntPopUp.m"
-            timestampString = "518072898.737444"
+            timestampString = "518088908.242171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
-            landmarkName = "-deleteClicked"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Controller/Settings/Delete Accnt PopUp/DeleteAccntPopUp.m"
-            timestampString = "518072898.737444"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "323"
-            endingLineNumber = "323"
+            startingLineNumber = "347"
+            endingLineNumber = "347"
             landmarkName = "-cancelClicked"
             landmarkType = "7">
          </BreakpointContent>
@@ -2258,13 +2114,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Controller/Settings/Delete Accnt PopUp/DeleteAccntPopUp.m"
-            timestampString = "518072898.737444"
+            filePath = "PurposeColor/Controller/CommentComposePage/CommentComposeViewController.m"
+            timestampString = "518086252.430582"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "-hideClicked"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "-parseResponds:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2274,13 +2130,173 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PurposeColor/Controller/Login Page/LoginViewController.m"
-            timestampString = "518013643.906998"
+            filePath = "PurposeColor/Controller/CommentComposePage/CommentComposeViewController.m"
+            timestampString = "518086252.430582"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "742"
-            endingLineNumber = "742"
-            landmarkName = "-createUserWithInfo:"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "-getAllComments"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/CommentComposePage/CommentComposeViewController.m"
+            timestampString = "518086252.430582"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "-getAllComments"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/Goal Details/GoalDetailViewController.m"
+            timestampString = "518333377.819023"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "-getGoaDetailsByGoalID:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/Goal Details/GoalDetailViewController.m"
+            timestampString = "518333379.018983"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "-getGoaDetailsByGoalID:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/New Emotional Awareness/EmotionalAwarenessViewController.m"
+            timestampString = "518335656.267129"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "719"
+            endingLineNumber = "719"
+            landmarkName = "-tableView:viewForHeaderInSection:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/New Emotional Awareness/EmotionalAwarenessViewController.m"
+            timestampString = "518335797.764734"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "712"
+            endingLineNumber = "712"
+            landmarkName = "-tableView:viewForHeaderInSection:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/New Emotional Awareness/EmotionalAwarenessViewController.m"
+            timestampString = "518335820.771181"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "723"
+            endingLineNumber = "723"
+            landmarkName = "-tableView:viewForHeaderInSection:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/CreateAction&amp;Medias/CreateActionInfoViewController.m"
+            timestampString = "518938266.459258"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2769"
+            endingLineNumber = "2769"
+            landmarkName = "-goBack:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/ImotionalAwareness/SelectActions/SelectActions.m"
+            timestampString = "518338967.603021"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "326"
+            endingLineNumber = "326"
+            landmarkName = "-createNewAction:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/New Emotional Awareness/Medias/AwarenessMediaViewController.m"
+            timestampString = "518343918.617125"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/Like&amp;CommentedUserListings/LikedAndCommentedUserListings.m"
+            timestampString = "518350914.155096"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "-loadUserListingsForType:gemID:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2291,12 +2307,313 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PurposeColor/Model/API Mapper/APIMapper.m"
-            timestampString = "518072052.91832"
+            timestampString = "518350951.834647"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1186"
-            endingLineNumber = "1186"
-            landmarkName = "+createOrEditAGoalWith:eventTitle:description:latitude:longitude:locName:address:contactName:gemID:goalID:deletedIDs:gemType:achievementDate:status:isPurposeColor:OnSuccess:failure:progress:"
+            startingLineNumber = "1857"
+            endingLineNumber = "1857"
+            landmarkName = "+getUserListingsWithGemID:type:userID:success:failure:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[APIMapper getUserListingsWithGemID:type:userID:success:failure:]"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Model/API%20Mapper/APIMapper.m"
+                  timestampString = "518946287.389229"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1857"
+                  endingLineNumber = "1857"
+                  offsetFromSymbolStart = "944">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__66+[APIMapper getUserListingsWithGemID:type:userID:success:failure:]_block_invoke"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Model/API%20Mapper/APIMapper.m"
+                  timestampString = "518946287.391321"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1857"
+                  endingLineNumber = "1857"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/Login Page/LoginViewController.m"
+            timestampString = "518359677.084521"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "574"
+            endingLineNumber = "574"
+            landmarkName = "-getFacebookData"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/IntroScreenWithLogin/IntroScreenViewController.m"
+            timestampString = "518361036.308147"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "-getFacebookData"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/IntroScreenWithLogin/IntroScreenViewController.m"
+            timestampString = "518359464.597349"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
+            landmarkName = "-doFBSignIn:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/Community GEMS Detail Page/GEMDetailViewController.m"
+            timestampString = "518414615.779486"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "-setUp"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/CreateAction&amp;Medias/Contacts Picker View Controller/ContactsPickerViewController.m"
+            timestampString = "518935583.681182"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "-getUserPermission"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/CreateAction&amp;Medias/Contacts Picker View Controller/ContactsPickerViewController.m"
+            timestampString = "518935603.811784"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "-getUserPermission"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/CreateAction&amp;Medias/Contacts Picker View Controller/ContactsPickerViewController.m"
+            timestampString = "518936079.00776"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/CreateAction&amp;Medias/Contacts Picker View Controller/ContactsPickerViewController.m"
+            timestampString = "518936079.00776"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Controller/CreateAction&amp;Medias/Contacts Picker View Controller/ContactsPickerViewController.m"
+            timestampString = "518936126.68292"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "-getContactsWithAddressBook:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
+            timestampString = "518946746.280794"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
+            timestampString = "518946746.280794"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[CustomeImagePicker viewDidLoad]"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
+                  timestampString = "518946746.513725"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "95"
+                  endingLineNumber = "95"
+                  offsetFromSymbolStart = "1796">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__33-[CustomeImagePicker viewDidLoad]_block_invoke"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
+                  timestampString = "518946746.516602"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "95"
+                  endingLineNumber = "95"
+                  offsetFromSymbolStart = "420">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_.66"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
+                  timestampString = "518946746.518955"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "95"
+                  endingLineNumber = "95"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_.67"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
+                  timestampString = "518946746.520373"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "95"
+                  endingLineNumber = "95"
+                  offsetFromSymbolStart = "64">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__33-[CustomeImagePicker viewDidLoad]_block_invoke.70"
+                  moduleName = "Purpose Color"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/Purpose%20Color/PurpoposeColor%20/PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
+                  timestampString = "518946746.521837"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PurposeColor/Libraries/PhotoGallery/CustomeImagePicker.m"
+            timestampString = "518946746.280794"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "-viewDidLoad"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

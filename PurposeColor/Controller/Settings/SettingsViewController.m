@@ -113,7 +113,7 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -122,9 +122,12 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
         return 0;
     }
     else if (section == 1) {
-        return 2;
+        return 1;
     }
     else if (section == 2) {
+        return 1;
+    }
+    else if (section == 3) {
         return 1;
     }
     
@@ -137,7 +140,7 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
     UITableViewCell *cell;
     cell = (UITableViewCell *)[aTableView dequeueReusableCellWithIdentifier:@"SettingsInfo"];
     cell.userInteractionEnabled = true;
-    if (indexPath.section == 1 && indexPath.row == 1) {
+    if ((indexPath.section == 1 && indexPath.row == 1) || (indexPath.section == 3)) {
          cell = (UITableViewCell *)[aTableView dequeueReusableCellWithIdentifier:@"OtherInfo"];
          cell.userInteractionEnabled = true;
          [self configureCellWithCell:cell indexPath:indexPath];
@@ -303,7 +306,7 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
         lblStatus.text = @"Notification";
         return vwHeader;
     }
-    else if (section == 3){
+    else if (section == 4){
         
         UIView *vwHeader = [UIView new];
         vwHeader.backgroundColor = [UIColor getBackgroundOffWhiteColor];
@@ -368,8 +371,8 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.section == 1) {
-        if (indexPath.row == 1) {
+    if (indexPath.section == 3) {
+        if (indexPath.row == 0) {
             [self showDeleteAccountPopUp];
         }
     }
@@ -378,7 +381,37 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
 
 -(void)configureCellWithCell:(UITableViewCell*)cell indexPath:(NSIndexPath*)indexPath{
     
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
+        switch (indexPath.row) {
+            case eFieldOne:
+                if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
+                    UILabel *lblTitle = [[cell contentView]viewWithTag:1];
+                    lblTitle.text = @"Let others follow you";
+                    
+                }
+                if ([[[cell contentView]viewWithTag:2] isKindOfClass:[UISwitch class]]) {
+                    UISwitch *switchBtn = (UISwitch*)[[cell contentView]viewWithTag:2];
+                    [switchBtn setOn:canFollow];
+                    switchCanFollow = switchBtn;
+                    [switchCanFollow removeTarget:nil  action:NULL forControlEvents:UIControlEventAllEvents];
+                    [switchCanFollow addTarget:self action:@selector(changeFollowStatus:) forControlEvents:UIControlEventValueChanged];
+                    
+                }
+                break;
+                
+            case eFieldTwo:
+                if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
+                    UILabel *lblTitle = [[cell contentView]viewWithTag:1];
+                    lblTitle.text = @"Delete Account";
+                    break;
+                }
+                
+                
+            default:
+                break;
+        }
+    }
+    else if (indexPath.section == 2) {
         switch (indexPath.row) {
             case eFieldOne:
                 if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
@@ -409,37 +442,27 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
                 break;
         }
     }
-    else if (indexPath.section == 1) {
+   
+    else if (indexPath.section == 3) {
+        
         switch (indexPath.row) {
             case eFieldOne:
                 if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
                     UILabel *lblTitle = [[cell contentView]viewWithTag:1];
-                    lblTitle.text = @"Let others follow you";
-                    
+                    lblTitle.text = @"Delete Account";
+                    lblTitle.textColor = [UIColor colorWithRed:0.96 green:0.32 blue:0.29 alpha:1.0];
                 }
                 if ([[[cell contentView]viewWithTag:2] isKindOfClass:[UISwitch class]]) {
                     UISwitch *switchBtn = (UISwitch*)[[cell contentView]viewWithTag:2];
-                    [switchBtn setOn:canFollow];
-                     switchCanFollow = switchBtn;
-                    [switchCanFollow removeTarget:nil  action:NULL forControlEvents:UIControlEventAllEvents];
-                    [switchCanFollow addTarget:self action:@selector(changeFollowStatus:) forControlEvents:UIControlEventValueChanged];
-                    
+                    switchBtn.hidden = true;
                 }
                 break;
                 
-            case eFieldTwo:
-                if ([[[cell contentView]viewWithTag:1] isKindOfClass:[UILabel class]]) {
-                    UILabel *lblTitle = [[cell contentView]viewWithTag:1];
-                    lblTitle.text = @"Delete Account";
-                    break;
-                }
-                
-                
-            default:
+                default:
                 break;
         }
     }
-    else if (indexPath.section == 3) {
+    else if (indexPath.section == 4) {
         
         switch (indexPath.row) {
             case eFieldOne:
@@ -515,6 +538,8 @@ NSString * const Show_Admin_Journal = @"Show_Admin_Journal";
                 break;
         }
     }
+    
+    
     
     
 }

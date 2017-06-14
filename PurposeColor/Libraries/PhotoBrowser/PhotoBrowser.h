@@ -25,6 +25,7 @@
 @interface PhotoBrowser : UIView
 
 @property (nonatomic,weak)  id<PhotoBrowserDelegate>delegate;
+@property (nonatomic,assign) BOOL isFromAwareness;
 
 -(void)setUpWithImages:(NSArray*)images;
 

@@ -43,6 +43,7 @@
     tableView.layer.borderColor = [UIColor clearColor].CGColor;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
+    tableView.scrollEnabled = false;
     tableView.allowsSelection = NO;
     tableView.layer.cornerRadius = 5.f;
     tableView.layer.borderWidth = 1.f;
@@ -228,38 +229,63 @@
 
 -(IBAction)hideClicked{
     
-    [self showLoadingScreen];
-    [APIMapper deleteOrHideMyAccountWithType:@"hide" success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *responds = (NSDictionary*)responseObject;
-        if ( NULL_TO_NIL( [responds objectForKey:@"code"])) {
-            NSInteger statusCode = [[responds objectForKey:@"code"] integerValue];
-            if (statusCode == StatusSucess) {
-                
-                 [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ACCOUNT_ENABLED"];
-                 [[NSUserDefaults standardUserDefaults] synchronize];
-                [self showHideAccountPopUp];
-                [self showAlertWithTitle:@"Hide Account" message:[responds objectForKey:@"text"]];
-                
-            }
-            else{
-                
-                if (responds && [responds objectForKey:@"text"]){
-                    [self showAlertWithTitle:@"Hide Account" message:[responds objectForKey:@"text"]];
-                }
-                
-            }
-        }
-        
-        [self hideLoadingScreen];
-        
-    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-        
-        [self showAlertWithTitle:@"Hide Account" message:@"Failed to hide try again later"];
-        
-        [self hideLoadingScreen];
-    }];
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    UINavigationController *nav = delegate.navGeneral;
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Hide Account"
+                                                                   message:@"Are you sure want to hide your account?"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"
+                                                          style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                              
+                                                              [self showLoadingScreen];
+                                                              [APIMapper deleteOrHideMyAccountWithType:@"hide" success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                  
+                                                                  NSDictionary *responds = (NSDictionary*)responseObject;
+                                                                  if ( NULL_TO_NIL( [responds objectForKey:@"code"])) {
+                                                                      NSInteger statusCode = [[responds objectForKey:@"code"] integerValue];
+                                                                      if (statusCode == StatusSucess) {
+                                                                          
+                                                                          [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ACCOUNT_ENABLED"];
+                                                                          [[NSUserDefaults standardUserDefaults] synchronize];
+                                                                          [self showHideAccountPopUp];
+                                                                          [self showAlertWithTitle:@"Hide Account" message:[responds objectForKey:@"text"]];
+                                                                          
+                                                                      }
+                                                                      else{
+                                                                          
+                                                                          if (responds && [responds objectForKey:@"text"]){
+                                                                              [self showAlertWithTitle:@"Hide Account" message:[responds objectForKey:@"text"]];
+                                                                          }
+                                                                          
+                                                                      }
+                                                                  }
+                                                                  
+                                                                  [self hideLoadingScreen];
+                                                                  
+                                                              } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                                                                  
+                                                                  [self showAlertWithTitle:@"Hide Account" message:@"Failed to hide try again later"];
+                                                                  
+                                                                  [self hideLoadingScreen];
+                                                              }];
 
+                                                              
+                                                              }];
+    
+    UIAlertAction *second = [UIAlertAction actionWithTitle:@"NO"
+                                                     style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                         
+                                                         [alert dismissViewControllerAnimated:YES completion:nil];
+                                                     }];
+    
+    [alert addAction:firstAction];
+    [alert addAction:second];
+    [nav presentViewController:alert animated:YES completion:nil];
+
+    
+    
+    
 }
 
 -(IBAction)deleteClicked{
@@ -268,7 +294,7 @@
     UINavigationController *nav = delegate.navGeneral;
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Account"
-                                                                   message:@"Are you sure want to delete your account?"
+                                                                   message:@"Are you sure want to delete your account?\nIf you delete your account you will lose all data and this cannot be undone."
                                                             preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"
                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -314,8 +340,6 @@
     [alert addAction:firstAction];
     [alert addAction:second];
     [nav presentViewController:alert animated:YES completion:nil];
-
-    
     
 }
 

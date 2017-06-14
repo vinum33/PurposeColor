@@ -697,7 +697,7 @@ typedef enum{
     if (section == 0) {
         NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"AwarenessHeader" owner:self options:nil];
         AwarenessHeader *view = [viewArray objectAtIndex:0];
-        view.lblGalleryCount.text = [NSString stringWithFormat:@"%d",arrDataSource.count];
+        view.lblGalleryCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)arrDataSource.count];
         UIImage *image = [UIImage imageNamed:@"NoImage_TopText"];
         view.imgGallery.image = image;
         float _width = image.size.width;
@@ -716,7 +716,7 @@ typedef enum{
                 NSString *fileName = [arrDataSource firstObject];
                 if ([[fileName pathExtension] isEqualToString:@"jpeg"]) {
                     //This is Image File with .png Extension , Photos.
-                    NSString *filePath = [Utility getMediaSaveFolderPath];
+                    NSString *filePath = [Utility getJournalMediaSaveFolderPath];
                     NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
                     if (imagePath.length) {
                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
@@ -740,7 +740,7 @@ typedef enum{
                 }
                 else if ([[fileName pathExtension] isEqualToString:@"mp4"]) {
                     //This is Image File with .mp4 Extension , Video Files
-                    NSString *filePath = [Utility getMediaSaveFolderPath];
+                    NSString *filePath = [Utility getJournalMediaSaveFolderPath];
                     NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
                     if (imagePath.length){
                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
@@ -761,7 +761,7 @@ typedef enum{
                 }
                 else if ([[fileName pathExtension] isEqualToString:@"aac"]){
                     // Recorded Audio
-                    UIImage *image = [UIImage imageNamed:@"NoImage.png"];
+                    UIImage *image = [UIImage imageNamed:@"NoImage_TopText"];
                     view.imgGallery.image = image;
                     float _width = image.size.width;
                     float _height = image.size.height;
@@ -913,7 +913,7 @@ typedef enum{
                 NSError* error;
                 [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
                 [[AVAudioSession sharedInstance] setActive:NO error:&error];
-                NSString *filePath = [Utility getMediaSaveFolderPath];
+                NSString *filePath = [Utility getJournalMediaSaveFolderPath];
                 NSString *path = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
                 NSURL  *videourl =[NSURL fileURLWithPath:path];
                 AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
@@ -929,7 +929,7 @@ typedef enum{
             else if ([[fileName pathExtension] isEqualToString:@"aac"]){
                 // Recorded Audio
                 
-                NSString *filePath = [Utility getMediaSaveFolderPath];
+                NSString *filePath = [Utility getJournalMediaSaveFolderPath];
                 NSString *path = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
                 NSURL  *audioURL = [NSURL fileURLWithPath:path];
                 [self showAudioPlayerWithURL:audioURL];
@@ -1257,12 +1257,11 @@ typedef enum{
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
+    [self.view showActivityView];
+    
     NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.view hideActivityView];
-            [self.view showActivityView];
-        });
+       
         [self compressVideoWithURL:[info objectForKey:UIImagePickerControllerMediaURL] onComplete:^(bool completed) {
             if (completed) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1272,8 +1271,9 @@ typedef enum{
             }
         }];
     }else{
+        [self.view hideActivityView];
         UIImage *image =[Utility fixrotation:[info objectForKey:@"UIImagePickerControllerOriginalImage"]];
-        [GalleryManager saveSelectedImageFileToFolderWithImage:image];
+        [GalleryManager saveJournalImageFileToFolderWithImage:image];
         [self reloadMediaLibraryTable];
         
     }
@@ -1312,7 +1312,7 @@ typedef enum{
     
     
     
-    NSURL *outputURL = [NSURL fileURLWithPath:[GalleryManager getPathWhereVideoNeedsToBeSaved]];
+    NSURL *outputURL = [NSURL fileURLWithPath:[GalleryManager getPathWhereJournalVideoNeedsToBeSaved]];
     SDAVAssetExportSession *encoder = [SDAVAssetExportSession.alloc initWithAsset:[AVAsset assetWithURL:videoURL]];
     NSURL *url = outputURL;
     encoder.outputURL=url;
@@ -1397,6 +1397,7 @@ typedef enum{
                 CGPoint point = [gesture.view.superview convertPoint:gesture.view.center toView:self.view];
                 CGRect rect = CGRectMake(point.x - xPadding, point.y - yPadding, 100, 40);
                 vwRecordPopOver = [AudioManagerView new];
+                vwRecordPopOver.isJournal = true;
                 vwRecordPopOver.frame = rect;
                 [self.view addSubview:vwRecordPopOver];
                 [vwRecordPopOver setUp];
@@ -1525,7 +1526,7 @@ typedef enum{
                     UIImage *image = [UIImage imageWithCGImage:imageRef];
                     if (imageRef) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [GalleryManager saveSelectedImageFileToFolderWithImage:image];
+                            [GalleryManager saveJournalImageFileToFolderWithImage:image];
                         });
                         imageCount ++;
                         
@@ -2146,7 +2147,7 @@ typedef enum{
 
 -(void)getAllMediaFiles{
     
-    NSString *dataPath = [Utility getMediaSaveFolderPath];
+    NSString *dataPath = [Utility getJournalMediaSaveFolderPath];
     NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dataPath error:NULL];
     NSError* error = nil;
     // sort by creation date
@@ -2240,7 +2241,7 @@ typedef enum{
 }
 - (void)removeAMediaFileWithName:(NSString *)filename
 {
-    NSString *dataPath = [Utility getMediaSaveFolderPath];
+    NSString *dataPath = [Utility getJournalMediaSaveFolderPath];
     NSString *filePath = [dataPath stringByAppendingPathComponent:filename];
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -2257,7 +2258,7 @@ typedef enum{
 
 -(void)removeAllContentsInMediaFolder{
     
-    NSString *dataPath = [Utility getMediaSaveFolderPath];
+    NSString *dataPath = [Utility getJournalMediaSaveFolderPath];
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL success = [fileManager removeItemAtPath:dataPath error:&error];
@@ -2352,6 +2353,7 @@ typedef enum{
                 [alertView show];
                 AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
                 [delegate clearUserSessions];
+                [self removeAllContentsInMediaFolder];
                 
             }
             
@@ -2368,6 +2370,7 @@ typedef enum{
                                                                   }];
             [alert addAction:firstAction];
             [[self navigationController] presentViewController:alert animated:YES completion:nil];
+            [self removeAllContentsInMediaFolder];
         }
         
         

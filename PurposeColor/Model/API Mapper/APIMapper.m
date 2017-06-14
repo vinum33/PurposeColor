@@ -1074,8 +1074,6 @@
                         [formData appendPartWithFileData:data name:arrOrder[index] fileName:@"Media" mimeType:@"audio/aac"];
                     }
                     
-                    
-                    
                 }
             }
             index ++;
@@ -1426,7 +1424,7 @@
     
     AFHTTPRequestOperation *operation = [manager POST:urlString parameters:json constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSInteger index = 1;
-        NSString *dataPath = [Utility getMediaSaveFolderPath];
+        NSString *dataPath = [Utility getJournalMediaSaveFolderPath];
         for (id object in dataSource) {
             NSString *filename = (NSString*)object;
             NSString *filePath = [dataPath stringByAppendingPathComponent:filename];

@@ -915,7 +915,7 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     isScrolling = NO;
-    [tableView reloadData];
+   // [tableView reloadData];
 }
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)aScrollView
@@ -923,7 +923,7 @@
     [videoPlayer pause];
     isPlaying = false;
     isScrolling = YES;
-    [tableView reloadData];
+  //  [tableView reloadData];
     playingIndex = -1;
 }
 

@@ -80,6 +80,9 @@
             btnDownload.hidden = true;
             NSString *fileName = (NSString*)urlType;
             NSString *filePath = [Utility getMediaSaveFolderPath];
+            if (_isFromAwareness) {
+                filePath = [Utility getJournalMediaSaveFolderPath];
+            }
             NSString *imagePath = [[filePath stringByAppendingString:@"/"] stringByAppendingString:fileName];
             if (imagePath.length) {
                 [cell.indicator startAnimating];

@@ -134,10 +134,8 @@
         [popTip hide];
     }
     popTip = [AMPopTip popTip];
-    [popTip showText:@"Emotional Awareness" direction:AMPopTipDirectionDown maxWidth:200 inView:journalList.view fromFrame:CGRectMake(p.x, p.y, 50, 50) duration:2];
+    [popTip showText:@"Smart Journal" direction:AMPopTipDirectionDown maxWidth:200 inView:journalList.view fromFrame:CGRectMake(p.x, p.y, 50, 50) duration:2];
 
-    
-    
     /*
     [self resetCurrentNavController];
     EmotionalAwarenessViewController *imotionalAwareness =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GEMDetailsStoryBoard Identifier:StoryBoardIdentifierForImotionalAwareness];

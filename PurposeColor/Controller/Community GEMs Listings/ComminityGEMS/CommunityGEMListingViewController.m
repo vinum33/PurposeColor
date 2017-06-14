@@ -689,8 +689,8 @@ static NSString *CollectionViewCellIdentifier = @"GemsListCell";
     float imageHeight = 0;
     if (NULL_TO_NIL([details objectForKey:@"display_image"])){
         NSString *url = [details objectForKey:@"display_image"];
-        if ([heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]]) {
-            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInt:indexPath.row]] integerValue];
+        if ([heightsCache objectForKey:[NSNumber numberWithInteger:indexPath.row]]) {
+            imageHeight = [[heightsCache objectForKey:[NSNumber numberWithInteger:indexPath.row]] integerValue];
         }
         if (url.length) {
             [cell.activityIndicator startAnimating];
